@@ -1026,3 +1026,51 @@ not as broad claims that every untested variant is cleared.
 - Preserved behavior: same-version restart/wake still restores L2 for matching
   model/cache keys. The new guard targets package/runtime drift, not process
   boundaries.
+
+### 2026-05-11 product/API release surface follow-up
+
+- Image download identity is wired end to end. `models.ts` carries
+  `jobId`, `repoId`, `imageModelName`, and `imageQuantize` through queued,
+  progress, complete, cancelled, error, resumed/status, and recent-completed
+  paths. `ImageModelPicker` tracks the active job identity and ignores events
+  for other image-model downloads before rechecking model completeness.
+- Image model detection still uses the shared registry for Flux Schnell, Flux
+  Dev, Z-Image Turbo, Flux/Klein, Qwen image, Kontext, and Fill. Download
+  validation uses encoder topology, so single-encoder models such as
+  Z-Image/Klein are not falsely rejected for missing `text_encoder_2`.
+- Image edit/mask path is now explicitly normalized at the panel boundary:
+  `MaskPainter` emits a full-resolution PNG data URL, `ImageTab` forwards it
+  as `maskBase64`, `image:edit` strips any data-URL prefix before sending
+  `/v1/images/edits`, and the backend still independently strips/validates
+  masks, preserves RGBA/LA paint-tool alpha, and rejects all-black masks.
+- API page quick-start snippets now switch to `/v1/images/generations` or
+  `/v1/images/edits` when the first running session is an image server. The
+  edit snippets treat `mask.png` as optional for Qwen/Kontext and required
+  only for Fill/inpaint, matching the engine behavior.
+- Gateway/API pass-through remains intact for text model release paths:
+  OpenAI Chat/Responses/Completions proxy raw request bodies, Anthropic routes
+  through `/v1/messages`, Ollama maps `temperature`, `top_p`, `top_k`,
+  `repeat_penalty`, `cache_salt`, `skip_prefix_cache`, tools, response format,
+  `think`/`enable_thinking`, and `reasoning_effort`.
+- i18n/China-user surface remains covered by the existing locale parity guard
+  for `en/zh/ko/ja/es`, the main-process i18n bridge, `hf_endpoint`
+  persistence, `HF_ENDPOINT` forwarding to download subprocesses, and CSP
+  allow-listing for `hf-mirror.com`/`modelscope.cn`.
+- Closed GitHub issue sweep: release-relevant historical issues reviewed
+  against current guards include image/mflux/download (`#146`, `#145`, `#100`,
+  `#97`, `#96`, `#54`, `#36`), Qwen/VL/MRoPE (`#159`, `#138`, `#116`,
+  `#114`, `#113`, `#112`, `#69`, `#63`, `#13`, `#4`), SSM/cache/L2 (`#110`,
+  `#109`, `#103`, `#91`, `#89`, `#45`, `#8`, `#7`, `#2`), API/gateway/tools
+  (`#147`, `#131`, `#127`, `#67`, `#64`, `#53`, `#47`, `#34`, `#33`, `#23`,
+  `#3`), model-family runtime rows (`#151`, `#141`, `#132`, `#119`, `#84`,
+  `#72`, `#71`, `#66`, `#65`, `#62`, `#61`, `#52`, `#43`, `#40`, `#38`).
+  The remaining release boundaries are not zombie code fixes: DSV4 full-tail
+  quality/upload proof and exact Gemma 31B reporter proof still require live
+  model gates.
+- Verification after this follow-up:
+  - panel typecheck passed.
+  - focused panel tests passed: image autodetect/download, image generation
+    state, Ollama gateway, request builder, and i18n consistency.
+  - image API/engine tests passed: `tests/test_image_api.py`,
+    `tests/test_image_gen.py`, and the targeted image edit/mask slice from
+    `tests/test_vl_video_regression.py`.
