@@ -922,3 +922,82 @@ Late 2026-05-07 update:
   (`experimental_modes=["raw-thinking"]`) and requires the current native cache
   contract: `supports_thinking=true`, public `max` accepted, and
   `cache.native.schema=deepseek_v4_v7` with generic TurboQuant KV disabled.
+
+## §8.10 Release Regression Checklist After Qwen Affine-JANG Fix (2026-05-11)
+
+This is the current release boundary for the model families Eric explicitly
+asked to re-question before signing. Treat these as regression-list entries,
+not as broad claims that every untested variant is cleared.
+
+### Qwen3.6 dense/MoE VL and affine-JANG
+
+- Regression added: `Qwen3.6-27B-JANG_4M-CRACK` must route text-only even when
+  stale app state or manual CLI flags pass `--is-mllm`. The user-facing
+  "reasoning only" banner was a symptom of the unsafe `mlx_vlm.qwen3_5`
+  M-RoPE language path, not the root cause.
+- Current source pins the narrow policy at all three layers:
+  `is_mllm_model(..., force_mllm=True)=False` for explicit affine-JANG Qwen
+  hybrid, `_load_jang_v2_vlm` delegates that class to `_load_jang_v2`, and the
+  panel marks it `forceTextOnly` so it does not emit `--is-mllm`.
+- Preserved: Qwen3.6 MXFP4, JANGTQ/MXTQ, and non-JANG Qwen3.6 bundles with
+  media metadata stay multimodal. Local registry probes on 2026-05-11 showed
+  `Qwen3.6-27B-MXFP4-CRACK`, `Qwen3.6-35B-A3B-JANGTQ-CRACK`, and
+  `Qwen3.6-35B-A3B-4bit` as `is_mllm=True`, `cache=hybrid`,
+  `reasoning_parser=qwen3`, `tool_parser=qwen`.
+- Live proof artifact for the affine-JANG regression:
+  `docs/internal/release-gates/20260511_qwen36_jang4m_force_text_fix/`.
+
+### Gemma dense/VL
+
+- Local exact model present for this audit: `Gemma-4-26B-A4B-it-JANG_4M-CRACK`.
+  No local `g4-31b`/31B reporter bundle was reproduced in this pass, so do not
+  claim the exact 31B row is cleared.
+- Current source/test coverage keeps Gemma 4 VLM wrappers on the top-level
+  `gemma4` family instead of demoting through `text_config.model_type`, pins
+  `reasoning_parser=gemma4`, and detects nested text-config KV head counts for
+  mixed SWA/full-attention cache handling.
+- Existing source smoke artifact:
+  `docs/internal/release-gates/20260508_gemma4_jang4m_smoke/SUMMARY.md`.
+  That smoke proved text Chat/Responses visible output at sufficient token
+  budget, image visible output with `enable_thinking=false`, and MLLM
+  TurboQuant-KV single-sequence clamp. It is not a full production matrix.
+- Remaining for a full Gemma release claim: exact 31B reporter row, installed
+  app proof, multi-turn cache/L2 restart, stream/non-stream across Chat and
+  Responses, and media rows with enough budget to verify visible final output.
+
+### DSV4 / DeepSeek-V4-Flash
+
+- Current cache/API policy is pinned: generic TurboQuant KV is forced off;
+  DSV4 uses native SWA+CSA/HSA composite cache (`deepseek_v4_v7`) and optional
+  `DSV4_POOL_QUANT`, with paged/L2 storage preserving composite state.
+- Current live artifact:
+  `docs/internal/release-gates/20260511_dsv4_live_kwarg_cache_gate/SUMMARY.md`.
+  It exercises Chat Completions, Responses, Anthropic, and Ollama with long
+  context, forced reasoning/direct recall, and cache-stat deltas.
+- Boundary: DSV4 is still not production-cleared for long-context quality. The
+  live gate has successful rows, but Responses forced reasoning and Anthropic
+  thinking rows were not text-exact, and earlier strict gates showed long/max
+  prompts can fail to close the reasoning rail cleanly.
+- Current evidence does not point to a gateway/API/cache regression as the
+  primary DSV4 blocker. The remaining issue is likely model numeric/runtime
+  quality or routed-bit/limited-SwiGLU behavior under long context. Do not jump
+  straight to requantization without a numeric diff or full-tail live proof that
+  isolates the quantized weights from chat-template/finalizer behavior.
+- Proper next DSV4 gate: use the corrected `F32-MIXED` bundle, verify `/health`
+  reports native DSV4 composite cache and generic TQ-KV disabled, run
+  Chat/Responses/Anthropic/Ollama long-context multi-turn with full output read,
+  capture speed and cache stats, then compare against an F32/control or direct
+  rail before deciding whether a re-quantization is needed.
+
+### SSM / path-dependent cache families
+
+- Ling remains no-reasoning (`supports_thinking=false`, no parser) with hybrid
+  SSM companion re-derive. Prior live gates proved Responses multi-turn cache
+  reuse and paged+ssm+disk hits.
+- ZAYA/ZAYA1-VL remain reasoning-capable across quant profiles per Eric's final
+  policy. ZAYA uses typed `zaya_cca_v1`; generic TQ-KV being off is expected.
+  Media-bearing ZAYA-VL requests bypass token-prefix CCA fetch/store while
+  keeping pixel preprocessing cache.
+- Hy3 JANGTQ2 remains Low/High reasoning effort with Hunyuan tools and qwen3
+  extraction. Hy3 JANGTQ_K should be treated as unproven until a local live row
+  exists; do not infer its quality from ZAYA.
