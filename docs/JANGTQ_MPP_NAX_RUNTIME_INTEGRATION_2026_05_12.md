@@ -586,3 +586,34 @@ Intentional boundary:
 - Signing/notarization were intentionally skipped in this pass. Actual GUI
   launch of the packaged app requires the signing/ad-hoc-sign lane before
   packaged Python can execute.
+
+## Dev-App GUI Gate CSP Note After `d7e4d83c`
+
+The repo-local Electron dev app initially failed before real UI validation
+because the production Content Security Policy blocked the Vite React dev
+preamble:
+
+- browser console/log symptom: inline script refused by `script-src 'self'`;
+- renderer symptom: `@vitejs/plugin-react can't detect preamble`.
+
+The CSP builder now keeps the production renderer strict while allowing
+`script-src 'self' 'unsafe-inline'` only when Electron is running in dev mode
+with `ELECTRON_RENDERER_URL` set. The existing Chinese mirror allowances for
+README images and download/network access are preserved in the shared builder.
+
+Regression coverage:
+
+- production CSP does not contain `script-src 'self' 'unsafe-inline'`;
+- dev renderer CSP contains `script-src 'self' 'unsafe-inline'`;
+- `hf-mirror.com` and `modelscope.cn` remain present in image/connect policy.
+
+Live dev-app check:
+
+- launched with isolated user data and remote debugging;
+- no Vite preamble/CSP errors in the Electron log;
+- DOM rendered the main tabs and Image tab;
+- Image tab showed generation rows for Flux Schnell, Z-Image Turbo, Flux Dev,
+  FLUX.2 Klein 4B, FLUX.2 Klein 9B, and Qwen Image;
+- edit rows for Qwen Image Edit, Flux Kontext, and Flux Fill were present;
+- Z-Image Turbo opened with downloaded state, quantization controls, server
+  settings, and Start Server action visible.
