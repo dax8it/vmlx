@@ -383,3 +383,71 @@ Release boundary:
   matching JANG kernel modules and call-site changes.
 - Do not claim this as DSV4 correctness work. It only changes JANGTQ weight
   matmul dispatch. DSV4 cache/attention/coherency gates remain separate.
+
+## App-Wide Toggle Follow-Up
+
+The first UI pass exposed `jangtqMppNax` as a per-session setting. That was not
+enough for production because users could change the tray/menu expectation while
+old session JSON still launched with a stale mode.
+
+The source of truth is now the app setting `jangtq_mpp_nax_mode`, normalized by
+`panel/src/shared/jangtqMppNax.ts`.
+
+Wiring:
+
+- Main settings IPC normalizes `auto|off|on`, persists the normalized value,
+  broadcasts `runtime:jangtqMppNaxChanged`, and rebuilds the tray menu.
+- Tray exposes Auto / Off / On (diagnostic) radio items and writes the same
+  app setting.
+- Create Session, Server Settings, and legacy Session Settings load and
+  subscribe to the same setting so the selector reflects tray/main changes.
+- Session startup resolves `--jangtq-mpp-nax` from the app setting, not stale
+  per-session JSON.
+- Locale keys exist for English, Chinese, Japanese, Korean, and Spanish.
+
+Verification after this follow-up:
+
+```sh
+cd /Users/eric/mlx/vllm-mlx/panel
+npx vitest run
+# 1805 passed
+
+npm run typecheck
+npm run build
+
+cd /Users/eric/mlx/vllm-mlx
+.venv/bin/python -m pytest -q \
+  tests/test_engine_audit.py::TestStartupCompatibilityGuards \
+  tests/test_engine_audit.py::TestJangTqMppNaxCliPolicy \
+  tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_acceleration_status_does_not_claim_metal_na_for_jangtq \
+  tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_acceleration_status_reports_jangtq_mpp_nax_when_enabled \
+  tests/test_cross_matrix_audit_runner.py
+# 54 passed
+
+git diff --check
+```
+
+Live bundled-source row after the app-wide toggle patch:
+
+```sh
+JANGTQ_MPP_NAX=auto VMLX_AUDIT_KILL_EXISTING=1 \
+  /Users/eric/mlx/vllm-mlx/panel/bundled-python/python/bin/python3 -B -s -P \
+  tests/cross_matrix/run_production_family_audit.py \
+  --live \
+  --rows zaya_vl_jangtq4 \
+  --py /Users/eric/mlx/vllm-mlx/panel/bundled-python/python/bin/python3 \
+  --port 8142 \
+  --load-timeout 900 \
+  --out docs/internal/release-gates/20260512_post_mpp_full_matrix/live_zaya_vl_jangtq4_after_global_toggle_source_build.json
+```
+
+Result:
+
+- `PASS`, `14/14` checks.
+- Chat Completions, Responses, Anthropic Messages, Ollama chat, streaming, and
+  cache stats all returned successfully.
+- Repeat prompt reported `cached_tokens=32`,
+  `cache_detail=paged+zaya_cca`.
+- No blocking runtime log findings and no listener remained on port `8142`.
+
+Signing/notarization were intentionally not run for this source-runtime pass.
