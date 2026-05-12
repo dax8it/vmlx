@@ -520,8 +520,37 @@ Image API probe:
   `/v1/images/generations`.
 - `/v1/images/edits` correctly rejected a generation-only model with a clear
   model/endpoint mismatch error.
-- No local edit-capable image model was present, so real instruction-edit
-  image output is not live-cleared in this pass.
+- The reusable live image matrix runner is now
+  `tests/cross_matrix/run_image_model_audit.py`. It starts a real bundled
+  Python image server per row, waits for `/health`, calls the OpenAI-compatible
+  image endpoint, decodes and verifies the returned PNG, checks for runtime /
+  resource-tracker warnings, and then terminates the server before the next row.
+- Full local image matrix artifact:
+  `/tmp/vmlx_family_audit/image_model_audit_full_local.json`.
+
+Current local image matrix:
+
+| Row | Path | Endpoint | Result |
+| --- | --- | --- | --- |
+| Flux Schnell 4-bit | `~/.mlxstudio/models/image/FLUX.1-schnell-mflux-4bit` | `/v1/images/generations` | PASS, 64x64 PNG, 3.5 KB decoded, 0.797s request |
+| Z-Image Turbo 4-bit | `~/.mlxstudio/models/image/Z-Image-Turbo-mflux-4bit` | `/v1/images/generations` | PASS, 64x64 PNG, 5.6 KB decoded, 0.541s request |
+| FLUX.2 Klein 4B 4-bit | `~/.mlxstudio/models/image/FLUX.2-klein-4B-mflux-4bit` | `/v1/images/generations` | PASS, 64x64 PNG, 2.6 KB decoded, 2.747s request |
+| Qwen Image 4-bit | `~/.mlxstudio/models/image/qwen-image-mflux-4bit` | `/v1/images/generations` | PASS, 64x64 PNG, 6.7 KB decoded, 2.844s request |
+| FLUX.2 Klein 9B full | `~/.mlxstudio/models/image/FLUX.2-klein-9B` | `/v1/images/generations` | PASS, 64x64 PNG, 2.4 KB decoded, 8.970s request |
+| Qwen Image Edit full | `~/.mlxstudio/models/image/Qwen-Image-Edit` | `/v1/images/edits` | PASS, instruction edit produced 64x64 PNG, 5.6 KB decoded, 24.502s request |
+| Flux Fill full | `~/.mlxstudio/models/image/FLUX.1-Fill-dev` | `/v1/images/edits` | SKIP, local directory is incomplete and only contains license/readme/cache files |
+
+Image acceleration applicability:
+
+- The local image directories do not contain `jang_config.json` or JANGTQ
+  `*.tq_packed` weights, so the JANGTQ MPP/NAX TurboQuant lane does not apply
+  to these mflux image rows.
+- `/health` for the hardened Z-Image probe reported `engine_type=mflux`,
+  `kernel_type=full_precision_or_unknown`, and
+  `reason=not_affine_quantized_matmul`. That is expected for the mflux image
+  path and should not be counted as a JANGTQ speed failure.
+- Image speed work belongs to the mflux/native image runtime unless future
+  image bundles use JANGTQ/TurboQuant weights.
 
 Follow-up fix after the image probe:
 
@@ -545,8 +574,9 @@ Current boundaries:
   the Russian stress row; the visible output mixed Russian, English, and
   Chinese terms after the loop false-positive was removed.
 - DSV4 K is tracked separately in `docs/DSV4_RUNTIME_PROGRESS_LOG.md`.
-- GUI operation, model download UI, and live edit-capable image output still
-  require app-level manual verification after the next unsigned build.
+- GUI operation and model download UI still require app-level manual
+  verification after the next unsigned build. Live image generation/edit API
+  output is now covered for the local models listed above.
 
 ## Unsigned Build And Product-Path Boundary After `7cf50544`
 
