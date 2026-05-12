@@ -482,3 +482,68 @@ remained healthy in the same run:
 This means the current Ling finding is a multilingual output-quality boundary,
 not evidence that MPP/NAX, prefix/paged cache, block-L2, or the hybrid SSM
 companion path regressed.
+
+## Post-MPP Family And Media Gate Notes
+
+Tracked source commit `0f3d3222` plus JANG commit `2be5c5f` were used for the
+post-MPP bundled-source matrix. The private raw artifacts live under
+`docs/internal/release-gates/20260512_post_mpp_full_matrix/` and
+`/tmp/vmlx_family_audit/`.
+
+Rows that passed the standard API/cache family gate:
+
+- ZAYA1-VL JANGTQ4: Chat Completions, Responses, Anthropic, Ollama, streaming
+  disconnect, typed `zaya_cca`, and `paged+zaya_cca` repeat hits.
+- Qwen3.6 35B-A3B JANGTQ4: hybrid SSM `paged+ssm`, trained active `top_k=8`,
+  and `turboquant_codebook_mpp_nax`.
+- MiniMax M2.7 Small JANGTQ: trained active `top_k=8`, reasoning extraction,
+  tool continuation, auto tool choice, and cache repeat.
+- Hy3-preview JANGTQ2: Hunyuan tool parser, Qwen3 reasoning parser,
+  Low/High effort contract with no Medium, and `paged+tq` cache repeat.
+- Gemma 4 JANG_4M: Gemma tool/reasoning parser, mixed SWA/KV native cache,
+  affine dispatch telemetry, and cache repeat.
+- Nemotron Omni JANGTQ4: RADIO/Parakeet capability flags, DeepSeek-R1
+  reasoning parser, `hybrid_ssm_v1`, SSM companion async re-derive, and
+  `paged+ssm` cache repeat.
+
+Direct media probes:
+
+- ZAYA1-VL JANGTQ4 real image Chat/Responses returned `blue`. Media-bearing
+  requests skipped token-prefix CCA fetch/store; text-only repeats still hit
+  `paged+zaya_cca`.
+- Qwen3.6 JANGTQ4 real image, real MP4 video, and Responses image returned
+  `blue`; text-only repeats hit `paged+ssm`.
+
+Image API probe:
+
+- Z-Image Turbo mflux generated one 64x64 PNG through
+  `/v1/images/generations`.
+- `/v1/images/edits` correctly rejected a generation-only model with a clear
+  model/endpoint mismatch error.
+- No local edit-capable image model was present, so real instruction-edit
+  image output is not live-cleared in this pass.
+
+Follow-up fix after the image probe:
+
+- The first Z-Image run showed a benign but user-facing
+  `multiprocessing.resource_tracker` leaked-semaphore warning at shutdown.
+- Root cause: the old image-mode warning suppression only filtered the parent
+  process, but Python emits this warning from the resource-tracker helper
+  process.
+- `vmlx_engine.cli._suppress_image_resource_tracker_warning()` now also appends
+  `ignore:resource_tracker:UserWarning` to `PYTHONWARNINGS` before mflux/loky
+  can start the helper process, while preserving any existing warning filters.
+- Regression coverage:
+  - focused shutdown tests: 3 passed;
+  - image API/engine regression slice: 146 passed;
+  - bundled-Python Z-Image generation returned one PNG and the shutdown log had
+    no `resource_tracker` / leaked-semaphore warning.
+
+Current boundaries:
+
+- Ling JANGTQ is API/cache healthy but still not multilingual-quality clean on
+  the Russian stress row; the visible output mixed Russian, English, and
+  Chinese terms after the loop false-positive was removed.
+- DSV4 K is tracked separately in `docs/DSV4_RUNTIME_PROGRESS_LOG.md`.
+- GUI operation, model download UI, and live edit-capable image output still
+  require app-level manual verification after the next unsigned build.

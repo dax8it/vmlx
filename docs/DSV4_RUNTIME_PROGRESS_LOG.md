@@ -261,3 +261,48 @@ Conservative — also rejects "safe" trims (e.g., short generations where SWA ha
 1. scheduler.py guard (THE actual root-cause fix)
 2. server.py strict force-thinking + rep_penalty 1.15 + VMLX_DSV4_ALLOW_CHAT
 3. jang_tools/load_jangtq.py env-debug override
+
+---
+
+## Current DSV4 K source gate status (2026-05-12)
+
+Artifact:
+`docs/internal/release-gates/20260512_post_mpp_full_matrix/live_dsv4_k.json`
+
+Current upload candidate:
+`/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K`
+
+The current K bundle is mechanically much healthier than the older rows:
+
+- detected as `deepseek_v4`;
+- JANGTQ `mxtq` with routed-expert baseline 2-bit, selected routed layers
+  lifted to 4-bit, attention/shared/compressor/indexer/embed/lm_head 8-bit,
+  and `norms_router_hc=16`;
+- trained MoE active `top_k=6` is detected and preserved;
+- runtime uses `DSV4BatchGenerator`;
+- native cache reports `deepseek_v4_v7` with SWA local state,
+  CSA/HCA compressed-pool state, and incomplete-tail state;
+- generic TurboQuant KV remains disabled for DSV4 composite cache;
+- paged prefix and block-L2 are active with 256-token DSV4 blocks;
+- cache repeat produced visible `45` with `cached_tokens=41` and
+  `cache_detail=paged+dsv4`;
+- OpenAI Chat, Responses, Anthropic Messages, Ollama chat, stream-disconnect
+  cleanup, tool history continuation, and auto tool choice returned.
+
+The row is still **not upload-cleared**:
+
+- `dsv4_long_context_full_output_vc_project_plan` ended with
+  `finish=length` after 900 completion tokens. The visible draft was coherent
+  but cut off at the tail (`IRR, cap`).
+- `dsv4_long_context_full_output_game_design_long_context` ended with
+  `finish=length` after 2948 completion tokens. It forced a `</think>` and
+  continued visibly, but still stopped before the requested code body.
+
+Current interpretation:
+
+- This run does not show the old cache-poison loop/token-salad failure.
+- It does show that DSV4 K still needs long-output finalization and generation
+  budget policy work before public upload-quality claims.
+- Do not conflate this with JANGTQ MPP/NAX. MPP/NAX is weight-matmul dispatch;
+  DSV4 production readiness still depends on the native DSV4 attention/cache
+  path and full-output tail quality.
