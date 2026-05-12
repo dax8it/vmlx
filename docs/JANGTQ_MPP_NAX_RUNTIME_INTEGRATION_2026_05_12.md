@@ -647,3 +647,40 @@ Live dev-app check:
 - edit rows for Qwen Image Edit, Flux Kontext, and Flux Fill were present;
 - Z-Image Turbo opened with downloaded state, quantization controls, server
   settings, and Start Server action visible.
+
+## MLLM Shutdown Stream Fix After `5d561829`
+
+The live source-row rerun for ZAYA1-VL JANGTQ4 found a shutdown-only warning:
+
+```text
+Engine shutdown error (continuing): There is no Stream(gpu, 4) in current thread.
+```
+
+Root cause:
+
+- `MLLMBatchGenerator.close()` synchronized the generation stream handle from
+  the FastAPI shutdown thread.
+- MLX stream handles are thread-local; resolving that handle from the shutdown
+  thread can raise before the global wired/cache limits are restored.
+
+Fix:
+
+- `MLLMBatchGenerator.close()` now tries `mx.synchronize(stream)` first, then
+  falls back to bare `mx.synchronize()` only for the thread-local
+  `There is no Stream(...)` failure before restoring the wired limit.
+- `tests/cross_matrix/run_production_family_audit.py` now has
+  `VMLINUX_AUDIT_USE_SOURCE_VMLX=1` so live gates can explicitly test the
+  source tree while keeping installed-app isolation as the default.
+
+Verification:
+
+- regression tests:
+  - `test_batch_generator_close_falls_back_when_stream_is_thread_local`;
+  - `test_live_audit_can_opt_into_source_vmlx_imports`;
+- source live gate:
+  `/tmp/vmlx_family_audit/live_zaya_vl_jangtq4_after_mllm_close_fix.json`;
+- ZAYA1-VL JANGTQ4 source row passed 14/14 checks;
+- new log `/tmp/vmlx_family_audit/zaya_vl_jangtq4_1778627915.log` has no
+  `Engine shutdown error` and no `There is no Stream`;
+- typed ZAYA CCA cache still stored and hit paged prefixes;
+- first chat generation in that row logged `39 tokens in 0.92s (42.3 tok/s)`.
