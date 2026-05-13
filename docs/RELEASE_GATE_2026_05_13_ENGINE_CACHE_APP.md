@@ -96,6 +96,32 @@ below-budget local model matrix:
   two `ZAYA1-VL-8B-MXFP4` rows returned image-placeholder-style text instead
   of READY and stay in review.
 
+Named model acceleration/cache summary from that sweep:
+
+| Model row | Status | PP tok/s | TG tok/s | Kernel reported | Cache detail |
+| --- | --- | ---: | ---: | --- | --- |
+| `MiniMax-M2.7-JANGTQ` / `JANGTQ_K` | Pass | 264.7-267.9 | 5.5-7.9 | `turboquant_codebook_mpp_nax` | `paged+tq` |
+| `Hy3-preview-JANGTQ2` | Pass | 223.7-225.1 | 5.4-6.2 | `turboquant_codebook_mpp_nax` | `paged+tq` |
+| `Ling-2.6-flash-JANGTQ` / `JANGTQ2` | Pass | 514.1-537.9 | 9.2-13.9 | `turboquant_codebook_mpp_nax` | `paged+ssm` |
+| `Ling-2.6-flash-MXFP4` | Pass | 801.6-844.7 | 6.1-17.7 | `affine_quantized_matmul` | `paged+ssm` |
+| `ZAYA1-8B-JANGTQ_K` | Pass | 3834.4-4126.9 | 30.2-35.0 | `turboquant_codebook_mpp_nax` | `paged+zaya_cca` |
+| `ZAYA1-8B-MXFP4` | Pass | 7091.7-8321.5 | 39.3-52.3 | `affine_quantized_matmul` | `paged+zaya_cca` |
+| `ZAYA1-VL-8B-JANGTQ4` / `JANGTQ_K` | Pass | 3245.5-3951.2 | 23.7-54.9 | `turboquant_codebook_mpp_nax` | `paged+zaya_cca` |
+| `ZAYA1-VL-8B-MXFP4` | Review | 7310.9-7689.3 | 9.6-56.9 | `affine_quantized_matmul` | `paged+zaya_cca` |
+| `Qwen3.6-27B-JANG_4M` | Pass | 803.7-856.1 | 10.3-14.9 | `affine_quantized_matmul` | `paged+ssm` |
+| `Qwen3.6-27B-MXFP4` | Pass | 576.5-624.3 | 11.9-19.6 | `affine_quantized_matmul` | `paged+ssm` |
+| `Qwen3.6-35B-A3B-4bit` | Pass | 2732.4-3988.9 | 19.5-62.7 | `affine_quantized_matmul` | `paged+ssm` |
+| `Qwen3.6-35B-A3B-JANGTQ` | Pass | 1407.2-1856.3 | 22.5-42.6 | `turboquant_codebook_mpp_nax` | `paged+ssm` |
+| `Nemotron-Omni-Nano-JANGTQ` / `JANGTQ4` | Pass | 853.0-976.6 | 17.3-27.8 | `turboquant_codebook_mpp_nax` | `paged+ssm` |
+| `Nemotron-Omni-Nano-MXFP4` | Pass | 3379.6-3621.2 | 25.6-49.8 | `affine_quantized_matmul` | `paged+ssm` |
+| `Gemma-4-26B-JANG_4M` | Pass | 2418.7-3684.0 | 13.3-49.4 | `affine_quantized_matmul` | `paged` |
+| `DeepSeek-V4-Flash-JANGTQ_K` | Pass for short/cache gate | 152.6-242.5 | 6.1-8.3 | `turboquant_codebook_mpp_nax` | `paged+dsv4` |
+
+This split is intentional. JANGTQ/MXTQ TurboQuant codebook rows use the custom
+`turboquant_codebook_mpp_nax` lane when available; affine/MLX/MXFP4/JANG_4M
+rows use MLX's native affine quantized-matmul path. Image-generation/edit rows
+are mflux image-runtime rows, not JANGTQ MPP/NAX rows.
+
 `~/models` coverage was cross-checked against the saved gate artifacts. Every
 local model root at or below the 85 GB single-process budget has at least one
 live installed-app result artifact. Most have direct plus paged-L2 coverage;
@@ -209,6 +235,14 @@ Installed-app lifecycle gates were rerun after the stream-reset patch:
 - JANGTQ startup used `--jangtq-mpp-nax on` in the live matrix so `/health`
   and logs could prove the custom TensorOps lane was available on applicable
   JANGTQ rows.
+- The installed app's bundled Python 3.12 runtime imports
+  `jang_tools.turboquant.mpp_nax_kernel`; `panel/scripts/verify-bundled-python.sh`
+  hash-gates and import-gates that helper so future package drift blocks the
+  release gate.
+- Packaged Python release probes now route bytecode/cache writes to a mutable
+  evidence directory, with a system-temp fallback when the gate directory is
+  intentionally read-only. This keeps import/version probes from mutating a
+  signed app bundle.
 
 ## Boundaries
 
@@ -226,6 +260,9 @@ Installed-app lifecycle gates were rerun after the stream-reset patch:
   click-through proof is still manual/user-side until that permission is fixed.
 - Sleep/wake and JIT toggling have representative installed-app proof for the
   core cache families listed above. DSV4 long-context/max-reasoning
-  qualification remains a separate lane; this gate proves short lifecycle,
-  API, and cache behavior for DSV4 JANGTQ_K, not every long-tail reasoning or
-  maximum-context scenario.
+  qualification remains a separate lane. A follow-up DSV4 probe confirmed the
+  native cache path (`deepseek_v4_v7`, block size 256, `paged+dsv4`, trained
+  top-k 6, generic TurboQuant KV off, pool quant off), but long high-effort
+  recall drifted and overran into visible self-talk after the forced
+  `</think>` finalizer. This gate proves short lifecycle, API, and cache
+  behavior for DSV4 JANGTQ_K, not upload-quality long max reasoning.

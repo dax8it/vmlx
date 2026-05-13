@@ -23,7 +23,7 @@ Prove the installed Python/Electron vMLX app is release-ready for as many local
 
 | Requirement | Evidence | Status |
 | --- | --- | --- |
-| Source pushed | `HEAD == origin/main == 82d7ab1973f794ca7956253fa2d0abdb7efa4c16` | Pass |
+| Source pushed | Current release branch must satisfy `git rev-parse HEAD == git rev-parse origin/main` after each follow-up commit | Pass |
 | Installed app | `/Applications/vMLX.app` rebuilt, opened, process running, gateway on `*:8080` | Pass |
 | Codesign sanity | `codesign --verify --deep --strict --verbose=2 /Applications/vMLX.app` | Pass |
 | Local model matrix | `cache_mode_matrix_all85_direct_l2_after_stream_reset/SUMMARY.json`: 52 rows, 26 model IDs | Partial |
@@ -39,11 +39,14 @@ Prove the installed Python/Electron vMLX app is release-ready for as many local
 | JIT toggle/fallback | Qwen JIT pass, ZAYA safe fallback pass | Pass |
 | MLLM prefix bypass | Normal repeat hit `paged+zaya_cca`; `skip_prefix_cache` and `cache_salt` did not | Pass |
 | MLLM pixel bypass | Normal repeated blue image hit pixel cache; bypass/salt did not add hits/stores | Pass |
+| JANGTQ MPP/NAX bundled helper | `panel/scripts/verify-bundled-python.sh` imports `jang_tools.turboquant.mpp_nax_kernel`; installed app import path is Python 3.12 site-packages | Pass |
+| JANGTQ MPP/NAX UI wiring | `panel/tests/jangtq-mpp-nax-global-setting.test.ts` and `panel/tests/settings-flow.test.ts`: 199 passed | Pass |
+| JANGTQ MPP/NAX engine wiring | focused Python MPP/NAX CLI, health, and packaged-gate tests: 40 passed after correcting the release-gate pycache helper | Pass |
 | ZAYA1-VL-MXFP4 Chat memory | Cached, skip-cache, and salted Chat Completions all returned `CERULEAN` and `45` | Pass |
 | ZAYA1-VL-MXFP4 Responses memory | `instructions` and message-list `previous_response_id` forms returned `CERULEAN` and `45` | Pass |
 | ZAYA exact plain-string harness | Exact `READY` plain-string row remains brittle | Review |
 | DSV4 short gate | `DSV4BatchGenerator`, `engine_path=dsv4`, block size 256, `paged+dsv4` observed | Pass |
-| DSV4 long-context/max-reasoning | Separate lane, not completed in this installed-app gate | Gap |
+| DSV4 long-context/max-reasoning | `dsv4_jangtqk_long_reasoning_probe/result.json`: native cache passed, long high-effort output failed quality | Review |
 | Kimi/source DSV4 | Skipped by RAM budget | Gap |
 | GUI visual click-through | Blocked by macOS automation: Computer Use `procNotFound` / Apple event `-1743`; `screencapture` failed | Gap |
 | Leftover servers | No `vmlx_engine.cli`, `mflux`, `uvicorn`, or image server left after probes | Pass |
@@ -58,7 +61,17 @@ fixes, but the remaining unproven areas are:
 - GUI visual click-through until macOS automation permission is fixed or a
   manual screen-recorded pass is supplied;
 - Kimi-sized/source DSV4 rows that exceed this 128 GB local pass;
-- DSV4 long-context/max-reasoning behavior;
+- JANGTQ MPP/NAX applies to JANGTQ/MXTQ TurboQuant codebook kernels. It is not
+  the image-generation runtime path; Flux/Z-Image/Qwen-image rows are mflux
+  native image paths and were tested for valid PNG output, not JANGTQ MPP/NAX
+  acceleration;
+- DSV4 long-context/max-reasoning behavior. A follow-up installed-app probe
+  showed the cache/runtime path is wired correctly (`deepseek_v4_v7`,
+  `paged+dsv4`, block size 256, trained top-k 6, generic TurboQuant KV off,
+  pool quant off), but long high-effort recall still drifted and overran into
+  visible self-talk after the forced `</think>` finalizer. Short max arithmetic
+  was coherent, but `reasoning_effort=max` is still downgraded to the stable
+  high rail unless `VMLINUX_DSV4_RAW_MAX=1` is set;
 - exact plain-string `READY` behavior for ZAYA harness prompts.
 
 The current source is suitable to hand to release work with those boundaries
