@@ -16,19 +16,30 @@ engine/app work on 2026-05-13. Raw private artifacts are under
   contract before appending a synthetic `<think></think>` sentinel. Reasoning
   capability and `think_in_template` are separate; ZAYA/ZAYA-VL can support
   reasoning without starting the default/off prompt inside a think rail.
+- MLLM generation streams are now reset on server-side model replacement and
+  deep sleep teardown. The reproduced failure was specific and real: after
+  deep sleep, ZAYA-VL JANGTQ4 could reload on a fresh MLLM worker thread and
+  then hit a stale process-global MLX stream from the old worker during paged
+  CCA block-L2 restore, raising `There is no Stream(gpu,N) in current thread`.
+  The fix clears both MLLM stream globals at teardown so the next worker lazily
+  creates streams on its own thread.
 
 ## Live Installed-App Evidence
 
-The installed app was rebuilt and installed from source commit `27d1ce5f`
-(`Fix direct engine thread affinity`) using
+The installed app was rebuilt and installed from the 1.5.33 source tree using
 `bash panel/scripts/build-and-install.sh`. The installed bundle reports
-`vmlx_engine 1.5.33`, imports `jang_tools.turboquant.mpp_nax_kernel`, opens as
-`/Applications/vMLX.app`, and its gateway responds on `127.0.0.1:8080`.
+`vmlx_engine 1.5.33`, imports `jang_tools.turboquant.mpp_nax_kernel`, contains
+the MLLM stream-reset patch, installs as `/Applications/vMLX.app`, and its
+gateway responds on `127.0.0.1:8080`.
 
 Post-build verification:
 
 - `codesign --verify --deep --strict --verbose=2 /Applications/vMLX.app`
   passed.
+- Installed bundle inspection confirmed:
+  `reset_generation_streams` exists, `load_model()` calls
+  `_reset_mllm_generation_streams()`, and `admin_deep_sleep()` calls
+  `_reset_mllm_generation_streams()`.
 - The installed app bundled Python smoke passed for Qwen3.6-27B JANG_4M and
   ZAYA1-VL-8B JANGTQ4 after the clean rebuild.
 - No model servers or image servers were left running after the final gates.
@@ -93,6 +104,29 @@ Installed-app media and image gates were rerun after the clean rebuild:
   `/v1/images/generations`.
 - `qwen-image-edit` returned a valid PNG from `/v1/images/edits`.
 
+Installed-app lifecycle gates were rerun after the stream-reset patch:
+
+- Core lifecycle rows passed for Qwen3.6-27B JANG_4M and ZAYA1-VL-8B JANGTQ4:
+  warm generation, `/admin/soft-sleep`, `/admin/wake`, generation after soft
+  wake, `/admin/deep-sleep`, inference-triggered deep wake, and final cache
+  stats.
+- Qwen3.6-27B JANG_4M restored paged cache plus SSM companion block-L2 after
+  deep wake: `SingleBatchGenerator`, hybrid SSM, disk hit, 8 cached tokens,
+  outputs `READY.` on warm/soft/deep rows.
+- ZAYA1-VL-8B JANGTQ4 restored typed paged CCA block-L2 after deep wake:
+  `zaya_cca_v1`, block-disk hit, 8 cached tokens, MPP/NAX active, no stale
+  stream or cache reconstruct failure after the fix.
+- Heavy lifecycle rows passed for Hy3-preview JANGTQ2 and
+  DeepSeek-V4-Flash JANGTQ_K. Hy3 reported `SingleBatchGenerator`,
+  80-layer `TurboQuantKVCache`, block-disk hit, and MPP/NAX active. DSV4
+  reported `DSV4BatchGenerator`, `engine_path=dsv4`, block size 256,
+  `DeepseekV4Cache` layers, block-disk hit, and MPP/NAX active.
+- JIT-enabled lifecycle rows passed for Qwen3.6-27B JANG_4M and ZAYA1-VL-8B
+  JANGTQ4. Qwen compiled and warmed successfully. ZAYA attempted JIT, hit the
+  known MLX `CacheList` compile incompatibility, rolled back cleanly, and still
+  passed cache reuse plus soft/deep wake. That is the intended safe fallback:
+  no fake compile claim, no hidden cache bypass.
+
 ## Cache/Detection Notes
 
 - DSV4 rows used the DSV4-specific path: `DSV4_LONG_CTX=1`,
@@ -120,7 +154,8 @@ Installed-app media and image gates were rerun after the clean rebuild:
 - The matrix is installed-app API/server evidence. Computer Use could not attach
   to the Electron window because macOS denied the automation event, so visual
   click-through proof is still manual/user-side until that permission is fixed.
-- Sleep/wake, JIT toggling, and long-context/max-reasoning DSV4 qualification
-  were not exhaustively rerun in this final pass. DSV4 is proven coherent for
-  short multi-turn/API/cache rows here, not fully qualified for every long-tail
-  reasoning/context scenario.
+- Sleep/wake and JIT toggling have representative installed-app proof for the
+  core cache families listed above. DSV4 long-context/max-reasoning
+  qualification remains a separate lane; this gate proves short lifecycle,
+  API, and cache behavior for DSV4 JANGTQ_K, not every long-tail reasoning or
+  maximum-context scenario.
