@@ -16,6 +16,18 @@ engine/app work on 2026-05-13. Raw private artifacts are under
   contract before appending a synthetic `<think></think>` sentinel. Reasoning
   capability and `think_in_template` are separate; ZAYA/ZAYA-VL can support
   reasoning without starting the default/off prompt inside a think rail.
+- MLLM cache bypass now reaches the component that actually fetches cache.
+  The API/server path already accepted `skip_prefix_cache` and `cache_salt`,
+  and `MLLMScheduler.add_request()` attached `_bypass_prefix_cache` to the
+  `MLLMRequest`, but the scheduler dropped that flag when it converted the
+  request into `MLLMBatchRequest`. The batch generator owns paged/CCA
+  prefix-cache fetch, so MLLM text requests could still report cached tokens
+  even when bypass was requested. The scheduler now copies the bypass flag to
+  the batch request before dispatch.
+- The same bypass is now applied to the MLLM vision pixel cache. Pixel-cache
+  fetch and store are gated by `_bypass_prefix_cache`, so `skip_prefix_cache`
+  and salted requests isolate media preprocessing cache state as well as
+  token-prefix state.
 - MLLM generation streams are now reset on server-side model replacement and
   deep sleep teardown. The reproduced failure was specific and real: after
   deep sleep, ZAYA-VL JANGTQ4 could reload on a fresh MLLM worker thread and
@@ -40,6 +52,10 @@ Post-build verification:
   `reset_generation_streams` exists, `load_model()` calls
   `_reset_mllm_generation_streams()`, and `admin_deep_sleep()` calls
   `_reset_mllm_generation_streams()`.
+- Installed bundle inspection also confirmed the MLLM bypass patch was present:
+  `mllm_scheduler.py` copies `_bypass_prefix_cache` onto the batch request, and
+  `mllm_batch_generator.py` gates vision pixel-cache fetch/store with the same
+  flag.
 - The installed app bundled Python smoke passed for Qwen3.6-27B JANG_4M and
   ZAYA1-VL-8B JANGTQ4 after the clean rebuild.
 - No model servers or image servers were left running after the final gates.
@@ -66,8 +82,19 @@ Additional direct plus paged-L2 rows passed:
 - MiniMax-M2.7 JANGTQ and JANGTQ_K, both JANGQ and dealign package layouts.
 - DeepSeek-V4-Flash JANGTQ_K upload-staging layouts for JANGQ and Osaurus.
 
-The remaining direct/L2 sweep produced 18/18 passing result files and no
-tracebacks, stream-affinity failures, OOMs, or working-set rejections.
+The latest installed-app direct/L2 sweep produced 52 result files across the
+below-budget local model matrix:
+
+- 50/52 rows passed.
+- 2/52 rows remain `REVIEW`; both are the same bundle:
+  `ZAYA1-VL-8B-MXFP4` in text-only strict-recall mode.
+- PP range across the sweep was 152.6 to 8321.5 prompt tokens/s.
+- TG range across the sweep was 5.4 to 62.7 output tokens/s.
+- No row hit a traceback, stream-affinity failure, OOM, or working-set
+  rejection.
+- The broad `/v1/responses` READY content check passed 50/52 rows. The same
+  two `ZAYA1-VL-8B-MXFP4` rows returned image-placeholder-style text instead
+  of READY and stay in review.
 
 `~/models` coverage was cross-checked against the saved gate artifacts. Every
 local model root at or below the 85 GB single-process budget has at least one
@@ -103,6 +130,40 @@ Installed-app media and image gates were rerun after the clean rebuild:
 - `flux-schnell-4bit` and `z-image-turbo-4bit` returned valid PNGs from
   `/v1/images/generations`.
 - `qwen-image-edit` returned a valid PNG from `/v1/images/edits`.
+
+Focused `ZAYA1-VL-8B-MXFP4` follow-up:
+
+- All four startup modes were re-run for this one bundle:
+  direct/no-continuous-batching, continuous prefix-only, paged L1, and paged
+  L2.
+- The direct/no-continuous-batching row contained both `CERULEAN` and `45` in
+  the strict recall answer, but it did not obey the exact-output instruction.
+- The continuous/paged rows consistently returned only `45` for the same
+  strict text-only multi-turn recall prompt, even when the focused probe sent
+  the same turn-2 prompt with `skip_prefix_cache=true`. That makes this a
+  text-generation/API behavior review, not a proven L2 cache-restore failure.
+- One-shot text exact recall on the same installed app returned
+  `CERULEAN 45`.
+- A real blue PNG payload through Chat Completions returned `Blue`.
+- PP stayed high in the focused rows: about 7.6k to 7.9k prompt tokens/s.
+- Cache mechanics were present in the continuous rows:
+  `paged+zaya_cca`, typed `zaya_cca_v1` records, block-disk writes in L2, and
+  no stream/cache reconstruction exceptions.
+- During this follow-up, a real MLLM bypass bug was found: before the fix,
+  `skip_prefix_cache=true` and a salted request could still report cached
+  tokens on ZAYA-VL because the scheduler did not copy the bypass flag into the
+  batch request that owns prefix-cache fetch.
+- After the fix and rebuild, installed text bypass proof for
+  `ZAYA1-VL-8B-MXFP4` showed one normal repeated request hit
+  `paged+zaya_cca` with 8 cached tokens, while both `skip_prefix_cache=true`
+  and `cache_salt` produced no `prompt_tokens_details`. Final stats showed
+  exactly one cache-hit request and 8 saved tokens, matching the single normal
+  repeat only.
+- Installed media bypass proof for the same bundle sent the same blue PNG four
+  times: first normal, second normal, third with `skip_prefix_cache=true`, and
+  fourth with `cache_salt`. All four returned `Blue`. Pixel-cache stats showed
+  one hit and one miss with one cached image, while the bypassed/salted image
+  requests did not add cache hits or stores.
 
 Installed-app lifecycle gates were rerun after the stream-reset patch:
 
@@ -149,8 +210,9 @@ Installed-app lifecycle gates were rerun after the stream-reset patch:
   source `DeepSeek-V4-Flash` (~148.7 GB), and `Kimi-K2.6-JANGTQ_K`
   (~328.1 GB).
 - `ZAYA1-VL-8B-MXFP4` remains a text-only review row: cache mechanics and
-  prompt-processing speed are working, but strict text recall output was not
-  clean enough to mark as fully cleared.
+  prompt-processing speed are working, image input is working, and one-shot
+  text exact recall is working, but strict multi-turn text recall plus
+  `/v1/responses` READY output were not clean enough to mark as fully cleared.
 - The matrix is installed-app API/server evidence. Computer Use could not attach
   to the Electron window because macOS denied the automation event, so visual
   click-through proof is still manual/user-side until that permission is fixed.
