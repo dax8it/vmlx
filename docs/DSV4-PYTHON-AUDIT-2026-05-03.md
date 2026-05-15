@@ -657,3 +657,97 @@ Fixes made:
 - The app UI decode-only t/s should be rechecked after restarting the Electron
   app, because the controlled bench reports total request wall-clock completion
   t/s rather than the UI's decode-only metric.
+
+## DSV4 Ratio-4 Overlap Pool Parity - 2026-05-13
+
+Osaurus/vmlx-swift-lm commit `6561a72` identified the concrete DSV4 3k-4k
+long-context degradation class: ratio-4 overlap pooling must carry the previous
+complete compressor window across single-token decode calls. If the runtime
+only keeps a plain remainder buffer, each completed decode row loses the
+previous-window left half and gradually corrupts the CSA/HCA compressed global
+pool.
+
+Python parity check:
+
+- `jang_tools.dsv4.mlx_model.DeepseekV4Cache.accumulate_overlap_windows()` is
+  present in the dev venv import path and in the current app bundled Python.
+- `Compressor.__call__()` routes `compress_ratio == 4` cache-backed layers
+  through that overlap accumulator after applying absolute-position APE to
+  gate rows.
+- `PoolQuantizedV4Cache` subclasses `DeepseekV4Cache`, so the same overlap
+  state logic is used when the diagnostic pool-quant path is enabled.
+- The scheduler/paged-cache layer should preserve the composite
+  `DeepseekV4Cache` state. It should not replace this with generic KV
+  quantization, hard repetition blockers, finalizer extensions, or sampling
+  guards.
+
+Verification:
+
+```bash
+cd /Users/eric/jang/jang-tools
+/Users/eric/mlx/vllm-mlx/.venv/bin/python -m pytest -q tests/test_dsv4_overlap_cache.py
+# 3 passed
+
+cd /Users/eric/mlx/vllm-mlx-release-1.5.33
+/Users/eric/mlx/vllm-mlx/.venv/bin/python -m pytest -q \
+  tests/test_dsv4_paged_cache.py \
+  tests/test_dsv4_contract_hardening.py \
+  tests/test_dsv4_thinking_finalizer.py \
+  tests/test_dsv4_vector_probe.py
+# 68 passed
+```
+
+Bundled Python inline check returned:
+
+```text
+bundled-dsv4-overlap-ok (1, 1, 8, 2) pool_base 8
+```
+
+Fresh bundled-Python speed/coherency gate:
+
+```bash
+panel/release/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/bin/python3 \
+  tests/cross_matrix/run_decode_speed_gate.py \
+  --rows minimax zaya_vl_jangtq4 qwen27_jang4m \
+  --port 8840 \
+  --timeout 360 \
+  --out docs/internal/release-gates/decode_speed_gate_current_probe.json
+```
+
+Results:
+
+- MiniMax-M2.7-JANGTQ: `38.62 tok/s` bundle, `40.47 tok/s` greedy, no loop,
+  `turboquant_codebook_accelerated`, no hidden repetition-penalty or MPP/NAX
+  CLI flag.
+- ZAYA1-VL-8B-JANGTQ4: `70.71 tok/s` bundle, no loop,
+  `turboquant_codebook_accelerated`.
+- Qwen3.6-27B-JANG_4M: `28.65 tok/s` bundle, no loop,
+  `affine_quantized_matmul`.
+
+Interpretation:
+
+- The DSV4 long-context loop fix class is a cache/compressor state handler,
+  not a scheduler behavior guard.
+- The ZAYA-VL 20 tok/s regression did not reproduce in the fresh gate.
+- Qwen JANG_4M stayed near the expected 29-30 tok/s band.
+- MiniMax is coherent and no longer has fake sampling guards, but bundle
+  sampling remains just below the 40 tok/s live gate. Greedy/top-k-0 is 40.47
+  tok/s, so the remaining MiniMax gap is separate decode-performance work, not
+  a cache-corruption or looping issue.
+
+Additional MiniMax timing isolation:
+
+- Direct JANG profiler on the same full MiniMax bundle produced `44.29 tok/s`
+  decode-only with `11222` decode-fast SwitchGLU calls and `62` slow prefill
+  calls. Total request wall was `37.65 tok/s`, showing how prefill/first-token
+  setup lowers wall-clock tokens/s.
+- Server control with `--kv-cache-quantization none` stayed effectively the
+  same (`38.45` bundle, `40.52` greedy), so live TurboQuant KV was rejected as
+  the cause of the remaining wall-clock gap.
+- Streaming server probe produced `320` content chunks with no loop:
+  wall-clock `40.38 tok/s`, TTFT `0.658s`, and first-token-to-last-token decode
+  window `44.04 tok/s`.
+
+Conclusion: MiniMax's raw/server decode path is back in the 43-44 tok/s band
+when measured as decode-window speed. Non-stream wall-clock gates include TTFT
+and should not be used alone to claim MiniMax decode regression.

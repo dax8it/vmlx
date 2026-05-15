@@ -23,9 +23,9 @@ Prove the installed Python/Electron vMLX app is release-ready for as many local
 
 | Requirement | Evidence | Status |
 | --- | --- | --- |
-| Source pushed | Current release branch must satisfy `git rev-parse HEAD == git rev-parse origin/main` after each follow-up commit | Pass |
-| Installed app | `/Applications/vMLX.app` rebuilt, opened, process running, gateway on `*:8080` | Pass |
-| Codesign sanity | `codesign --verify --deep --strict --verbose=2 /Applications/vMLX.app` | Pass |
+| Source pushed | Current working tree has follow-up fixes that are not committed/pushed yet | Pending |
+| Repo-local app | `panel/release/mac-arm64/vMLX.app` packaged with `CSC_IDENTITY_AUTO_DISCOVERY=false`, then ad-hoc signed for local bundled-Python execution | Pass |
+| Bundle verifier | `panel/scripts/verify-bundled-python.sh` passed after source/bundled parity sync | Pass |
 | Local model matrix | `cache_mode_matrix_all85_direct_l2_after_stream_reset/SUMMARY.json`: 52 rows, 26 model IDs | Partial |
 | Matrix result | 50 pass, 2 review | Partial |
 | Speed capture | PP `152.6..8321.5` tok/s, TG `5.4..62.7` tok/s | Pass |
@@ -40,8 +40,8 @@ Prove the installed Python/Electron vMLX app is release-ready for as many local
 | MLLM prefix bypass | Normal repeat hit `paged+zaya_cca`; `skip_prefix_cache` and `cache_salt` did not | Pass |
 | MLLM pixel bypass | Normal repeated blue image hit pixel cache; bypass/salt did not add hits/stores | Pass |
 | JANGTQ MPP/NAX bundled helper | `panel/scripts/verify-bundled-python.sh` imports `jang_tools.turboquant.mpp_nax_kernel`; installed app import path is Python 3.12 site-packages | Pass |
-| JANGTQ MPP/NAX UI wiring | `panel/tests/jangtq-mpp-nax-global-setting.test.ts` and `panel/tests/settings-flow.test.ts`: 199 passed | Pass |
-| JANGTQ MPP/NAX engine wiring | focused Python MPP/NAX CLI, health, and packaged-gate tests: 40 passed after correcting the release-gate pycache helper | Pass |
+| JANGTQ MPP/NAX UI surface | User-facing MPP/NAX setting/CLI flag removed; tests assert the toggle is not exposed | Pass |
+| JANGTQ MPP/NAX engine wiring | Env-only default `auto`, health/acceleration status, package helper import, and stale parent-env scrub covered by tests | Pass |
 | ZAYA1-VL-MXFP4 Chat memory | Cached, skip-cache, and salted Chat Completions all returned `CERULEAN` and `45` | Pass |
 | ZAYA1-VL-MXFP4 Responses memory | `instructions` and message-list `previous_response_id` forms returned `CERULEAN` and `45` | Pass |
 | ZAYA exact plain-string harness | Exact `READY` plain-string row remains brittle | Review |
@@ -65,15 +65,31 @@ fixes, but the remaining unproven areas are:
   the image-generation runtime path; Flux/Z-Image/Qwen-image rows are mflux
   native image paths and were tested for valid PNG output, not JANGTQ MPP/NAX
   acceleration;
-- DSV4 long-context/max-reasoning behavior. A follow-up installed-app probe
-  showed the cache/runtime path is wired correctly (`deepseek_v4_v7`,
-  `paged+dsv4`, block size 256, trained top-k 6, generic TurboQuant KV off,
-  pool quant off), but long high-effort recall still drifted and overran into
-  visible self-talk after the forced `</think>` finalizer. Short max arithmetic
-  was coherent, but `reasoning_effort=max` is still downgraded to the stable
-  high rail unless `VMLINUX_DSV4_RAW_MAX=1` is set;
+- DSV4 long-context/max-reasoning behavior. A follow-up probe showed the
+  cache/runtime path is wired correctly (`deepseek_v4_v7`, `paged+dsv4`,
+  block size 256, trained top-k 6, generic TurboQuant KV off, pool quant off),
+  but upload-quality long max reasoning remains a separate qualification lane;
 - exact plain-string `READY` behavior for ZAYA harness prompts.
 
-The current source is suitable to hand to release work with those boundaries
-explicitly stated. The larger “utterly every model/function” goal remains open
-unless those gaps are accepted out of scope.
+The current source is suitable for another review/test pass with these
+boundaries explicitly stated. It should not be described as pushed or fully
+released until the pending working-tree changes are committed and the selected
+release artifact is rebuilt through the final release lane.
+
+## Follow-Up Proof After No-Hidden-Guard Cleanup
+
+- Focused Python tests passed: `tests/test_reasoning_modes.py`,
+  `tests/test_dsv4_thinking_finalizer.py`, `tests/test_dsv4_paged_cache.py`,
+  `tests/test_dsv4_contract_hardening.py`, `tests/test_engine_audit.py`, and
+  `tests/test_cross_matrix_audit_runner.py` (`488 passed`).
+- Full panel test suite passed (`1806 passed`), plus `npm run typecheck`,
+  `npx electron-vite build`, and repo-local `electron-builder --dir`.
+- `panel/scripts/verify-bundled-python.sh` passed after syncing local source
+  into bundled Python and rewriting console-script shebangs.
+- A fresh packaged-app MiniMax JANGTQ row from the repo-local build returned
+  coherent number-sequence output with no loop. Health reported
+  `turboquant_codebook_accelerated`, `JANGTQ_MPP_NAX=auto`,
+  `SingleBatchGenerator`, and `TurboQuantKVCache`. Wall-clock token/s was
+  `38.33` with bundle sampling and `40.30` with greedy/top-k-off, so the row is
+  recorded as `review` against the strict 40 tok/s bundle-sampling threshold,
+  not relabeled as green.

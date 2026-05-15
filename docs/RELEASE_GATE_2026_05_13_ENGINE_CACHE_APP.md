@@ -230,11 +230,12 @@ Installed-app lifecycle gates were rerun after the stream-reset patch:
 - MiniMax JANGTQ_K rows logged the mixed projection bit map
   `gate_proj=2`, `up_proj=2`, `down_proj=4` rather than relying on the folder
   name.
-- MiniMax/Ling rows retained their parser/tool contracts and safety-floor
-  repetition handling while exercising direct and scheduler paths.
-- JANGTQ startup used `--jangtq-mpp-nax on` in the live matrix so `/health`
-  and logs could prove the custom TensorOps lane was available on applicable
-  JANGTQ rows.
+- MiniMax/Ling rows retain their parser/tool contracts without family-wide
+  repetition floors. Repetition penalty now comes only from request values,
+  explicit session/CLI defaults, or bundle metadata.
+- JANGTQ acceleration is env-only and defaults to `auto` in the engine. The
+  app does not expose or persist a user-facing MPP/NAX switch; packaged app
+  session spawn scrubs stale/debug parent env values before starting Python.
 - The installed app's bundled Python 3.12 runtime imports
   `jang_tools.turboquant.mpp_nax_kernel`; `panel/scripts/verify-bundled-python.sh`
   hash-gates and import-gates that helper so future package drift blocks the
@@ -262,7 +263,25 @@ Installed-app lifecycle gates were rerun after the stream-reset patch:
   core cache families listed above. DSV4 long-context/max-reasoning
   qualification remains a separate lane. A follow-up DSV4 probe confirmed the
   native cache path (`deepseek_v4_v7`, block size 256, `paged+dsv4`, trained
-  top-k 6, generic TurboQuant KV off, pool quant off), but long high-effort
-  recall drifted and overran into visible self-talk after the forced
-  `</think>` finalizer. This gate proves short lifecycle, API, and cache
-  behavior for DSV4 JANGTQ_K, not upload-quality long max reasoning.
+  top-k 6, generic TurboQuant KV off, pool quant off). This gate proves short
+  lifecycle, API, and cache behavior for DSV4 JANGTQ_K, not upload-quality
+  long max reasoning.
+
+## No-Hidden-Guard Follow-Up
+
+The follow-up cleanup after this matrix removed hidden sampling and acceleration
+surfaces rather than adding behavior guards:
+
+- `--jangtq-mpp-nax` was removed from CLI/app UI. Missing env means `auto`;
+  explicit `JANGTQ_MPP_NAX=off/on` remains diagnostic-only.
+- MiniMax/Ling/DSV4 family sampling floors are gone. The generic fallback is
+  neutral (`temperature=0.0`, `top_p=1.0`) when the request, session, and
+  bundle declare nothing.
+- DSV4 hard n-gram repetition blocking is gone. `VMLX_DSV4_FINALIZER_TOKENS`
+  defaults to 0, so caller `max_tokens` is not secretly extended.
+- `top_k` and `min_p` from `generation_config.json` or
+  `jang_config.chat.sampling_defaults` are wired through app session launch and
+  server API kwargs.
+- Current repo-local build proof is under
+  `panel/release/mac-arm64/vMLX.app`; it was packaged unsigned, then ad-hoc
+  signed only so the bundled Python dylibs can run locally.
