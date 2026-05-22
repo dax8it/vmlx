@@ -227,6 +227,12 @@ uv run --extra dev python tests/cross_matrix/run_release_surface_contract.py \
 
 uv run --extra dev python tests/cross_matrix/run_release_surface_contract.py \
   --out build/current-release-surface-contract-20260522-post-cli-parser-choices.json
+
+uv run --extra dev python tests/cross_matrix/run_noheavy_panel_settings_contract.py \
+  --out build/current-panel-settings-contract-proof-20260522-dsv4-cache-controls.json
+
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-dsv4-cache-controls.json
 ```
 
 Observed results:
@@ -262,6 +268,12 @@ Observed results:
   guard: `58 passed`;
 - umbrella suite after new-chat guard: `status=pass`, `failed_steps=[]`;
 - umbrella suite after server/chat boundary guard: `status=pass`,
+  `failed_steps=[]`;
+- panel settings contract after DSV4-only cache-control guard: `status=pass`,
+  `missing_source_markers=[]`, panel settings `281 passed`, panel typecheck
+  passed, panel registry `52 passed`, engine registry `126 passed`;
+- release manifest artifact after DSV4-only cache-control guard: 18 rows;
+- umbrella suite after DSV4-only cache-control guard: `status=pass`,
   `failed_steps=[]`;
 - manifest/current-suite tests after manifest row update: `55 passed`;
 - release manifest artifact after row update: 17 rows;
