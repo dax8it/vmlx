@@ -104,7 +104,7 @@ uv run --extra dev python tests/cross_matrix/run_current_regression_suite.py \
   --out build/current-regression-suite-20260522-chat-server-boundary.json
 
 uv run --extra dev python tests/cross_matrix/run_release_surface_contract.py \
-  --out build/current-release-surface-contract-20260522-post-mcp-marker-hardening.json
+  --out build/current-release-surface-contract-20260522-post-chat-server-boundary.json
 ```
 
 Observed results:
@@ -114,6 +114,8 @@ Observed results:
 - focused max-output/current-suite/manifest tests: `49 passed`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract: `status=pass`;
+- public updater primary/fallback remain `1.5.46`, PyPI `vmlx` remains
+  `1.5.46`, and GitHub `jjang-ai/vmlx` release `v1.5.47` is not published;
 - known open objective remains only DSV4 long-output/code quality.
 
 ## Release Decision
