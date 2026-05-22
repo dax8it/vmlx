@@ -2414,6 +2414,39 @@ and complete post-release state (`latest.json` equals source with matching URL,
 SHA256, and notes). It still rejects updater-ahead and incomplete bumped
 manifests.
 
+## 2026-05-22 10:28 PDT - Local High-Risk Artifact Registry Rows Are Pinned
+
+Added a no-heavy static guard that reads the current local high-risk model
+artifact metadata through the engine registry and compares it to the
+decode-speed row policy. This does not load model weights.
+
+Rows covered:
+
+- DSV4: `dsv4_k`
+- Qwen 3.6: JANG, JANG+MTP, MXFP4, MXFP8+MTP, JANGTQ, plain MLX 4bit
+- Hy3: `Hy3-preview-JANGTQ2`
+- Nemotron Omni/Nano: JANGTQ, JANGTQ4, MXFP4
+
+Red:
+
+- `.venv/bin/python tests/cross_matrix/run_model_family_detection_contract.py --out build/current-model-family-detection-contract-20260522-local-artifact-registry-red.json`
+  -> `status=fail`, `failed=[]`,
+  `missing_rows=["decode_speed_local_high_risk_rows_match_engine_registry"]`.
+
+Green:
+
+- focused local row tests:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_decode_speed_local_high_risk_rows_match_current_engine_registry tests/test_model_family_detection_contract.py::test_family_detection_contract_pins_named_release_rows`
+  -> `2 passed`;
+- model-family gate:
+  `build/current-model-family-detection-contract-20260522-local-artifact-registry.json`
+  -> `status=pass`, `failed=[]`, `missing_rows=[]`, engine `43 passed`,
+  panel `41 passed / 12 skipped`, launch wiring `6 passed / 228 skipped`.
+
+This pins parser/cache/modality policy against real local metadata for the
+formats Eric called out: JANG, JANGTQ/MXTQ, MXFP4, MXFP8, plain MLX 4bit, and
+native-MTP rows. It is not a live generation or speed clearance.
+
 ## 2026-05-22 09:05 PDT - Family Gate Requires ZAYA/Hy3/Qwen VL Profile Rows
 
 Strengthened `run_model_family_detection_contract.py` so existing high-risk
