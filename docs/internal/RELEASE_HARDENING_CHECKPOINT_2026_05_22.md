@@ -2525,6 +2525,60 @@ Follow-up packaging verification:
 The bundled app source is now in parity with this checkout for this hardening
 increment. The remaining DSV4 long-output/code quality row is still open.
 
+## 2026-05-22 11:04 PDT - v1.5.48 Release Prep Built, Notary Blocked
+
+Prepared a patch release rather than replacing already-published v1.5.47
+assets:
+
+- bumped source version triple to `1.5.48`:
+  `pyproject.toml`, `panel/package.json`, `panel/package-lock.json`,
+  `vmlx_engine/__init__.py`;
+- added `CHANGELOG.md` entry for Qwen native-MTP VL parity, panel local-path
+  coverage, output-cap default mutation guard, and post-release updater gate;
+- confirmed `v1.5.48` was not already present on GitHub or PyPI before build.
+
+Built local DMGs:
+
+- `panel/release/vMLX-1.5.48-sequoia-arm64.dmg`
+  - sha256: `8637edbdcb261729c8013878ef606643915661ddd6c46a368d952d620efe9d6d`
+  - size: `453M`;
+- `panel/release/vMLX-1.5.48-tahoe-arm64.dmg`
+  - sha256: `79adfba392ca534266acfad080718d6a392204c9f1ee60b831698c57a4edfedc`
+  - size: `468M`.
+
+Build facts:
+
+- both lanes used clean JANG source:
+  `/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools`;
+- bundled verifier passed for `vmlx_engine==1.5.48`, source hash parity,
+  JANG source hash parity, console-script relocatability, and critical imports;
+- Electron app in `panel/release/mac-arm64/vMLX.app` is Developer-ID signed and
+  passed `codesign --verify --deep --strict`;
+- electron-builder skipped automatic notarization because notarize options were
+  unavailable.
+
+Verification:
+
+- packaged integrity:
+  `build/current-packaged-integrity-contract-20260522-v1548-release-prep.json`
+  -> `status=pass`, `failed=[]`;
+- release-surface pre-release gate:
+  `build/current-release-surface-contract-20260522-v1548-pre-release.json`
+  -> `status=pass`, `staged_source_version_not_public=true`;
+- release gate + release surface focused tests:
+  `41 passed`;
+- umbrella:
+  `build/current-regression-suite-20260522-v1548-release-prep.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Blocker before public release:
+
+- default/build keychain is locked for notary credentials;
+- do not upload or update `latest.json` with the current DMGs until both DMGs
+  are submitted to Apple notarization, accepted, stapled, and validated with
+  Gatekeeper.
+
 ## 2026-05-22 09:05 PDT - Family Gate Requires ZAYA/Hy3/Qwen VL Profile Rows
 
 Strengthened `run_model_family_detection_contract.py` so existing high-risk
