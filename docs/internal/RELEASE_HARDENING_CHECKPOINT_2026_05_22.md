@@ -93,6 +93,10 @@ Key artifacts:
   checklist now explicitly names the DSV4, ZAYA/ZAYA1-VL, Ling/Bailing,
   Nemotron, Qwen 3.6 VL/video/hybrid, MXFP4, MXFP8, native-MTP, MiniMax, and
   Hy3 parser/cache/modality compatibility proof.
+- Added an executable-command invariant for Python runners in the release
+  manifest and replaced the descriptive `model-family-live-multiturn-soak`
+  command with a real scoped live command over Hy3, MiniMax, Qwen 3.6, ZAYA,
+  ZAYA1-VL, Ling, Nemotron, and DSV4 rows.
 
 Key artifacts:
 
@@ -101,6 +105,8 @@ Key artifacts:
 - `build/current-model-family-detection-contract-20260522-manifest-row.json`
 - `build/current-release-regression-manifest-20260522-family-row.json`
 - `build/current-regression-suite-20260522-family-row.json`
+- `build/current-release-regression-manifest-20260522-live-soak-command.json`
+- `build/current-regression-suite-20260522-live-soak-command.json`
 
 ## Latest Verification
 
@@ -128,6 +134,9 @@ uv run --extra dev python tests/cross_matrix/run_model_family_detection_contract
 uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
   --out build/current-release-regression-manifest-20260522-family-row.json
 
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-live-soak-command.json
+
 uv run --extra dev python tests/cross_matrix/run_max_output_context_contract.py \
   --out build/current-max-output-context-contract-20260522-chat-server-boundary.json
 
@@ -151,6 +160,9 @@ Observed results:
   `31 passed`, panel `40 passed / 12 skipped`;
 - focused family/manifest/current-suite tests: `64 passed`;
 - umbrella suite after family manifest row: `status=pass`, `failed_steps=[]`;
+- manifest/current-suite tests after live-soak command hardening: `51 passed`;
+- umbrella suite after live-soak command hardening: `status=pass`,
+  `failed_steps=[]`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract: `status=pass`;
 - public updater primary/fallback remain `1.5.46`, PyPI `vmlx` remains
