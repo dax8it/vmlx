@@ -2099,3 +2099,43 @@ Green:
 
 This is no-heavy persisted-state and launch-wiring proof. It does not claim
 live model output quality or clear the DSV4 long-output/code row.
+
+## 2026-05-22 08:07 PDT - DSV4 Additional Args Cannot Reenable Native MTP
+
+Added a targeted cross-feature guard for stale `additionalArgs` in DSV4
+sessions. The bug class is dangerous because `additionalArgs` sits after the
+structured settings builder and can otherwise reintroduce flags that the DSV4
+family gate deliberately suppresses.
+
+New required marker:
+
+- `DSV4 additional args cannot reenable native MTP or deterministic sampling policy`
+
+What it pins:
+
+- DSV4 launch preview and real launch filtering both block
+  `--native-mtp-depth`;
+- both block `--native-mtp-sampling-policy deterministic-defaults`;
+- both block `--disable-native-mtp`;
+- both block stale `--dsv4-enable-prefix-cache` from additional args, so the
+  structured DSV4 diagnostic toggle owns that flag;
+- both block hidden `--default-temperature` and stale `--max-tokens` in DSV4
+  additional args;
+- non-DSV4 additional args still pass ordinary allowed flags such as
+  `--log-level DEBUG`.
+
+Red:
+
+- focused panel test failed before the preview/filter fix with raw
+  `--native-mtp-depth`, `--native-mtp-sampling-policy deterministic-defaults`,
+  `--disable-native-mtp`, `--dsv4-enable-prefix-cache`,
+  `--default-temperature 0`, and `--max-tokens 32768` still present.
+
+Green:
+
+- focused panel test:
+  `cd panel && npx vitest run tests/settings-flow.test.ts --testNamePattern "DSV4 additional args cannot reenable native MTP or deterministic sampling policy|appends additional args to command|omits additional args when empty" --reporter=verbose`
+  -> `3 passed / 231 skipped`.
+
+This is a wiring/compatibility fix only. It does not clear DSV4
+long-output/code/file-generation quality.
