@@ -1641,3 +1641,56 @@ Verification:
 
 This is no-heavy parser/CLI contract coverage. It does not claim live parser
 quality for every model family.
+
+## 2026-05-22 06:46 PDT - Qwen Affine-JANG VLM Text-Loader Policy Pinned
+
+Extended the VLM media/cache gate with an engine-side registry marker for the
+Qwen affine-JANG/M-RoPE boundary. Panel tests already covered this path, but
+the release VLM gate did not execute the engine registry row.
+
+Required engine marker:
+
+- `test_qwen36_affine_jang_vlm_stays_text_loader_until_mrope_fixed`
+
+What it pins:
+
+- a Qwen3.6 affine-JANG artifact with `vision_config`, image/video token ids,
+  and `capabilities.modality=vision` remains `is_mllm=False`;
+- the same artifact still keeps `cache_type=hybrid`, `tool_parser=qwen`, and
+  `reasoning_parser=qwen3`;
+- this is scoped to explicit affine-JANG, not JANGTQ/MXTQ or plain MLX/MXFP
+  Qwen VLM rows, which remain covered as multimodal elsewhere;
+- the VLM gate now runs `tests/test_model_config_registry.py` for the selected
+  Qwen affine-JANG marker.
+
+Verification:
+
+- red:
+  `.venv/bin/python tests/cross_matrix/run_vl_media_cache_contract.py --out build/current-vl-media-cache-contract-20260522-qwen-affine-text-red.json`
+  -> `status=fail`,
+  `missing_engine_markers=["test_qwen36_affine_jang_vlm_stays_text_loader_until_mrope_fixed"]`;
+- focused green:
+  `.venv/bin/python -m pytest -q tests/test_model_config_registry.py::TestModelConfigs::test_qwen36_affine_jang_vlm_stays_text_loader_until_mrope_fixed tests/test_vl_media_cache_contract.py::test_vl_media_cache_contract_pins_named_engine_rows`
+  -> `2 passed`;
+- VLM media/cache gate:
+  `.venv/bin/python tests/cross_matrix/run_vl_media_cache_contract.py --out build/current-vl-media-cache-contract-20260522-qwen-affine-text.json`
+  -> `status=pass`, no missing engine/panel markers, engine
+  `42 passed / 6 skipped`, panel follow-up `12 passed`, panel settings
+  `11 passed / 222 skipped`, panel family detection `13 passed / 40 skipped`;
+- release manifest:
+  `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-20260522-qwen-affine-text.json`
+  -> 18 rows;
+- focused release tests:
+  `.venv/bin/python -m pytest -q tests/test_vl_media_cache_contract.py tests/test_release_regression_manifest.py tests/test_current_regression_suite.py`
+  -> `64 passed`;
+- py-compile and `git diff --check` -> pass;
+- umbrella:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools .venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-qwen-affine-text.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement remains
+  `DSV4 long-output/code/file-generation quality is release-cleared`;
+- release surface:
+  `.venv/bin/python tests/cross_matrix/run_release_surface_contract.py --out build/current-release-surface-contract-20260522-qwen-affine-text.json`
+  -> `status=pass`.
+
+This is no-heavy engine/panel routing coverage. It does not claim live Qwen
+video/VLM output quality.
