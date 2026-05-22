@@ -398,6 +398,7 @@ Observed results:
 - release surface contract after pushing `943e21d0`: `status=pass`;
 - release surface contract after pushing `b4fc7fa0`: `status=pass`;
 - release surface contract after pushing `3391ab70`: `status=pass`;
+- release surface contract after pushing `6f4ccaec`: `status=pass`;
 - public updater primary/fallback remain `1.5.46`, PyPI `vmlx` remains
   `1.5.46`, and GitHub `jjang-ai/vmlx` release `v1.5.47` is not published;
 - known open objective remains only DSV4 long-output/code quality.
