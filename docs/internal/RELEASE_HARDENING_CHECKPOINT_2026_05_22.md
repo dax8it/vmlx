@@ -266,6 +266,15 @@ uv run --extra dev python tests/cross_matrix/run_api_surface_contract.py \
 
 uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
   --out build/current-release-regression-manifest-20260522-chat-responses-streaming.json
+
+uv run --extra dev python tests/cross_matrix/run_max_output_context_contract.py \
+  --out build/current-max-output-context-contract-20260522-anthropic-streaming.json
+
+uv run --extra dev python tests/cross_matrix/run_api_surface_contract.py \
+  --out build/current-api-surface-contract-20260522-anthropic-streaming.json
+
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-anthropic-streaming.json
 ```
 
 Observed results:
@@ -371,6 +380,15 @@ Observed results:
 - focused streaming Chat/Responses/API/manifest/current-suite tests:
   `64 passed`;
 - umbrella suite after streaming Chat/Responses guard: `status=pass`,
+  `failed_steps=[]`;
+- max-output gate after streaming Anthropic Messages output-cap guard:
+  `status=pass`, `missing_markers=[]`, engine `18 passed`, panel
+  `34 passed / 1 skipped`;
+- API surface after streaming Anthropic Messages output-cap guard:
+  `status=pass`, server API surface `19 passed`;
+- release manifest artifact after streaming Anthropic Messages guard: 18 rows;
+- focused streaming Anthropic/API/manifest/current-suite tests: `64 passed`;
+- umbrella suite after streaming Anthropic Messages guard: `status=pass`,
   `failed_steps=[]`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract after pushing `cdb7d0f0`: `status=pass`;
