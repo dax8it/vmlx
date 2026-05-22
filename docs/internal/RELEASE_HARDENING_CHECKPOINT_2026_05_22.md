@@ -1257,3 +1257,34 @@ Verification around the evidence update:
 No release build has been started from this checkpoint. The next release action
 is blocked unless Eric explicitly descopes the DSV4 long-output/code quality
 row or that row gets real runtime evidence.
+
+## 2026-05-22 05:53 PDT - Final Prebuild Gate Recheck
+
+Fresh no-heavy prebuild verification from current source:
+
+- max-output/context contract:
+  `.venv/bin/python tests/cross_matrix/run_max_output_context_contract.py --out build/current-max-output-context-contract-20260522-final-prebuild.json`
+  -> `status=pass`, `missing_markers=[]`, engine `20 passed`, panel
+  `36 passed / 292 skipped`;
+- release manifest:
+  `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-20260522-final-prebuild.json`
+  -> 18 rows across all required domains;
+- focused max-output/release/current-suite tests:
+  `.venv/bin/python -m pytest -q tests/test_max_output_context_contract.py tests/test_release_regression_manifest.py tests/test_current_regression_suite.py`
+  -> `62 passed`;
+- umbrella current suite:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools .venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-final-prebuild.json`
+  -> `status=pass`, `failed_steps=[]`, open requirements exactly
+  `["DSV4 long-output/code/file-generation quality is release-cleared"]`;
+- py-compile for the checked runners/tests and `git diff --check` -> pass;
+- release-surface preflight:
+  `.venv/bin/python tests/cross_matrix/run_release_surface_contract.py --out build/current-release-surface-contract-20260522-final-prebuild.json`
+  -> `status=pass`;
+- objective proof summary:
+  `.venv/bin/python tests/cross_matrix/summarize_objective_proof.py --out build/current-objective-proof-summary-20260522-final-prebuild.json`
+  -> 12 PASS / 1 OPEN.
+
+Build/sign/release remains blocked unless Eric explicitly descopes the DSV4
+long-output/code quality row or a rebuilt/source-body DSV4 artifact clears the
+live quality gate. The fresh max-output/context evidence does not show a
+remaining UI/server token-wiring blocker.
