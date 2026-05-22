@@ -3628,3 +3628,75 @@ Release read:
   checks remain explicit operator checks before publishing.
 - DSV4 long-output/code/file-generation quality remains the only open
   requirement in the umbrella suite.
+
+## 2026-05-22 15:58 PDT - Qwen JANG_4M Live Speed/Cache Split
+
+Scope:
+
+- Followed up on the JANG-only MX matmul speed row with a real packaged-engine
+  run for `qwen27_jang4m`.
+- Model path:
+  `/Users/eric/models/dealign.ai/Qwen3.6-27B-JANG_4M-CRACK`.
+
+Artifact:
+
+- `build/current-decode-speed-live-qwen27-jang4m-20260522-hybrid-tq-review.json`
+
+Findings:
+
+- The earlier live `fail` was partly a stale harness invariant. Qwen3.6
+  hybrid/path-dependent cache intentionally keeps live TurboQuant active for
+  attention KV layers only, while SSM/GatedDelta companion state remains native
+  full precision.
+- DSV4 and ZAYA still reject generic TurboQuant KV.
+- Red/green guard:
+  `tests/test_model_family_detection_contract.py::test_decode_speed_gate_detects_cache_health_mismatches`
+  now accepts only the Qwen attention-only health shape and still rejects
+  unsafe generic hybrid SSM TQ for non-Qwen rows.
+- Fresh live row is `status=review`, not pass:
+  - bundle decode: `25.76 tok/s`, above the row's `18 tok/s` decode floor;
+  - coherency row: `19.47 tok/s`, no reasoning and no loopish output;
+  - PP rows remain below the current `600 tok/s` floor:
+    `283.95`, `289.03`, `251.06 tok/s`.
+- The release manifest now has a live `performance` row named
+  `qwen-jang-mx-live-speed-review` so broad JANG/MX speed claims cannot hide
+  this PP review state.
+
+Release read:
+
+- This does not change runtime behavior.
+- Qwen/JANG cache wiring is better represented in the gate.
+- Qwen/JANG live decode is not the DSV4 2-3 tok/s decode issue, but its
+  prefill speed is still under the current target and should remain review.
+
+Verification:
+
+- Focused red/green guard:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_decode_speed_gate_detects_cache_health_mismatches`
+  -> `1 passed` after the red failure proved the old invariant was stale.
+- Focused manifest guard:
+  `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_qwen_jang_live_speed_review tests/test_release_regression_manifest.py::test_release_regression_manifest_covers_required_domains`
+  -> passed.
+- Release manifest artifact:
+  `build/current-release-regression-manifest-20260522-qwen-live-speed-review.json`
+  -> `rows=19`, includes new `performance` domain.
+- Cache architecture with clean JANG source:
+  `PYTHONPATH=/Users/eric/jang/.worktrees/vmlx-release-clean-b5f66a7/jang-tools .venv/bin/python tests/cross_matrix/run_cache_architecture_contract.py --out build/current-cache-architecture-contract-20260522-qwen-live-speed-review.json`
+  -> `status=pass`, `failed=[]`.
+- Packaged integrity with clean JANG source:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-b5f66a7/jang-tools .venv/bin/python tests/cross_matrix/run_packaged_integrity_contract.py --out build/current-packaged-integrity-contract-20260522-qwen-live-speed-review.json`
+  -> `status=pass`, `failed=[]`.
+- Umbrella with clean JANG source:
+  `PYTHONPATH=/Users/eric/jang/.worktrees/vmlx-release-clean-b5f66a7/jang-tools VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-b5f66a7/jang-tools .venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-qwen-live-speed-review-clean-jang.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Dirty-source caveat:
+
+- `/Users/eric/jang/jang-tools` is currently tracked-dirty in
+  `jang_tools/convert_hy3_jangtq.py` and `tests/test_hy3_capabilities.py`.
+- Running the umbrella against that dirty source makes bundled hash parity fail
+  because the packaged app matches clean `b5f66a7`, not dirty local edits.
+- `.venv` still imports stale installed `jang_tools` unless the clean JANG
+  worktree is placed on `PYTHONPATH`; the packaged app already contains the
+  materialized-pool fix.
