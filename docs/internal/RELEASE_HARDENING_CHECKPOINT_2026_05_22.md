@@ -1953,3 +1953,66 @@ Verification:
 
 This is no-heavy UI/API/server wiring coverage. It does not claim live DSV4
 quality clearance. No release build/signing started.
+
+## 2026-05-22 07:35 PDT - JANG-Only MX Matmul Speed Rows Pinned
+
+Extended the model-family/decode-speed gate with a required row for the
+JANG-only MX matmul launch policy.
+
+Required row:
+
+- `decode_speed_jang_only_mx_matmul_policy`
+
+Required marker:
+
+- `test_decode_speed_gate_jang_only_rows_keep_text_mx_matmul_launch_policy`
+
+Rows covered:
+
+- `qwen27_jang4m`
+- `qwen27_jang4m_mtp`
+- `qwen35_jang4k_ext`
+- `minimax_jang2l_crack`
+
+What it pins:
+
+- JANG-only speed rows stay `JANG_` rows, not `JANGTQ` or `MXFP`;
+- those rows stay text launch rows and do not emit `--is-mllm`;
+- those rows do not emit startup `--max-tokens`;
+- parser policy stays row-owned (`qwen/qwen3` or `minimax/minimax_m2`);
+- no forced JANGTQ acceleration or DSV4-disable environment knobs leak into
+  the launch command.
+
+Verification:
+
+- red:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_family_detection_contract_pins_named_release_rows`
+  -> failed before the required row existed;
+- focused row tests:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_family_detection_contract_pins_named_release_rows tests/test_model_family_detection_contract.py::test_decode_speed_gate_jang_only_rows_keep_text_mx_matmul_launch_policy`
+  -> `2 passed`;
+- family gate:
+  `.venv/bin/python tests/cross_matrix/run_model_family_detection_contract.py --out build/current-model-family-detection-contract-20260522-jang-only-mx-matmul-policy.json`
+  -> `status=pass`, `missing_rows=[]`, engine `42 passed / 111 deselected`,
+  panel `41 passed / 12 skipped`;
+- red:
+  `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_decode_speed_artifact_format_matrix`
+  -> failed before the release manifest referenced this checkpoint;
+- focused release tests:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py tests/test_release_regression_manifest.py tests/test_current_regression_suite.py`
+  -> `89 passed`;
+- py-compile and `git diff --check` -> pass;
+- release manifest:
+  `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-20260522-jang-only-mx-matmul-policy.json`
+  -> 18 rows;
+- umbrella:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools .venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-jang-only-mx-matmul-policy.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement remains
+  `DSV4 long-output/code/file-generation quality is release-cleared`;
+- release surface:
+  `.venv/bin/python tests/cross_matrix/run_release_surface_contract.py --out build/current-release-surface-contract-20260522-jang-only-mx-matmul-policy.json`
+  -> `status=pass`.
+
+This is no-heavy launch-policy and speed-row coverage. It does not claim live
+JANG speed output quality or DSV4 quality clearance. No release build/signing
+started.
