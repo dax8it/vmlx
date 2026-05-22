@@ -233,6 +233,12 @@ uv run --extra dev python tests/cross_matrix/run_noheavy_panel_settings_contract
 
 uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
   --out build/current-release-regression-manifest-20260522-dsv4-cache-controls.json
+
+uv run --extra dev python tests/cross_matrix/run_model_family_detection_contract.py \
+  --out build/current-model-family-detection-contract-20260522-artifact-format-matrix.json
+
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-artifact-format-matrix.json
 ```
 
 Observed results:
@@ -298,6 +304,14 @@ Observed results:
   `74 passed`;
 - release manifest artifact after CLI parser-choice guard: 17 rows;
 - umbrella suite after CLI parser-choice guard: `status=pass`,
+  `failed_steps=[]`;
+- model-family gate after decode-speed artifact-format matrix guard:
+  `status=pass`, `missing_rows=[]`, engine `35 passed`, panel
+  `40 passed / 12 skipped`;
+- family/manifest/current-suite tests after artifact-format matrix guard:
+  `77 passed`;
+- release manifest artifact after artifact-format matrix guard: 18 rows;
+- umbrella suite after artifact-format matrix guard: `status=pass`,
   `failed_steps=[]`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract after pushing `cdb7d0f0`: `status=pass`;
