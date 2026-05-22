@@ -3444,6 +3444,66 @@ Release read:
 - Ling/Bailing 2D/3D hybrid shape handling remains covered.
 - DSV4 long-output/code/file-generation quality remains separate and open.
 
+## 2026-05-22 15:45 PDT - Model-Family Launch Policy Matrix Recheck Pinned
+
+Scope:
+
+- Rechecked the full no-heavy model-family launch-policy matrix after the
+  loader/artifact slice.
+- The current gate runs three layers together:
+  engine family detection, panel family detection, and panel session launch
+  wiring.
+- This targets the compatibility concerns around ZAYA/ZAYA1-VL, Ling/Bailing,
+  Nemotron-H, Qwen 3.6 VL/video/hybrid/MXFP/MTP, MiniMax, Hy3, and DSV4 stale
+  launch flags.
+
+Changes:
+
+- `tests/test_release_regression_manifest.py`
+  - added a red-first guard requiring the current family launch-policy artifact
+    and explicit edge-case proof text.
+- `tests/cross_matrix/release_regression_manifest.py`
+  - model-family row now points at
+    `build/current-model-family-detection-contract-20260522-recheck-launch-policy-matrix.json`;
+  - explicitly records that engine, panel, and session launch wiring run in
+    the same matrix;
+  - explicitly names aligned parser/cache/modality policy and DSV4 stale
+    `additionalArgs`/native-MTP D3 suppression.
+
+Red:
+
+- `tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_current_family_launch_policy_recheck`
+  failed until the manifest named the current artifact and edge-case proof
+  text.
+
+Green:
+
+- model-family detection:
+  `build/current-model-family-detection-contract-20260522-recheck-launch-policy-matrix.json`
+  -> `status=pass`, `failed=[]`, `missing_rows=[]`, engine
+  `44 passed / 112 deselected`, panel `43 passed / 12 skipped`, launch wiring
+  `6 passed / 230 skipped`;
+- focused manifest/family tests:
+  `tests/test_release_regression_manifest.py::{current_family_launch_policy_recheck,named_model_family_detection_with_runner_artifact,panel_family_launch_wiring,qwen_nemotron_hybrid_cache_rows}` plus
+  `tests/test_model_family_detection_contract.py`
+  -> `29 passed`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-recheck-family-launch-policy.json`
+  -> `18 rows`;
+- umbrella with fixed JANG source:
+  `build/current-regression-suite-20260522-recheck-family-launch-policy.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Release read:
+
+- Engine, panel, and launch builder policy are aligned for the high-risk
+  families covered by this no-heavy gate.
+- Session launch still strips stale DSV4 `additionalArgs` and preserves
+  native-MTP D3 only where supported.
+- This is source/static/launch-policy proof only. It does not replace the live
+  multi-turn family soak or the DSV4 long-output/code quality row.
+
 ## 2026-05-22 15:16 PDT - MCP And VL/Media Recheck Pinned
 
 Scope:
