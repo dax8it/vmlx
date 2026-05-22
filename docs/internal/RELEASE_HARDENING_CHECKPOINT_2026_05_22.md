@@ -2947,3 +2947,49 @@ Release read:
   materialized-pool proof and app/UI env proof.
 - The remaining release blocker is still the separate DSV4 long-output/code/file
   generation quality row.
+
+## 2026-05-22 14:12 PDT - Casual Preset Server Output Cap Edge Gated
+
+Scope:
+
+- Eric flagged a specific risk that separate chat output caps could conflict
+  with the server Max Output Tokens setting.
+- The server/API request-resolution tests already cover explicit request caps
+  below/above startup defaults, omitted Auto requests, legacy completions,
+  Responses, Anthropic, Ollama, and mutation resistance.
+- The weak edge was UI/preset wording: Casual mode intentionally sets
+  `maxTokens=8192`, but the source comment still described that as preventing
+  huge KV allocation, which blurs output length with context/cache behavior.
+
+Changes:
+
+- Added panel test marker:
+  `casual preset maxTokens uses an explicit server output cap without changing model-owned defaults or context`.
+- Changed the Casual preset comment to:
+  `Explicit server output cap; limits runaway long replies without changing context.`
+- Added the marker to `run_max_output_context_contract.py`.
+- Updated the release manifest to track:
+  `build/current-max-output-context-contract-20260522-casual-server-output-cap.json`.
+
+Green:
+
+- focused red/green panel test:
+  `npx vitest run tests/settings-flow.test.ts --reporter=verbose -t 'casual preset maxTokens uses an explicit server output cap'`
+  -> `1 passed`;
+- max-output/context gate:
+  `build/current-max-output-context-contract-20260522-casual-server-output-cap.json`
+  -> `status=pass`, engine `22 passed`, panel `45 passed`,
+  `missing_markers=[]`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-casual-server-output-cap.json`
+  -> `18 rows`;
+- umbrella:
+  `build/current-regression-suite-20260522-casual-server-output-cap.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Release read:
+
+- No runtime default changed.
+- Server Max Output Tokens, chat/API output caps, and Max Context Tokens remain
+  separate in the gated proof.
