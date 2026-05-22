@@ -2993,3 +2993,146 @@ Release read:
 - No runtime default changed.
 - Server Max Output Tokens, chat/API output caps, and Max Context Tokens remain
   separate in the gated proof.
+
+## 2026-05-22 14:47 PDT - DSV4 Short-Prompt Prefix/Pool Speed Split
+
+Scope:
+
+- Eric reported DSV4 Flash around 2-3 tok/s and suspected prefix cache, pool
+  quant, TurboQuant, or spacing corruption.
+- The investigation separated raw stream spacing, pool quant, DSV4 prefix-cache
+  snapshot/store, and cold compile/warmup.
+
+Findings:
+
+- Pool quant is not the current steady-state slowdown:
+  - rebuilt repo-local packaged app now bundles the fixed JANG
+    `dsv4/pool_quant_cache.py`;
+  - source-hash integrity passes for both `scheduler.py` and
+    `dsv4/pool_quant_cache.py`;
+  - packaged pool-on and pool-off non-stream short cold requests were
+    effectively identical, around 3.55 tok/s.
+- Raw API/SSE spacing is not currently proven broken:
+  - fresh pool-on/off stream captures had `has_spacing_suspect=false`;
+  - do not change renderer spacing without a raw-stream-vs-UI diff.
+- DSV4 prefix is diagnostic opt-in:
+  - without `--dsv4-enable-prefix-cache`, there is no prompt snapshot at all;
+  - with prefix explicitly enabled, short prompts now skip the synchronous
+    composite prompt snapshot.
+- Live timing with prefix+pool enabled:
+  - first request is cold compile/warmup dominated:
+    `prefill_head` about 14s and first `sample_materialize` about 7.5s;
+  - second same request on the same server is back around 20.9 tok/s.
+
+Changes:
+
+- `vmlx_engine/utils/dsv4_batch_generator.py`
+  - added `DEFAULT_DSV4_PROMPT_SNAPSHOT_MIN_TOKENS = 256`;
+  - added `dsv4_prompt_snapshot_min_tokens()`;
+  - DSV4 N-1 prompt keys below the threshold skip synchronous prompt-boundary
+    snapshot;
+  - override is available via `DSV4_PROMPT_SNAPSHOT_MIN_TOKENS` or legacy
+    `VMLINUX_DSV4_PROMPT_SNAPSHOT_MIN_TOKENS`.
+- `vmlx_engine/scheduler.py`
+  - when a DSV4 short prompt skipped snapshot, cleanup skips donating a prefix
+    block instead of immediately doing a synchronous clean prompt-only re-prefill
+    store.
+- `tests/cross_matrix/release_regression_manifest.py`
+  - now tracks the short-prompt threshold proof and live two-turn DSV4 proof.
+
+Red:
+
+- `test_dsv4_generator_skips_prompt_snapshot_for_short_cache_store_prompt_by_default`
+  failed on current code because every 2+ token prompt captured a snapshot.
+- `test_dsv4_short_prompt_snapshot_skip_does_not_sync_reprefill_for_store`
+  failed until scheduler cleanup knew about the same threshold.
+
+Green:
+
+- focused snapshot tests:
+  `tests/test_dsv4_paged_cache.py -k 'prompt_snapshot or short_prompt_snapshot'`
+  -> `4 passed`;
+- full DSV4 paged/cache suite with fixed JANG source:
+  `PYTHONPATH=/Users/eric/jang/.worktrees/vmlx-release-clean-b5f66a7/jang-tools .venv/bin/python -m pytest -q tests/test_dsv4_paged_cache.py`
+  -> `53 passed`;
+- cache architecture gate:
+  `build/current-cache-architecture-contract-20260522-dsv4-short-snapshot-threshold.json`
+  -> `status=pass`, cache-family `111 passed`, panel cache launch `88 passed`;
+- live DSV4 proof:
+  `build/current-dsv4-prefix-enabled-two-turn-threshold-live-20260522.json`
+  -> first request 32 tokens in 23.36s, second same request 32 tokens in 1.53s
+  (~20.9 tok/s), `prompt_snapshot_skipped=true`,
+  `has_short_store_skip=true`.
+
+Environment caveat:
+
+- The repo `.venv` still imports stale installed `jang_tools`; without fixed
+  JANG on `PYTHONPATH`, the materialized-pool test fails.
+- Packaged dev app was rebuilt with the clean fixed JANG worktree and passed
+  packaged source-hash integrity.
+- Direct isolated packaged behavior check passed from `/tmp`:
+  `dequant_count=0`, `pool_shape=(1, 4, 16)`, and `nbytes_ok=True`.
+- Source test runs must use the same JANG path or reinstall the venv dependency
+  before treating a pool test failure as a runtime regression.
+
+Release read:
+
+- DSV4 prefix+pool steady behavior is now split from cold compile/warmup and
+  has a live second-turn speed proof near the expected 20 tok/s.
+- DSV4 first cold request latency is still open as a warmup/compile issue.
+- DSV4 long-output/code/file-generation quality remains the release blocker.
+
+## 2026-05-22 15:03 PDT - Cross-Family Output/Cache/MTP Recheck
+
+Scope:
+
+- Eric specifically worried that separate chat/API Max Output Tokens could
+  interfere with Server Settings Max Output Tokens.
+- The same pass rechecked family detection, parser/modality policy, MTP, API
+  request building, DSV4 native cache/pool policy, generic TurboQuant KV
+  suppression, hybrid/MLA/media cache contracts, and panel launch settings.
+
+Max output/context evidence:
+
+- `build/current-max-output-context-contract-20260522-recheck-chat-server-boundary.json`
+  -> `status=pass`, `failed=[]`, `missing_markers=[]`.
+- Engine output/context resolution:
+  - `22 passed`;
+  - covers Chat Completions, Responses, legacy Completions, Anthropic, Ollama,
+    startup defaults, explicit request caps above/below startup default, and
+    request caps not mutating later omitted defaults.
+- Panel output/context wiring:
+  - `45 passed`, `295 skipped`;
+  - covers settings UI separation, stale session migration, chat switching,
+    invalid maxTokens omission, chat override persistence, and coding tool
+    output-limit vs context fallback separation.
+
+Cross-family evidence:
+
+- `build/current-model-family-detection-contract-20260522-recheck-families.json`
+  -> `status=pass`, engine `44 passed`, panel `43 passed`, launch `6 passed`.
+- `build/current-native-mtp-contract-20260522-recheck.json`
+  -> `status=pass`, engine `116 passed`, panel controls `13 passed`, panel
+  detection `6 passed`.
+- `build/current-api-surface-contract-20260522-recheck-output-cache.json`
+  -> `status=pass`, server API `25 passed`, panel request builders
+  `72 passed`.
+- `build/current-cache-architecture-contract-20260522-recheck-family-cache.json`
+  -> `status=pass`, cache family `111 passed`, panel cache launch
+  `88 passed`.
+
+Release manifest and umbrella:
+
+- `build/current-release-regression-manifest-20260522-recheck-dsv4-threshold-output-boundary.json`
+  -> `rows=18`.
+- `build/current-regression-suite-20260522-recheck-dsv4-threshold-output-boundary.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Release read:
+
+- No-heavy compatibility is currently green for JANG/JANGTQ/MXFP4/MXFP8
+  detection, DSV4 native cache/pool policy, Qwen 3.6 alias/MTP/VL/video rows,
+  ZAYA, Ling, Nemotron, parser/modality launch policy, and API
+  output/context boundaries.
+- This does not clear the remaining live DSV4 long-output/code quality row.
