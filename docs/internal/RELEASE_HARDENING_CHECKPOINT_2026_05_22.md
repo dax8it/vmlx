@@ -1288,3 +1288,52 @@ Build/sign/release remains blocked unless Eric explicitly descopes the DSV4
 long-output/code quality row or a rebuilt/source-body DSV4 artifact clears the
 live quality gate. The fresh max-output/context evidence does not show a
 remaining UI/server token-wiring blocker.
+
+## 2026-05-22 05:59 PDT - Plain MLX 4bit Qwen Row Pinned
+
+Added a named no-heavy release guard for the existing plain MLX 4-bit Qwen row
+so it cannot be silently confused with JANG, JANGTQ/MXTQ, MXFP4, or MXFP8
+families while parser/modality/speed rows are maintained.
+
+New release row:
+
+- `decode_speed_plain_mlx_4bit_qwen36_row`
+
+What it pins:
+
+- row `qwen35_4bit` points at `/Users/eric/models/Qwen3.6-35B-A3B-4bit`;
+- path is not JANG, JANGTQ, or MXFP;
+- launch policy remains Qwen tool parser + qwen3 reasoning parser;
+- `--is-mllm` is present for the VLM row;
+- no startup `--max-tokens` is emitted by the decode-speed launch command;
+- decode/PP thresholds stay explicit and positive.
+
+Verification:
+
+- red:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_family_detection_contract_pins_named_release_rows`
+  failed before the required row existed;
+- focused green:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_family_detection_contract_pins_named_release_rows tests/test_model_family_detection_contract.py::test_decode_speed_gate_has_plain_mlx_qwen36_4bit_row tests/test_model_family_detection_contract.py::test_decode_speed_gate_artifact_format_coverage_matrix`
+  -> `3 passed`;
+- family gate:
+  `.venv/bin/python tests/cross_matrix/run_model_family_detection_contract.py --out build/current-model-family-detection-contract-20260522-plain-mlx-4bit.json`
+  -> `status=pass`, `missing_rows=[]`, engine `40 passed`, panel
+  `41 passed / 12 skipped`;
+- release manifest:
+  `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-20260522-plain-mlx-4bit.json`
+  -> 18 rows;
+- focused release tests:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py tests/test_release_regression_manifest.py tests/test_current_regression_suite.py`
+  -> `84 passed`;
+- py-compile and `git diff --check` -> pass;
+- umbrella:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools .venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-plain-mlx-4bit.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement remains
+  `DSV4 long-output/code/file-generation quality is release-cleared`;
+- release surface:
+  `.venv/bin/python tests/cross_matrix/run_release_surface_contract.py --out build/current-release-surface-contract-20260522-plain-mlx-4bit.json`
+  -> `status=pass`.
+
+This is source/static launch-policy and matrix coverage. It does not claim live
+output quality for the plain MLX 4-bit row.
