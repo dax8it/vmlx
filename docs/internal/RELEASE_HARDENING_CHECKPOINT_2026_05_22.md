@@ -2055,3 +2055,47 @@ Green:
 
 This is a release-safety fix. It does not clear the DSV4 model-quality row or
 start build/signing.
+
+## 2026-05-22 07:52 PDT - Persisted Chat Output Caps Cannot Relaunch Server Caps
+
+Added a targeted max-output/context edge-case guard for the concern that a
+separate Chat Max Output Tokens override could accidentally mutate or conflict
+with Server Default Max Output Tokens on a later server launch.
+
+New required marker:
+
+- `persisted chat maxTokens cannot relaunch server with a new startup maxTokens`
+
+What it pins:
+
+- `chat_overrides.max_tokens` is written only through the chat override table;
+- `chat:setOverrides` still does not touch session config, model settings, or
+  session save paths;
+- `model_settings.max_tokens` remains deliberately stored as `NULL`;
+- server launch still reads only `sessions.config.maxTokens` for `--max-tokens`;
+- the session launch block does not query `chat_overrides` or
+  `overrides.maxTokens`.
+
+Red:
+
+- max-output/context gate failed with
+  `missing_markers=["persisted chat maxTokens cannot relaunch server with a new startup maxTokens"]`
+  before the test existed.
+- release manifest boundary test failed before this artifact/proof text was
+  indexed.
+
+Green:
+
+- focused panel test:
+  `cd panel && npx vitest run tests/chat-override-policy.test.ts --testNamePattern "persisted chat maxTokens cannot relaunch server with a new startup maxTokens|chat maxTokens save path cannot mutate session startup maxTokens|server startup maxTokens and chat maxTokens remain independent" --reporter=verbose`
+  -> `3 passed`;
+- max-output/context gate:
+  `build/current-max-output-context-contract-20260522-persisted-chat-output-cap.json`
+  -> `status=pass`, `missing_markers=[]`, engine `20 passed`, panel
+  `39 passed / 292 skipped`;
+- focused release tests:
+  `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_server_chat_max_output_boundary tests/test_max_output_context_contract.py::test_max_output_context_contract_covers_all_public_api_surfaces`
+  -> `2 passed`.
+
+This is no-heavy persisted-state and launch-wiring proof. It does not claim
+live model output quality or clear the DSV4 long-output/code row.
