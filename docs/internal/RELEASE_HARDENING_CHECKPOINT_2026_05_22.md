@@ -2398,3 +2398,50 @@ Green:
 
 This is static/no-heavy family and launch-policy proof. It does not claim live
 multi-turn quality or DSV4 long-output/code clearance.
+
+## 2026-05-22 09:11 PDT - Parser Gate Requires Non-Reasoning Boundaries
+
+Strengthened `run_parser_registry_contract.py` so parser parity now requires
+negative reasoning-rail checks, not only positive parser availability.
+
+New required markers:
+
+- `test_qwen2_must_not_have_reasoning`
+- `test_qwen2_vl_must_not_have_reasoning`
+- `test_gemma3_reasoning_parser`
+- `test_glm_flash_vs_base_reasoning_parser_differs`
+
+Why:
+
+- The MiniMax regression was a positive parser mismatch. A second class of
+  parser regression is accidental reasoning-parser attachment to models that
+  should stream visible content without reasoning extraction.
+- These rows pin Qwen2/Qwen2-VL, Gemma 3, and GLM base/Flash separation so
+  parser cleanup cannot silently classify ordinary output as reasoning.
+
+Red:
+
+- parser contract unit failed because these markers were not required;
+- release manifest parser row failed because it still pointed at the older
+  parser artifact.
+
+Green:
+
+- parser contract unit:
+  `.venv/bin/python -m pytest -q tests/test_parser_registry_contract.py`
+  -> `2 passed`;
+- parser registry gate:
+  `build/current-parser-registry-contract-20260522-non-reasoning-boundaries.json`
+  -> `status=pass`, `failed=[]`, `missing_markers=[]`,
+  engine `120 passed / 425 deselected`, panel `40 passed / 247 skipped`;
+- focused parser/manifest tests:
+  `39 passed`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-non-reasoning-boundaries.json`
+  -> `18 rows`;
+- umbrella suite with clean JANG source:
+  `build/current-regression-suite-20260522-non-reasoning-boundaries.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+No runtime behavior changed. This is release-proof tightening for parser rails.
