@@ -3336,3 +3336,64 @@ Release read:
   live video/Omni/VLM output quality.
 - DSV4 long-output/code/file-generation quality remains the only open
   requirement in the umbrella suite.
+
+## 2026-05-22 15:22 PDT - Updater Surface And Update Notice I18n Recheck Pinned
+
+Scope:
+
+- Rechecked the release-updater and "What's New" surfaces Eric called out:
+  `latest.json`, source version parity, post-release updater completeness,
+  and localized release notice copy mentioning MCP/MTP/cache/release-critical
+  items.
+- Updated the release-regression manifest so those current 2026-05-22 artifacts
+  are named directly instead of relying only on older proof names.
+
+Changes:
+
+- `tests/test_release_regression_manifest.py`
+  - added a guard requiring current updater and i18n/update-notice recheck
+    artifacts and edge-case text.
+- `tests/cross_matrix/release_regression_manifest.py`
+  - panel/settings row now names the current update-notice/i18n artifact and
+    explicitly proves all five locales mention MCP, MTP, `latest.json`,
+    Developer ID, L2 disk cache, and `max_tokens`;
+  - release-surface row now names the current updater artifact and explicitly
+    proves source version parity plus complete post-release updater handling.
+
+Red:
+
+- `tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_current_updater_and_i18n_rechecks`
+  failed until the manifest named the current artifacts and edge-case text.
+
+Green:
+
+- release surface:
+  `build/current-release-surface-contract-20260522-recheck-updater-i18n.json`
+  -> `status=pass`; source versions are `1.5.48` in `pyproject.toml` and
+  `panel/package.json`; local `latest.json` is also `1.5.48` and the local
+  updater checks are valid;
+- panel settings / i18n:
+  `build/current-panel-settings-contract-proof-20260522-recheck-update-notice-i18n.json`
+  -> `status=pass`, `missing_source_markers=[]`, panel settings/i18n
+  `286 passed`, panel typecheck `rc=0`, panel model registry `55 passed`,
+  engine model registry `131 passed`;
+- focused manifest tests:
+  `tests/test_release_regression_manifest.py::{public_release_surface_preflight,panel_cache_family_gating,current_updater_and_i18n_rechecks}`
+  -> `3 passed`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-recheck-updater-i18n.json`
+  -> `18 rows`;
+- umbrella with fixed JANG source:
+  `build/current-regression-suite-20260522-recheck-updater-i18n.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Release read:
+
+- Current no-heavy proof now pins `latest.json`/source-version consistency and
+  the localized "What's New" release notice in the durable release manifest.
+- No runtime behavior changed in this slice.
+- The release surface check is local-state only; public GitHub/PyPI/update-feed
+  checks remain explicit operator checks before publishing.
+- DSV4 long-output/code/file-generation quality remains the only open
+  requirement in the umbrella suite.
