@@ -3163,3 +3163,44 @@ Release read:
   the engine at no-heavy contract level.
 - DSV4 DSML repair/residue rejection remains green at no-heavy contract level.
 - This does not clear the remaining live DSV4 long-output/code quality row.
+
+## 2026-05-22 15:15 PDT - Artifact Format And Decode-Speed Matrix Recheck
+
+Scope:
+
+- Rechecked the artifact-format and speed-matrix metadata for the families Eric
+  called out: generic JANG/JANGTQ/MXTQ, DSV4, MXFP4/MXFP8, plain MLX 4bit,
+  Qwen 3.6 VL/video/native-MTP rows, Ling/Bailing hybrid, Nemotron
+  Omni/Nano/Nemotron3, Mistral, GPT-OSS, and ZAYA/ZAYA-VL policy edges.
+
+Evidence:
+
+- `build/current-model-artifact-format-contract-20260522-recheck-jang-mxfp.json`
+  -> `status=pass`, `failed=[]`, `missing_markers=[]`;
+  - `model_artifact_format_pytest`: `132 passed`, `174 deselected`.
+- `.venv/bin/python -m pytest -q -vv tests/test_model_family_detection_contract.py -k 'decode_speed_gate'`
+  -> `17 passed`, `8 deselected`.
+
+What this proves at no-heavy level:
+
+- affine JANG is accepted by the JANG loader instead of being misclassified as
+  JANGTQ/MXFP/plain MLX;
+- JANGTQ/MXTQ mixed routed-bit metadata stays represented;
+- MXFP4/MXFP8 VLM loader paths use declared quantization mode;
+- plain MLX Qwen 3.6 4bit rows keep hybrid cache without JANG/MXFP inference;
+- DSV4 dropped/no-runtime MTP state is explicit;
+- native MTP detection is weight-index based, not path-name based;
+- Ling/Bailing hybrid shape/MTP/MLA repairs remain covered;
+- decode-speed rows keep JANG-only MX affine matmul text-only policy;
+- decode-speed rows keep JANG, JANGTQ/MXTQ, plain MLX 4bit, MXFP4, and MXFP8
+  thresholds and rows distinct;
+- decode-speed rows declare registered/CLI-accepted parsers and preserve row
+  parser/modality command policy;
+- decode-speed health checks reject DSV4/ZAYA native-cache health for plain KV
+  JANG/JANGTQ/MXFP rows.
+
+Release read:
+
+- This strengthens the no-heavy model-family compatibility ledger.
+- It does not claim live speed for every row.
+- It does not clear the remaining live DSV4 long-output/code quality row.
