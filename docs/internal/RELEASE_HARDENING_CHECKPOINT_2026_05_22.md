@@ -55,6 +55,51 @@ Key artifacts:
 - `build/current-tool-call-contract-20260522-marker-hardening.json`
 - `build/current-regression-suite-20260522-tool-marker-hardening.json`
 
+### DSV4 Cache Timing And Pool Quant Boundaries
+
+- Runner: `tests/cross_matrix/run_cache_architecture_contract.py`.
+- Added required marker enforcement for
+  `test_dsv4_timing_probe_is_env_gated_and_covers_cache_boundaries`.
+- Added an env-gated trace switch, `VMLINUX_DSV4_TRACE_TIMINGS=1`, covering
+  DSV4 generator and scheduler cache boundaries. This is diagnostics only; it
+  does not change sampler behavior, output caps, generation defaults, or cache
+  policy.
+- Timing markers cover:
+  - generator: `prefill_head`, `prompt_snapshot`, `prefill_last`,
+    `cache_hit_tail_prefill`, `decode_model`, `sample_materialize`;
+  - scheduler: `reconstruct_cache`, `extract_cache_states`, `store_cache`.
+- Live traced DSV4 default-cache tool loop with pool quant off produced a true
+  prefix/paged/L2 cache hit:
+  - result:
+    `build/current-dsv4-default-cache-tool-loop-trace-pooloff-20260522/result.json`;
+  - log:
+    `build/current-dsv4-default-cache-tool-loop-trace-pooloff-20260522/logs/dsv4-default-cache-tool-loop-1779479242.log`;
+  - cache hit round: `cached_tokens=231`, `cache_detail=paged+dsv4`, 83 output
+    tokens in `3.906s` (~21.3 tok/s);
+  - cache-hit reconstruct was `2.075ms`;
+  - cache-hit tail prefill was `14.416ms`;
+  - cold round 0 prompt snapshot was `13636.926ms`;
+  - cold round 0 first sample/materialize was `6783.427ms`.
+- Current read: true prefix-cache replay is not the measured 2-3 tok/s path
+  when DSV4 pool quant is off. Cold prompt-boundary snapshot and first-token
+  materialization dominate the slow first tool round. Pool quant remains
+  release-off because append-only JANG fixed repeated requantization but did
+  not remove the full-pool dequantize/concat read cost.
+- The traced live tool loop is not a functional pass: status is `review`
+  because `file_written=False`. Raw model output still degraded canonical DSML
+  to forms such as `<｜DSML｜tool_ciles>`, `<｜DSML｜tool_ctools>`, and
+  `<｜DSML｜inv>`. That syntax/file-generation quality issue happened with pool
+  quant off and should not be attributed solely to UI spacing or pool quant.
+
+Key artifacts:
+
+- `build/current-cache-architecture-contract-20260522-dsv4-timing.json`
+- `build/current-release-regression-manifest-20260522-dsv4-timing.json`
+- `build/current-dsv4-default-cache-tool-loop-trace-pooloff-20260522/result.json`
+- `build/current-dsv4-default-cache-tool-loop-trace-pooloff-20260522/logs/dsv4-default-cache-tool-loop-1779479242.log`
+- `build/current-packaged-integrity-contract-20260522-dsv4-timing-clean-jang.json`
+- `build/current-regression-suite-20260522-dsv4-timing-clean-jang.json`
+
 ### MCP Policy, Redaction, Gateway, And Panel Wiring
 
 - Runner: `tests/cross_matrix/run_mcp_policy_contract.py`.
