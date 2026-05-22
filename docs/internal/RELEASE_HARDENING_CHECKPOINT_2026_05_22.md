@@ -292,6 +292,20 @@ uv run --extra dev python tests/cross_matrix/run_current_regression_suite.py \
 
 uv run --extra dev python tests/cross_matrix/run_release_surface_contract.py \
   --out build/current-release-surface-contract-20260522-post-streaming-ollama.json
+
+uv run --extra dev python tests/cross_matrix/run_max_output_context_contract.py \
+  --out build/current-max-output-context-contract-20260522-context-alias-clamp.json
+
+uv run --extra dev python tests/cross_matrix/run_api_surface_contract.py \
+  --out build/current-api-surface-contract-20260522-context-alias-clamp.json
+
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-context-alias-clamp.json
+
+VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools \
+VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools \
+uv run --extra dev python tests/cross_matrix/run_current_regression_suite.py \
+  --out build/current-regression-suite-20260522-context-alias-clamp.json
 ```
 
 Observed results:
@@ -428,6 +442,25 @@ Observed results:
   `DSV4 long-output/code/file-generation quality is release-cleared`;
 - pushed `204cf38c test: pin streaming ollama output caps` to `origin/main`;
 - release surface contract after pushing `204cf38c`: `status=pass`;
+- red proof for prompt/context alias clamp:
+  `build/current-max-output-context-contract-20260522-context-alias-clamp-red.json`
+  failed only with
+  `missing_markers=["test_prompt_context_aliases_clamp_without_rewriting_output_caps"]`;
+- focused prompt/context alias clamp test:
+  `test_prompt_context_aliases_clamp_without_rewriting_output_caps` passed;
+- max-output gate after prompt/context alias clamp guard: `status=pass`,
+  `missing_markers=[]`, engine `20 passed`, panel `34 passed / 1 skipped`;
+- API surface after prompt/context alias clamp guard: `status=pass`,
+  `missing_nested_checks=[]`, `missing_nested_markers=[]`,
+  `missing_panel_markers=[]`, server API surface `21 passed`, panel request
+  builders `64 passed`;
+- release manifest artifact after prompt/context alias clamp guard: 18 rows;
+- focused prompt/context alias/API/manifest/current-suite tests: `64 passed`;
+- py-compile and `git diff --check` after prompt/context alias clamp guard:
+  pass;
+- umbrella suite after prompt/context alias clamp guard: `status=pass`,
+  `failed_steps=[]`, open requirement remains
+  `DSV4 long-output/code/file-generation quality is release-cleared`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract after pushing `cdb7d0f0`: `status=pass`;
 - release surface contract after pushing `177b9cd4`: `status=pass`;
