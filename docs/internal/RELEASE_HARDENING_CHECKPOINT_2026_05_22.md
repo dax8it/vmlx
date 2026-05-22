@@ -3272,3 +3272,67 @@ Release read:
 - No runtime behavior changed in this slice.
 - DSV4 long-output/code/file-generation quality remains the only open
   requirement in the umbrella suite.
+
+## 2026-05-22 15:16 PDT - MCP And VL/Media Recheck Pinned
+
+Scope:
+
+- Rechecked the user-called-out MCP, Qwen VL/video, ZAYA-VL, Nemotron stale
+  Omni, hybrid SSM, video-tool, and media follow-up surfaces against current
+  code.
+- Updated the release-regression manifest so these rows point at current
+  2026-05-22 artifacts and explicitly name the edge cases instead of relying
+  only on older proof names.
+
+Changes:
+
+- `tests/test_release_regression_manifest.py`
+  - added a guard requiring current MCP and VL/media recheck artifacts and
+    edge-case text.
+- `tests/cross_matrix/release_regression_manifest.py`
+  - MCP row now names current UI/gateway artifact and explicitly proves
+    `mcp.json/jsonc` import, redaction, explicit model routing, ambiguous
+    multi-session rejection, and built-in tool separation;
+  - VL/media row now names current Qwen/ZAYA/media artifact and explicitly
+    proves Qwen3.6 indexed-MTP VL routing, MXTQ/JANGTQ and MXFP4/MXFP8 Qwen
+    VLM policy, hybrid SSM companion/deferred rederive/TQ suppression, and
+    `read_video`/image-video tool-result follow-up behavior.
+
+Red:
+
+- `tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_current_mcp_and_vl_media_rechecks`
+  failed until the manifest named the current artifacts and edge-case text.
+
+Green:
+
+- MCP:
+  `build/current-mcp-policy-contract-20260522-recheck-ui-gateway.json`
+  -> `status=pass`, `failed=[]`, `missing_markers=[]`, engine `76 passed`,
+  panel `13 passed`, `3 skipped`;
+- VL/media:
+  `build/current-vl-media-cache-contract-20260522-recheck-qwen-zaya-media.json`
+  -> `status=pass`, `failed=[]`, no missing engine/panel markers, engine
+  `44 passed`, `6 skipped`, `692 deselected`, panel media `12 passed`, panel
+  VLM settings `11 passed`, `225 skipped`, panel VLM family detection
+  `13 passed`, `42 skipped`;
+- focused manifest tests:
+  `tests/test_release_regression_manifest.py::{mcp_with_runner_artifact,vl_media_with_runner_artifact,current_mcp_and_vl_media_rechecks}`
+  -> `3 passed`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-recheck-mcp-vl-media.json`
+  -> `18 rows`;
+- umbrella with fixed JANG source:
+  `build/current-regression-suite-20260522-recheck-mcp-vl-media.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+Release read:
+
+- Current no-heavy proof now pins MCP import/routing/security and the
+  Qwen/ZAYA/Nemotron/VL/video/media-cache/tool-follow-up edges in the durable
+  release manifest.
+- No runtime behavior changed in this slice.
+- These checks are source/static and panel-contract coverage; they do not claim
+  live video/Omni/VLM output quality.
+- DSV4 long-output/code/file-generation quality remains the only open
+  requirement in the umbrella suite.
