@@ -2351,3 +2351,50 @@ Green:
 No runtime behavior changed and no hidden output cap was added. This only makes
 the existing server-default versus per-chat/API override boundary mandatory in
 the release proof.
+
+## 2026-05-22 09:05 PDT - Family Gate Requires ZAYA/Hy3/Qwen VL Profile Rows
+
+Strengthened `run_model_family_detection_contract.py` so existing high-risk
+panel registry tests are mandatory family rows, not incidental output.
+
+New required rows:
+
+- `zaya1_vl_jangtq_profiles_reasoning_policy`
+- `hy3_jangtq_k_reasoning_policy`
+- `qwen36_affine_jang_native_mtp_vl_video`
+
+What they pin:
+
+- ZAYA1-VL JANGTQ_K, JANGTQ2, and JANGTQ4 keep the `qwen3` reasoning rail,
+  multimodal/VL classification, and typed CCA cache detection;
+- Hy3 JANGTQ_K keeps the Hunyuan tool parser and qwen3 Low/High reasoning
+  contract;
+- affine-JANG Qwen native-MTP VL/video bundles stay multimodal when indexed
+  MTP and vision tensors exist.
+
+Red:
+
+- family contract unit failed because the new required rows were absent;
+- release manifest test failed because the model-family row did not list the
+  new artifact or proof scope.
+
+Green:
+
+- family contract unit:
+  `.venv/bin/python -m pytest -q tests/test_model_family_detection_contract.py::test_family_detection_contract_pins_named_release_rows`
+  -> `1 passed`;
+- family detection gate:
+  `build/current-model-family-detection-contract-20260522-zaya-hy3-qwen-vl-profile-rows.json`
+  -> `status=pass`, `failed=[]`, `missing_rows=[]`;
+- focused family/manifest tests:
+  `61 passed`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-zaya-hy3-qwen-vl-profile-rows.json`
+  -> `18 rows`;
+- umbrella suite with clean JANG source:
+  `build/current-regression-suite-20260522-zaya-hy3-qwen-vl-profile-rows.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+This is static/no-heavy family and launch-policy proof. It does not claim live
+multi-turn quality or DSV4 long-output/code clearance.
