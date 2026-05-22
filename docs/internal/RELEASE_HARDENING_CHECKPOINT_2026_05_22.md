@@ -113,6 +113,10 @@ Key artifacts:
 - Updated the durable release-regression manifest so the
   `chat-settings-max-output-context-ui` row points at the current max-output
   proof artifact and explicitly names the new-chat model-owned maxTokens guard.
+- Added a model-family speed-row guard so broad speed coverage cannot blur
+  JANG-only MX matmul, JANGTQ/MXTQ TurboQuant, MXFP4, and MXFP8-MTP rows.
+  Each distinct row class must keep explicit PP/decode thresholds and the
+  release manifest now points at the current family artifact.
 
 Key artifacts:
 
@@ -133,6 +137,9 @@ Key artifacts:
 - `build/current-release-surface-contract-20260522-post-new-chat-max-output.json`
 - `build/current-release-regression-manifest-20260522-new-chat-max-output.json`
 - `build/current-regression-suite-20260522-new-chat-manifest.json`
+- `build/current-model-family-detection-contract-20260522-distinct-speed-rows.json`
+- `build/current-release-regression-manifest-20260522-distinct-speed-rows.json`
+- `build/current-regression-suite-20260522-distinct-speed-rows.json`
 
 ## Latest Verification
 
@@ -174,6 +181,12 @@ uv run --extra dev python tests/cross_matrix/run_max_output_context_contract.py 
 
 uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
   --out build/current-release-regression-manifest-20260522-new-chat-max-output.json
+
+uv run --extra dev python tests/cross_matrix/run_model_family_detection_contract.py \
+  --out build/current-model-family-detection-contract-20260522-distinct-speed-rows.json
+
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-distinct-speed-rows.json
 
 uv run --extra dev python tests/cross_matrix/run_max_output_context_contract.py \
   --out build/current-max-output-context-contract-20260522-chat-server-boundary.json
@@ -218,6 +231,13 @@ Observed results:
 - manifest/current-suite tests after manifest row update: `55 passed`;
 - release manifest artifact after row update: 17 rows;
 - umbrella suite after manifest row update: `status=pass`, `failed_steps=[]`;
+- model-family gate after distinct speed-row guard: `status=pass`,
+  `missing_rows=[]`, engine `32 passed`, panel `40 passed / 12 skipped`;
+- family/manifest/current-suite tests after distinct speed-row guard:
+  `70 passed`;
+- release manifest artifact after distinct speed-row guard: 17 rows;
+- umbrella suite after distinct speed-row guard: `status=pass`,
+  `failed_steps=[]`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract after pushing `cdb7d0f0`: `status=pass`;
 - release surface contract after pushing `177b9cd4`: `status=pass`;
