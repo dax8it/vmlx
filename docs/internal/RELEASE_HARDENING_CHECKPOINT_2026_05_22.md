@@ -1437,3 +1437,51 @@ Verification:
 
 This is source/static loader repair coverage. It does not claim live output
 quality for Ling/Bailing rows.
+
+## 2026-05-22 06:17 PDT - Qwen Indexed-MTP VLM Routing Pinned
+
+Extended the VLM media/cache release gate so Qwen3.6 VL JANG bundles with
+indexed MTP tensors are explicitly selected and required in the panel family
+detection pass. This keeps native-MTP/VLM routing covered in the same gate as
+video/media/tool-follow-up behavior, not only in the generic family/native-MTP
+gates.
+
+Required panel marker:
+
+- `marks Qwen3.6 VL JANG bundles with indexed MTP tensors as native MTP capable`
+
+What it pins:
+
+- Qwen3.6 VL JANG bundles with indexed `mtp.*` tensors stay multimodal;
+- the panel marks them native-MTP capable;
+- this row is intentionally selected by `indexed MTP` in the VLM family
+  detection command;
+- it is checked alongside Qwen video, JANGTQ/MXTQ, MXFP4, MXFP8, ZAYA-VL, and
+  Nemotron-H stale-sidecar rows.
+
+Verification:
+
+- red:
+  `.venv/bin/python -m pytest -q tests/test_vl_media_cache_contract.py::test_vl_media_cache_contract_pins_named_panel_rows`
+  failed until the VLM family detection selector included `indexed MTP`;
+- VLM media gate:
+  `.venv/bin/python tests/cross_matrix/run_vl_media_cache_contract.py --out build/current-vl-media-cache-contract-20260522-qwen-indexed-mtp.json`
+  -> `status=pass`, no missing markers, engine `32 passed / 6 skipped`,
+  panel family detection `13 passed / 40 skipped`;
+- release manifest:
+  `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-20260522-qwen-indexed-mtp-vl.json`
+  -> 18 rows;
+- focused release tests:
+  `.venv/bin/python -m pytest -q tests/test_vl_media_cache_contract.py tests/test_release_regression_manifest.py tests/test_current_regression_suite.py`
+  -> `64 passed`;
+- py-compile and `git diff --check` -> pass;
+- umbrella:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools .venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-qwen-indexed-mtp-vl.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement remains
+  `DSV4 long-output/code/file-generation quality is release-cleared`;
+- release surface:
+  `.venv/bin/python tests/cross_matrix/run_release_surface_contract.py --out build/current-release-surface-contract-20260522-qwen-indexed-mtp-vl.json`
+  -> `status=pass`.
+
+This is source/static panel routing coverage. It does not claim live Qwen
+indexed-MTP VLM output quality.
