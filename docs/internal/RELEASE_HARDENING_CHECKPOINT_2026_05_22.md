@@ -2246,3 +2246,61 @@ Green:
 
 This is launch-wiring compatibility proof only. It does not change runtime
 behavior or clear live model output quality.
+
+## 2026-05-22 08:53 PDT - Cache Architecture Gate Pins Panel Launch Policy
+
+Strengthened `run_cache_architecture_contract.py` so cache-family proof now
+includes the app launch builder, not only engine/API internals. This closes the
+gap where DSV4, hybrid SSM/Mamba, regular KV, prefix cache, paged cache, block
+disk L2, and stored KV quantization could be tested in backend units while the
+panel launch command drifted.
+
+New coverage:
+
+- hashes `panel/src/main/sessions.ts`,
+  `panel/src/shared/cacheControlPolicy.ts`,
+  `panel/tests/settings-flow.test.ts`, and
+  `panel/tests/cache-control-policy.test.ts`;
+- runs focused panel vitest rows through `panel_cache_launch_policy`;
+- requires DSV4 composite prefix cache to stay disabled by default;
+- requires DSV4 diagnostic cache opt-in to emit native paged/L2 policy with
+  256-token blocks;
+- requires generic KV quantization to stay suppressed for DSV4 native cache;
+- requires DSV4-only native controls not to leak onto non-DSV4 JANG/JANGTQ/MXFP
+  rows;
+- requires Qwen3.6 hybrid and Mamba cache detection to force paged cache over
+  stale saved `usePagedCache=false`;
+- requires regular KV rows to respect stale saved `usePagedCache=false`;
+- requires prefix-cache and continuous-batching master switches to suppress
+  dependent paged, L2, legacy disk, and stored KV quantization flags.
+
+Red:
+
+- `tests/test_cache_architecture_contract.py` failed because the gate had no
+  `REQUIRED_PANEL_CACHE_MARKERS`, did not hash panel launch/cache files, and
+  had no `panel_cache_launch_policy` command.
+
+Green:
+
+- cache architecture contract unit:
+  `.venv/bin/python -m pytest -q tests/test_cache_architecture_contract.py`
+  -> `2 passed`;
+- cache architecture gate:
+  `build/current-cache-architecture-contract-20260522-panel-cache-launch.json`
+  -> `status=pass`, `failed=[]`, `missing_markers=[]`,
+  `missing_panel_markers=[]`;
+- panel cache-launch proof inside that gate:
+  `75 passed / 168 skipped`;
+- release manifest:
+  `build/current-release-regression-manifest-20260522-panel-cache-launch.json`
+  -> `18 rows`;
+- focused manifest/cache tests:
+  `39 passed`;
+- umbrella suite with clean JANG source:
+  `build/current-regression-suite-20260522-panel-cache-launch.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement exactly:
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
+This is no-heavy launch-policy proof. It does not force sampler defaults,
+change cache behavior, or clear DSV4 live long-output/code/file-generation
+quality.
