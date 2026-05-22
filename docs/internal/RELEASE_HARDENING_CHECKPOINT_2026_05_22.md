@@ -950,6 +950,62 @@ Green proof:
     `build/current-release-surface-contract-20260522-post-plain-kv-cache-health.json`
     -> `status=pass`, with updater/source consistency checks green.
 
+## 2026-05-22 05:06 PDT - Launch Memory Admission Warning-Only Guard
+
+Pinned the Python/Electron app behavior for the RAM launch issue Eric saw in a
+dev build:
+
+- The current `panel/src/main/sessions.ts` memory estimate path logs model size,
+  free RAM, and warnings.
+- It does not hard-block launch, does not require
+  `VMLX_ALLOW_UNSAFE_MODEL_LAUNCH` / `VMLINUX_ALLOW_UNSAFE_MODEL_LAUNCH`, and
+  does not set the session failed before launch.
+- This is important for lazy-mmap JANG/JANGTQ bundles where macOS file cache
+  pressure can make a resident estimate look too strict even though the model
+  can still load.
+
+Red proof:
+
+- `uv run --extra dev python tests/cross_matrix/run_noheavy_panel_settings_contract.py --out build/current-panel-settings-contract-proof-20260522-launch-memory-red.json`
+  failed with missing marker
+  `launch memory admission is warning-only for lazy-mmap bundles`.
+
+Fix:
+
+- `panel/tests/settings-flow.test.ts`
+  - added
+    `launch memory admission is warning-only for lazy-mmap bundles`;
+  - the test fences the actual session launch-memory block and asserts it keeps
+    warning/log behavior without `Launch blocked`, unsafe env escape hatches,
+    failed status, or thrown errors.
+- `tests/cross_matrix/run_noheavy_panel_settings_contract.py`
+  - requires the marker.
+- `tests/cross_matrix/release_regression_manifest.py`
+  - panel cache/settings row now points at the launch-memory artifact and
+    records warning-only launch-memory admission for lazy-mmap bundles.
+
+Green proof:
+
+- focused panel marker:
+  `cd panel && npx vitest run tests/settings-flow.test.ts --testNamePattern "launch memory admission is warning-only" --reporter=verbose`
+  -> `1 passed / 232 skipped`;
+- panel contract:
+  `uv run --extra dev python tests/cross_matrix/run_noheavy_panel_settings_contract.py --out build/current-panel-settings-contract-proof-20260522-launch-memory-warning.json`
+  -> `status=pass`, `missing_source_markers=[]`,
+  `panel_settings_contracts` `283 passed`, panel model registry `52 passed`,
+  engine model registry `126 passed`;
+- release manifest:
+  `uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-20260522-launch-memory-warning.json`
+  -> 18 rows;
+- focused pytest:
+  `uv run --extra dev python -m pytest -q tests/test_release_regression_manifest.py tests/test_current_regression_suite.py`
+  -> `60 passed`;
+- py-compile and `git diff --check` -> pass;
+- umbrella suite:
+  `VMLINUX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools VMLX_JANG_TOOLS_SOURCE=/Users/eric/jang/.worktrees/vmlx-release-clean-7f643ed/jang-tools uv run --extra dev python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-20260522-launch-memory-warning.json`
+  -> `status=pass`, `failed_steps=[]`, open requirement remains
+  `DSV4 long-output/code/file-generation quality is release-cleared`.
+
 ## Release Decision
 
 No release build has been started from this checkpoint. The next release action
