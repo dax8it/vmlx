@@ -97,6 +97,11 @@ Key artifacts:
   manifest and replaced the descriptive `model-family-live-multiturn-soak`
   command with a real scoped live command over Hy3, MiniMax, Qwen 3.6, ZAYA,
   ZAYA1-VL, Ling, Nemotron, and DSV4 rows.
+- Added manifest guards against duplicate artifact entries and live-soak
+  overclaims. The live soak row no longer implies Qwen MTP/VL/video live
+  coverage from a command that only names Qwen 3.6 hybrid rows; those
+  Qwen MTP/VL/video rows remain no-heavy family-detection coverage until
+  dedicated live-audit rows exist.
 
 Key artifacts:
 
@@ -107,6 +112,8 @@ Key artifacts:
 - `build/current-regression-suite-20260522-family-row.json`
 - `build/current-release-regression-manifest-20260522-live-soak-command.json`
 - `build/current-regression-suite-20260522-live-soak-command.json`
+- `build/current-release-regression-manifest-20260522-live-overclaim.json`
+- `build/current-regression-suite-20260522-live-overclaim.json`
 
 ## Latest Verification
 
@@ -137,6 +144,9 @@ uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py 
 uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
   --out build/current-release-regression-manifest-20260522-live-soak-command.json
 
+uv run --extra dev python tests/cross_matrix/run_release_regression_manifest.py \
+  --out build/current-release-regression-manifest-20260522-live-overclaim.json
+
 uv run --extra dev python tests/cross_matrix/run_max_output_context_contract.py \
   --out build/current-max-output-context-contract-20260522-chat-server-boundary.json
 
@@ -163,6 +173,8 @@ Observed results:
 - manifest/current-suite tests after live-soak command hardening: `51 passed`;
 - umbrella suite after live-soak command hardening: `status=pass`,
   `failed_steps=[]`;
+- manifest/current-suite tests after live-overclaim guard: `53 passed`;
+- umbrella suite after live-overclaim guard: `status=pass`, `failed_steps=[]`;
 - umbrella suite: `status=pass`, `failed_steps=[]`;
 - release surface contract: `status=pass`;
 - public updater primary/fallback remain `1.5.46`, PyPI `vmlx` remains
