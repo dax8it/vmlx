@@ -91,6 +91,11 @@ Current local artifacts in this worktree:
 - `build/current-gemma4-12b-media-smoke-all-unified-runtime-postfix-20260604.json`
   - Status: `pass`.
   - Coverage: red-image vision smoke for all three 12B quants.
+- `build/current-gemma4-12b-audio-smoke-release-default-gated-mxfp-jang-pass-20260604.json`
+  - Status: `pass`.
+  - Coverage: release-default audio capability boundary. MXFP4 and MXFP8 do
+    not advertise audio and are gated honestly; JANG_4M advertises audio and
+    passed the speech fixture plus no-audio contrast row.
 - `build/current-gemma4-12b-speed-gate-jang4m-20260604.json`
   - Status: `pass`.
   - JANG_4M default median speed: `46.665 tok/s`.
@@ -103,9 +108,10 @@ Current release boundary:
 - Text/runtime/cache/speed proof for Gemma 4 12B is green for the three named
   quants above.
 - Image smoke is green.
-- Audio and video are metadata/runtime-contract covered but not fully
-  production-cleared by a dedicated audio/video live media matrix in the
-  current artifacts.
+- Audio capability is green for the release-default boundary: MXFP4/MXFP8 are
+  intentionally non-audio/default-gated, and JANG_4M passed live speech audio.
+- Video is metadata/runtime-contract covered but not fully production-cleared
+  by a dedicated video live media matrix in the current artifacts.
 - The broader release objective still remains open on non-Gemma rows,
   especially DSV4 exact-code quality and the full real Electron UI
   cross-family proof.
@@ -166,4 +172,4 @@ per-tensor mixed-quant safety for 4-bit MLP tensors.
   cache stats.
 - For JANG_4M speed claims, use the speed-gate artifact and preserve the
   current 45 tok/s floor.
-- Do not claim audio/video production clearance from image smoke alone.
+- Do not claim video production clearance from image smoke alone.
