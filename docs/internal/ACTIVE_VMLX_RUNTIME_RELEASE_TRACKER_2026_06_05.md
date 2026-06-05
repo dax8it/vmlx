@@ -103,7 +103,7 @@ Required behavior:
 - [x] Step3p7 advertised-VLM metadata fails closed to text-only unless a production-cleared VLM route is introduced.
 - [x] `force_mllm=True` does not bypass the safety guard accidentally.
 - [x] Text-only override remains honored.
-- [ ] Media request against text-only route must return controlled unsupported-media error, not crash.
+- [x] Route-level media request against text-only Step3p7 route returns controlled unsupported-media error, not generation/crash.
 - [ ] Logs must explain why advertised modality was refused or ignored.
 
 Proof checklist:
@@ -113,8 +113,8 @@ Proof checklist:
 - [x] Unit test force behavior: `force_mllm=True` still routes text-only by default.
 - [ ] Live Step 3.7 Chat text smoke.
 - [ ] Live Step 3.7 Responses text smoke.
-- [ ] Live media request clean rejection or controlled result.
-- [ ] Post-media text request still works.
+- [x] Server route-level media request returns controlled text-only unsupported-media rejection; live installed-model proof still pending.
+- [x] Server route-level post-media text request still works after rejection.
 
 ### CM-002: Native crash without Python traceback
 
