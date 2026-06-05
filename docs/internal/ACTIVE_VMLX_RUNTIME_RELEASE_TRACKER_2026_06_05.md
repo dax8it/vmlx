@@ -228,6 +228,19 @@ No-fake-fix gate hygiene update:
 - [x] Current umbrella suite completes with `status=open` and only `failed_steps=["tool_call_contracts", "issue175_179_release_boundary_audit"]`.
 - [ ] Remaining release blockers are real proof/runtime blockers, not harness failures: DSV4 default-cache live Responses/tool-loop proof and issue175-179 installed-app memory/cache/MiniMax reporter parity proofs.
 
+Issue175-179 proof classification refresh:
+
+- [x] Current local DSV4 memory remains below launch threshold: `107.06GB` available vs `120GB` required. The DSV4 default-cache tool-loop gate wrote `status=skipped`; no DSV4 server was launched.
+- [x] Reclassified issue175-179 missing installed/live proofs as `open`, not hard `fail`, while preserving source/runtime guard regressions as hard failures.
+- [x] Issue175 source guardrails remain required: memory clear helper exists, prefers `mx.metal.clear_cache`, falls back to `mx.clear_cache`, and no removed raw API use appears in runtime paths.
+- [x] Issue176 source guardrails remain required: promoted paged-cache disk blocks are marked and reconstructed blocks drop parent/disk mirrors, with regression tests present.
+- [x] Issue177 source guardrails remain required: cache-selection telemetry, cold-paged reason, worker timing tests, and health/scheduler reporting remain present.
+- [x] Issue179 source guardrail remains required: Responses cancel route test coverage must exist; reporter parity/live cancel/reproduction proofs stay open until real installed/reporter evidence exists.
+- [x] `tests/test_issue175_179_release_boundary_audit.py tests/test_current_regression_suite.py -k "issue175_179 or current_regression_suite"` -> `65 passed`.
+- [x] `build/current-issue175-179-release-boundary-audit-20260531-post-install-sync.json` now reports `status=open`.
+- [x] Current umbrella suite now completes with `status=open` and only `failed_steps=["tool_call_contracts"]`.
+- [ ] Remaining hard release-suite failure is the DSV4 default-cache live Responses/tool-loop proof. It must stay red until memory/preflight allows a real run and the artifact reports `status=pass`.
+
 ### CM-002: Native crash without Python traceback
 
 Status: open.
