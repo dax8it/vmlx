@@ -20,6 +20,29 @@ The runtime issue is separable from behavior quality:
 
 These must be tested and tracked per family, not inferred from one passing model.
 
+## Root-Cause Classification Contract
+
+Do not use this document to justify fake fixes or hidden forced behavior.
+
+A failure class is not closed until the row says which side is responsible and the exact failing path has proof:
+
+- `model_artifact`: bad model upload, corrupt quant, bad sidecar, wrong chat template, or incorrect model-owned metadata/defaults.
+- `runtime_dispatch`: vMLX selected the wrong family, modality, parser, gateway, or unsupported runtime path.
+- `decode_loop`: generation loop, stop condition, thinking/template interaction, tool-loop, streaming finalization, max-token, or visible-output compatibility issue.
+- `kernel_cache`: quantized matmul, TurboQuant/JANGTQ, MTP, Metal kernel, KV/paged/L2/native-SWA/HSA/CSA cache, or memory-layout issue.
+- `gateway_ui`: settings panel, API adapter, packaged app, installed app, updater/download, signing, or notarization issue.
+- `unknown_pending_repro`: not enough evidence yet; must remain open until model-artifact versus runtime proof is separated.
+
+Allowed guard:
+
+- A fail-closed guard may protect users from a known unsupported route, but only if the user-visible error says the route is unsupported, the next valid request recovers, and the implementation work remains open.
+
+Not allowed:
+
+- Silently disabling MTP, VL, audio, video, prefix cache, paged cache, L2 disk cache, TurboQuant KV, tool parsing, thinking, continuous batching, native kernels, or parser rails and calling the model fixed.
+- Forcing sampling/default/tool/cache params from the harness without tracing the model metadata, UI request assembly, server effective params, and runtime logs.
+- Counting source-overlay, dry-run, skipped, stale installed-app, or memory-gated artifacts as packaged/notarized/installed release proof.
+
 ## Concrete Step Flash CRACK Evidence
 
 Model: `dealignai/Step-3.7-Flash-JANG_2L-CRACK`

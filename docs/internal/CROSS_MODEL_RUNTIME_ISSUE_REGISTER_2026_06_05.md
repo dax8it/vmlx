@@ -25,6 +25,27 @@ Current known release state:
 
 A model/runtime/config path is production-cleared only when the exact model family, quant/runtime, modality, API path, cache mode, streaming mode, and lifecycle path being claimed have current proof. Load-only, health-only, or one text smoke does not clear image/video/audio/tool/cache behavior.
 
+## No Fake Fix / No Hidden Force Contract
+
+Every row in this register must classify the root cause before it can move to `[x]`.
+
+- Runtime/decode-loop/kernel/cache/parser incompatibilities must be fixed in the runtime path that fails, not hidden by forcing the feature off.
+- Model artifact issues must be called out as model-side metadata/config/upload issues with the exact bad fields and the exact corrected artifact or metadata view.
+- Fail-closed unsupported-route guards are allowed only when the user-visible result is an explicit unsupported-runtime rejection, post-error recovery is proven, and the real implementation row stays open.
+- Disabling native MTP, prefix cache, paged cache, L2 disk cache, TurboQuant KV, VL, audio, video, thinking, or tool parsing does not count as a pass unless that disabled mode is the documented product behavior for that exact release row.
+- Sampling/default/parser overrides are not fixes unless traced from `generation_config.json`, `jang_config.json`, tokenizer/chat-template metadata, model registry, UI request assembly, and server effective params.
+- Postprocessing can repair structured output for downstream storage, but it does not prove native guided decoding or tool-call protocol correctness.
+- A skipped proof, memory-gated proof, dry run, stale installed-app proof, or source-overlay proof must remain `[~]`, `[!]`, or `[D]`; it cannot close a packaged/notarized/installed release row.
+
+Required classification labels for every new issue row:
+
+- `model_artifact`: bad or overbroad model metadata, missing sidecar, corrupt upload, bad chat template, or wrong model-owned defaults.
+- `runtime_dispatch`: wrong family/router/modality dispatch, unsafe MLLM/omni path, or unsupported advertised capability.
+- `decode_loop`: stop-condition, thinking/template, tool-loop, streaming finalization, max-token, or visible-output failure.
+- `kernel_cache`: Metal kernel, quantized matmul, TurboQuant/JANGTQ, MTP, KV/paged/L2/SWA/HSA/CSA cache, or memory-layout failure.
+- `gateway_ui`: UI/settings/API gateway mismatch, stale installed app, stale public download/update manifest, or packaging/notarization drift.
+- `unknown_pending_repro`: not classifiable yet; must stay open until a reproducible proof separates model artifact from runtime.
+
 ## Master Failure Classes
 
 ### CM-001 Unsupported advertised modality routes into unsafe runtime
