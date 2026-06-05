@@ -142,6 +142,13 @@ Packaged proof artifacts:
 - Clean staged app pass: `build/step3p7-clean-staged-app-proof-20260605/proof.json`: `pass=true`. `/tmp/vmlx-clean-step37-3782f817/panel/release/mac-arm64/vMLX.app` launched from `/tmp` routed Step3p7 as text-only, rejected Chat and Responses media with HTTP 400, recovered later text requests, and logged `tier=step3p7_advertised_vlm_text_only result=False` plus `MLLM=False`.
 - Clean staged app signing status: `codesign --verify --deep --strict --verbose=2` passed; `spctl --assess --type execute --verbose=2` rejected it as `Unnotarized Developer ID`.
 
+Expanded no-heavy route audit:
+
+- `build/current-local-generation-metadata-route-audit-20260605-step3p7-expanded.json`: `status=pass`, `rows=21`, `hard_failures=[]`.
+- Step3p7 rows flagged as intentionally guarded text-only despite advertised vision: `Step-3.7-Flash-JANG_2L-CRACK`, `Step-3.7-Flash-JANG_K-CRACK`, `Step-3.7-Flash-JANG_2L`, `Step-3.7-Flash-JANG_K`.
+- Advertised-VL rows that still route MLLM and therefore require live media proof, not metadata suppression: Gemma4 12B MXFP4/MXFP8/JANG_4M, Gemma4 31B JANG_4M-MTP, Qwen3.6 27B/35B MTP MXFP rows, ZAYA1-VL JANGTQ4/MXFP4.
+- Omni rows route through dispatcher rather than generic MLLM and remain covered by separate omni media proof rows.
+
 ### CM-002: Native crash without Python traceback
 
 Status: open.
