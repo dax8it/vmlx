@@ -8,9 +8,9 @@ Do not use: `/Users/eric/vmlx` for active app/runtime work.
 
 Current shipped app release: `v1.5.56`
 
-Current known `main` state from release work: `7de5debd8f631c267c5b99c4dea924f1817a9be5`
+Current Step3p7 guard/proof base on `main`: `3782f8179f2aa23a45d8f41bf1fc64988d4d20ce`
 
-Release posture: `v1.5.56` is shipped, signed, notarized, and publicly surfaced, but broad production clearance remains open until the cross-family runtime matrix is green.
+Release posture: `v1.5.56` is shipped, signed, notarized, and publicly surfaced, but it is stale for the Step3p7 advertised-VLM guard. A clean staged `1.5.56` app built from `3782f817` passes the Step3p7 guard proof, but the public installed app still fails that proof and must not be called fixed until a rebuilt, notarized, installed release is shipped.
 
 ---
 
@@ -41,6 +41,8 @@ Status: shipped.
 - [x] `/Applications/vMLX.app` installed from Tahoe DMG.
 - [x] Installed app reports app version `1.5.56` and bundled engine `1.5.56`.
 - [x] Gatekeeper accepts installed app as notarized Developer ID.
+- [ ] Installed `/Applications/vMLX.app` is stale for CM-001 Step3p7 guard: neutral-cwd packaged proof routed Step3p7 as `MLLM=True` and accepted media instead of failing closed.
+- [x] Clean staged app from `3782f817` passes CM-001 Step3p7 guard proof from neutral cwd, but is not notarized.
 - [x] `mlx.studio/update/latest.json` serves `1.5.56` with no-store cache policy.
 - [x] `mlx.studio/download/` serves `1.5.56` links, not stale `1.5.55` links.
 - [x] `vmlx.net/update/latest.json` and `/download/` resolve to `1.5.56`.
@@ -91,7 +93,7 @@ GitHub issues:
 
 ### CM-001: Unsupported advertised modality routes into unsafe runtime
 
-Status: source guard implemented and live-source proven; packaged installed-app proof still pending.
+Status: source guard implemented, live-source proven, and clean staged packaged app proven. Public installed app is stale and failed the guard proof; notarized installed release proof is pending.
 
 Classification:
 
@@ -125,13 +127,20 @@ Proof checklist:
 - [x] Server route-level media request returns controlled text-only unsupported-media rejection.
 - [x] Server route-level post-media text request still works after rejection.
 - [x] Live post-media text request still works after rejection.
-- [ ] Packaged installed-app proof for the same Step3p7 guard and recovery.
+- [x] Clean staged packaged app proof for the same Step3p7 guard and recovery.
+- [ ] Notarized installed-app proof for the same Step3p7 guard and recovery.
 
 Live proof artifact:
 
 - `build/step3p7-live-proof-20260605/proof.json`: `pass=true`.
 - Passed assertions: Chat text before media HTTP 200, Chat media rejected HTTP 400, rejection mentions text-only, Chat text after media HTTP 200, Responses media rejected HTTP 400, rejection mentions text-only, Responses text after media HTTP 200, `/health` HTTP 200.
 - Server log evidence: `tier=step3p7_advertised_vlm_text_only result=False` and `SimpleEngine loaded ... (MLLM=False)`.
+
+Packaged proof artifacts:
+
+- Stale installed app failure: `build/step3p7-installed-app-proof-20260605/proof.json`: `pass=false`. `/Applications/vMLX.app` launched from `/tmp` routed Step3p7 as `MLLM=True`, accepted image requests, returned `White background`, and stayed healthy. This proves the public installed app is not fixed for CM-001.
+- Clean staged app pass: `build/step3p7-clean-staged-app-proof-20260605/proof.json`: `pass=true`. `/tmp/vmlx-clean-step37-3782f817/panel/release/mac-arm64/vMLX.app` launched from `/tmp` routed Step3p7 as text-only, rejected Chat and Responses media with HTTP 400, recovered later text requests, and logged `tier=step3p7_advertised_vlm_text_only result=False` plus `MLLM=False`.
+- Clean staged app signing status: `codesign --verify --deep --strict --verbose=2` passed; `spctl --assess --type execute --verbose=2` rejected it as `Unnotarized Developer ID`.
 
 ### CM-002: Native crash without Python traceback
 
