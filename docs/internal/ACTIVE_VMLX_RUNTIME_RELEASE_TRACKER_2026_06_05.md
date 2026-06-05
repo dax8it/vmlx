@@ -172,6 +172,21 @@ Current regression-suite refresh:
 - [ ] Run the live DSV4 default-cache Responses/tool-loop proof only when memory preflight is at least `120GB` and a valid packaged or repo Python path is selected.
 - [ ] Keep `tool_call_contracts` red until that live DSV4 proof reports `status=pass`.
 
+Packaged-integrity continuation:
+
+- [x] Confirmed the active checkout is unsafe for a fresh `bundle-python.sh` release build while untracked `vmlx_engine/vendor/` exists, because `pyproject.toml` includes `vmlx_engine/vendor/...` as package data.
+- [x] Replaced stale active staged Sequoia app from the clean staged app at `/tmp/vmlx-clean-step37-3782f817/panel/release/mac-arm64/vMLX.app`.
+- [x] Refreshed `panel/bundled-python` from that same clean staged app instead of rebuilding from the dirty active checkout.
+- [x] `cd panel && npm run verify-bundled` now passes: bundled vMLX/JANG hashes match source, all critical imports pass, Step3p7 and Gemma4 registrations pass, and Kimi/DeepSeek/Mistral MLA patches are present.
+- [x] Regenerated `build/current-packaged-integrity-contract-gemma4-release-boundary-after-ui-e2e-fixes-dmg-build-20260604.json`; `bundled_python_verifier` is now `rc=0`.
+- [x] Built clean wheel/sdist from a detached clean worktree at `605ff98a` and copied only `dist/vmlx-1.5.56-py3-none-any.whl` plus `dist/vmlx-1.5.56.tar.gz` into the active checkout.
+- [x] `twine check dist/*` passes for the clean wheel/sdist.
+- [x] Direct dry release gate now passes version, `twine check dist`, panel request/type tests, panel typecheck, bundled Python import gate, and objective proof digest refresh; it fails only on the objective proof digest open requirements.
+- [x] Updated packaged-integrity policy so the contract shares the current regression suite expected-open objective list and accepts the `--skip-release-manifest` dry-gate shape only when the sole failure is objective digest.
+- [x] Focused policy tests passed: `.venv/bin/python -m pytest -q tests/test_packaged_integrity_contract.py tests/test_current_regression_suite.py -k "packaged_integrity or release_gate_failure or known_open_rows"` -> `49 passed, 57 deselected`.
+- [x] Regenerated `build/current-packaged-integrity-contract-gemma4-release-boundary-after-ui-e2e-fixes-dmg-build-20260604.json`; it now reports `status=pass`, `failed=[]`.
+- [ ] Do not notarize or release from this state; objective-proof closure is still required.
+
 ### CM-002: Native crash without Python traceback
 
 Status: open.
