@@ -160,6 +160,18 @@ Current regression-suite refresh:
 - `tests/cross_matrix/run_current_regression_suite.py` regenerated the missing no-heavy artifacts, but the run remained `status=open`; after the Step3p7 contract fix, `step37_crash_falsification_contract` is no longer in `failed_steps`.
 - Remaining failed suite steps in the stopped refresh artifact: `tool_call_contracts`, `packaged_integrity_contracts`, `issue175_179_release_boundary_audit`, `public_app_issue_audit`.
 
+2026-06-05 continuation update:
+
+- [x] Hardened `tool_call_contracts` so a DSV4 default-cache live artifact must report `status=pass`; mere file presence is no longer enough.
+- [x] Added regression test proving a `status=skipped` DSV4 artifact keeps the contract red.
+- [x] Focused test proof: `.venv/bin/python -m pytest -q tests/test_tool_call_contract.py` -> `4 passed`.
+- [x] DSV4 default-cache tool-loop gate dry-run wrote `build/current-dsv4-default-cache-tool-loop-dryrun-20260605/result.json` with `status=dry_run`.
+- [x] Real DSV4 default-cache tool-loop gate preflight wrote `build/current-dsv4-default-cache-tool-loop/result.json` with `status=skipped`; no server was launched.
+- [x] Local preflight facts before the skipped run: `108.25GB` available on a 128GB host, below the gate threshold of `120GB`; `/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG` exists; default packaged app Python path in this worktree is absent, so the preflight was run with repo `.venv/bin/python`.
+- [x] Regenerated `build/current-tool-call-contract-20260528-tool-parser-loop-matrix.json`; it remains `status=fail` with `failed=[]` and `missing_markers=[]`. Parser/panel/family tests passed (`22`, `78`, `137` respectively); blocker is the unresolved live DSV4 default-cache tool-loop proof.
+- [ ] Run the live DSV4 default-cache Responses/tool-loop proof only when memory preflight is at least `120GB` and a valid packaged or repo Python path is selected.
+- [ ] Keep `tool_call_contracts` red until that live DSV4 proof reports `status=pass`.
+
 ### CM-002: Native crash without Python traceback
 
 Status: open.
