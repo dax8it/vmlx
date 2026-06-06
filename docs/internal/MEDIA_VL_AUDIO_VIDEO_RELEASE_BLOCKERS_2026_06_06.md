@@ -72,6 +72,11 @@ Current state:
 - Source TP4 rank paths on Pod 1: `/opt/adlab/models/tp4-source/MiMo-V2.5/rank0..rank3`.
 - Current source endpoint: missing/unhealthy.
 - Current live Max2 gateways: Qwen3.6 TP4 on `8124` and `8125`, not MiMo.
+- Current Pod 1 resident `TPRankWorker` processes are Qwen workers. The AdLab
+  resident launch script treats live `TPRankWorker` processes as a preflight
+  failure; `TP_ALLOW_EXISTING_TP_WORKER=1` intentionally does not bypass
+  live/stuck workers. Relaunching MiMo source TP4 therefore requires replacing
+  the current Qwen worker lane or using another pod.
 
 Next valid actions:
 
