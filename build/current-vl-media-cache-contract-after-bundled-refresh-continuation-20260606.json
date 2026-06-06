@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-06T07:03:57-0700",
+  "created_at": "2026-06-06T11:34:23-0700",
   "status": "pass",
   "checks": {
     "video_url_request_schema": true,
@@ -19,7 +19,7 @@
   "missing_engine_markers": [],
   "missing_panel_markers": [],
   "source_hashes": {
-    "vmlx_engine/models/mllm.py": "1a89316f14452e3141a35ae727c11fd76df3bea9aca930b5ba7fa41c8f623513",
+    "vmlx_engine/models/mllm.py": "aa0603006ee890fe9b918be1f2d2af2296e7ef21a2c83c22d845dca2b27ead83",
     "vmlx_engine/mllm_batch_generator.py": "af6665ddb6f5710969fe6168ea5a3502166b72ccc0bac9ad52896b64487ffa7c",
     "vmlx_engine/mllm_scheduler.py": "f5825bf61304a468a8b081fbadedbc36d20358b91d3ae1895bb2406c4ff88ffc",
     "vmlx_engine/mllm_cache.py": "18e58f2725228115e499b2ceff04f4f34ae1f0bfa5fc58e6183be0215b84c7af",
@@ -31,8 +31,8 @@
     "panel/src/main/sessions.ts": "bf7db8442a841dd83414fb39b8a7daef1f32ca249eea772f323f4a7dc471a3bf",
     "panel/tests/tool-media-followup.test.ts": "2463008be8fe96eda042d78d960035e8fff76b80156a5c781ef4798543fbb818",
     "panel/tests/image-display-consistency.test.ts": "ca4e5e6e095072288139b0cd5e70d1f54ae968b0e8ed08e9c90380c6844662be",
-    "panel/tests/model-config-registry.test.ts": "17bb01b14b8da03806ae4a9cc5c010bc4bd13ffe31c1f201ffdbbe84d80ffe8a",
-    "panel/tests/settings-flow.test.ts": "2418de6b6a1ed21e2f9a553acca5e553ede0d0b4178c25729bfb9f9adc47ba44",
+    "panel/tests/model-config-registry.test.ts": "e9ae60f13696cd231397c33740934de8fd05fba81ff073396064b5e7039715a9",
+    "panel/tests/settings-flow.test.ts": "07825d0f16a63d48786d6ebcfee2d9d151269b352cd4fc3648c2b0479addce2f",
     "tests/test_vl_video_regression.py": "2a5da439352ff056d2f1db026480afeabd401dae20c6f64aa4fec689bcdf55c7",
     "tests/test_mllm_scheduler_cache.py": "c3a334f2205b5eea734ff3555e931f46d7c8109332b4c04fe8c9ab305f3d807e",
     "tests/test_mllm_tool_replay.py": "8590ebc9030ef54047d6921f175b42a9c7d0262d1f1b4ffe276bd0ddcda60246",
@@ -57,7 +57,7 @@
       ],
       "cwd": ".",
       "returncode": 0,
-      "elapsed_sec": 5.659,
+      "elapsed_sec": 5.144,
       "counts": {
         "passed": 45,
         "skipped": 5,
@@ -125,7 +125,7 @@
         "tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_zaya1_vl_registered_with_full_contract PASSED [ 98%]",
         "tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_zaya_stale_stamp_cannot_disable_reasoning_or_reenable_think_seed PASSED [100%]",
         "",
-        "================ 45 passed, 5 skipped, 712 deselected in 4.90s ================="
+        "================ 45 passed, 5 skipped, 712 deselected in 4.38s ================="
       ]
     },
     "panel_vl_media_followup_contracts": {
@@ -140,7 +140,7 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.417,
+      "elapsed_sec": 0.424,
       "counts": {
         "passed": 13,
         "skipped": null,
@@ -166,8 +166,8 @@
         "",
         " Test Files  2 passed (2)",
         "      Tests  13 passed (13)",
-        "   Start at  07:03:56",
-        "   Duration  134ms (transform 28ms, setup 0ms, import 38ms, tests 4ms, environment 0ms)",
+        "   Start at  11:34:22",
+        "   Duration  73ms (transform 29ms, setup 0ms, import 38ms, tests 4ms, environment 0ms)",
         ""
       ]
     },
@@ -184,14 +184,13 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.466,
+      "elapsed_sec": 0.473,
       "counts": {
         "passed": 12,
-        "skipped": 241,
+        "skipped": 242,
         "deselected": null
       },
       "stdout_tail": [
-        " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > changing maxNumSeqs produces different CLI output",
         " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > changing pagedCacheBlockSize produces different CLI output",
         " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > deepseek-v4 enables native composite prefix cache by default even with stale cache config",
         " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > deepseek-v4 native cache path uses DS4 page-sized blocks",
@@ -293,6 +292,7 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > every SessionConfig field is listed in the completeness check",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > default config produces the single-sequence cache-stack flags",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > server startup generation defaults are model-owned and not editable sliders",
+        " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > video sampling controls are gated to runtime video-capable families",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > Max Context Tokens can be manually typed while Auto is active",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > all local session settings surfaces pass detected model context to Max Context Tokens",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > JANGTQ router top-k override is not exposed through settings UI or launch env",
@@ -307,9 +307,9 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > cache TTL only emitted without paged cache",
         "",
         " Test Files  1 passed (1)",
-        "      Tests  12 passed | 241 skipped (253)",
-        "   Start at  07:03:57",
-        "   Duration  187ms (transform 61ms, setup 0ms, import 73ms, tests 3ms, environment 0ms)",
+        "      Tests  12 passed | 242 skipped (254)",
+        "   Start at  11:34:23",
+        "   Duration  126ms (transform 62ms, setup 0ms, import 74ms, tests 2ms, environment 0ms)",
         ""
       ]
     },
@@ -326,10 +326,10 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.439,
+      "elapsed_sec": 0.446,
       "counts": {
         "passed": 14,
-        "skipped": 49,
+        "skipped": 50,
         "deselected": null
       },
       "stdout_tail": [
@@ -363,6 +363,7 @@
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes Step3.7 JANG bridge through the source VLM runtime when available 0ms",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > falls back to config.json vision_config when jang_config has no vision stamp",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > detects top-level JANG has_vision without relying on registry family defaults",
+        " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > keeps MiMo V2 JANG text-only when capabilities say media sidecars are unwired",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes affine-JANG qwen3_5 text-only until the mlx-vlm M-RoPE path is fixed",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes affine-JANG qwen3_vl text-only until the mlx-vlm M-RoPE path is fixed",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes affine-JANG qwen3_vl_moe text-only until the mlx-vlm M-RoPE path is fixed",
@@ -401,9 +402,9 @@
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir local high-risk artifact parity > matches current local high-risk model paths to panel parser cache and modality policy",
         "",
         " Test Files  1 passed (1)",
-        "      Tests  14 passed | 49 skipped (63)",
-        "   Start at  07:03:57",
-        "   Duration  165ms (transform 39ms, setup 0ms, import 46ms, tests 9ms, environment 0ms)",
+        "      Tests  14 passed | 50 skipped (64)",
+        "   Start at  11:34:23",
+        "   Duration  169ms (transform 41ms, setup 0ms, import 48ms, tests 10ms, environment 0ms)",
         ""
       ]
     }

@@ -1,105 +1,107 @@
 {
-  "created_at": "2026-06-06T07:02:59-0700",
-  "status": "pass",
+  "created_at": "2026-06-06T11:33:24-0700",
+  "status": "fail",
   "checks": {
-    "generation_config_defaults_are_surfaced": true,
-    "jang_config_sampling_defaults_override_generation_config": true,
-    "disabled_top_k_sentinels_normalize_to_off": true,
-    "mode_specific_jang_repetition_penalty_is_metadata_owned": true,
-    "request_api_overrides_win_over_startup_defaults": true,
-    "bundle_max_new_tokens_preserved_when_omitted": true,
-    "omitted_max_tokens_without_bundle_default_is_bounded": true,
-    "server_default_output_cap_is_not_request_ceiling": true,
-    "panel_max_output_context_labels_are_separated": true,
-    "no_hidden_sampler_forcing_or_repetition_floor": true,
-    "additional_args_cannot_override_app_owned_cli_flags": true,
-    "local_high_risk_model_metadata_audit": true,
-    "panel_does_not_emit_default_sampler_cli_flags": true,
-    "legacy_count_floor_still_nontrivial": true,
-    "generation_defaults_family_matrix_complete": true
+    "generation_config_defaults_are_surfaced": false,
+    "jang_config_sampling_defaults_override_generation_config": false,
+    "disabled_top_k_sentinels_normalize_to_off": false,
+    "mode_specific_jang_repetition_penalty_is_metadata_owned": false,
+    "request_api_overrides_win_over_startup_defaults": false,
+    "bundle_max_new_tokens_preserved_when_omitted": false,
+    "omitted_max_tokens_without_bundle_default_is_bounded": false,
+    "server_default_output_cap_is_not_request_ceiling": false,
+    "panel_max_output_context_labels_are_separated": false,
+    "no_hidden_sampler_forcing_or_repetition_floor": false,
+    "additional_args_cannot_override_app_owned_cli_flags": false,
+    "local_high_risk_model_metadata_audit": false,
+    "panel_does_not_emit_default_sampler_cli_flags": false,
+    "legacy_count_floor_still_nontrivial": false,
+    "generation_defaults_family_matrix_complete": false
   },
   "generation_defaults_family_matrix": {
     "standard_mlx_generation_config": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "generation_config_defaults_are_surfaced": true
+        "generation_config_defaults_are_surfaced": false
       },
       "missing_markers": []
     },
     "jang_chat_sampling_overrides": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "jang_config_sampling_defaults_override_generation_config": true,
-        "mode_specific_jang_repetition_penalty_is_metadata_owned": true
+        "jang_config_sampling_defaults_override_generation_config": false,
+        "mode_specific_jang_repetition_penalty_is_metadata_owned": false
       },
       "missing_markers": []
     },
     "disabled_top_k_sentinel": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "disabled_top_k_sentinels_normalize_to_off": true
+        "disabled_top_k_sentinels_normalize_to_off": false
       },
       "missing_markers": []
     },
     "dsv4_direct_chat_repetition_policy": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "mode_specific_jang_repetition_penalty_is_metadata_owned": true,
-        "no_hidden_sampler_forcing_or_repetition_floor": true,
-        "additional_args_cannot_override_app_owned_cli_flags": true
+        "mode_specific_jang_repetition_penalty_is_metadata_owned": false,
+        "no_hidden_sampler_forcing_or_repetition_floor": false,
+        "additional_args_cannot_override_app_owned_cli_flags": false
       },
       "missing_markers": []
     },
     "max_output_context_separation": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "request_api_overrides_win_over_startup_defaults": true,
-        "server_default_output_cap_is_not_request_ceiling": true,
-        "bundle_max_new_tokens_preserved_when_omitted": true,
-        "panel_max_output_context_labels_are_separated": true
+        "request_api_overrides_win_over_startup_defaults": false,
+        "server_default_output_cap_is_not_request_ceiling": false,
+        "bundle_max_new_tokens_preserved_when_omitted": false,
+        "panel_max_output_context_labels_are_separated": false
       },
       "missing_markers": []
     },
     "thinking_budget_template_support": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "local_high_risk_model_metadata_audit": true
+        "local_high_risk_model_metadata_audit": false
       },
       "missing_markers": []
     },
     "additional_args_no_override": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "additional_args_cannot_override_app_owned_cli_flags": true,
-        "panel_does_not_emit_default_sampler_cli_flags": true
+        "additional_args_cannot_override_app_owned_cli_flags": false,
+        "panel_does_not_emit_default_sampler_cli_flags": false
       },
       "missing_markers": []
     },
     "registered_family_max_token_contract": {
-      "status": "pass",
+      "status": "fail",
       "checks": {
-        "omitted_max_tokens_without_bundle_default_is_bounded": true
+        "omitted_max_tokens_without_bundle_default_is_bounded": false
       },
       "missing_markers": []
     }
   },
-  "failed": [],
+  "failed": [
+    "engine_generation_defaults"
+  ],
   "missing_markers": [],
   "source_hashes": {
-    "vmlx_engine/server.py": "6322fc75b8ce4a14ce216fcdad62f8e23143c0bfad87b5102fb44d3fc91c06d8",
+    "vmlx_engine/server.py": "03fc77c49f0066109d5b0f9d0973cdc05b0805415ccc65cf051c2bf800900a56",
     "vmlx_engine/cli.py": "cfd2d8169719896ca5c95a23bf2d8e978973ee33acd4a330da7148e4844d1eb8",
-    "tests/test_engine_audit.py": "1e4cd672145906ec2d0fe3e7e993a2c9bb6c5e7236956394b8ec9341a6520bd9",
+    "tests/test_engine_audit.py": "f0166a2dea81c3f5df65eb49249e11d680446b452b235cd54690ab2b454163c3",
     "panel/src/main/ipc/models.ts": "483d98790e17a93de82bcab573eab9c3764f117a36a12734d398a9d9863f76f1",
     "panel/src/main/sessions.ts": "bf7db8442a841dd83414fb39b8a7daef1f32ca249eea772f323f4a7dc471a3bf",
     "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
-    "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "f079979de29b1950c185a31be8d270ce73a03fabc305521982715d53d5bdba1e",
+    "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "7f2805b822504de9d0686c7ecde20bcc523b8808fa84dd34f363af9d61634d3f",
     "panel/src/renderer/src/components/sessions/SessionSettings.tsx": "10da9d7a121375ff432431e88eefb6bd4b65c1e2e64de6d84a669fc564ed1c45",
     "panel/src/renderer/src/components/chat/ChatSettings.tsx": "d0e10bff7c7d599a6bf95a08b8ecc550d62c3c7eac4b26ab358514bc92e2c7e9",
     "panel/src/main/database.ts": "617f5ab8131da45631515fe8ffee25dafb552934bc130b10a2c6baea5a8114cd",
     "panel/src/main/ipc/chat.ts": "4840c8e2d25a08259fddefe6ba38828c08fef73e72c4f11e99d67caa9a693341",
     "panel/src/shared/sessionConfigMigrations.ts": "923dac3146e0fcedd4e00282700822f3048de6ebba76baf18cc9845e7655d8b2",
     "panel/tests/generation-defaults.test.ts": "f609fe60759372cbf106773dcb98de12451592e428091c8bb1c3fffe20ff8a71",
-    "panel/tests/settings-flow.test.ts": "2418de6b6a1ed21e2f9a553acca5e553ede0d0b4178c25729bfb9f9adc47ba44",
+    "panel/tests/settings-flow.test.ts": "07825d0f16a63d48786d6ebcfee2d9d151269b352cd4fc3648c2b0479addce2f",
     "tests/cross_matrix/run_generation_defaults_contract.py": "d257c25b3dde2e437d6b38ef17be559c886dba4f47a9e2cbe5b37b9593ce61f5",
     "tests/cross_matrix/run_local_generation_metadata_audit.py": "526340f750933a3c5db46d65f8f156dd91fe76a1c8fdca443210c980d4f94adf",
     "tests/test_generation_defaults_contract.py": "dedee25578dd8684ec5ca7495b7809a0039f37136712991d7a77da3f20212260",
@@ -120,14 +122,13 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.512,
+      "elapsed_sec": 0.525,
       "counts": {
         "passed": 26,
-        "skipped": 238,
+        "skipped": 239,
         "deselected": null
       },
       "stdout_tail": [
-        " \u2193 tests/settings-flow.test.ts > JIT Toggle > settings form and launch code surface ZAYA typed CCA paged-cache requirement",
         " \u2193 tests/settings-flow.test.ts > JIT Toggle > settings form treats Gemma4 mixed-SWA rotating KV as architecture-paged cache",
         " \u2193 tests/settings-flow.test.ts > JIT Toggle > settings form and launch code treat Step3.7 full/sliding KV subtype as architecture-paged cache",
         " \u2193 tests/settings-flow.test.ts > JIT Toggle > settings form and launch code surface one DSV4 native composite cache switch",
@@ -178,6 +179,7 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > every SessionConfig field is listed in the completeness check",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > default config produces the single-sequence cache-stack flags",
         " \u2713 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > server startup generation defaults are model-owned and not editable sliders 0ms",
+        " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > video sampling controls are gated to runtime video-capable families",
         " \u2713 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > Max Context Tokens can be manually typed while Auto is active 0ms",
         " \u2713 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > all local session settings surfaces pass detected model context to Max Context Tokens 0ms",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > JANGTQ router top-k override is not exposed through settings UI or launch env",
@@ -195,17 +197,17 @@
         " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > lets JANG chat sampling metadata override generation_config.json 1ms",
         " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > surfaces Step Flash JANG greedy chat metadata instead of treating zero temperature as missing 1ms",
         " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > returns null when neither metadata file defines sampling defaults 1ms",
-        " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > marks thinking-budget unsupported when the template has thinking but no budget variable 2ms",
+        " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > marks thinking-budget unsupported when the template has thinking but no budget variable 1ms",
         " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > surfaces maxThinkingTokens only when the template consumes thinking_budget 1ms",
         " \u2193 tests/generation-defaults.test.ts > readGenerationDefaults JANG sampling defaults > uses Ling CRACK bundle startup defaults without hidden temperature override",
         " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults JANG sampling defaults > uses chat repetition penalty when bundle default reasoning mode is not thinking 1ms",
         " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults JANG sampling defaults > uses neutral generic repetition penalty for DSV4 direct chat defaults 1ms",
-        " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults JANG sampling defaults > uses thinking repetition penalty when bundle default reasoning mode is thinking 0ms",
+        " \u2713 tests/generation-defaults.test.ts > readGenerationDefaults JANG sampling defaults > uses thinking repetition penalty when bundle default reasoning mode is thinking 1ms",
         "",
         " Test Files  2 passed (2)",
-        "      Tests  26 passed | 238 skipped (264)",
-        "   Start at  07:02:54",
-        "   Duration  236ms (transform 147ms, setup 0ms, import 197ms, tests 17ms, environment 0ms)",
+        "      Tests  26 passed | 239 skipped (265)",
+        "   Start at  11:33:18",
+        "   Duration  241ms (transform 152ms, setup 0ms, import 204ms, tests 14ms, environment 0ms)",
         ""
       ]
     },
@@ -222,10 +224,10 @@
         "generation_config or max_tokens_resolution_contract or sampling or output_caps or reasoning_effort_preserves_bundle or omitted_server_max_tokens or effort_does_not_synthesize or session_command_preview_mirrors_runtime_default_flags"
       ],
       "cwd": ".",
-      "returncode": 0,
-      "elapsed_sec": 2.58,
+      "returncode": 1,
+      "elapsed_sec": 2.699,
       "counts": {
-        "passed": 49,
+        "passed": 48,
         "skipped": null,
         "deselected": 462
       },
@@ -245,7 +247,7 @@
         "tests/test_engine_audit.py::TestMLLMBatchRequestSampling::test_mllm_batch_request_defaults PASSED [  8%]",
         "tests/test_engine_audit.py::TestServerSamplingResolution::test_gemma4_video_capability_requires_video_processor PASSED [ 10%]",
         "tests/test_engine_audit.py::TestServerSamplingResolution::test_step37_video_capability_uses_frame_fallback PASSED [ 12%]",
-        "tests/test_engine_audit.py::TestServerSamplingResolution::test_nemotron_omni_installs_vendored_cradio_dynamic_module PASSED [ 14%]",
+        "tests/test_engine_audit.py::TestServerSamplingResolution::test_nemotron_omni_installs_vendored_cradio_dynamic_module FAILED [ 14%]",
         "tests/test_engine_audit.py::TestServerSamplingResolution::test_nemotron_omni_temp_view_rewrites_cradio_automap PASSED [ 16%]",
         "tests/test_engine_audit.py::TestServerSamplingResolution::test_nemotron_omni_temp_view_patches_radio_constructor PASSED [ 18%]",
         "tests/test_engine_audit.py::TestServerSamplingResolution::test_nemotron_omni_temp_view_preseeds_cradio_cache PASSED [ 20%]",
@@ -289,7 +291,22 @@
         "tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_session_command_preview_mirrors_runtime_default_flags PASSED [ 97%]",
         "tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_vlm_video_sampling_is_request_scoped_not_restart_required PASSED [100%]",
         "",
-        "====================== 49 passed, 462 deselected in 1.98s ======================"
+        "=================================== FAILURES ===================================",
+        "_ TestServerSamplingResolution.test_nemotron_omni_installs_vendored_cradio_dynamic_module _",
+        "tests/test_engine_audit.py:673: in test_nemotron_omni_installs_vendored_cradio_dynamic_module",
+        "    assert not dst.joinpath(\"__pycache__\").exists()",
+        "E   AssertionError: assert not True",
+        "E    +  where True = exists()",
+        "E    +    where exists = PosixPath('/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/pytest-of-eric/pytest-1764/test_nemotron_omni_installs_ve0/transformers_modules/nvidia/C_hyphen_RADIOv2_hyphen_H/0d8f4c18c877166eda07ddae1386bcad256b7a6a/__pycache__').exists",
+        "E    +      where PosixPath('/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/pytest-of-eric/pytest-1764/test_nemotron_omni_installs_ve0/transformers_modules/nvidia/C_hyphen_RADIOv2_hyphen_H/0d8f4c18c877166eda07ddae1386bcad256b7a6a/__pycache__') = joinpath('__pycache__')",
+        "E    +        where joinpath = PosixPath('/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/pytest-of-eric/pytest-1764/test_nemotron_omni_installs_ve0/transformers_modules/nvidia/C_hyphen_RADIOv2_hyphen_H/0d8f4c18c877166eda07ddae1386bcad256b7a6a').joinpath",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_engine_audit.py::TestServerSamplingResolution::test_nemotron_omni_installs_vendored_cradio_dynamic_module - AssertionError: assert not True",
+        " +  where True = exists()",
+        " +    where exists = PosixPath('/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/pytest-of-eric/pytest-1764/test_nemotron_omni_installs_ve0/transformers_modules/nvidia/C_hyphen_RADIOv2_hyphen_H/0d8f4c18c877166eda07ddae1386bcad256b7a6a/__pycache__').exists",
+        " +      where PosixPath('/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/pytest-of-eric/pytest-1764/test_nemotron_omni_installs_ve0/transformers_modules/nvidia/C_hyphen_RADIOv2_hyphen_H/0d8f4c18c877166eda07ddae1386bcad256b7a6a/__pycache__') = joinpath('__pycache__')",
+        " +        where joinpath = PosixPath('/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/pytest-of-eric/pytest-1764/test_nemotron_omni_installs_ve0/transformers_modules/nvidia/C_hyphen_RADIOv2_hyphen_H/0d8f4c18c877166eda07ddae1386bcad256b7a6a').joinpath",
+        "================= 1 failed, 48 passed, 462 deselected in 2.09s ================="
       ]
     },
     "local_generation_metadata_audit": {
@@ -304,7 +321,7 @@
       ],
       "cwd": ".",
       "returncode": 0,
-      "elapsed_sec": 2.259,
+      "elapsed_sec": 2.34,
       "counts": {
         "passed": 5,
         "skipped": null,
@@ -326,7 +343,7 @@
         "tests/test_local_generation_metadata_audit.py::test_local_generation_metadata_audit_accepts_template_budget_support PASSED [ 80%]",
         "tests/test_local_generation_metadata_audit.py::test_local_generation_metadata_audit_reports_step3p7_advertised_media_guard PASSED [100%]",
         "",
-        "============================== 5 passed in 1.65s ==============================="
+        "============================== 5 passed in 1.74s ==============================="
       ]
     }
   }

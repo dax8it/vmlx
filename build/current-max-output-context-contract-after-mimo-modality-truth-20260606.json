@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-06T07:02:50-0700",
+  "created_at": "2026-06-06T11:33:14-0700",
   "status": "pass",
   "checks": {
     "server_default_output_cap_uses_max_tokens": true,
@@ -26,11 +26,11 @@
   "failed": [],
   "missing_markers": [],
   "source_hashes": {
-    "vmlx_engine/server.py": "6322fc75b8ce4a14ce216fcdad62f8e23143c0bfad87b5102fb44d3fc91c06d8",
+    "vmlx_engine/server.py": "03fc77c49f0066109d5b0f9d0973cdc05b0805415ccc65cf051c2bf800900a56",
     "vmlx_engine/api/models.py": "6395478bf2983ae261f161160baebf3e910c931a65cf537d3cb2b2a3cebc76a5",
     "vmlx_engine/api/anthropic_adapter.py": "52efb1b488786362638ef0bd9ba1e5889377e6aa9b73879a9c26091388d47914",
     "vmlx_engine/api/ollama_adapter.py": "88a0c2f3034758a82db82c1936505cc61773974e824d774a463019abb76cb2cd",
-    "tests/test_engine_audit.py": "1e4cd672145906ec2d0fe3e7e993a2c9bb6c5e7236956394b8ec9341a6520bd9",
+    "tests/test_engine_audit.py": "f0166a2dea81c3f5df65eb49249e11d680446b452b235cd54690ab2b454163c3",
     "tests/test_ollama_adapter.py": "6ee0a7e3e9f46893795d95fcaed6e594bbb3a8017a5a065663c8e90cbde380d8",
     "tests/test_max_output_context_contract.py": "b494c5faca8acf6ca25b013c69f27e22d975ddc43069cd52549be5c0640c7d4e",
     "panel/src/main/api-gateway.ts": "151d3f941cc709dabfbcb5eadedf9573af12969c7876de5c5cf16881d175fdaa",
@@ -41,12 +41,12 @@
     "panel/src/shared/dsv4RequestBudget.ts": "f14178598624bf845fb5d8993545881e2bf7101dbf1812f99a0cae9f97433d1a",
     "panel/src/shared/sessionConfigMigrations.ts": "923dac3146e0fcedd4e00282700822f3048de6ebba76baf18cc9845e7655d8b2",
     "panel/src/shared/chatSettingsResetPolicy.ts": "93173ea180f49d8bf2ad9457160de42d8f4454ce775fa0a629d11dfcc024c0a2",
-    "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "f079979de29b1950c185a31be8d270ce73a03fabc305521982715d53d5bdba1e",
+    "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "7f2805b822504de9d0686c7ecde20bcc523b8808fa84dd34f363af9d61634d3f",
     "panel/src/renderer/src/components/sessions/SessionSettings.tsx": "10da9d7a121375ff432431e88eefb6bd4b65c1e2e64de6d84a669fc564ed1c45",
     "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
     "panel/src/renderer/src/components/chat/ChatSettings.tsx": "d0e10bff7c7d599a6bf95a08b8ecc550d62c3c7eac4b26ab358514bc92e2c7e9",
     "panel/src/renderer/src/i18n/locales/en.json": "c79c242e7c85937af2ede036c40f26c9ecedb168cde5bc76bbcabf1c3df617b6",
-    "panel/tests/settings-flow.test.ts": "2418de6b6a1ed21e2f9a553acca5e553ede0d0b4178c25729bfb9f9adc47ba44",
+    "panel/tests/settings-flow.test.ts": "07825d0f16a63d48786d6ebcfee2d9d151269b352cd4fc3648c2b0479addce2f",
     "panel/tests/chat-settings-compatibility.test.ts": "1c66e6719f0c8444419263b4532564973f725b3d3672fcaf11d0892d0bcc422b",
     "panel/tests/database-migrations.test.ts": "8527407aaaf32c5b5c1eb733d3ba90997026117b62b93795316820d01d58db9b",
     "panel/tests/generation-defaults.test.ts": "f609fe60759372cbf106773dcb98de12451592e428091c8bb1c3fffe20ff8a71",
@@ -95,7 +95,7 @@
       ],
       "cwd": ".",
       "returncode": 0,
-      "elapsed_sec": 2.486,
+      "elapsed_sec": 2.549,
       "counts": {
         "passed": 26,
         "skipped": null,
@@ -138,7 +138,7 @@
         "tests/test_max_output_context_contract.py::test_max_output_context_contract_covers_all_public_api_surfaces PASSED [ 96%]",
         "tests/test_engine_audit.py::TestAPIModels::test_public_api_models_reject_non_positive_output_caps PASSED [100%]",
         "",
-        "============================== 26 passed in 1.91s =============================="
+        "============================== 26 passed in 1.97s =============================="
       ]
     },
     "panel_output_context_wiring": {
@@ -163,14 +163,13 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.583,
+      "elapsed_sec": 0.595,
       "counts": {
         "passed": 54,
-        "skipped": 333,
+        "skipped": 334,
         "deselected": null
       },
       "stdout_tail": [
-        " \u2193 tests/settings-flow.test.ts > Feature Interaction > disabling prefix cache disables all dependent features",
         " \u2193 tests/settings-flow.test.ts > Feature Interaction > speculative decoding with all options set",
         " \u2193 tests/settings-flow.test.ts > Feature Interaction > optional model-specific features remain disabled by default",
         " \u2193 tests/settings-flow.test.ts > Feature Interaction > tool parser emitted without auto-tool-choice (matches buildArgs)",
@@ -205,6 +204,7 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > every SessionConfig field is listed in the completeness check",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > default config produces the single-sequence cache-stack flags",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > server startup generation defaults are model-owned and not editable sliders",
+        " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > video sampling controls are gated to runtime video-capable families",
         " \u2713 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > Max Context Tokens can be manually typed while Auto is active 0ms",
         " \u2713 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > all local session settings surfaces pass detected model context to Max Context Tokens 0ms",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > JANGTQ router top-k override is not exposed through settings UI or launch env",
@@ -218,7 +218,7 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > prefix cache disabled suppresses all cache sub-flags",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > cache TTL only emitted without paged cache",
         "stdout | tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > omits malformed Ollama num_predict values instead of poisoning max_tokens",
-        "[gateway] Listening on 127.0.0.1:58234",
+        "[gateway] Listening on 127.0.0.1:60895",
         "",
         " \u2193 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > uses standard MLX generation_config.json for non-JANG and VLM bundles",
         " \u2193 tests/generation-defaults.test.ts > readGenerationDefaults generation_config defaults > normalizes disabled top_k sentinels to Off/0 for UI and requests",
@@ -235,7 +235,7 @@
         "[gateway] Stopped",
         "",
         " \u2193 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > omits unset and disabled sampling sentinels without dropping explicit overrides",
-        " \u2713 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > omits malformed Ollama num_predict values instead of poisoning max_tokens 76ms",
+        " \u2713 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > omits malformed Ollama num_predict values instead of poisoning max_tokens 80ms",
         " \u2193 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > omits malformed Ollama context values instead of poisoning max_prompt_tokens",
         " \u2193 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > does not coerce string false enable_thinking into reasoning on",
         " \u2193 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > auto-switches by model id in single-model mode before preserving streaming deltas",
@@ -246,9 +246,9 @@
         " \u2193 tests/api-gateway-ollama-behavior.test.ts > Ollama gateway request translation behavior > refuses single-model Ollama routes when previous local model cannot unload",
         "",
         " Test Files  10 passed (10)",
-        "      Tests  54 passed | 333 skipped (387)",
-        "   Start at  07:02:50",
-        "   Duration  304ms (transform 925ms, setup 0ms, import 980ms, tests 127ms, environment 0ms)",
+        "      Tests  54 passed | 334 skipped (388)",
+        "   Start at  11:33:14",
+        "   Duration  247ms (transform 949ms, setup 0ms, import 1.00s, tests 130ms, environment 0ms)",
         ""
       ]
     }

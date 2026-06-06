@@ -2,20 +2,18 @@
   "artifact": "build/current-public-app-issue-audit-after-public-v1556-scan-20260606.json",
   "focused_failures": [],
   "focused_open": [
-    "165",
     "117",
-    "111",
     "115",
     "119"
   ],
   "issues": {
     "111": {
       "checks": {
-        "installed_app_mllm_hash_guarded": false,
+        "installed_app_mllm_hash_guarded": true,
         "mistral_small4_parser_metadata_preserved": true,
         "mistral_small4_wrapper_stays_mllm": true
       },
-      "focused_source_slice": "open",
+      "focused_source_slice": "pass",
       "release_clearance": "mapped_to_mistral_small4_vlm_wrapper_detection_guard",
       "repo": "jjang-ai/mlxstudio",
       "title": "VLM mode on Mistral Small 4 broken in vMLX"
@@ -88,11 +86,11 @@
     "165": {
       "checks": {
         "dsml_issue_165_regression_present": true,
-        "installed_app_dsml_parser_hash_guarded": false,
+        "installed_app_dsml_parser_hash_guarded": true,
         "tool_call_contract_passes": true,
         "tool_call_contract_source_checks_pass": true
       },
-      "focused_source_slice": "open",
+      "focused_source_slice": "pass",
       "release_clearance": "mapped_to_dsv4_dsml_tool_call_arguments_guard",
       "repo": "jjang-ai/vmlx",
       "title": "DSV4-Flash JANGTQ2 + dsml parser: tool_calls.function.arguments empty / contains raw markup"

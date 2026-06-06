@@ -1,12 +1,12 @@
 {
   "bundle_hash_parity": {
     "latest_public_server_sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5",
-    "local_installed_matches_latest_public": true,
+    "local_installed_matches_latest_public": false,
     "local_installed_matches_public_v1549_tahoe": false,
-    "local_installed_server_sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5",
+    "local_installed_server_sha256": "03fc77c49f0066109d5b0f9d0973cdc05b0805415ccc65cf051c2bf800900a56",
     "public_v1549_tahoe_server_sha256": null,
     "source_matches_latest_public": false,
-    "source_matches_local_installed": false,
+    "source_matches_local_installed": true,
     "source_matches_public_v1549_tahoe": false,
     "source_server_sha256": "03fc77c49f0066109d5b0f9d0973cdc05b0805415ccc65cf051c2bf800900a56"
   },
@@ -29,20 +29,20 @@
   },
   "live_probe_memory_preflight": {
     "active_heavy_process_count": 0,
-    "available_for_gate_gb": 95.64,
+    "available_for_gate_gb": 90.76,
     "exists": true,
-    "free_plus_speculative_purgeable_gb": 95.64,
+    "free_plus_speculative_purgeable_gb": 90.76,
     "launch_allowed": true,
     "launch_decision": "launch_allowed",
     "memory_gap_gb": 0.0,
     "model_path": "/Users/eric/models/JANGQ/MiniMax-M2.7-JANGTQ_K",
     "model_size_gb": 73.96,
     "path": "build/current-issue179-minimax-k-responses-cancel-probe-memory-preflight-20260602-local-ready-check.json",
-    "preflight_captured_at": "2026-06-06T07:04:48-0700",
+    "preflight_captured_at": "2026-06-06T11:30:03-0700",
     "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
     "reason": "memory_preflight_floor_met",
     "required_free_gb": 81.96,
-    "sha256": "7f085369b8c57aecd0436f8f77c623edc8af5b40a7873e05ef658ee081dad28d",
+    "sha256": "bfe5a38bf13d93cbd6384f687b6ffceeded6d44ba6f160c883e29c5442d12149",
     "status": "ready_to_launch"
   },
   "local_installed_bundle_contract": {
@@ -50,7 +50,7 @@
     "server_cancel_calls_engine_abort": true,
     "server_has_responses_cancel_route": true,
     "server_path": "/Applications/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
-    "sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5"
+    "sha256": "03fc77c49f0066109d5b0f9d0973cdc05b0805415ccc65cf051c2bf800900a56"
   },
   "local_model_manifest": {
     "checks": {},
@@ -497,7 +497,7 @@
   "reporter_server_hash_parity": {
     "failure": "reporter_installed_server_hash_drift",
     "latest_public_server_sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5",
-    "local_installed_server_sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5",
+    "local_installed_server_sha256": "03fc77c49f0066109d5b0f9d0973cdc05b0805415ccc65cf051c2bf800900a56",
     "provenance": {
       "checked_sources": [],
       "failure": "missing_reporter_server_sha256",

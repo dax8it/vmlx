@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-06T07:03:45-0700",
+  "created_at": "2026-06-06T11:34:11-0700",
   "status": "pass",
   "checks": {
     "dsv4_deepseek_v4_native_cache_and_parser": true,
@@ -93,12 +93,12 @@
     "vmlx_engine/model_config_registry.py": "f37675b7d85d2cc87a5b25ec73e3869498002c320ea769559f410ff3b97f0bc2",
     "vmlx_engine/model_configs.py": "2d56d89e41ab6f91348102def863cf0358527ab1b2fcfe85b503ab99a5664fb9",
     "vmlx_engine/native_mtp.py": "80c7c5a9afe85e42f951f85df064bb57c993c667b94d509d614ea651bfafd612",
-    "panel/src/main/model-config-registry.ts": "40cd01897a14dbdb008e9b0bc8220366ea992ebee3fffd3db58a25613ffdef5b",
+    "panel/src/main/model-config-registry.ts": "9e1364c67b61955b46f7bf07510f6b71d47b4f3ef23264bdc88eb48b9a3c794e",
     "panel/src/main/sessions.ts": "bf7db8442a841dd83414fb39b8a7daef1f32ca249eea772f323f4a7dc471a3bf",
     "panel/src/shared/reasoningParserAliases.ts": "d400d714e7b521fa14a8f8cb7c9c4de0cb3dde1f3b9e1caccf08d012f1a6f92c",
     "panel/src/shared/toolParserAliases.ts": "45d1dfc4bd42a540471d94e9117b3282f3a69a9ab24407dd7b32db9555260973",
-    "panel/tests/model-config-registry.test.ts": "17bb01b14b8da03806ae4a9cc5c010bc4bd13ffe31c1f201ffdbbe84d80ffe8a",
-    "panel/tests/settings-flow.test.ts": "2418de6b6a1ed21e2f9a553acca5e553ede0d0b4178c25729bfb9f9adc47ba44",
+    "panel/tests/model-config-registry.test.ts": "e9ae60f13696cd231397c33740934de8fd05fba81ff073396064b5e7039715a9",
+    "panel/tests/settings-flow.test.ts": "07825d0f16a63d48786d6ebcfee2d9d151269b352cd4fc3648c2b0479addce2f",
     "tests/cross_matrix/run_decode_speed_gate.py": "f87b597a04dc13f3c047630c3cd8d1533e0aac08e5be43f97f036f09c2c1d1a5",
     "tests/cross_matrix/run_dsv4_long_context_gate.py": "1ecb976f1a2f98a468275dcbac4906f59eff19e6a713a391827d1f3419819933",
     "tests/cross_matrix/run_dsv4_responses_cache_gate.py": "3c59a537fd451983bfccd90fa7191c27090c246240644372e97786b893f3a18d",
@@ -121,7 +121,7 @@
       ],
       "cwd": ".",
       "returncode": 0,
-      "elapsed_sec": 2.373,
+      "elapsed_sec": 2.439,
       "counts": {
         "passed": 56,
         "skipped": null,
@@ -194,7 +194,7 @@
         "tests/test_model_family_detection_contract.py::test_decode_speed_gate_treats_generation_failed_text_as_hard_failure PASSED [ 98%]",
         "tests/test_model_family_detection_contract.py::test_decode_speed_gate_detects_plain_kv_cache_health_mismatches PASSED [100%]",
         "",
-        "====================== 56 passed, 117 deselected in 1.82s ======================"
+        "====================== 56 passed, 117 deselected in 1.88s ======================"
       ]
     },
     "panel_family_detection": {
@@ -211,10 +211,10 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.441,
+      "elapsed_sec": 0.443,
       "counts": {
         "passed": 48,
-        "skipped": 15,
+        "skipped": 16,
         "deselected": null
       },
       "stdout_tail": [
@@ -248,6 +248,7 @@
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes Step3.7 JANG bridge through the source VLM runtime when available 0ms",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > falls back to config.json vision_config when jang_config has no vision stamp",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > detects top-level JANG has_vision without relying on registry family defaults",
+        " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > keeps MiMo V2 JANG text-only when capabilities say media sidecars are unwired",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes affine-JANG qwen3_5 text-only until the mlx-vlm M-RoPE path is fixed",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes affine-JANG qwen3_vl text-only until the mlx-vlm M-RoPE path is fixed",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > routes affine-JANG qwen3_vl_moe text-only until the mlx-vlm M-RoPE path is fixed",
@@ -265,7 +266,7 @@
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > uses JANG capabilities cache and parser stamps for Qwen3.6 hybrid bundles 0ms",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > does not classify text_config-only MoE models as VLMs",
         " \u2193 tests/model-config-registry.test.ts > detectModelConfigFromDir JANG multimodal detection > keeps Mistral Small 4 VLM multimodal while inheriting Mistral 4 reasoning defaults",
-        " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir backend parity coverage > detects backend-covered model_type=deepseek_v32 1ms",
+        " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir backend parity coverage > detects backend-covered model_type=deepseek_v32 0ms",
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir backend parity coverage > detects backend-covered model_type=falcon_h1 0ms",
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir backend parity coverage > detects backend-covered model_type=glm_moe_dsa 0ms",
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir backend parity coverage > detects backend-covered model_type=got_ocr2 0ms",
@@ -286,9 +287,9 @@
         " \u2713 tests/model-config-registry.test.ts > detectModelConfigFromDir local high-risk artifact parity > matches current local high-risk model paths to panel parser cache and modality policy 7ms",
         "",
         " Test Files  1 passed (1)",
-        "      Tests  48 passed | 15 skipped (63)",
-        "   Start at  07:03:44",
-        "   Duration  182ms (transform 39ms, setup 0ms, import 46ms, tests 28ms, environment 0ms)",
+        "      Tests  48 passed | 16 skipped (64)",
+        "   Start at  11:34:10",
+        "   Duration  187ms (transform 41ms, setup 0ms, import 48ms, tests 29ms, environment 0ms)",
         ""
       ]
     },
@@ -306,14 +307,13 @@
       ],
       "cwd": "panel",
       "returncode": 0,
-      "elapsed_sec": 0.462,
+      "elapsed_sec": 0.471,
       "counts": {
         "passed": 6,
-        "skipped": 247,
+        "skipped": 248,
         "deselected": null
       },
       "stdout_tail": [
-        " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > changing maxNumSeqs produces different CLI output",
         " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > changing pagedCacheBlockSize produces different CLI output",
         " \u2713 tests/settings-flow.test.ts > No Hardcoded Values > deepseek-v4 enables native composite prefix cache by default even with stale cache config 0ms",
         " \u2193 tests/settings-flow.test.ts > No Hardcoded Values > deepseek-v4 native cache path uses DS4 page-sized blocks",
@@ -415,6 +415,7 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > every SessionConfig field is listed in the completeness check",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > default config produces the single-sequence cache-stack flags",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > server startup generation defaults are model-owned and not editable sliders",
+        " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > video sampling controls are gated to runtime video-capable families",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > Max Context Tokens can be manually typed while Auto is active",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > all local session settings surfaces pass detected model context to Max Context Tokens",
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > JANGTQ router top-k override is not exposed through settings UI or launch env",
@@ -429,9 +430,9 @@
         " \u2193 tests/settings-flow.test.ts > Settings \u2192 CLI Round-Trip Completeness > cache TTL only emitted without paged cache",
         "",
         " Test Files  1 passed (1)",
-        "      Tests  6 passed | 247 skipped (253)",
-        "   Start at  07:03:44",
-        "   Duration  184ms (transform 60ms, setup 0ms, import 71ms, tests 3ms, environment 0ms)",
+        "      Tests  6 passed | 248 skipped (254)",
+        "   Start at  11:34:11",
+        "   Duration  189ms (transform 61ms, setup 0ms, import 73ms, tests 3ms, environment 0ms)",
         ""
       ]
     }
