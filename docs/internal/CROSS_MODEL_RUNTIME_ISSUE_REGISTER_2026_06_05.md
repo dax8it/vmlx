@@ -311,7 +311,7 @@ Risk:
 Known relevant examples:
 
 - Gemma4 12B JANG needed conservative runtime flags in earlier notes.
-- Qwen35 MXFP8 MTP had reported packaged `gdn_sink` crash in old app; source 1.5.56 path verified no crash.
+- Qwen35 MXFP8 MTP had reported packaged `gdn_sink` crash in an older app. Current main has source and freshly bundled-runtime compatibility proof: dense GatedDeltaNet, dense DecoderLayer, VLM GatedDeltaNet, VLM DecoderLayer, and VLM Model all accept `gdn_sink`. Full live packaged speed/equivalence proof remains open.
 - Step Flash CRACK text-only launch used no continuous batching, no prefix cache, no KV quant, no native MTP.
 - DSV4 cache/runtime has architecture-specific composite cache requirements; generic TurboQuant KV is not a drop-in substitute.
 - DSV4 block-disk L2 restart restore currently fails closed for disk-backed terminal `DeepseekV4Cache` state. Disk writes and disk hits are observable, but the runtime does not yet safely execute cached DSV4 composite state after process restart.
@@ -449,16 +449,17 @@ Still needed:
 
 ### Qwen
 
-Current status: `[~]` Qwen35 MTP gdn_sink source proof exists for 1.5.56; broader open.
+Current status: `[~]` Qwen35 MTP `gdn_sink` source and bundled-runtime signature proof exists for current main; broader live speed/equivalence/media proof remains open.
 
 Proofs present:
 
 - [x] Qwen3.6 35B MXFP8 MTP source Chat/Responses/160-token decode no `gdn_sink` crash.
 - [x] MTP accepted-token logging observed.
+- [x] Fresh bundled Python probe reports `gdn_sink` accepted on dense GatedDeltaNet, dense DecoderLayer, VLM GatedDeltaNet, VLM DecoderLayer, and VLM Model.
 
 Still needed:
 
-- [ ] Packaged app Qwen35 MTP proof after 1.5.56 install.
+- [ ] Full packaged app Qwen35 MTP live model proof after install/download parity, including real generation, speed, output equivalence, and no `gdn_sink` crash.
 - [ ] Qwen27 MTP proof.
 - [ ] Qwen VL image/video proof.
 - [ ] Tool dialect and loop proof.
