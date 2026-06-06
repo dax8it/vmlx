@@ -1023,3 +1023,15 @@ Do not mark ZAYA-VL release-cleared. Next work should trace the ZAYA-VL text tem
 - Primary row `/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K` passed exact cache repeat, multi-turn recall, reasoning visible output, and required tool call.
 - Cache proof: repeat prompt reported `cached_tokens=3639`, `cache_detail=paged+dsv4`, and cache stats mentioned TurboQuant, SSM/composite, and rotating cache components.
 - Boundary: this is cross-family smoke coverage only. DSV4 long-output/code/file-generation quality remains open and still needs the exactness suite on a memory-safe host.
+
+## 2026-06-06 ZAYA1-VL text-only template normalization, blocker retained
+
+- Added source normalization so ZAYA1-VL no-media MLLM requests use plain string content through the processor template, while media requests keep image/video/audio rich content lists.
+- Focused tests passed for direct MLLM and batched renderer boundaries.
+- Live diagnostic artifacts remain red:
+  - `build/current-all-local-model-smoke-zaya-vl-after-text-template-normalize-20260606/summary.json`
+  - `build/current-all-local-model-smoke-zaya-vl-after-batched-text-template-normalize-20260606/summary.json`
+- Live improvement: post-image text-only request no longer echoes the generic no-media prompt; it answers with an explicit no-image message.
+- Live unchanged blockers: exact cache prompt returns `green`, multi-turn recall returns `color `, reasoning has empty visible output, red image returns `white`.
+- Tool parser and typed ZAYA CCA cache are not the failing components in this diagnostic: required OpenAI tool call passed, repeat cache showed `paged+zaya_cca`, generic TurboQuant KV stayed disabled for path-dependent CCA.
+- Release boundary: ZAYA-VL remains open and must not be counted as cross-family smoke pass.

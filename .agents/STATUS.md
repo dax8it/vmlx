@@ -272,3 +272,14 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Artifact: `build/current-all-local-model-smoke-dsv4-jangtq-k-tools-cache-20260606/summary.json` -> pass, 2/2 rows complete.
 - Primary DSV4 row passed exact cache repeat, `paged+dsv4` cache hit with `cached_tokens=3639`, multi-turn recall, visible reasoning, and required tool call.
 - This should remove DSV4 from the cross-family smoke missing list after objective refresh, but DSV4 long-output/code/file-generation remains open.
+
+## CODEX 2026-06-06 ZAYA1-VL template normalization diagnostic
+
+- Source patch: ZAYA1-VL no-media MLLM turns now collapse text-only rich content lists to plain strings before processor rendering in both direct `MLXMultimodalLM` and batched MLLM paths; media turns remain rich.
+- Focused validation passed: py_compile for edited files and `tests/test_zaya_runtime.py` selected 6 ZAYA template tests.
+- Live artifacts:
+  - `build/current-all-local-model-smoke-zaya-vl-after-text-template-normalize-20260606/summary.json` -> fail, 5 probe failures.
+  - `build/current-all-local-model-smoke-zaya-vl-after-batched-text-template-normalize-20260606/summary.json` -> fail, 5 probe failures.
+- Narrow improvement: `text_no_media_after_image` now gives a real no-image response instead of generic prompt echo.
+- Still red: exact cache answer `green`, multi-turn `color `, reasoning-only empty visible output, red image `white`.
+- Do not release-clear ZAYA-VL or the cross-family smoke row from this patch.

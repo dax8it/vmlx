@@ -4649,3 +4649,11 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Ran `bench/all_local_model_smoke.py --only DeepSeek-V4-Flash-JANGTQ-K --include-tools` into `build/current-all-local-model-smoke-dsv4-jangtq-k-tools-cache-20260606`.
 - Both matching rows passed. Primary row proved exact ACK, `paged+dsv4` cached repeat with `cached_tokens=3639`, multi-turn recall, visible reasoning output, and `record_fact` tool call.
 - Updated current proof pointers from `after-mimo-sink-falsification-20260606` to `after-dsv4-smoke-refresh-20260606`.
+
+# 2026-06-06 ZAYA1-VL no-media template normalization, live blocker retained
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated wrapper/Swift work.
+- Patched direct and batched MLLM prompt rendering so ZAYA1-VL no-media text-only turns reach the processor as plain strings; real media turns stay rich content lists.
+- Validation: py_compile passed and selected ZAYA runtime tests passed (`6 passed`).
+- Live ZAYA1-VL JANGTQ_K reruns stayed red with 5 failures. Improvement is limited to no-media-after-image now answering no-image instead of echoing the generic prompt.
+- Remaining ZAYA-VL failures are preserved as open blockers: cache exact text `green`, multi-turn `color `, reasoning empty visible, red image `white`.

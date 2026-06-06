@@ -316,3 +316,37 @@ Findings:
 4. This clears the missing DSV4 cross-family smoke artifact only. It does not clear DSV4 long-output/code/file-generation exactness, which still requires the larger explicit code-quality suite and memory-safe host conditions.
 
 Release boundary remains: do not use this smoke to claim DSV4 exact-code or full release readiness.
+
+## 2026-06-06 ZAYA1-VL text-only processor normalization diagnostic
+
+Artifacts:
+
+- `build/current-all-local-model-smoke-zaya-vl-after-text-template-normalize-20260606/summary.json` -> `status=fail`, 5 failures.
+- `build/current-all-local-model-smoke-zaya-vl-after-batched-text-template-normalize-20260606/summary.json` -> `status=fail`, 5 failures.
+
+Narrow fix landed in source:
+
+- Direct `MLXMultimodalLM` and batched MLLM renderer now collapse ZAYA1-VL text-only rich content lists to plain string content before processor template rendering.
+- Media turns remain rich content lists; image/video processor template calls are not collapsed.
+- Focused no-heavy tests pass for direct MLLM and batched ZAYA1-VL text/media template boundaries.
+
+Observed live effect:
+
+- `text_no_media_after_image` improved from prompt echo to a real no-image response: `I see no image file attached to this message...`.
+- Tool call remains structurally correct with `record_fact({"value":"blue-cat"})`.
+- ZAYA typed CCA cache hit remains active on repeat: `cached_tokens=33`, `cache_detail=paged+zaya_cca`, native cache family `zaya_cca_v1`, generic TurboQuant KV disabled.
+- Media prefix store remains skipped for image prompts, as required for path-dependent media embeddings.
+
+Still release-red:
+
+- `text_cache_repeat_1/2` answer `green` instead of expected `blue`.
+- `text_multiturn_recall` answer `color ` and misses `blue cat`.
+- `reasoning_on` returns reasoning text only (`The answer is "OK."`) with empty visible content.
+- `vl_red_image_changed` returns `white` for the red fixture while blue image rows pass.
+
+Classification:
+
+- Current ZAYA1-VL release blocker remains open.
+- The fixed portion is `runtime_dispatch` / `gateway_ui` for text-only processor content shape.
+- Remaining failures are `decode_loop` / `model_artifact` / deeper `runtime_dispatch` pending prompt/render trace and source-vs-artifact comparison.
+- Do not mark ZAYA-VL cross-family smoke as passed from this patch.
