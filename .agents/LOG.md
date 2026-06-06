@@ -4721,3 +4721,10 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Focused unit test passed: `tests/test_mllm_message_serialization.py -k mimo_v2_thinking_false_uses_plain_template_prefix`.
 - Live cache row improved from `content=null` to visible `ACK` under `enable_thinking=false`.
 - Still blocked: exact output is `ACK` not `ACK-CACHE-742`; long prompt still kills the server with Metal OOM; tool row was not reproved after OOM; speed and media remain open.
+
+# 2026-06-06 MiMo first-request long-prompt OOM
+
+- Restarted patched MiMo server and sent the long prompt as the first request after load.
+- Result: `RemoteDisconnected`; `/health` refused afterward; server log ended `kIOGPUCommandBufferCallbackErrorOutOfMemory`.
+- Artifact: `build/current-mimo-v2-jang2l-long-prompt-first-request-oom-20260606.json`.
+- This rules out cache residue; long-prompt MiMo OOM is intrinsic to the current Python MLLM path.

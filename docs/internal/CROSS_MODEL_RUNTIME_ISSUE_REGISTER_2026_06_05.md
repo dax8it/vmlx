@@ -1193,3 +1193,9 @@ Release boundary:
 - MiMo V2.5 JANG_2L is still not release-clear.
 - Do not claim this as the 40 tok/s or VL/audio/video release.
 - Next required runtime work is long-prompt OOM prevention/fix without hiding failures, then source-vs-quant proof.
+
+### MiMo long-prompt first-request OOM addendum
+
+Artifact: `build/current-mimo-v2-jang2l-long-prompt-first-request-oom-20260606.json`.
+
+After the thinking-off template fix, a fresh server was restarted and the long prompt was sent as the first request after load. It still killed the process with `RemoteDisconnected` client-side and server log `kIOGPUCommandBufferCallbackErrorOutOfMemory`. This rules out prior cache-row memory residue. The remaining long-prompt blocker is intrinsic to the current Python MLLM MiMo memory path on this 128GB host.

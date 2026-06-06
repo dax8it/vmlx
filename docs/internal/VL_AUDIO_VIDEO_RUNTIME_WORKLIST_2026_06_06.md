@@ -551,3 +551,9 @@ Still blocked:
 - Long-prompt text row still exits the server through Metal OOM.
 - Tool row needs repro after OOM is isolated.
 - VL/audio/video remains unbuilt in Python/vMLX for MiMo; preserved media weights are not a wired media runtime.
+
+### MiMo first-request long-prompt OOM
+
+Artifact: `build/current-mimo-v2-jang2l-long-prompt-first-request-oom-20260606.json`.
+
+Fresh patched server plus first-request long prompt still exits through Metal OOM. This rules out cache residue and keeps MiMo long-context runtime work open.
