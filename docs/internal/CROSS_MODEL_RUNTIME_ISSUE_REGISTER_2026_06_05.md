@@ -12,11 +12,12 @@ Current known release state:
 - `jjang-ai/vmlx` main after 1.5.56: `fa9f455b` includes structured JSON repair and DSV4 completions rail fix.
 - PyPI is not current: PyPI latest remains `1.5.49`; `1.5.56` upload blocked by PyPI trusted-publisher/API-token config.
 - Full cross-family runtime matrix remains open. Do not claim all model families production-cleared.
-- Current regression suite proof: `build/current-regression-suite-after-mimo-scope-removal-20260604.json` is `status=pass` with `failed_steps=[]`, but keeps 13 exact release requirements open. This is not a release-ready signal.
+- Current regression suite proof: `build/current-regression-suite-after-mimo-scope-removal-20260604.json` is `status=pass` with `failed_steps=[]`, but keeps 12 exact release requirements open. This is not a release-ready signal.
 - MiniMax #117/#179 proof boundary: current root-cause audit is `open`, memory-preflight artifact exists and did not launch the huge model, and live Responses cancel/reporter parity proof is still absent. This must stay open; do not classify screenshot/output corruption as model artifact or runtime until reporter parity proof exists.
 - DSV4 default-cache tool loop boundary: `build/current-dsv4-default-cache-tool-loop/result.json` was run live with native prefix+paged+block-disk L2 enabled and `status=review`. Runtime/tool/cache checks pass: DSML tools executed `list_directory -> write_file -> write_file`, final answer was `DONE`, cached tokens were seen with `paged+dsv4`, native cache was `native_composite`, and generic TurboQuant KV stayed off. The remaining review cause is generated code exactness (`THREE.ScScene()` and `THREE.BBoxGeometry()`), so this is tracked under DSV4 code/file-generation quality, not as a default-cache/tool-loop runtime failure.
-- DSV4 rows now proven from the current live default-cache artifact: `DSV4 cache is native SWA+CSA/HCA composite, not generic KV/TurboQuant KV`, `DSV4 can perform multiple tool iterations then final answer`, and `DSV4 default-cache multi-tool agent loop is proven`. Still open: app-launch default wiring, same-process TTFT/latency proof, restart L2 proof, one-tool-after-result proof, and DSV4 exact code/file generation quality.
-- DSV4 same-process cache-hit/TTFT row is now proven from `build/current-dsv4-responses-cache-gate-20260606.json`: previous-response follow-up hit `5195` cached tokens with `paged+dsv4`, streaming follow-up recorded TTFT `0.3339s`, and explicit no-cache full prompt stayed uncached and took `22.17s` wall. Still open: app-launch default wiring, restart L2 proof, one-tool-after-result proof, and DSV4 exact code/file generation quality.
+- DSV4 rows now proven from the current live default-cache artifact: `DSV4 cache is native SWA+CSA/HCA composite, not generic KV/TurboQuant KV`, `DSV4 can perform multiple tool iterations then final answer`, and `DSV4 default-cache multi-tool agent loop is proven`. Still open: app-launch default wiring, same-process TTFT/latency proof, restart L2 proof, and DSV4 exact code/file generation quality.
+- DSV4 same-process cache-hit/TTFT row is now proven from `build/current-dsv4-responses-cache-gate-20260606.json`: previous-response follow-up hit `5195` cached tokens with `paged+dsv4`, streaming follow-up recorded TTFT `0.3339s`, and explicit no-cache full prompt stayed uncached and took `22.17s` wall. Still open: app-launch default wiring, restart L2 proof, and DSV4 exact code/file generation quality.
+- DSV4 one-tool-after-result row is now proven from `build/current-dsv4-responses-one-tool-stop-20260606.json`: round 1 emitted exactly one structured `list_directory` call, round 2 used `previous_response_id`, kept `tools=TOOLS` with `tool_choice=auto`, emitted no function calls, and returned exactly `DONE` with native prefix+paged+block-disk L2 enabled.
 
 ## Status Legend
 
@@ -479,15 +480,20 @@ Current status: `[D]` Runtime/cache exactness still deferred.
 Known:
 
 - [x] Main now includes DSV4 `/v1/completions` chat rail fix test restored in `fa9f455b`.
+- [x] Native SWA/CSA/HSA composite cache verified in current live default-cache artifact; generic TurboQuant KV stayed off.
+- [x] Responses same-process cache hit verified with `paged+dsv4`, cached-token accounting, and TTFT/wall-latency comparison.
+- [x] Responses one-tool stop after tool result verified while tools remained available on the final turn.
 - [D] Long-output/code exactness remains open.
 - [D] Full real UI DSV4 proof remains open.
 
 Required:
 
-- [ ] Native SWA/CSA/HSA composite cache verification.
+- [x] Native SWA/CSA/HSA composite cache verification.
+- [x] Same-process Responses cache hit/TTFT proof.
+- [x] One-tool-after-result stop proof with tools still available.
 - [ ] Long output full-tail read.
 - [ ] Code/file-generation exactness.
-- [ ] Tool loops and DSML parser proof.
+- [~] Tool loops and DSML parser proof: current multi-tool runtime loop passed, exact code/file-generation quality remains open.
 - [ ] Memory preflight on 128 GB/large model paths.
 
 ### Nemotron Omni / audio-video models
