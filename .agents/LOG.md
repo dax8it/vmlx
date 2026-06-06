@@ -4769,3 +4769,11 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Max2 MiMo source launch dry-run passed for `mimoV2` TP4 on port `8126` with rank paths under `/opt/adlab/models/tp4-source/MiMo-V2.5/rank{0..3}`, `allsum`, cache coordinator, L2 disk cache, routed expert quantization, and native MTP depth `0`.
 - Live preflight passed Thunderbolt/fabric checks and memory thresholds, then failed before launch with `rc=78` because all four rank nodes already had active Qwen `TPRankWorker` processes.
 - Current classification: MiMo source-vs-local-quant proof is blocked by pod occupancy, not by missing source files, fabric, or minimum free memory. Controlled displacement of Qwen TP4 is required before source-vs-quant tool/cache/long/speed probes can run.
+
+## 2026-06-06 - Local vMLX/MLXStudio release blocker ledger re-anchor
+
+- Re-anchored on local vMLX/MLXStudio only; no adlab/Max2/TP4/RDMA/TB work belongs in this lane.
+- Added `docs/internal/LOCAL_VMLX_MLXSTUDIO_RELEASE_BLOCKER_LEDGER_2026_06_06.md` and `build/current-local-vmlx-mlxstudio-release-blocker-ledger-20260606.json`.
+- Current manifest source: `build/current-release-regression-manifest-after-noheavy-pointer-refresh-20260606.json`.
+- Current release state remains `status=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Explicit release blockers remain MiMo V2.5 JANG_2L runtime quality and MiniMax issue179 reporter/root-cause provenance; installed/public app audits and live UI/tool/smoke rows are also open/non-pass.
