@@ -882,3 +882,11 @@ Every model-family proof should record:
 - Structured JSON/XML repair follow-up: https://github.com/jjang-ai/vmlx/issues/187
 
 - MiMo current audit `build/current-mimo-v2-jang2l-current-audit-20260606.json` proves the canonical local bundle matches the TB5/HTTP manifest (`173/173` files, 113.93GB payload by manifest, zero missing/mismatch) and stale MiMo backup/cache directories were removed. It does not release-clear MiMo: long-prompt coherence and API tool protocol remain blocked without fake parser injection, forced fallback, or cache disabling.
+
+## 2026-06-06 VL/audio/video runtime worklist
+
+Durable media-runtime worklist added:
+
+- `docs/internal/VL_AUDIO_VIDEO_RUNTIME_WORKLIST_2026_06_06.md`
+
+This is the active checklist for the remaining VL/audio/video release blockers. It lists the required runtime functions, per-family blocker state, missing implementation areas, and live proof rows needed before a public release/tag/notarized build can be claimed.
