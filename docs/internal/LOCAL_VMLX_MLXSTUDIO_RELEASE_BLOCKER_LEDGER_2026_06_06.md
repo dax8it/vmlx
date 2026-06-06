@@ -200,8 +200,9 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 - Artifact: `build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json`.
 - Artifact: `build/current-mimo-v2-jang2l-tool-source-preflight-20260606.json`.
 - Updated current MiMo source-vs-quant and tool-source preflight evidence to local-only scope.
-- Local source bundle `/Users/eric/models/MiMo-V2.5-source` is missing; local quant bundle `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` exists.
-- No remote/adlab/Max2 endpoint is part of the current proof boundary.
+- Refreshed after the SimpleEngine MiMo decode fixes: local quant bundle `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` exists and the local quant endpoint was healthy on `127.0.0.1:8897` during preflight; remote source path `erics-m5-max2.local:/Volumes/EricsLLMDrive/jangq-ai/sources/MiMo-V2.5` exists.
+- Remaining source-vs-quant prerequisite blocker: source endpoint `http://erics-m5-max2.local:8126` is not listening, so source/quant prompt rows have not executed and model-artifact versus runtime/decode-loop classification remains unresolved.
+- Remote source-path evidence is preflight-only. It is not source-vs-quant clearance because no source endpoint rows executed.
 - Release manifest after this refresh: `build/current-release-regression-manifest-after-mimo-local-only-preflight-20260606.json`.
 - Current release state remains: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
 
