@@ -4790,3 +4790,11 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Updated release/current-suite/objective proof pointers to `build/current-tool-call-contract-after-xml-function-repair-20260606.json`.
 - Focused pointer tests passed (`3 passed`) and py_compile passed.
 - Regenerated `build/current-release-regression-manifest-after-xml-function-repair-20260606.json`; it remains fail/not release-ready as expected because MiMo runtime quality and MiniMax provenance blockers remain open.
+
+## 2026-06-06 - Live local MiMo tool probe after XML parser repair
+
+- Launched local-only MiMo server on `127.0.0.1:8897` with simple engine, `xml_function`, `think_xml`, thinking disabled, and no KV quantization.
+- Probe artifact: `build/current-mimo-live-xml-repair-tool-probe-20260606.json`.
+- Result: fail. Auto tool returned punctuation garbage/no tool calls after ~80s; required tool returned HTTP 400 because no tool call was produced; text recovery failed after tool rows.
+- Server was stopped and port 8897 is clear.
+- Boundary: parser repair is real but MiMo live tool/runtime quality remains open; do not mark MiMo tools release-cleared.

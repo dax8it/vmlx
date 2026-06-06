@@ -130,3 +130,13 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   - `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py -k 'tool_calls_with_runner_artifact or source_hashes_all_referenced_code_files or source_hash_list_matches_current_suite_runner'` -> `3 passed`.
   - `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-after-xml-function-repair-20260606.json` wrote a valid manifest and exited nonzero because the release is still not ready.
 - Current release state after pointer refresh remains: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+
+## 2026-06-06 live MiMo tool probe after XML parser repair
+
+- Artifact: `build/current-mimo-live-xml-repair-tool-probe-20260606.json`.
+- Local-only server: `127.0.0.1:8897`, model `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, simple engine, `--tool-call-parser xml_function`, `--reasoning-parser think_xml`, `--default-enable-thinking false`, `--kv-cache-quantization none`.
+- Result: `status=fail`.
+- `tool_choice=auto`: HTTP 200 after about 80s, `finish_reason=stop`, punctuation/CJK-style garbage content, no `tool_calls`.
+- `tool_choice=required`: HTTP 400 after about 59s because no tool call was produced.
+- Post-tool text recovery failed in the same probe, so the live runtime remains unstable after this row.
+- Classification: the schema-gated XML parser repair is valid and covered by noheavy tests, but it does not clear MiMo live tool protocol. Remaining likely blocker is MiMo local quant/runtime generation quality, not parser strictness alone.
