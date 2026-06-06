@@ -17,8 +17,8 @@ Current package/proof state, refreshed 2026-06-06:
 - Bundled Python was rebuilt from current source and `npm run verify-bundled` passed.
 - Staged Sequoia app was rebuilt and Developer ID signed.
 - `build/current-packaged-integrity-contract-after-unsupported-media-staged-app-20260606.json` is `status=pass`.
-- `build/current-objective-proof-after-gemma26-installed-speed-visible-20260606.json` closes the two Gemma4 26B CRACK rows for installed-app Responses visible-content/language and mixed-SWA speed.
-- `build/current-regression-suite-after-gemma26-installed-speed-visible-20260606.json` is `status=open` with `failed_steps=["release_regression_manifest"]`; source/package/parity/contracts pass, and five live/model rows remain.
+- `build/current-objective-proof-after-cross-family-smoke-refresh-20260606.json` closes the two Gemma4 26B CRACK rows for installed-app Responses visible-content/language and mixed-SWA speed.
+- `build/current-regression-suite-after-cross-family-smoke-refresh-20260606.json` is `status=open` with `failed_steps=["release_regression_manifest"]`; source/package/parity/contracts pass, and five live/model rows remain.
 - No release tag, notarized DMG, public download update, or installed-app replacement has been produced from this continuation.
 
 The app can currently serve several text and some VLM paths, but full VL/audio/video support is not release-cleared across all model families. The remaining work must be classified as either:
@@ -206,3 +206,28 @@ For each row below, capture full output tails and server logs:
 4. Re-run live media matrix for Gemma4 12B/26B, Qwen27/35 MTP, LFM, Step3.7 text-only, MiMo, Nemotron Omni, ZAYA-VL, DSV4, MiniMax, Hy3.
 5. Close cross-family multi-turn and real Electron UI live model matrix rows.
 6. Only after live rows pass: rebuild app, sign, notarize, staple, install, and repeat installed-app proofs before release/tag/public download update.
+
+## 2026-06-06 cross-family media/cache refresh
+
+Current proof artifacts now wired into the release gates:
+
+- `build/current-all-local-model-smoke-live-slice-tools-media-continuation-20260606/summary.json` covers Gemma4 12B, LFM2.5, MiniMax Small, Qwen27, and Step3.7 text route.
+- `build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606/summary.json` covers Hy3, Ling/Bailing, and Nemotron Omni.
+- `build/current-all-local-model-smoke-qwen35-mxfp8-mtp-tools-media-20260606/summary.json` covers Qwen35 MXFP8 MTP including the no-`gdn_sink` source path.
+- `build/current-all-local-model-smoke-zaya-text-vl-tools-media-20260606/summary.json` is intentionally red and remains a required blocker.
+- `build/current-dsv4-route-mode-code-exactness-memory-preflight-cross-family-20260606.json` keeps DSV4 live exactness closed to unsafe launch until enough RAM is available.
+
+Current blockers to build, not guard away:
+
+- MiMo V2.5 JANG_2L needs real multimodal runtime implementation in JANG tools/vMLX before VL/audio/video can be advertised. The current text compatibility shell and typed unsupported-media error are not a VL pass.
+- MiMo text/tool quality still needs source-vs-quant first-divergence tracing, tool protocol repair at the real template/parser boundary, and speed proof. Do not force hidden prompts, fake tool-call conversion, or cache disablement as a production fix.
+- ZAYA/ZAYA1-VL needs exact-instruction, reasoning-visible-output, multi-turn recall, and red-image semantic fixes while preserving the CCA/path-dependent cache constraints.
+- DSV4 needs a safe-memory live host for long-output/code/file-generation and restart/L2 exactness proof.
+- Real Electron UI still needs the same family matrix from installed app settings through spawned server args, `/health`, cache stats, media upload, max output tokens, streaming/non-streaming, and post-error recovery.
+
+Release sequencing remains:
+
+1. Close MiMo, ZAYA, DSV4, MiniMax reporter parity, and real Electron UI live rows with full-output artifacts.
+2. Rebuild bundled Python/app from that source.
+3. Sign, notarize, staple, install, and rerun installed-app proofs.
+4. Publish release/tag/downloads only after public vmlx.net and mlx.studio download freshness is proven current.
