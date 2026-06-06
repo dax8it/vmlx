@@ -7,10 +7,36 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 - Worktree: `/Users/eric/mlx/vllm-mlx-finite-launch-guard`
 - HEAD: `d93dd2be`
 - Version: `1.5.56`
-- Source manifest: `build/current-release-regression-manifest-after-noheavy-pointer-refresh-20260606.json`
+- Source manifest: `build/current-release-regression-manifest-after-bundled-refresh-20260606.json`
 - Manifest status: `fail`
 - Prepackage ready: `False`
 - Release ready: `False`
+- Current objective proof: `build/current-objective-proof-after-bundled-refresh-20260606.json`
+- Current regression suite: `build/current-regression-suite-after-bundled-refresh-20260606.json`
+- Current packaged integrity proof: `build/current-packaged-integrity-contract-after-bundled-refresh-20260606.json`
+- Current hard release rule: packaging, staging, signing, notarization, release tags, public uploads, and download updates are locked until the runtime/model/UI/cache blockers below are green, unless Eric explicitly unlocks release packaging in the current turn.
+- Important packaging nuance: `electron-builder --dir` signs this app because the panel package configuration has Developer ID signing enabled. It must not be used as a harmless staged-parity check while blockers are open.
+
+## Current blocker-driven operating contract
+
+- Every action must reduce a named blocker in this ledger.
+- Do not chase package/sign/notary rows while runtime/model/UI/cache blockers remain open.
+- Do not call proof-pointer cleanup release progress unless it removes stale evidence and exposes the real blocker state.
+- Do not commit local `AGENTS.md`, `.agents/`, `vmlx_engine/vendor/`, staged app output, release output, or generated signing artifacts.
+- Do not claim production readiness from source-only, import-only, load-only, health-only, text-only, fail-closed, or narrow unit-test proof.
+- Do not call Step3p7 VLM fixed because advertised VLM now routes text-only; that is a crash-avoidance row only.
+- Do not call JSON repair native guided decoding.
+- Do not call preserved media sidecars runtime media support.
+- Do not disable prefix cache, paged cache, L2 cache, TurboQuant KV, MTP, thinking, tools, media, or continuous batching and call the family release-cleared unless that disabled mode is the documented release behavior.
+
+## Current top-level open blockers from `after-bundled-refresh`
+
+- Cross-family live multi-turn smoke matrix is not release-cleared.
+- MiMo V2.5 JANG_2L runtime/tool/long-prompt quality is not release-cleared.
+- MiniMax-M2.7-JANGTQ_K reporter parity/root cause is not release-cleared.
+- Real Electron UI cross-family live model matrix is not release-cleared.
+- DSV4 long-output/code/file-generation quality is not release-cleared.
+- Packaged integrity remains red only as a release gate because staged app parity and current-objective dry gate are not release-cleared; do not address this by signing/staging while runtime blockers remain open.
 
 ## Explicit release blockers from current manifest
 
