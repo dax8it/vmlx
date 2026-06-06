@@ -320,3 +320,9 @@ Do not clear by fake behavior:
 - no cache-disable fallback;
 - no hidden text-only/media-off claim for a media-capable release;
 - no stale Swift TP4 proof counted as current Python/vMLX release proof.
+
+### MiMo post-proof server death addendum
+
+Artifact: `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
+
+The local MiMo endpoint was down immediately after the synced long/tool/cache proof. Do not summarize those rows as harmless empty generations; they may include runtime process death and need log-backed repro before any release clearance.

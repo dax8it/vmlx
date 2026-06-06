@@ -4708,3 +4708,9 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Refreshed audit: `build/current-mimo-v2-jang2l-current-audit-after-synced-long-tool-cache-proof-20260606.json` -> `status=open`.
 - Remaining MiMo blockers: long-prompt coherence, tool protocol, exact-cache prompt following, decode speed, system-prompt first-token stop, source-vs-quant missing.
 - Artifact integrity/stale-state are clean; source-vs-quant is still blocked because Max2 `8124` is active Qwen3.6 TP4 and MiMo source `8126` is down.
+
+# 2026-06-06 MiMo post-proof server health
+
+- After the synced long/tool/cache proof, `curl http://127.0.0.1:8897/health` failed immediately and `lsof` found no listener on `8897`.
+- Added `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
+- Treat the fresh MiMo empty rows as potentially including runtime process death/crash, not just bad decode output. Next repro needs server logs.

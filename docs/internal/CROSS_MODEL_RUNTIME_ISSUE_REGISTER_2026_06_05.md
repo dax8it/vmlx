@@ -1154,3 +1154,9 @@ Release boundary:
 - Do not claim MiMo VL/audio/video support; that bridge remains unimplemented in the current Python/JANG-tools path.
 - Do not hide this with prompt folding, parser fabrication, cache disabling, synthetic tool calls, or a forced text-only/media-off claim.
 - Future release notes for these runtime/media/cache fixes should credit GitHub `@Hornsan1` for issue reporting.
+
+### Post-proof server death addendum
+
+Artifact: `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
+
+After the synced long/tool/cache proof, `curl http://127.0.0.1:8897/health` failed immediately and `lsof` found no listener on `8897`. Treat the fresh empty-output rows as potentially including process death/crash, not just low-quality decoding. Next repro must capture server logs around the first empty row and separate request-level empty output from runtime process exit.

@@ -529,3 +529,9 @@ Next required proof:
 3. If source passes and quant fails, fix the Python/vMLX/JANG_2L quant/runtime decode path.
 4. If source also fails, fix or re-upload the MiMo model/artifact before runtime release claims.
 5. Separately implement MiMo VL/audio/video forward support; typed unsupported-media errors are honest but not a product-complete media release.
+
+### MiMo post-proof server death addendum
+
+Artifact: `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
+
+The local MiMo server was no longer listening on `8897` after the synced long/tool/cache proof. This strengthens the runtime blocker: MiMo Python/vMLX needs crash/process-death repro logs in addition to decode-quality/source-vs-quant analysis.
