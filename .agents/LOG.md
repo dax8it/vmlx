@@ -4680,3 +4680,14 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Packaged integrity now passes: `build/current-packaged-integrity-contract-after-zaya-vl-thinking-capability-truth-20260606.json`.
 - Current suite now fails only on release readiness: `build/current-regression-suite-after-zaya-vl-thinking-capability-truth-20260606.json` -> `status=open`, failed step `release_regression_manifest`.
 - No release tag, notarized DMG, public download, updater manifest, `mlx.studio`, or `vmlx.net` update was performed. Release notes must credit GitHub `@Hornsan1`.
+
+## 2026-06-06 Codex | MiMo XML-function parser contract fixed, release still blocked
+- Fixed vMLX MiMo XML-function fallback: explicit `xml_function` / `mimo_xml_function` parser prompts no longer get misclassified as Qwen/Step native tool prompts, and fallback instructions now match MiMo's native XML function dialect instead of JSON-in-`<tool_call>`.
+- Focused parser tests passed: `tests/test_tool_fallback_injection.py`, `tests/test_xml_function_tool_parser.py`, and selected XML/fallback/tool-format rows -> `74 passed`.
+- Live MiMo source smoke: `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-xml-function-template-fix-20260606/summary.json` remains `fail`, but `tool_required` now emits parsed OpenAI `record_fact({"value":"blue-cat"})`.
+- MiMo remains release-red on exact-cache prompt following (`empty_visible`, rambling instead of `ACK`), long-prompt coherence, and speed (`~1.78 tok/s` vs release target), plus packaged/UI/media bridge proof.
+- Refreshed MiMo audit: `build/current-mimo-v2-jang2l-current-audit-after-xml-function-template-fix-20260606.json` -> `status=open`, `tool_protocol=true`, blockers are long-prompt, exact-cache, and speed.
+- Rebuilt bundled Python from current source and local `/Users/eric/jang/jang-tools`; `npm run verify-bundled` passed.
+- Current suite: `build/current-regression-suite-after-mimo-xml-function-template-fix-20260606.json` -> `status=open`, failed steps `packaged_integrity_contracts`, `release_regression_manifest`, `release_gate_skip_app`; packaged integrity has no package/hash failed rows after rebundle, but release gate still fails because objective blockers remain.
+- Commit pushed to `origin/main`: `20070fd4 Fix MiMo XML tool fallback contract`.
+- No tag, notarized DMG, public download, mlx.studio/vmlx.net update, or release claim was made.
