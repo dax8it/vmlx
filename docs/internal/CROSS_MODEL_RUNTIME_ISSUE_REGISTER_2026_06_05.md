@@ -698,9 +698,10 @@ New evidence:
 - Local JANG runtime patch changed SWA sink attention to use MLX native `scaled_dot_product_attention(..., sinks=attention_sink_bias)` by default, matching the Max2 dirty runtime direction while retaining manual sink only behind explicit `JANG_MIMO_MANUAL_SINK_SDPA`.
 - Native `sinks=` improved short/medium failure shape from punctuation/CJK to English prompt-copying for 92/125-token prompts, but it did not clear coherence. At 152+ prompt tokens output still degraded into CJK/punctuation. Artifact: `build/current-mimo-v2-jang2l-direct-length-sweep-native-sinks-20260606.json`.
 - vMLX live MLLM route initially failed with HTTP 500 because `mlx_vlm.generate` called MiMo's language model with `inputs_embeds=...`, but MiMo's MLX `Model.__call__` accepted only raw `input_ids`.
-- Local MiMo runtime patch now accepts `inputs_embeds`, prefers embedded inputs when both ids and embeddings are passed by `mlx_vlm`, and returns an object with `.logits` only on the MLLM-style call path. Direct `mlx_lm` raw-array return is preserved.
-- After syncing that local JANG runtime patch into the vMLX `.venv`, live source server returned HTTP 200 and exact short output `mimo runtime ok`.
-- The same live source server still failed long-output quality: a 152-token prompt returned visible `<think><think><think>`. Artifact: `build/current-mimo-v2-jang2l-vmlx-native-sinks-inputsembeds-smoke4-20260606.json`; log: `build/current-mimo-v2-jang2l-vmlx-native-sinks-inputsembeds-smoke4-20260606.log`.
+- vMLX source fix now adapts the dynamically registered MiMo MLLM `language_model` so `mlx_vlm` can pass `inputs_embeds` and receive an object with `.logits`. Direct raw-logits calls without `inputs_embeds` are preserved through the adapter.
+- Current vMLX source adapter proof returned HTTP 200 and exact short output `mimo runtime ok`.
+- The same live source server still failed long-output quality: a 152-token prompt returned visible `<think><think><think>`. Artifact: `build/current-mimo-v2-jang2l-vmlx-source-adapter-smoke2-20260606.json`; log: `build/current-mimo-v2-jang2l-vmlx-source-adapter-smoke2-20260606.log`.
+- Focused vMLX regression coverage for MiMo registration, load-side sanitization/quantization, and both old/new MLLM `inputs_embeds`/`.logits` contracts passed: `6 passed, 498 deselected`.
 
 Max2 contrast evidence:
 
@@ -712,7 +713,7 @@ Max2 contrast evidence:
 Current classification:
 
 - `runtime/server parser only`: unlikely. Direct `mlx_lm` reproduces prompt-length and tool failures outside vMLX server.
-- `MLLM call-shape incompatibility`: confirmed and locally fixed in JANG runtime; this fixes HTTP 500 for short text on the MLLM route, not long-output quality.
+- `MLLM call-shape incompatibility`: confirmed and fixed in vMLX's dynamic MiMo MLLM adapter; this fixes HTTP 500 for short text on the MLLM route, not long-output quality.
 - `simple cache/prefix bug`: unlikely for the tested prefill row. Cache and no-cache logits matched.
 - `SWA sink-only bug`: unlikely. Sink-off made output worse, not better.
 - `RoPE convention bug`: unlikely. Numeric convention check matched reference.
