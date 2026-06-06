@@ -89,11 +89,30 @@ Every advertised media-capable family must have these functions working through 
 
 ## Known missing or incomplete runtime functions
 
+This section is the implementation ledger. A row is not complete unless the
+named function exists, routes through the live server path, and has source plus
+installed-app proof where the product advertises the capability.
+
+| Function area | Current implementation | Missing build work | Current blocker classification |
+|---|---|---|---|
+| Gemma4 dynamic image-prefill budget | `_resolve_vlm_image_prefill_single_buffer_limit()` scales the default with Metal working set, keeps explicit `VMLINUX_VLM_IMAGE_PREFILL_BUFFER_GB`, and typed 413 recovery exists. | Full installed-app media matrix: larger images, video, audio, tools after media, streaming/non-streaming parity. | `unknown_pending_repro` for remaining quality/media-depth rows, not the old fixed-8GB guard. |
+| Gemma4 media post-error recovery | Panel removes a failed media user turn when no visible activity occurred, preventing replay of a rejected image on the next text turn. | Re-run through installed app for image reject, text-after-reject, video/audio-after-reject, and Responses/Chat parity. | `gateway_ui` until installed proof is current for every route. |
+| Qwen VL/video processor bridge | Qwen video path has native processor wiring in source contracts: `videos=...`, `pixel_values_videos`, and `video_grid_thw` rows exist. | Current packaged Qwen27/35 MTP media matrix with MTP on/off, tools, streaming, and post-video text recovery. | `unknown_pending_repro` for broad media proof; stale `gdn_sink` crash is `gateway_ui` if only old app reproduces. |
+| MiMo text runtime bridge | vMLX registers `mlx_vlm.models.mimo_v2` around `jang_tools.mimo_v2.mlx_model`; text/cache narrow proof exists. Missing media forward now raises typed `unsupported_media_modality` instead of a generic generation failure. | Real multimodal model module: vision encoder, audio encoder/tokenizer bridge, media projector/merger, `get_input_embeddings(pixel_values=...)`, `__call__(pixel_values=...)`, video/audio token expansion, and cache salt proof. | `runtime_dispatch` plus `model_artifact` pending source-vs-quant quality comparison. |
+| MiMo JANG tools model forward | `/Users/eric/jang/jang-tools/jang_tools/mimo_v2/mlx_model.py` is explicitly text-only; its docstring says visual/audio towers are preserved but not wired. | Implement `mimo_v2_multimodal.py` or equivalent in JANG tools, then make vMLX register that module instead of a text-only compatibility shell. | `runtime_dispatch`; do not advertise VL/audio/video or force a parser/cache workaround. |
+| MiMo long-prompt/tool quality | Cache classification and narrow text repeat work; conservative no-cache exact ACK can work. | First-divergence trace against source/higher-quality profile; tool protocol repair at model/template/runtime boundary; speed target proof. | `decode_loop` or `model_artifact` still unresolved. |
+| Step3.7 VLM bridge | Source registration/no-heavy guards exist; text-only route is stable. | Real Step3.7 image/video processor, projector, forward, media cache salt, and live proof, or an explicit unsupported-VLM product row. | `runtime_dispatch`; text-only metadata view is not a VLM fix. |
+| Nemotron Omni audio/video | Prior source rows exist for text/image/video/audio but are not current release-cleared. | Current source and installed app matrix for text-before/after media, audio/image/video carryover, tools, streaming, and L2. | `unknown_pending_repro`. |
+| ZAYA/ZAYA1-VL media cache | Typed CCA cache contract exists; media routing rows exist in no-heavy contracts. | Live image/video rows proving media salt plus safe CCA/path-dependent restore and post-media recovery. | `kernel_cache` if partial restore fails; otherwise `unknown_pending_repro` until live. |
+| MiniMax / Hy3 / Kimi media advertised variants | Text/tool/cache rows exist for selected bundles; media proof is not current in this slice. | Per-family advertised-modality audit: processor path, special tokens, cache policy, tools after media, installed-app parity. | `unknown_pending_repro`. |
+| Shared structured-output repair | Register requires parse/repair/validate/retry while reporting raw parse failure. | Centralize benchmark/catalog repair for JSON/XML-ish outputs and prove raw-vs-repaired scoring rows. | `decode_loop` for native malformed output; caller-side repair is not guided decoding. |
+
 1. MiMo multimodal bridge
 
 - `jang_tools.mimo_v2.mlx_model` is text-oriented; multimodal runtime is not release-proven.
 - vMLX MiMo MLLM path must accept and correctly route image/video/audio tensors, not just load an MLLM wrapper.
 - Tool parser must handle MiMo's template dialect without fabricating tool calls from malformed raw XML.
+- Current fail-closed behavior is typed: unwired MiMo vision forward raises `UnsupportedMediaModalityError` / API code `unsupported_media_modality`. This is not a pass for MiMo vision; it is only correct failure classification and recovery.
 
 2. Step3.7 VLM bridge
 
@@ -171,8 +190,9 @@ For each row below, capture full output tails and server logs:
 
 ## Immediate next build order
 
-1. Keep Gemma4 VLM prefill guard dynamic and typed: high-memory machines should not reject a 10GB predicted buffer solely because of the old 8GB default, while explicit env overrides still work.
-2. Build MiMo media bridge or prove artifact/model blocker from actual Max2 bundle configs and runtime signatures.
-3. Add shared structured-output repair/validation to the video/catalog benchmark layer and report raw-vs-repaired score separately.
-4. Re-run live media matrix for Gemma4 12B, Qwen27/35 MTP, LFM, Step3.7 text-only, MiMo, Nemotron Omni, ZAYA-VL, DSV4, MiniMax, Hy3.
-5. Only after live rows pass: rebuild app, sign, notarize, staple, install, and repeat installed-app proofs before release/tag/public download update.
+1. Re-run Gemma4 installed-app image guard/recovery with the dynamic budget and record whether any 128GB machine still reports an 8GB default. If yes, classify as stale installed app or packaged-runtime drift.
+2. Build MiMo media bridge in JANG tools first (`mimo_v2_multimodal.py` or equivalent), then update vMLX registration to use the real media model instead of the text-only compatibility shell.
+3. Prove or falsify MiMo model-artifact quality from the actual Max2 bundle: source-vs-quant long-prompt trace, routed expert parity, tool-argument exactness, and speed target.
+4. Add shared structured-output repair/validation to the video/catalog benchmark layer and report raw-vs-repaired score separately.
+5. Re-run live media matrix for Gemma4 12B, Qwen27/35 MTP, LFM, Step3.7 text-only, MiMo, Nemotron Omni, ZAYA-VL, DSV4, MiniMax, Hy3.
+6. Only after live rows pass: rebuild app, sign, notarize, staple, install, and repeat installed-app proofs before release/tag/public download update.
