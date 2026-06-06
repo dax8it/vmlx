@@ -356,3 +356,20 @@ plain-prefix assumption forward as a release contract.
 - Release manifest: `build/current-release-regression-manifest-after-qwen-gdn-sink-native-mtp-refresh-20260606.json`.
 - Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
 - Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.
+
+## 2026-06-06 Gemma 4 VLM image-prefill guard source proof
+
+- Artifact: `build/current-gemma4-vlm-prefill-guard-source-proof-20260606.json`.
+- VL contract artifact: `build/current-vl-media-cache-contract-after-gemma4-prefill-guard-proof-20260606.json`.
+- Classification: runtime guard policy/source proof. This addresses the fixed-8GB false rejection class on high-memory machines; it does not prove installed app parity.
+- Focused proof: backend focused pytest passed `4 passed, 606 deselected`; panel warning/no-visible-response tests passed `15 passed, 145 skipped`; VL media contract passed with no missing markers or failed checks.
+- Covered: scalable high-memory default guard, explicit old 8GB override, processor-expanded media input budgeting, typed prefill-budget error round-trip, and panel warning handling.
+- Still not release-cleared: live Gemma 4 12B image generation through the server, installed `/Applications/vMLX.app` parity, large-context multi-turn VL/audio/video stress, signing, notarization, and public download update.
+
+## 2026-06-06 Objective/manifest refresh after Gemma 4 VLM guard proof
+
+- Objective proof: `build/current-objective-proof-after-gemma4-vlm-prefill-guard-proof-20260606.json`.
+- Confirmed objective row: `Generation defaults, Native MTP, and VL media gates are current` remains `PASS` with the new VL media contract pointer.
+- Release manifest: `build/current-release-regression-manifest-after-gemma4-vlm-prefill-guard-proof-20260606.json`.
+- Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.

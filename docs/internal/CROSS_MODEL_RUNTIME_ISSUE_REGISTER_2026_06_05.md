@@ -1329,3 +1329,11 @@ Current classification: local quant is tool-broken independent of CB/q4, but mod
 - Current native-MTP contract artifact is now `build/current-native-mtp-contract-after-qwen-gdn-sink-proof-20260606.json`.
 - Contract status: `pass`, with no missing markers or failed checks.
 - This keeps the release manifest pointed at the Qwen `gdn_sink`-aware contract artifact while preserving the release boundary that live 27B/35B and packaged-app parity are still required.
+
+## 2026-06-06 Gemma 4 VLM image-prefill guard classification
+
+- User-facing symptom: Gemma 4 12B image prompt rejected with `predicted attention buffer 10.0GB exceeds single-buffer guard 8.0GB` on a 128GB M5 Max, followed by no visible response.
+- Current source classification: runtime guard policy issue, not model corruption. The default single-buffer guard now scales with effective Metal working set while explicit `VMLINUX_VLM_IMAGE_PREFILL_BUFFER_GB=8` preserves the old conservative behavior.
+- Proof artifact: `build/current-gemma4-vlm-prefill-guard-source-proof-20260606.json`.
+- Current VL contract artifact: `build/current-vl-media-cache-contract-after-gemma4-prefill-guard-proof-20260606.json`.
+- Release boundary: source/panel contract proof does not clear live Gemma 4 12B image generation or installed-app parity.
