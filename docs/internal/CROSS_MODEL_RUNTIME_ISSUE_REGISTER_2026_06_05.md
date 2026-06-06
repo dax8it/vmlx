@@ -19,6 +19,7 @@ Current known release state:
 - DSV4 same-process cache-hit/TTFT row is now proven from `build/current-dsv4-responses-cache-gate-20260606.json`: previous-response follow-up hit `5195` cached tokens with `paged+dsv4`, streaming follow-up recorded TTFT `0.3339s`, and explicit no-cache full prompt stayed uncached and took `22.17s` wall. Still open: app-launch default wiring, restart L2 proof, and DSV4 exact code/file generation quality.
 - DSV4 one-tool-after-result row is now proven from `build/current-dsv4-responses-one-tool-stop-20260606.json`: round 1 emitted exactly one structured `list_directory` call, round 2 used `previous_response_id`, kept `tools=TOOLS` with `tool_choice=auto`, emitted no function calls, and returned exactly `DONE` with native prefix+paged+block-disk L2 enabled.
 - DSV4 restart-L2 row is still open. Current artifact `build/current-dsv4-responses-restart-l2-gate-20260606.json` is `status=review`: before restart it wrote 21 DSV4 block-disk L2 blocks; after restart it read 21 disk hits from the same isolated cache dir and survived with visible `STORED`, but `restart_dsv4_cache_hit=false` and no `paged+dsv4` usage detail. Earlier exact terminal restore before the fail-closed guard hit 21 blocks / 5195 cached tokens and then crashed in Metal with `kIOGPUCommandBufferCallbackErrorTimeout`. Classification: `kernel_cache` runtime issue, not model artifact corruption.
+- Packaged release row is blocked as of 2026-06-06. A stale staged `vMLX.app` can still verify as Developer ID signed, but a fresh Developer ID signing probe fails non-interactively with `errSecInternalComponent` / keychain user-interaction denial. That means the current source and bundled runtime cannot be honestly resealed or notarized until signing access is fixed. Classification: `gateway_ui` packaging/release issue, not model artifact corruption.
 
 ## Status Legend
 
@@ -528,6 +529,47 @@ Required:
 - [ ] Metadata mixed-precision/config consistency proof.
 - [ ] TurboQuant kernel import and runtime proof.
 
+## Release-Surface Blockers
+
+### CM-REL-001 Fresh Developer ID signing blocked while stale app verifies
+
+Status: `[!]` Known blocker on 2026-06-06.
+
+Classification: `gateway_ui`.
+
+Symptom:
+
+- Existing staged `vMLX.app` can pass signature verification.
+- Fresh signing of a copied binary with the configured Developer ID identity fails with `errSecInternalComponent`.
+- Keychain inspection also reports non-interactive user-access denial.
+- A release gate that accepts the stale signed app as proof can falsely hide that the current source/bundled runtime cannot be rebuilt, signed, notarized, or shipped.
+
+Concrete evidence:
+
+- Direct signing probe against a copied bundled `.so` failed with `errSecInternalComponent`.
+- `security find-identity -v -p codesigning` sees Developer ID identities, including `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`.
+- `security show-keychain-info` for signing keychains reported `User interaction is not allowed`.
+- `npm run build && npm run package` failed during Electron signing on bundled scipy extension signing, consistent with signer/keychain access rather than a specific model/runtime file.
+- Packaged integrity now reports release blocker `packaged_app_developer_id_signing_blocked` instead of treating the old staged app as sufficient proof.
+
+Required checks before closing:
+
+- [ ] Fresh Developer ID signing probe passes on a copied binary in the current non-interactive release environment.
+- [ ] `npm run build && npm run package` produces a new staged `vMLX.app` from current source and bundled Python.
+- [ ] New staged app passes strict Developer ID signature verification.
+- [ ] Staged app engine hash parity and engine source hash parity pass against current source.
+- [ ] Notarization submit, wait, staple, and `stapler validate` pass for the newly built artifact.
+- [ ] Public updater/download manifests point to the newly notarized artifact only after the above checks pass.
+
+Do not close with:
+
+- Existing old `panel/release/.../vMLX.app` signature verification alone.
+- Ad-hoc signing.
+- Unsigned app copying.
+- Disabling hardened runtime.
+- Skipping the signing preflight.
+- Treating source-server tests as packaged-app proof.
+
 ## Required Evidence Template Per Run
 
 Every model-family proof should record:
@@ -599,7 +641,8 @@ Every model-family proof should record:
 5. `[~]` Finish structured output retry/guided decoding work after `fa9f455b` repair layer.
 6. `[!]` Fix PyPI trusted publisher or token so Python package release is not stale.
 7. `[D]` Re-run DSV4 long-output/code exactness and real UI proof when memory/model state allows.
-8. `[ ]` Execute per-family matrix for Gemma4, Qwen, LFM, Step, DSV4, Nemotron, Zaya/MiMo/Kimi, JANG/JANGTQ/MXFP.
+8. `[!]` Fix Developer ID keychain access and rebuild/sign/notarize a fresh app; old signed staged app verification is not proof.
+9. `[ ]` Execute per-family matrix for Gemma4, Qwen, LFM, Step, DSV4, Nemotron, Zaya/MiMo/Kimi, JANG/JANGTQ/MXFP.
 
 ## Non-Negotiable Release Notes
 
