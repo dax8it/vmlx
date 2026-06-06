@@ -532,24 +532,58 @@ Required:
 
 ### MiMo
 
-Current status: `[!]` Re-entered active scope on 2026-06-06. Existing local MiMo models are considered bad until removed and replaced from the Max2-documented JANG_2L source.
+Current status: `[~]` Re-entered active scope on 2026-06-06. Existing local MiMo models are considered bad unless replaced from the Max2-documented JANG_2L source. Local stale-artifact cleanup and HTTP intake are complete; live runtime proof is still open.
+
+2026-06-06 intake evidence:
+
+- Removed stale local MiMo directory: `/Users/eric/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-V2.5-Pro`.
+- Post-removal targeted inventory found no MiMo model directories under `/Users/eric/.mlxstudio/models`, `/Users/eric/models`, or `/Users/eric/.cache/huggingface/hub`.
+- Max2 docs located the promoted bundle at `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- HTTP source used: `http://erics-m5-max2.local:8765/MiMo-V2.5-JANG_2L/`.
+- Downloaded local path: `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Downloaded artifact count: `173` files, including `150` `model-*-of-00150.safetensors` shards.
+- Local size: `106G`; indexed payload: `113249695304` bytes; weight map count: `109180`.
+- Config facts: `model_type=mimo_v2`, `architectures=["MiMoV2ForCausalLM"]`, `num_hidden_layers=48`, `hidden_size=4096`, `num_attention_heads=64`, full-attention KV heads `4`, SWA KV heads `8`, `sliding_window=128`, `attention_value_scale=0.707`, `vision_config` present, `audio_config` present, `mtp_config` absent.
+- Runtime metadata is embedded in `config.json`; this bundle does not include `jang_config.json`.
+- `generation_config.json`: `do_sample=false`, `temperature=1.0`, `top_p=0.95`, `max_new_tokens=2048`, EOS `[151643,151645,151672]`.
+- `tokenizer_config.json` embeds the same `chat_template.jinja`; tool/reasoning parser fields are not top-level tokenizer fields, so vMLX must use config/model registry metadata.
+- Local `/Users/eric/jang/jang-tools` MiMo verifier is stale relative to Max2: it falsely expects quantized triplets for BF16 `model.embed_tokens.weight` and `lm_head.weight`, and ignores `routed_expert_bit_plan.layer_overrides` for early `down_proj=3`.
+- Max2 docs/current verifier treat BF16 `embed_tokens` and `lm_head` passthrough as intentional and early layers `1..16` `down_proj=3` as the current coherent `JANG_2L_322_D3E16` plan.
+- Temp local run of Max2 current verifier passed against the downloaded artifact: config OK, `109180` tensors across `150` shards, routed expert `.weight` count `36096`, BF16 passthrough embed/head/audio/vision checks OK, chat template matches embedded.
+- Packaged vMLX imports `jang_tools.mimo_v2.mlx_register`; after that registration, `mlx_lm.models.mimo_v2` imports and exposes `Model`/`ModelArgs`.
+- Runtime gap found: generic `load_model_with_fallback` did not explicitly register MiMo before `mlx_lm.load`; this is a vMLX load-path integration issue, not evidence of download corruption.
+
+2026-06-06 source-runtime live smoke:
+
+- Artifact: `build/current-mimo-v2-jang2l-live-smoke-20260606.json`.
+- Server command used source runtime with `--tool-call-parser xml_function`, `--reasoning-parser think_xml`, `--kv-cache-quantization none`, `--disable-native-mtp` because the bundle has no MTP tensors. This is not cache/release clearance.
+- Initial MLLM load failure reproduced before fix: language model rejected `102` affine sidecars (`*.scales`, `*.biases`) because the MiMo MLLM wrapper skipped the `mlx_lm.load_model` quantize-before-load sequence.
+- Runtime fix applied: MiMo MLLM adapter now filters media/MTP tensors, calls the MiMo text model `sanitize()` to stack routed experts, and quantizes only leaf modules with matching affine sidecars or explicit per-module quantization metadata before loading weights.
+- Second MLLM load failure reproduced and fixed: quantization predicate tried to quantize already-quantized `QuantizedSwitchLinear` routed experts; predicate now requires `to_quantized` before applying overrides.
+- Source runtime live load now passes.
+- Observed cache layout: `model_type=mimo_v2`, `48` layers, full attention layers use `KVCache`, SWA layers use `RotatingKVCache`; logs show full/SWA interleave ending at layer `47:KVCache`.
+- Exact text check passed: HTTP 200, output `mimo runtime ok`, `31.626s`, `29` prompt tokens, `5` completion tokens.
+- Multi-turn recall check passed: HTTP 200, output `basalt-17`, `5.837s`, `68` prompt tokens, `6` completion tokens.
+- Streaming check passed: HTTP 200, `10` chunks, visible output `One, two, three, four.`, `7.715s`.
+- Tool-call check failed even with `--enable-auto-tool-choice`: HTTP 200 but raw content was only `<tool_call>`, `tool_calls=null`, completion stopped after `3` tokens. Classify as open MiMo model/template/tool-dialect issue until a complete XML function call or parser-compatible output is proven.
 
 Required cleanup/intake:
 
-- [ ] Inventory local MiMo model directories on this machine.
-- [ ] Delete all past local MiMo model copies after recording paths removed.
-- [ ] SSH or otherwise access `erics-m5-max2.local:~/jang` docs and locate the HTTP download source for the MiMo JANG_2L artifact.
-- [ ] Download the documented MiMo JANG_2L artifact over HTTP, not by silently reusing stale local copies.
-- [ ] Verify artifact integrity: config, `jang_config.json`, tokenizer/chat template, sidecars, quant metadata, shard count, and expected JANG_2L precision.
+- [x] Inventory local MiMo model directories on this machine.
+- [x] Delete all past local MiMo model copies after recording paths removed.
+- [x] SSH or otherwise access `erics-m5-max2.local:~/jang` docs and locate the HTTP download source for the MiMo JANG_2L artifact.
+- [x] Download the documented MiMo JANG_2L artifact over HTTP, not by silently reusing stale local copies.
+- [x] Verify artifact integrity: config, tokenizer/chat template, sidecars, quant metadata, shard count, and expected JANG_2L precision. `jang_config.json` is absent by design for this bundle path; Max2 current verifier passed locally from a temp copy.
+- [ ] Sync local JANG MiMo verifier/docs from Max2 or otherwise make local verifier respect BF16 bookends and `routed_expert_bit_plan.layer_overrides`.
 
 Required runtime work:
 
-- [ ] Implement/fix MiMo JANG_2L model-family detection without directory-name regex.
-- [ ] Route MiMo JANG_2L through the correct loader/runtime, not generic fallback if architecture-specific code is required.
-- [ ] Verify cache policy: prefix, paged, L2 disk, and any hybrid/SSM/architecture-specific state handling.
+- [x] Implement/fix MiMo JANG_2L model-family detection without directory-name regex. Registry/classifier and live source runtime detect `model_type=mimo_v2`.
+- [~] Route MiMo JANG_2L through the correct loader/runtime, not generic fallback if architecture-specific code is required. Source MLLM text path loads and answers after sidecar-aware quantization fix; packaged parity still open.
+- [~] Verify cache policy: prefix, paged, L2 disk, and any hybrid/SSM/architecture-specific state handling. Source logs prove hybrid `KVCache`/`RotatingKVCache` layout only; cache hits, restart, and L2 disk are still open.
 - [ ] Verify TurboQuant/JANG kernels or explicitly classify unsupported kernel paths.
 - [ ] Verify thinking/template/parser behavior from model-owned metadata.
-- [ ] Verify tool-call protocol and loop behavior.
+- [!] Verify tool-call protocol and loop behavior. Current tool probe fails with raw incomplete `<tool_call>` and no API `tool_calls`.
 - [ ] Verify Chat Completions, Responses, Anthropic, and Ollama surfaces where supported.
 - [ ] Verify streaming and non-streaming full visible outputs, including tail review.
 - [ ] Verify sleep/wake/unload/reload lifecycle.
