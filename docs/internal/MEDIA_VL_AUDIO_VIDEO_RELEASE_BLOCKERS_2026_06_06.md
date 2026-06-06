@@ -358,3 +358,7 @@ Current MiMo status after the CB one-shot prefill fix:
 - Red: source-vs-quant and media/VL/audio/video implementation remain unproved/unwired.
 
 Do not tag, notarize, or publish a release from this state.
+
+## 2026-06-06 MiMo tool/source preflight
+
+`build/current-mimo-v2-jang2l-tool-source-preflight-20260606.json` records that MiMo JANG_2L tool failure reproduces on simple and continuous-batching paths and with q4 KV disabled. This keeps MiMo release-red. It also records that current Max2 `8124` is Qwen, old MiMo rank dirs are not live-ready, and source-vs-quant remains blocked until a MiMo TP4 source endpoint is relaunched.

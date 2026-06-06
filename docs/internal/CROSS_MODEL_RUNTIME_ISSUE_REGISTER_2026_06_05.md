@@ -1267,3 +1267,21 @@ Proof movement:
 - Server remains not release-ready: required tool row emits punctuation garbage/no parsed tool call, long prompt after tool kills the process with Metal OOM, and decode is still about `1.79 tok/s`, far below the `40 tok/s` target.
 - Source-vs-quant classification remains blocked because no live MiMo source endpoint is available.
 - MiMo VL/audio/video remains unwired in Python/vMLX; preserved media weights do not imply media support.
+
+## 2026-06-06 MiMo tool/source preflight
+
+Artifact:
+
+```text
+build/current-mimo-v2-jang2l-tool-source-preflight-20260606.json
+```
+
+Findings:
+
+- MiMo tool failure is not specific to continuous batching: CB with q4 KV, CB with `kv-cache-quantization none`, and simple/no-continuous with `kv-cache-quantization none` all produced punctuation/no parsed `tool_calls` for the same `record_fact` prompt.
+- MiMo tool failure is not only OpenAI parser extraction: a literal XML-copy prompt without API tools produced malformed/repetitive XML instead of a valid copied tool block.
+- Current Max2 `8124` is Qwen TP4 (`qwen36-27b-mxfp8-tp4-pod1-shardedvocab`), not MiMo.
+- Old MiMo TP4 rank directories have request/response folders but no `ready.json`; they cannot be reattached as a live source endpoint.
+- Rank-local source metadata is internally complete for checked rank0/rank1 index files, but no live MiMo source endpoint is available, so source-vs-quant remains blocked.
+
+Current classification: local quant is tool-broken independent of CB/q4, but model-upload versus runtime cannot be finally classified until MiMo source TP4 is relaunched and compared.

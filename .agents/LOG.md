@@ -4753,3 +4753,12 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Movement: CB exact cache rows now return `ACK-CACHE-742`; prefix/paged/block-disk L2 is reproved with `cached_tokens=37`, `paged+disk` then `paged`, and `l2_block_tokens_on_disk=37`.
 - Still blocked: CB tool row emits punctuation/no tool call, long prompt after tool crashes with Metal OOM, decode speed remains about `1.79 tok/s`, source-vs-quant is missing, and media/VL/audio/video is unwired.
 - Refreshed audit: `build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json` -> `status=open`, blockers are long prompt, tool protocol, speed, source-vs-quant, and media.
+
+# 2026-06-06 MiMo tool/source preflight
+
+- Ran MiMo tool isolation after the CB one-shot prefill fix.
+- CB q4 KV, CB `kv-cache-quantization none`, and simple/no-continuous `kv-cache-quantization none` all returned punctuation/no parsed tool call for the same `record_fact` prompt.
+- Literal XML-copy prompt also failed: model emitted malformed/repetitive XML instead of a valid copied tool block.
+- Current Max2 `8124` is Qwen TP4, not MiMo. Old MiMo TP4 rank dirs have request/response dirs but no `ready.json`, so they are not attachable as live source workers.
+- New artifact: `build/current-mimo-v2-jang2l-tool-source-preflight-20260606.json`.
+- Audit refreshed and still open: source-vs-quant remains blocked until MiMo TP4 source is relaunched or current Qwen workers are intentionally displaced.
