@@ -48,7 +48,7 @@ Load-only, health-only, text-only, or fail-closed unsupported-route proof does n
 | Gemma4 12B MXFP4/MXFP8/JANG_4M | Text speed around 46.6 tok/s passed for JANG_4M; image small/reject recovery passed in installed app; media capability contract is honest. | Full audio/video depth, tools after media, larger media prompts, streaming media, UI/settings parity across cache modes. |
 | Gemma4 26B/31B | Source smoke and installed visible/speed rows have partial proof. | Broader packaged media/tool/cache parity and long media-depth matrix. |
 | Qwen3.6 35B MXFP8 MTP | `gdn_sink` dense MTP crash does not reproduce on current source/installed 1.5.56 proof. | If a user sees it on older app, it is stale packaged runtime; if on fresh app, reproduce the exact bypass route. Media/VL/MTP matrix remains open. |
-| Qwen3.6 27B MXFP8/JANG_4M MTP | Local installed decode works; deterministic policy improves decode speed. Fresh Pod1 TP4 `batchfix3` run proves native MTP autodetect depth 2, rank agreement, streaming, multiturn, Responses chain cache, L2 disk cache/restore, and batch rank correctness. | TP4 remains release-open because hybrid attention-cache evidence is missing, decode speed is low, localhost can hit a stale depth-0 gateway, and media/VL proof plus UI/app policy parity remain open. |
+| Qwen3.6 27B MXFP8/JANG_4M MTP | Local installed decode works; deterministic policy improves decode speed. Fresh Pod1 TP4 `batchfix3` host-IP proof now passes native MTP autodetect depth 2, rank agreement, streaming, multiturn, Responses chain cache, L2 disk cache/restore, paged-incompatible hybrid SSM/L2 attention evidence, and batch rank correctness. | TP4 remains release-open because single-row decode speed is still low, localhost can hit a stale depth-0 gateway, and media/VL proof plus UI/app policy parity remain open. |
 | Step3.7 Flash JANG_2L CRACK | Text-only vMLX route is stable when metadata marks `has_vision=false`; default advertised VLM path can crash. | Runtime must fail closed for unsupported Step3p7 VLM and real Step3p7 VLM implementation remains open. Tool loops/raw dialect leaks remain model/runtime compatibility blockers. |
 | MiMo V2.5 JANG_2L | Local quant endpoint healthy; text/cache narrow proof exists; source-vs-quant blocked by missing source endpoint; VL/audio sidecars are preserved but unwired in Python/vMLX. | Python media processor/embedding bridge unbuilt, source endpoint missing, long prompt/system-role stop, tool args/continuation quality, speed, restart-L2, full cache matrix. |
 | LFM 2.5 | Installed UI text/cache/tools proof exists. | Any VL/audio/video advertised variants still need full capability audit and media proof. |
@@ -88,15 +88,16 @@ Next valid actions:
 
 ## Qwen3.6 27B MXFP8 TP4 batchfix evidence
 
-Fresh run:
+Fresh passing run:
 
 ```text
 run_id: qwen36-mxfp8-pod1-tp4-batchfix3-20260606T165440Z
-artifact: build/current-qwen36-27b-mxfp8-tp4-batchfix3-hostip-proof-20260606.json
-remote artifact: /tmp/adlab-qwen36-27b-mxfp8-tp4-batchfix3-hostip-proof-20260606.json
+artifact: build/current-qwen36-27b-mxfp8-tp4-batchfix3-hostip-proof2-20260606.json
+remote artifact: /tmp/adlab-qwen36-27b-mxfp8-tp4-batchfix3-hostip-proof2-20260606.json
 base_url used for valid proof: http://100.98.111.49:8124
 served model: qwen36-27b-mxfp8-tp4-batchfix3
 model path: /opt/adlab/models/qwen36-27b-mxfp8-mtp
+verdict: PASS
 ```
 
 What passed:
@@ -113,15 +114,15 @@ What passed:
 - Batch throughput row passed the safety floor: batch size `16`, high watermark `16`, `92.600 tok/s` against the diagnostic `1 tok/s` floor.
 - Cache reuse passed.
 - L2 disk cache and L2 disk restore passed.
-- SSM-side hybrid cache evidence passed with `cache_stats.ssm.hit_count=14` and `live_cache.ssm_hits=14` on the batch row.
+- Hybrid SSM cache passed for the paged-incompatible TP4 topology using SSM evidence plus L2 attention evidence:
+  `attention_l2.cache_stats.disk.hit_count=22`, `attention_l2.cache_stats.disk.stores=33`,
+  `cache_stats.ssm.hit_count=20`, and `live_cache.ssm_hits=20`.
 
-What still failed:
+What still blocks release:
 
-- Overall verdict: `FAIL`.
-- Failed check: `HYBRID_SSM_CACHE`.
-- Failure detail: `attention=[]`, while SSM evidence was present.
-- This means the run proves SSM/L2 behavior but does not prove attention-side hybrid cache hit/reuse for the Qwen TP4 route.
-- Decode speed is still not production-cleared: current health showed single-row decode around `8-12 tok/s` in this run, even though batch aggregate hit `92.600 tok/s`.
+- Overall proof verdict: `PASS`.
+- Decode speed is still not production-cleared: current health showed single-row decode around `9-10 tok/s` in this run, even though batch aggregate hit `99.044 tok/s` against the diagnostic floor.
+- Media/VL routes, UI/settings parity, and installed-app packaged parity remain unproven for this Qwen TP4 lane.
 
 Operational issue found:
 
@@ -134,8 +135,10 @@ Remote AdLab fixes applied during this run:
 
 - `scripts/engine-patches/adlab-tpworker-direct-file-serve-decode-patch.py` already contains the multi-rank batch safety condition `if promptBatches.count > 1 && !group.isMultiRank`.
 - `scripts/adlab-qwen36-tp4-api-proof.py` now reports `bad_rows` for rank agreement failures.
+- `scripts/adlab-qwen36-tp4-api-proof.py` now treats L2 disk evidence as attention-side hybrid evidence only when the diagnostics explicitly report a hybrid, paged-incompatible topology. This avoids a fake generic disk-cache pass while allowing the actual Qwen TP4 hybrid SSM/L2 route to prove cache reuse.
 - `scripts/engine-patches/adlab-tp-hotpath-timing-patch.py` was fixed so worker sampler timing is optional/idempotent when the sampler layout has already been transformed by send/recv/direct-decode patches.
 - Direct Max2 regression: `python3 scripts/test-adlab-tp-hotpath-timing-patch.py` passed.
+- Direct Max2 regression: `python3 scripts/test-adlab-qwen36-tp4-api-proof.py` passed.
 - `scripts/adlab-qwen36-tp4-resident-api-proof.sh` now supports `TP_PROOF_BASE_URL` and validates that `/health` resolves the expected served model and current run-id rank targets before running proof.
 - Direct Max2 regression: `bash -n scripts/adlab-qwen36-tp4-resident-api-proof.sh` passed.
 - Direct Max2 regression: `python3 scripts/test-adlab-qwen36-tp4-resident-api-proof.py` passed.
@@ -143,8 +146,9 @@ Remote AdLab fixes applied during this run:
 Current classification:
 
 - Prior batch rank-divergence is fixed/narrowed by the `batchfix3` run.
-- Remaining Qwen TP4 blocker is `kernel_cache`: attention-side hybrid cache evidence is missing for TP4.
+- Prior Qwen TP4 hybrid-cache proof failure is closed for the paged-incompatible SSM/L2 topology by the host-IP proof2 run.
 - Separate blocker is `gateway_ui`: stale localhost gateway contamination can invalidate proof traffic.
+- Separate blocker is `runtime_perf`: single-row decode speed remains below the target release bar.
 - This is not a model upload corruption finding.
 
 ## No fake fixes
@@ -161,7 +165,7 @@ Current classification:
 1. Reprove or relaunch MiMo source TP4 endpoint without losing the Qwen TP4 evidence lane.
 2. Run MiMo source-vs-quant first-divergence and classify runtime versus artifact.
 3. Build Python/vMLX MiMo media bridge or explicitly keep MiMo media `preserved_unwired`.
-4. Close Qwen TP4 batch/rank/speed blockers.
+4. Close Qwen TP4 single-row decode speed, stale gateway, media/VL, and UI/app parity blockers.
 5. Finish Gemma4 audio/video/tool/media UI matrix.
 6. Reproduce Step3p7 unsupported VLM fail-closed guard and keep real VLM implementation open.
 7. Run full UI/settings/cache/media matrix from source and installed app.
