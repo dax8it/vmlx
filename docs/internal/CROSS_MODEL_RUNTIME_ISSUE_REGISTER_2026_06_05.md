@@ -417,6 +417,7 @@ Proofs present:
 - [x] 12B MXFP4 image source proof.
 - [x] 12B MXFP8 image source proof.
 - [x] Packaged installed 1.5.56 Gemma4 JANG_4M API/cache/sleep proof.
+- [x] 2026-06-06 source speed gate for `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` passed: artifact `build/current-gemma4-12b-speed-gate-20260606-live.json`, target `45.0 tok/s`, default median `46.695 tok/s`, temp0/topk0 median `47.171 tok/s`, temp1/topk0 median `46.391 tok/s`, temp1/topk64 median `46.601 tok/s`, `top_k_is_primary_cause=false`, speed-row cache hits `0`, native cache `gemma4` / `mixed_swa_kv_v1`.
 
 Still needed:
 
@@ -424,6 +425,7 @@ Still needed:
 - [ ] Video path.
 - [ ] Audio path if advertised.
 - [ ] Full UI settings panel proof.
+- [ ] Packaged installed-app speed parity for Gemma4 12B after the post-1.5.56 main changes.
 - [ ] Structured JSON/schema live proof after repair.
 - [ ] Tool-call proof.
 - [ ] MTP variants if present.
