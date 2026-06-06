@@ -383,3 +383,9 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Patched `SessionConfigForm` so video sampling controls are shown only for runtime-video families, not every active VLM and not MiMo/Step text-only rows.
 - Focused validation passed: `npm test -- tests/model-config-registry.test.ts tests/settings-flow.test.ts` (`318 passed`) and `npm run typecheck`.
 - Remaining work: real Electron UI proof must confirm the installed app displays the same controls and launched server args/cache/media status match `/capabilities`.
+
+## 2026-06-06 Codex | Qwen36 TP4 batch root narrowed to unsafe multi-rank batch path
+- Inspected the strict proof JSON for fresh Max2 `:8125`: all non-batch rows with rank agreement (`chat`, `chat_multiturn`, `native_mtp_probe`, `responses_first`, `responses_chain`, `cache_cold`, `cache_warm`) have `ok=true`; only `batch_throughput` has `mismatched_ranks=[1,2,3]` and HTTP 502.
+- Read the rank response files through `adlab-n1-raw`...`adlab-n4-raw`: the failed batch request has 16 result rows on every rank, but generated tokens diverge on ranks 1-3 while rank0 advertises `token_authority=rank0_send_recv_per_slot` and `engine_path=batch_engine_no_native_mtp`.
+- Patched remote ADLab scripts on Max2: `adlab-qwen36-tp4-api-proof.py` now reports `bad_rows`; `engine-patches/adlab-tpworker-direct-file-serve-decode-patch.py` now gates the concurrent batch engine to `!group.isMultiRank` so future rebuilt TP workers use the safer sequential/rank-zero sampler path under multi-rank.
+- Validation on Max2: edited scripts compile with system Python. Pytest is unavailable in Max2 system Python, and live workers were not rebuilt/relaunched yet, so `:8125` remains release-red until a fresh strict proof passes.
