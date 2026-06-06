@@ -178,3 +178,14 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 - No remote/adlab/Max2 endpoint is part of the current proof boundary.
 - Release manifest after this refresh: `build/current-release-regression-manifest-after-mimo-local-only-preflight-20260606.json`.
 - Current release state remains: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+
+## 2026-06-06 Qwen dense MTP `gdn_sink` runtime fix
+
+- Artifact: `build/current-qwen35-dense-mtp-gdn-sink-fix-20260606.json`.
+- Fixed dense `mlx_lm` Qwen MTP adapter so `gdn_sink` is not just accepted at `GatedDeltaNet`/`DecoderLayer`, but captured and propagated through `Qwen3_5TextModel`, `TextModel`, and outer `Model`.
+- This addresses the reported crash class: `_patch_gated_delta_net.<locals>.__call__() got an unexpected keyword argument 'gdn_sink'` and prevents dense MTP from silently dropping the sink capture path.
+- Verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/patches/mlx_lm_mtp/qwen35_model.py tests/test_engine_audit.py` -> pass.
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'qwen35_dense_mtp_patch'` -> `2 passed`.
+  - `.venv/bin/python -m pytest -q tests/test_native_mtp_autodetect.py -k 'qwen36_vlm_runtime_patch_installs_native_mtp or gated_delta'` -> `3 passed`.
+- Release boundary unchanged: this is a source runtime fix, not a full installed-app/live Qwen 27B/35B MTP E2E clearance.
