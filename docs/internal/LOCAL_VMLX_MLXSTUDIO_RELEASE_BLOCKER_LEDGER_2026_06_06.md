@@ -287,3 +287,13 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   - `sentinel_explicit_system_thinking_true`: still produced empty visible output.
 - Classification: first-token stop is improved in the conservative SimpleEngine MiMo path. MiMo remains release-red because exact instruction following, long-output coherence, speed, tools, cache/L2, source-vs-quant classification, and VL/audio/video runtime wiring remain open.
 - Release boundary unchanged: do not package, sign, notarize, tag, upload, or update downloads from this state.
+
+## 2026-06-06 MiMo batched/MLLM thinking-off decode policy source fix
+
+- Artifact: `build/current-mimo-batched-thinking-off-decode-policy-source-20260606.json`.
+- Extended the MiMo thinking-off decode policy into the continuous-batching/cache route by threading effective `enable_thinking` through `BatchedEngine -> MLLMScheduler -> MLLMBatchRequest` and applying MiMo-only logits processors inside `MLLMBatchGenerator._make_request_sampler`.
+- Policy: suppress native `<think>` and `</think>` token IDs whenever MiMo API thinking is off; suppress `<|im_end|>` only before the first generated token, using `request.output_tokens` rather than prompt-token length.
+- Verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/mllm_batch_generator.py vmlx_engine/mllm_scheduler.py vmlx_engine/engine/batched.py tests/test_mllm_continuous_batching.py` -> pass.
+  - `.venv/bin/python -m pytest -q tests/test_mllm_continuous_batching.py -k 'mimo_batched_thinking_off_sampler_suppresses_tags_and_first_eos or mimo_batched_thinking_on_sampler_does_not_suppress_eos'` -> `2 passed, 37 deselected`.
+- Release boundary unchanged: this is source regression coverage only. It does not clear live MiMo continuous-batching cache/L2 rows, exact instruction following, tool protocol, speed target, source-vs-quant classification, or VL/audio/video runtime support.
