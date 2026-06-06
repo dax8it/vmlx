@@ -350,3 +350,30 @@ Classification:
 - The fixed portion is `runtime_dispatch` / `gateway_ui` for text-only processor content shape.
 - Remaining failures are `decode_loop` / `model_artifact` / deeper `runtime_dispatch` pending prompt/render trace and source-vs-artifact comparison.
 - Do not mark ZAYA-VL cross-family smoke as passed from this patch.
+
+## 2026-06-06 MiMo V2.5 JANG_2L harness/tool-cache proof
+
+Artifact: `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-harness-tighten-20260606/summary.json`
+
+Harness fix:
+
+- MiMo V2 now stays tool-capable even when the promoted bundle lacks `jang_config.json`; registry fallback maps it to XML tools and think XML.
+- Nested MiMo `audio_tokenizer` sidecars are filtered out of the default model inventory so smoke rows do not treat processor sidecars as standalone models.
+- This closes a harness blind spot only. It does not clear MiMo quality or media support.
+
+Live proof result:
+
+- Status remains `fail`.
+- Native cache health was active: family `mimo_v2`, schema `mixed_swa_kv_v1`, subtype `mimo_v2_asymmetric_swa`, prefix cache, paged cache, block disk L2, and TurboQuant storage-boundary q4 telemetry were present.
+- Multi-turn recall passed with visible `blue cat`.
+- Reasoning-on passed with visible `FINAL=OK`.
+- Exact cache repeat failed: first repeat was empty visible output, second repeat rambled instead of exact `ACK`, even though cached tokens were reported.
+- Required tool call failed: server generated but returned no parsed `record_fact` tool call under `tool_choice=required`.
+
+Current classification:
+
+- `kernel_cache`: not currently proven as the primary MiMo blocker because cache telemetry is live, but exact cached decode output is still wrong and must stay under proof.
+- `decode_loop` or `model_artifact`: still unresolved for exact prompt-following, tool protocol, and speed.
+- `runtime_dispatch`: still open for VL/audio/video because JANG tools MiMo forward is text-only and vMLX has no release-proven MiMo image/video/audio bridge.
+
+Do not resolve this with fake parser injection, forced text-only metadata, or synthetic tool calls. The next proof must compare source/high-quality MiMo against the JANG_2L artifact and trace where the decoded tokens diverge.

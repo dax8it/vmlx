@@ -4657,3 +4657,14 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Validation: py_compile passed and selected ZAYA runtime tests passed (`6 passed`).
 - Live ZAYA1-VL JANGTQ_K reruns stayed red with 5 failures. Improvement is limited to no-media-after-image now answering no-image instead of echoing the generic prompt.
 - Remaining ZAYA-VL failures are preserved as open blockers: cache exact text `green`, multi-turn `color `, reasoning empty visible, red image `white`.
+
+# 2026-06-06 MiMo tool/cache harness tightening
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated wrapper/runtime work.
+- Patched all-local smoke classification so `mimo_v2` bundles remain tool-capable through XML tool fallback even when promoted artifacts lack `jang_config.json`.
+- Patched default inventory filtering to exclude nested MiMo `audio_tokenizer` sidecars.
+- Focused tests passed for MiMo classification, tool probe inclusion, and sidecar filtering.
+- Live MiMo artifact: `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-harness-tighten-20260606/summary.json` -> fail.
+- Positive proof: cache infra active (`mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, prefix, paged, L2, TurboQuant q4 storage-boundary), recall passed, reasoning passed.
+- Blockers preserved: exact cache output empty/rambling, required OpenAI tool call missing, speed still not release-grade, VL/audio/video bridge still unbuilt.
+- Refreshed objective digest: `build/current-objective-proof-after-mimo-harness-tool-tighten-20260606.json` keeps MiMo open.

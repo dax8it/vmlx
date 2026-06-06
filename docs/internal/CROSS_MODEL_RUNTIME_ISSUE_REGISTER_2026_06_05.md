@@ -1035,3 +1035,27 @@ Do not mark ZAYA-VL release-cleared. Next work should trace the ZAYA-VL text tem
 - Live unchanged blockers: exact cache prompt returns `green`, multi-turn recall returns `color `, reasoning has empty visible output, red image returns `white`.
 - Tool parser and typed ZAYA CCA cache are not the failing components in this diagnostic: required OpenAI tool call passed, repeat cache showed `paged+zaya_cca`, generic TurboQuant KV stayed disabled for path-dependent CCA.
 - Release boundary: ZAYA-VL remains open and must not be counted as cross-family smoke pass.
+
+## 2026-06-06 MiMo V2.5 JANG_2L tool/cache harness tightening
+
+Artifact: `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-harness-tighten-20260606/summary.json`
+
+What changed:
+
+- The all-local smoke inventory now treats `model_type=mimo_v2` as tool-capable even when the model bundle has no `jang_config.json`, matching the registry fallback to XML tool parsing.
+- The default inventory excludes nested MiMo processor sidecars such as `audio_tokenizer` so they are not counted as separate model rows.
+- Objective proof now includes this artifact in the MiMo release row and exposes `nomedia_tool_cache_status`, exact-cache pass, cache-hit presence, recall pass, reasoning pass, tool pass, failures, and native cache metadata.
+
+Observed live result:
+
+- MiMo remains release-blocked.
+- Cache infrastructure is active: `mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, prefix, paged, block disk L2, and TurboQuant storage-boundary q4 telemetry.
+- Recall and reasoning probes pass.
+- Exact cache prompt-following fails with empty or rambling visible output.
+- Required tool calls fail; `tool_choice=required` produced no parsed `record_fact` tool call.
+
+Classification:
+
+- `decode_loop` or `model_artifact` remains unresolved for MiMo text quality, tool protocol, and speed.
+- `runtime_dispatch` remains open for MiMo VL/audio/video because the available JANG tools MiMo module is text-only.
+- This is not a cache release-clearance and not a media release-clearance.

@@ -283,3 +283,12 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Narrow improvement: `text_no_media_after_image` now gives a real no-image response instead of generic prompt echo.
 - Still red: exact cache answer `green`, multi-turn `color `, reasoning-only empty visible output, red image `white`.
 - Do not release-clear ZAYA-VL or the cross-family smoke row from this patch.
+
+## CODEX 2026-06-06 MiMo tool/cache harness tightening
+- Patched all-local smoke so MiMo V2 remains tool-capable without `jang_config.json`; this matches registry fallback to XML tools and think XML.
+- Patched inventory filtering so nested MiMo `audio_tokenizer` sidecars are not treated as standalone model rows by default.
+- Live focused MiMo no-media smoke artifact: `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-harness-tighten-20260606/summary.json` -> `status=fail` with 4 failures.
+- Positive evidence: native MiMo cache telemetry active (`mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, prefix, paged, L2, TurboQuant q4 storage-boundary), multi-turn recall passed, reasoning visible answer passed.
+- Red evidence: exact cache repeat produced empty/rambling visible output, and `tool_choice=required` produced no parsed `record_fact` tool call.
+- Objective digest refreshed at `build/current-objective-proof-after-mimo-harness-tool-tighten-20260606.json`; MiMo remains open with `tool_protocol_blocked=true` and `prompt_length_coherence_blocked=true`.
+- No release/tag/notarization/public update was performed.
