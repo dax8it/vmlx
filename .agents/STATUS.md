@@ -365,3 +365,9 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Passing rows: health/model list, chat, multi-turn chat, Responses, Responses chaining, chat streaming, Responses streaming, parser leak guard, loop guard, token authority, throughput presence, native MTP depth 2 evidence, cache reuse, L2 disk cache, and L2 disk restore.
 - Failing rows: rank agreement mismatch (`[1,2,3]`), batch throughput `6.582 tok/s` below required `40`, and hybrid SSM cache proof has SSM hits but no attention evidence.
 - Boundary: Qwen36 TP4 is no longer just stale-ready when using `:8125`, but it is still release-red on rank agreement and speed. Do not publish this as production-cleared.
+
+## 2026-06-06 Codex | media capability reflection made sidecar-aware
+- Patched `/v1/models/{id}/capabilities` to keep top-level `modalities` as runtime-proven support and add a nested `media` contract with runtime, declared, preserved, unwired, and per-modality status rows.
+- MiMo V2 fixtures with vision/image/video/audio sidecars now report those media types as `preserved_unwired` while top-level `modalities` stays `["text"]`; this prevents UI/release probes from scheduling fake media support while preserving evidence that sidecars exist.
+- Focused validation passed: selected MiMo runtime/capability rows in `tests/test_engine_audit.py` (`2 passed`), `py_compile` for touched files, and `git diff --check`.
+- This is not a MiMo VL/audio/video forward implementation. The real bridge remains open in JANG tools/vMLX until image/video/audio tensors route through a proven multimodal model module.
