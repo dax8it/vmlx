@@ -44,7 +44,7 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   Evidence: `build/current-mimo-jang2l-local-structural-verify-20260606.json,build/current-mimo-jang2l-live-text-cache-smoke-20260606.json,build/current-mimo-v2-jang2l-quantized-switchglu-parity-20260606.json,build/current-mimo-v2-jang2l-direct-length-sweep-20260606.json,build/current-mimo-v2-jang2l-tool-dialect-failure-20260606.json,build/current-mimo-v2-jang2l-current-audit-after-native-thinking-off-20260606.json,build/current-mimo-v25-jang2l-local-metadata-truth-patch-20260606.json,build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json,build/current-mimo-batched-thinking-off-decode-policy-source-20260606.json,build/current-mimo-v2-jang2l-cb-cache-after-batched-policy-live-20260606.json,build/current-mimo-v2-jang2l-cb-cache-after-native-thinking-off-live-20260606.json`
   Next proof: Pass current local MiMo JANG_2L tool protocol/continuation, long/system prompt behavior without working-set rejection, source-vs-quant classification, speed target, and media honesty/API/UI proof before including MiMo in a production release.
 - `issue179_minimax_k_root_cause_audit`: `open`
-  Evidence: `build/current-issue179-minimax-k-root-cause-audit-after-public-v1556-scan-20260606.json`
+  Evidence: `build/current-issue179-minimax-k-root-cause-audit-after-reporter-hash-refresh-20260606.json`
   Next proof: Obtain reporter installed app bundle hash provenance matching a public/local vMLX server.py route proof, or refresh reporter parity metadata against a known public DMG; do not rerun broad cache/model probes until this provenance gap changes.
 
 ## Open/non-pass sweep rows
@@ -60,7 +60,7 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   Failures: `["unexpected_issue_slice:175", "unexpected_issue_slice:176", "unexpected_issue_slice:177", "failed_issue_checks:175", "missing_issue_check:175:installed_app_live_memory_stress_proven", "missing_issue_check:175:installed_app_memory_clear_runtime_proven", "failed_issue_checks:176", "missing_issue_check:176:installed_app_live_memory_pressure_proven", "missing_issue_check:176:installed_app_promoted_block_cleanup_proven", "failed_issue_checks:177", "missing_issue_check:177:installed_app_cache_selection_telemetry_proven", "missing_issue_check:177:installed_live_ttft_and_cold_paged_tq_proven"]`
 - `issue175_177_installed_runtime_audit`: `missing`; artifact `build/current-issue175-177-installed-runtime-audit-20260602-v1554-installed-tahoe.json`
 - `issue175_177_live_runtime_audit`: `missing`; artifact `build/current-issue175-177-live-runtime-audit-20260601-local-refresh.json`
-- `issue179_minimax_k_root_cause_audit`: `open`; artifact `build/current-issue179-minimax-k-root-cause-audit-after-public-v1556-scan-20260606.json`
+- `issue179_minimax_k_root_cause_audit`: `open`; artifact `build/current-issue179-minimax-k-root-cause-audit-after-reporter-hash-refresh-20260606.json`
   Failures: `["missing_proven:local_installed_responses_cancel_live_probe", "missing_proven:local_reporter_prompt_reproduction_clean", "missing_proven:public_v1549_tahoe_dmg_has_responses_cancel_route", "missing_proven:reporter_cancel_404_after_econnreset_same_response_id_proven", "missing_proven:reporter_cancel_404_after_stream_abort_order_proven", "missing_proven:reporter_log_has_abort_before_visible_content", "missing_proven:reporter_log_has_responses_cancel_404", "missing_proven:reporter_log_installed_app_bundled_python_seen", "missing_proven:reporter_log_launch_parser_cache_flags_seen", "missing_prove`
 - `public_app_issue_audit`: `open`; artifact `build/current-public-app-issue-audit-after-public-v1556-scan-20260606.json`
   Failures: `["unexpected_issue_slice:115", "failed_issue_checks:115", "missing_issue_check:115:gemma4_current_installed_ui_speed_gate_passes", "missing_issue_check:115:gemma4_cold_wall_includes_ttft_tracked", "unexpected_issue_slice:119", "failed_issue_checks:119"]`
@@ -402,7 +402,7 @@ plain-prefix assumption forward as a release contract.
 
 ## 2026-06-06 Objective/manifest refresh after bundled Python refresh
 
-- Objective proof: `build/current-objective-proof-after-bundle-refresh-20260606.json`.
+- Objective proof: `build/current-objective-proof-after-issue179-reporter-hash-refresh-20260606.json`.
 - Release manifest: `build/current-release-regression-manifest-after-bundle-refresh-20260606.json`.
 - Packaged integrity artifact: `build/current-packaged-integrity-contract-after-bundle-refresh-20260606.json`.
 - Improvement: bundled Python verifier now passes; critical source/hash/import drift is cleared.
@@ -427,3 +427,17 @@ plain-prefix assumption forward as a release contract.
 - DSV4 bundled exactness artifact: `build/current-dsv4-route-mode-code-exactness-bundled-after-bundle-refresh-20260606.json`.
 - Current DSV4 status remains open: direct/off exact-code quality fails with `THREE.ScScene`; requested-thinking exactness is diagnostic only and does not clear direct/off.
 - Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+
+## 2026-06-06 MiniMax #179 reporter hash provenance refresh
+
+- Current artifact: `build/current-issue179-minimax-k-root-cause-audit-after-reporter-hash-refresh-20260606.json`.
+- Reporter installed `server.py` hash is now recorded from GitHub issue #179 comments: `a2c4aed88d69b0537de9c7bb7ecb68e4d97f40e92e9fec781e9f79b9b157e8be`.
+- This does not clear the MiniMax-M2.7-JANGTQ_K blocker. Full reporter parity/model manifest/session settings/cancel lifecycle proof is still missing.
+- Do not classify the issue as model corruption, current public route drift, cache failure, or runtime fixed until the reporter parity proof exists or a local reproduction captures final visible corruption.
+
+## 2026-06-06 issue179 reporter-hash objective proof refresh
+
+- Objective proof refreshed to `build/current-objective-proof-after-issue179-reporter-hash-refresh-20260606.json`.
+- Release manifest refreshed to `build/current-release-regression-manifest-after-issue179-reporter-hash-refresh-20260606.json`.
+- Gate state remains red: cross-family live multi-turn, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family matrix, and DSV4 long-output/code/file-generation quality remain open.
+- No signing, notarization, release tag, public download update, or installed-app replacement is allowed from this proof state.
