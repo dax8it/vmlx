@@ -1123,3 +1123,34 @@ Model-upload guidance:
 - Full current suite: `build/current-regression-suite-after-noheavy-pointer-refresh-20260606.json` -> `status=open`, `failed_steps=["release_regression_manifest"]`. All no-heavy/source/package/parity/focused tests passed; release remains blocked only by current live/model rows.
 - Remaining open rows are unchanged and must not be release-cleared without live proof: cross-family live multi-turn, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family matrix, and DSV4 long-output/code/file-generation quality.
 - Release boundary: no tag, notarized DMG, public `mlx.studio`/`vmlx.net` update, or app release was produced from this refresh. Future release notes still need credit for GitHub `@Hornsan1`.
+
+## 2026-06-06 MiMo synced long/tool/cache live proof after Max2 copy
+
+Artifacts:
+
+```text
+build/current-mimo-v25-jang2l-synced-long-tool-cache-proof-20260606.json
+build/current-mimo-v2-jang2l-current-audit-after-synced-long-tool-cache-proof-20260606.json
+```
+
+Current live facts:
+
+- Local canonical MiMo JANG_2L bundle exists at `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` and the manifest audit passes: `173/173` manifest rows, no missing or mismatched files, `113926313468` bytes.
+- Stale local MiMo module/cache targets remain absent.
+- Local quant endpoint `http://127.0.0.1:8897` is healthy, loaded as MLLM, uses affine quantized matmul on M5 Max, and reports TurboQuant KV telemetry enabled.
+- Fresh synced proof is `status=open`: cache repeat 1 empty, cache repeat 2 empty, long-prompt recall empty, forced `record_fact` tool call missing, and speed row produced no usable completion tokens.
+- Refreshed audit blockers are: `mimo_long_prompt_coherence_blocked`, `mimo_tool_protocol_blocked`, `mimo_exact_cache_prompt_following_blocked`, `mimo_decode_speed_below_release_target`, `mimo_system_prompt_first_token_stop_blocked`, and `mimo_source_vs_quant_first_divergence_missing_or_failed`.
+
+Classification:
+
+- This is not proven to be download corruption: file/manifest/stale-state checks are clean.
+- This is not release-cleared cache health: cache telemetry can be present while visible decode output is empty or wrong.
+- Model artifact versus runtime/decode-loop remains unresolved because the source endpoint is still missing.
+- Max2 `8124` is currently Qwen3.6 TP4, not MiMo. Source-vs-quant on `erics-m5-max2.local:8126` cannot run until MiMo source is relaunched without disrupting the active Qwen TP4 lane, or another Pod/source host is used.
+
+Release boundary:
+
+- Do not ship MiMo V2.5 JANG_2L as fully working in Python/vMLX.
+- Do not claim MiMo VL/audio/video support; that bridge remains unimplemented in the current Python/JANG-tools path.
+- Do not hide this with prompt folding, parser fabrication, cache disabling, synthetic tool calls, or a forced text-only/media-off claim.
+- Future release notes for these runtime/media/cache fixes should credit GitHub `@Hornsan1` for issue reporting.

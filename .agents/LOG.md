@@ -4700,3 +4700,11 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Rebuilt and Developer-ID signed the staged Sequoia app. Notarization was not run; builder skipped notarize option generation.
 - Canonical suite: `build/current-regression-suite-after-noheavy-pointer-refresh-20260606.json` -> `status=open`, `failed_steps=["release_regression_manifest"]` only.
 - Release remains blocked by five live/model rows: cross-family live multi-turn, MiMo V2.5 JANG_2L quality, MiniMax reporter/root cause, real Electron UI matrix, and DSV4 long-output/code/file-generation quality.
+
+# 2026-06-06 MiMo synced long/tool/cache proof after Max2 copy
+
+- Ran live local proof against `http://127.0.0.1:8897` and wrote `build/current-mimo-v25-jang2l-synced-long-tool-cache-proof-20260606.json`.
+- Result: `status=open`; cache repeat 1/2 empty, long prompt empty, forced `record_fact` tool call missing, speed row produced no usable completion tokens.
+- Refreshed audit: `build/current-mimo-v2-jang2l-current-audit-after-synced-long-tool-cache-proof-20260606.json` -> `status=open`.
+- Remaining MiMo blockers: long-prompt coherence, tool protocol, exact-cache prompt following, decode speed, system-prompt first-token stop, source-vs-quant missing.
+- Artifact integrity/stale-state are clean; source-vs-quant is still blocked because Max2 `8124` is active Qwen3.6 TP4 and MiMo source `8126` is down.

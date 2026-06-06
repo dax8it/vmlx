@@ -505,3 +505,27 @@ Release boundary:
 - No notarization was completed; `electron-builder --dir` explicitly skipped notarization because notarize options were not generated.
 - No `mlx.studio`, `vmlx.net`, updater manifest, or public download was updated.
 - Future release notes must credit GitHub `@Hornsan1` for the reported runtime/media/cache issues.
+
+## 2026-06-06 MiMo synced long/tool/cache proof after Max2 copy
+
+Fresh artifacts:
+
+```text
+build/current-mimo-v25-jang2l-synced-long-tool-cache-proof-20260606.json
+build/current-mimo-v2-jang2l-current-audit-after-synced-long-tool-cache-proof-20260606.json
+```
+
+Result:
+
+- MiMo local bundle integrity is clean and stale local state is absent.
+- Local Python/vMLX MiMo endpoint remains behaviorally red: cache exact rows empty, long prompt empty, forced tool call missing, and speed row emitted no usable completion tokens.
+- Active native/cache telemetry does not prove usable cache semantics; the cache rows must produce the required visible output and they currently do not.
+- MiMo media remains unbuilt in this Python/JANG-tools path. Vision/audio/video weights may exist in the bundle, but there is no release-proven MiMo media forward bridge.
+
+Next required proof:
+
+1. Relaunch a real MiMo source endpoint on Max2 or another Pod without clobbering active Qwen TP4 workers.
+2. Run source-vs-quant first divergence against source and local quant.
+3. If source passes and quant fails, fix the Python/vMLX/JANG_2L quant/runtime decode path.
+4. If source also fails, fix or re-upload the MiMo model/artifact before runtime release claims.
+5. Separately implement MiMo VL/audio/video forward support; typed unsupported-media errors are honest but not a product-complete media release.

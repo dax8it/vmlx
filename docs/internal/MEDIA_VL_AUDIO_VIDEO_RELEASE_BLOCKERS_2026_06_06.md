@@ -296,3 +296,27 @@ Current facts:
 Next required action:
 
 - Decide whether to temporarily stop/restart the active Qwen TP4 workers or move MiMo source to a separate Pod. Then launch source on `8126`, run source-vs-quant prompt rows, and classify failures as `source_and_quant_match`, `source_also_fails`, or `quant_diverges_from_source`.
+
+## 2026-06-06 MiMo V2.5 synced proof update
+
+Fresh artifacts:
+
+```text
+build/current-mimo-v25-jang2l-synced-long-tool-cache-proof-20260606.json
+build/current-mimo-v2-jang2l-current-audit-after-synced-long-tool-cache-proof-20260606.json
+```
+
+Current status:
+
+- MiMo V2.5 JANG_2L local Python/vMLX is not release-ready for text, tools, cache, speed, VL, audio, or video.
+- Local artifact integrity is clean, so current failures are not explained by a missing/incomplete copied bundle.
+- Source-vs-quant classification is still blocked by no live MiMo source endpoint. Max2 is currently serving Qwen3.6 TP4 on `8124`; MiMo source on `8126` is down.
+- Until source rows run, root cause remains `decode_loop` / `runtime_dispatch` / `model_artifact` unresolved.
+
+Do not clear by fake behavior:
+
+- no prompt folding to avoid system-role failures;
+- no synthetic tool calls;
+- no cache-disable fallback;
+- no hidden text-only/media-off claim for a media-capable release;
+- no stale Swift TP4 proof counted as current Python/vMLX release proof.
