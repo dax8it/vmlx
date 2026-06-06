@@ -339,3 +339,20 @@ plain-prefix assumption forward as a release contract.
 - Focused proof: `py_compile` passed for Qwen MTP patch/test files; focused pytest passed `3 passed, 587 deselected` for dense `gdn_sink` signature/propagation and VL Qwen3.5/3.6 pre-load activation.
 - Covered: dense GatedDeltaNet accepts `gdn_sink`; dense decoder/backbone/text/outer path propagates it; VL Qwen language runtime exposes `n_confirmed` and `gdn_sink` across patched runtime methods.
 - Still not release-cleared: live 27B/35B model-server native-MTP generation, packaged `/Applications/vMLX.app` parity, long multi-turn tool/caching stress, signing, notarization, and public download update.
+
+## 2026-06-06 Native-MTP contract refresh after Qwen `gdn_sink` proof
+
+- Artifact: `build/current-native-mtp-contract-after-qwen-gdn-sink-proof-20260606.json`.
+- Status: `pass`.
+- Focused contract counts: `engine_native_mtp_contracts` passed `123`, `panel_native_mtp_controls` passed `16`, `panel_native_mtp_detection` passed `8`.
+- Missing markers: none.
+- Failed checks: none.
+- Boundary: this refresh proves source/panel contract coverage for native MTP, including the Qwen `gdn_sink` patch path, but still does not replace live 27B/35B native-MTP generation or installed-app parity.
+
+## 2026-06-06 Objective/manifest refresh after native-MTP pointer sync
+
+- Objective proof: `build/current-objective-proof-after-qwen-gdn-sink-native-mtp-refresh-20260606.json`.
+- Newly confirmed objective row: `Generation defaults, Native MTP, and VL media gates are current` is `PASS` after regenerating native-MTP with current source hashes.
+- Release manifest: `build/current-release-regression-manifest-after-qwen-gdn-sink-native-mtp-refresh-20260606.json`.
+- Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.

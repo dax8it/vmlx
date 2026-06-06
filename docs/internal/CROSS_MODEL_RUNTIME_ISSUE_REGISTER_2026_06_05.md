@@ -1323,3 +1323,9 @@ Current classification: local quant is tool-broken independent of CB/q4, but mod
 - Current source classification: runtime compatibility issue fixed in source by Qwen GatedDelta MTP `gdn_sink` propagation, not evidence of model download corruption.
 - Proof artifact: `build/current-qwen36-mtp-gdn-sink-source-proof-20260606.json`.
 - Release boundary: source proof does not clear installed app or release. Need packaged app parity and live Qwen 27B/35B native-MTP generation before claiming user downloads are fixed.
+
+## 2026-06-06 Native-MTP contract pointer refresh
+
+- Current native-MTP contract artifact is now `build/current-native-mtp-contract-after-qwen-gdn-sink-proof-20260606.json`.
+- Contract status: `pass`, with no missing markers or failed checks.
+- This keeps the release manifest pointed at the Qwen `gdn_sink`-aware contract artifact while preserving the release boundary that live 27B/35B and packaged-app parity are still required.
