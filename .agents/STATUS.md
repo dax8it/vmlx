@@ -338,3 +338,12 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Updated trackers:
   - `docs/internal/VL_AUDIO_VIDEO_RUNTIME_WORKLIST_2026_06_06.md`
   - `docs/internal/CROSS_MODEL_RUNTIME_ISSUE_REGISTER_2026_06_05.md`
+
+## 2026-06-06 Codex | Qwen36 TP4 stale-ready root narrowed
+- Hardened `tests/cross_matrix/run_qwen36_tp4_gateway_probe.py` again: rank snapshots now record actual `TPRankWorker` process rows from the `comm` field and avoid matching the probe's own Python source text.
+- Focused validation passed: `tests/test_qwen36_tp4_gateway_probe.py` selected `8 passed`, Python compile passed, and `git diff --check` passed.
+- Live artifact refreshed: `build/current-qwen36-27b-tp4-gateway-bounded-probe-20260606.json`.
+- Current result: `status=open`, `classification=stale_ready_no_rank_workers`.
+- Gateway `/health` and `/v1/models` still work and advertise 4 reachable/ready ranks, cache coordinator enabled, L2 disk cache enabled, and native MTP depth `0`, but all four rank snapshots show zero live `TPRankWorker` processes.
+- Root boundary: current Max2 TP4 endpoint is stale-ready from old `rankN.ready.json` files. It is not model download corruption, not local vMLX client parsing, and not Qwen TP4 MTP/cache/L2 release evidence.
+- Next TP4 work: relaunch real resident workers or patch the ADLab gateway health code to fail readiness unless live workers are present, then rerun exact output, cache/L2 hit, tools, streaming, and UI rows.
