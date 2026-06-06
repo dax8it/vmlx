@@ -1293,3 +1293,13 @@ Current classification: local quant is tool-broken independent of CB/q4, but mod
 - Live preflight passed Thunderbolt/fabric checks and memory thresholds across all four nodes.
 - Live preflight failed before launch with `rc=78` because Qwen TP4 `TPRankWorker` processes were active on every rank node.
 - Classification: source-vs-local-quant MiMo proof is currently blocked by active pod occupancy, not by missing source files, bad TB fabric, or minimum memory. Do not claim MiMo source-vs-quant classification until Qwen is displaced or a free pod is available and the source endpoint is live.
+
+## 2026-06-06 MiMo native thinking-off correction after live CB proof
+
+- Classification: `decode_loop` / `chat_template_runtime` source bug fixed. The runtime had been rewriting MiMo `enable_thinking=false` to `enable_thinking=true` in SimpleEngine, BatchedEngine, and direct MLLM prompt rendering, then trying to hide the mismatch by suppressing think delimiters. Live proof showed this leaked reasoning-style text into visible content.
+- Fixed source paths: `vmlx_engine/engine/simple.py`, `vmlx_engine/engine/batched.py`, `vmlx_engine/models/mllm.py`.
+- Source tests passed: focused MiMo prompt-render tests in `tests/test_mllm_message_serialization.py` and batched sampler tests in `tests/test_mllm_continuous_batching.py`.
+- Pre-fix live artifact: `build/current-mimo-v2-jang2l-cb-cache-after-batched-policy-live-20260606.json`; cache/L2 was active, but exact rows failed with visible reasoning text and the third row hit 503 memory pressure.
+- Current live artifact: `build/current-mimo-v2-jang2l-cb-cache-after-native-thinking-off-live-20260606.json`; repeated exact CB cache rows now both return `ACK-CB-742`, no think tags, `cache_detail=paged`, `cached_tokens=33`, q8 storage quantization, native `mixed_swa_kv_v1`, and `l2_tokens_on_disk=33`.
+- Still open: cold speed about `0.4 tok/s`, cache-hit speed about `1.5 tok/s`, third system row still rejected at Metal working-set pressure `98.5%/107.5GB`, MiMo tools remain unproven, source-vs-quant first divergence is still missing, and VL/audio/video forward remains unbuilt.
+- Release rule: this clears the old visible reasoning leak on the short CB cache row only. It does not clear MiMo release readiness, 40 tok/s, media support, installed-app parity, or signed/notarized release.

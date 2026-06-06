@@ -41,8 +41,8 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 ## Explicit release blockers from current manifest
 
 - `mimo_v2_jang2l_runtime_quality_open`: `open`
-  Evidence: `build/current-mimo-jang2l-local-structural-verify-20260606.json,build/current-mimo-jang2l-live-text-cache-smoke-20260606.json,build/current-mimo-v2-jang2l-quantized-switchglu-parity-20260606.json,build/current-mimo-v2-jang2l-direct-length-sweep-20260606.json,build/current-mimo-v2-jang2l-tool-dialect-failure-20260606.json,build/current-mimo-v2-jang2l-current-audit-after-mllm-inputs-embeds-fix-20260606.json,build/current-mimo-v25-jang2l-local-metadata-truth-patch-20260606.json,build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json`
-  Next proof: Pass current local MiMo JANG_2L long-prompt coherence, tool protocol/continuation, cache, and API proof before including MiMo in a production release.
+  Evidence: `build/current-mimo-jang2l-local-structural-verify-20260606.json,build/current-mimo-jang2l-live-text-cache-smoke-20260606.json,build/current-mimo-v2-jang2l-quantized-switchglu-parity-20260606.json,build/current-mimo-v2-jang2l-direct-length-sweep-20260606.json,build/current-mimo-v2-jang2l-tool-dialect-failure-20260606.json,build/current-mimo-v2-jang2l-current-audit-after-mllm-inputs-embeds-fix-20260606.json,build/current-mimo-v25-jang2l-local-metadata-truth-patch-20260606.json,build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json,build/current-mimo-batched-thinking-off-decode-policy-source-20260606.json,build/current-mimo-v2-jang2l-cb-cache-after-batched-policy-live-20260606.json,build/current-mimo-v2-jang2l-cb-cache-after-native-thinking-off-live-20260606.json`
+  Next proof: Pass current local MiMo JANG_2L tool protocol/continuation, long/system prompt behavior without working-set rejection, source-vs-quant classification, speed target, and media honesty/API/UI proof before including MiMo in a production release.
 - `issue179_minimax_k_root_cause_audit`: `open`
   Evidence: `build/current-issue179-minimax-k-root-cause-audit-after-public-v1556-scan-20260606.json`
   Next proof: Obtain reporter installed app bundle hash provenance matching a public/local vMLX server.py route proof, or refresh reporter parity metadata against a known public DMG; do not rerun broad cache/model probes until this provenance gap changes.
@@ -77,9 +77,9 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 - Proved: narrow text cache proof passed
 - Proved: selected SwitchGLU expert parity passed
 - Proved: text-only runtime modality honesty/fail-closed media proof exists
-- Proved: continuous-batching exact cache prompt following was reproved with paged/L2 counters
+- Proved: continuous-batching exact cache prompt following was reproved with native thinking-off prompt rendering, paged prefix cache, q8 storage, and block-disk L2 counters
 - Not proven/failed: tool protocol/continuation not cleared
-- Not proven/failed: long-prompt coherence/OOM not cleared
+- Not proven/failed: long/system prompt behavior is not cleared because the third live CB row still hit Metal working-set pressure reject at 98.5% of 107.5GB
 - Not proven/failed: decode speed below target
 - Not proven/failed: source-vs-quant first divergence missing
 - Not proven/failed: real vision/audio/video forward path not wired/proven
@@ -87,6 +87,7 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 - Artifact: `build/current-mimo-v2-jang2l-tool-dialect-failure-20260606.json`
 - Artifact: `build/current-mimo-v25-jang2l-local-metadata-truth-patch-20260606.json`
 - Artifact: `build/current-mimo-v25-jang2l-local-sync-image-proof-20260606.json`
+- Artifact: `build/current-mimo-v2-jang2l-cb-cache-after-native-thinking-off-live-20260606.json`
 
 ### `qwen36_27b_35b_mtp`
 
@@ -255,6 +256,9 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   - `.venv/bin/python -m pytest -q tests/test_mllm_message_serialization.py -k 'mimo_v2_thinking_false_uses_plain_template_prefix or simple_engine_routes_mimo_text_only_chat_through_language_model or simple_engine_mimo_llm_path_uses_plain_template_prefix or batched_engine_mimo_text_only_uses_plain_template_prefix'` -> `4 passed, 67 deselected`.
 - Release boundary unchanged: this is a source regression fix for one prompt-rendering gap. It does not clear MiMo live long-prompt coherence, tool protocol, source-vs-quant classification, decode speed, cache/L2, or VL/audio/video runtime support.
 
+Superseded by the later native-thinking-off correction below. Do not carry the
+plain-prefix assumption forward as a release contract.
+
 ## 2026-06-06 MiMo SimpleEngine thinking-off decode policy fix
 
 - Artifact: `build/current-mimo-simple-thinking-off-decode-fix-live-red-20260606.json`.
@@ -297,3 +301,14 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   - `.venv/bin/python -m py_compile vmlx_engine/mllm_batch_generator.py vmlx_engine/mllm_scheduler.py vmlx_engine/engine/batched.py tests/test_mllm_continuous_batching.py` -> pass.
   - `.venv/bin/python -m pytest -q tests/test_mllm_continuous_batching.py -k 'mimo_batched_thinking_off_sampler_suppresses_tags_and_first_eos or mimo_batched_thinking_on_sampler_does_not_suppress_eos'` -> `2 passed, 37 deselected`.
 - Release boundary unchanged: this is source regression coverage only. It does not clear live MiMo continuous-batching cache/L2 rows, exact instruction following, tool protocol, speed target, source-vs-quant classification, or VL/audio/video runtime support.
+
+## 2026-06-06 MiMo native thinking-off prompt correction
+
+- Source fix: `vmlx_engine/engine/simple.py`, `vmlx_engine/engine/batched.py`, and `vmlx_engine/models/mllm.py` no longer rewrite MiMo `enable_thinking=false` requests to the thinking-on prompt rail.
+- Reason: live CB proof showed the old rewrite leaked reasoning-style text into visible content even when thinking tags were suppressed at logits/output boundaries.
+- Source proof: `build/current-mimo-batched-thinking-off-decode-policy-source-20260606.json` remains the sampler-policy source proof; focused tests now assert native thinking-off prompt preservation.
+- Failed pre-fix live proof: `build/current-mimo-v2-jang2l-cb-cache-after-batched-policy-live-20260606.json` had paged/L2 cache alive but returned visible reasoning text for exact prompts and hit a 503 on the third row.
+- Current live proof: `build/current-mimo-v2-jang2l-cb-cache-after-native-thinking-off-live-20260606.json`.
+- Live improvement: `exact_repeat_1` and `exact_repeat_2` both returned exactly `ACK-CB-742`, no visible think tags, finish `stop`, repeat row had `cached_tokens=33`, `cache_detail=paged`, q8 storage quantization, native `mixed_swa_kv_v1`, and `l2_tokens_on_disk=33`.
+- Still release-red: decode speed was about `0.4 tok/s` cold and `1.5 tok/s` on cache hit, and the third system row returned HTTP 503 from Metal working-set pressure (`98.5%` of `107.5GB`, threshold `98.0%`).
+- Classification: prompt-mode rewrite was a runtime decode/template bug and is fixed in source; remaining MiMo blockers are speed, memory pressure/recovery, tool protocol, source-vs-quant classification, and real VL/audio/video wiring.

@@ -590,3 +590,10 @@ The MiMo CB one-shot prefill patch clears only text/cache correctness rows:
 - `build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json`
 
 MiMo media runtime remains unbuilt. The Python path still needs a real multimodal forward that connects image/audio/video processors, media embeddings, position/rope metadata, masks, cache keys, streaming, tool calls after media, and UI settings proof. Text/cache success must not be reused as VL/audio/video proof.
+
+## 2026-06-06 MiMo CB prompt correction, media still unbuilt
+
+- Current source no longer rewrites MiMo `enable_thinking=false` to the thinking-on prompt rail. This fixes a text decode/template leak, not media support.
+- Live text/cache artifact: `build/current-mimo-v2-jang2l-cb-cache-after-native-thinking-off-live-20260606.json`.
+- Proved in that artifact: exact repeated text row, paged prefix cache hit, q8 storage quantization, block-disk L2 tokens, and native `mixed_swa_kv_v1` cache metadata.
+- Still open for this media worklist: MiMo `pixel_values`, image/audio/video embeddings, media-expanded prompt masks, media cache keys, post-media recovery, streaming media output, tool calls after media, UI modality exposure, and installed-app parity. Preserved vision/audio sidecars are not runtime media support.
