@@ -377,3 +377,9 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Added focused coverage proving preserved/unwired MiMo sidecars do not schedule image/video probes when runtime modalities are `["text"]`.
 - Focused validation passed: selected all-local smoke probe-option rows (`3 passed`), `py_compile`, and `git diff --check`.
 - Remaining consumer work: panel/settings and real Electron UI matrix still need to consume the nested `media` contract before packaged UI parity can be called current.
+
+## 2026-06-06 Codex | panel media controls respect runtime support
+- Patched `panel/src/main/model-config-registry.ts` so JANG capability stamps with `modalities=["text"]` or unwired media demote MiMo to text runtime/`forceTextOnly`; media-inclusive stamps no longer bypass Qwen affine safety gates.
+- Patched `SessionConfigForm` so video sampling controls are shown only for runtime-video families, not every active VLM and not MiMo/Step text-only rows.
+- Focused validation passed: `npm test -- tests/model-config-registry.test.ts tests/settings-flow.test.ts` (`318 passed`) and `npm run typecheck`.
+- Remaining work: real Electron UI proof must confirm the installed app displays the same controls and launched server args/cache/media status match `/capabilities`.
