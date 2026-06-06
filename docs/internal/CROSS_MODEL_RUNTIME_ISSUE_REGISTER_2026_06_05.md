@@ -567,6 +567,19 @@ Current status: `[~]` Re-entered active scope on 2026-06-06. Existing local MiMo
 - Streaming check passed: HTTP 200, `10` chunks, visible output `One, two, three, four.`, `7.715s`.
 - Tool-call check failed even with `--enable-auto-tool-choice`: HTTP 200 but raw content was only `<tool_call>`, `tool_calls=null`, completion stopped after `3` tokens. Classify as open MiMo model/template/tool-dialect issue until a complete XML function call or parser-compatible output is proven.
 
+2026-06-06 MiMo tool-dialect follow-up:
+
+- Artifact: `build/current-mimo-v2-jang2l-tool-dialect-failure-20260606.json`.
+- Current fallback-injection behavior still fails tools: HTTP 200, content `<tool_call>`, `tool_calls=null`, finish `stop`, `3` completion tokens.
+- Native-template/no-fallback experiment was explicitly tested and not shipped as a fix: fallback warnings disappeared, but tool request generated `128` tokens of garbled text and hit `finish_reason=length`.
+- Native-template/no-fallback with `enable_thinking=true` also failed with garbled output and `finish_reason=length`.
+- Plain-text XML control without API tools failed formatting: model emitted markdown-fenced XML, dropped the opening `<tool_call>`, and produced only `<function=get_weather>... </tool_call>`.
+- `tool_choice=required` correctly returned HTTP 400 because no API `tool_calls` were produced. This enforcement is correct; it does not fix the model/tool dialect failure.
+- Do not silently infer a tool call from a bare `<tool_call>` marker, do not force-disable MiMo tools and call it fixed, and do not mark MiMo tool support cleared from text/streaming success.
+- Direct `mlx_lm` comparison reproduces the same failure class outside vMLX server scheduling: native MiMo tool prompt produced the same garbled `者...` sequence as the vMLX no-fallback experiment, and fallback-injected prompt produced only `<tool_call>`. This strongly indicates model/template/artifact behavior for tool turns unless another known-good MiMo profile proves complete XML tool output.
+- Direct non-tool prompt-length sweep shows broader coherence failure: `60` prompt tokens produced `</think>length ok<think>` marker leakage, `93` prompt tokens produced `length ok`, but `148`, `214`, `280`, and `347` prompt tokens produced corrupt/gibberish output. Artifact: `build/current-mimo-v2-jang2l-direct-length-sweep-20260606.json`.
+- Max2 docs already frame this boundary: short MiMo JANG_2L smokes can look coherent, but no-cache/cached deeper prompts showed gibberish/layer drift and open proof targets. Current local evidence matches that; do not classify MiMo as production-cleared from short text smokes.
+
 Required cleanup/intake:
 
 - [x] Inventory local MiMo model directories on this machine.
@@ -583,7 +596,8 @@ Required runtime work:
 - [~] Verify cache policy: prefix, paged, L2 disk, and any hybrid/SSM/architecture-specific state handling. Source logs prove hybrid `KVCache`/`RotatingKVCache` layout only; cache hits, restart, and L2 disk are still open.
 - [ ] Verify TurboQuant/JANG kernels or explicitly classify unsupported kernel paths.
 - [ ] Verify thinking/template/parser behavior from model-owned metadata.
-- [!] Verify tool-call protocol and loop behavior. Current tool probe fails with raw incomplete `<tool_call>` and no API `tool_calls`.
+- [!] Verify prompt-length coherence. Direct `mlx_lm` sweep passes around `93` prompt tokens but corrupts by `148` prompt tokens and above; this is a release blocker independent of tools.
+- [!] Verify tool-call protocol and loop behavior. Current tool probes fail across fallback, native-template, thinking-enabled, plain XML control, and `tool_choice=required`; no API `tool_calls` produced.
 - [ ] Verify Chat Completions, Responses, Anthropic, and Ollama surfaces where supported.
 - [ ] Verify streaming and non-streaming full visible outputs, including tail review.
 - [ ] Verify sleep/wake/unload/reload lifecycle.
@@ -606,6 +620,10 @@ UI/settings evidence
 post-error recovery
 release-gate artifact path
 ```
+
+## Release Notes / Reporter Credit
+
+- [!] Future release notes and public acknowledgements must credit GitHub `@Hornsan1` for reporting many of the recent runtime/model/UI/API issues covered by this register. This is a release-process requirement from 2026-06-06 onward; do not ship the next release notes without this credit.
 
 ## Release-Surface Blockers
 
