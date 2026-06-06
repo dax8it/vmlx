@@ -48,7 +48,7 @@ Load-only, health-only, text-only, or fail-closed unsupported-route proof does n
 | Gemma4 12B MXFP4/MXFP8/JANG_4M | Text speed around 46.6 tok/s passed for JANG_4M; image small/reject recovery passed in installed app; media capability contract is honest. | Full audio/video depth, tools after media, larger media prompts, streaming media, UI/settings parity across cache modes. |
 | Gemma4 26B/31B | Source smoke and installed visible/speed rows have partial proof. | Broader packaged media/tool/cache parity and long media-depth matrix. |
 | Qwen3.6 35B MXFP8 MTP | `gdn_sink` dense MTP crash does not reproduce on current source/installed 1.5.56 proof. | If a user sees it on older app, it is stale packaged runtime; if on fresh app, reproduce the exact bypass route. Media/VL/MTP matrix remains open. |
-| Qwen3.6 27B MXFP8/JANG_4M MTP | Local installed decode works; deterministic policy improves decode speed; TP4 live route still has batch/rank/speed blockers. | TP4 multi-rank batch path, prompt-processing floor, media/VL proof, UI/app policy parity. |
+| Qwen3.6 27B MXFP8/JANG_4M MTP | Local installed decode works; deterministic policy improves decode speed. Fresh Pod1 TP4 `batchfix3` run proves native MTP autodetect depth 2, rank agreement, streaming, multiturn, Responses chain cache, L2 disk cache/restore, and batch rank correctness. | TP4 remains release-open because hybrid attention-cache evidence is missing, decode speed is low, localhost can hit a stale depth-0 gateway, and media/VL proof plus UI/app policy parity remain open. |
 | Step3.7 Flash JANG_2L CRACK | Text-only vMLX route is stable when metadata marks `has_vision=false`; default advertised VLM path can crash. | Runtime must fail closed for unsupported Step3p7 VLM and real Step3p7 VLM implementation remains open. Tool loops/raw dialect leaks remain model/runtime compatibility blockers. |
 | MiMo V2.5 JANG_2L | Local quant endpoint healthy; text/cache narrow proof exists; source-vs-quant blocked by missing source endpoint; VL/audio sidecars are preserved but unwired in Python/vMLX. | Python media processor/embedding bridge unbuilt, source endpoint missing, long prompt/system-role stop, tool args/continuation quality, speed, restart-L2, full cache matrix. |
 | LFM 2.5 | Installed UI text/cache/tools proof exists. | Any VL/audio/video advertised variants still need full capability audit and media proof. |
@@ -85,6 +85,64 @@ Next valid actions:
 3. Rerun the MiMo source-vs-quant first-divergence producer against source `8126` and quant `8897`.
 4. Classify each failing prompt as `source_and_quant_match`, `quant_diverges_from_source`, or `source_also_fails`.
 5. If source also fails, fix runtime/decode/template/cache. If only quant fails, fix the quant/model upload.
+
+## Qwen3.6 27B MXFP8 TP4 batchfix evidence
+
+Fresh run:
+
+```text
+run_id: qwen36-mxfp8-pod1-tp4-batchfix3-20260606T165440Z
+artifact: build/current-qwen36-27b-mxfp8-tp4-batchfix3-hostip-proof-20260606.json
+remote artifact: /tmp/adlab-qwen36-27b-mxfp8-tp4-batchfix3-hostip-proof-20260606.json
+base_url used for valid proof: http://100.98.111.49:8124
+served model: qwen36-27b-mxfp8-tp4-batchfix3
+model path: /opt/adlab/models/qwen36-27b-mxfp8-mtp
+```
+
+What passed:
+
+- Health ready: `4/4` rank targets.
+- Native MTP autodetect: launcher resolved `TP_NATIVE_MTP_DEPTH=auto` to depth `2` from artifact metadata.
+- Native MTP runtime proof row passed with `active_depth=2`, `runtime_active=True`, `accepted_tokens=32`, `verify_calls=11`, and `avg_committed_per_verify=2.909`.
+- Chat, multiturn chat, Responses API, and Responses chain passed.
+- Chat streaming and Responses streaming passed.
+- Parser leak check passed.
+- Loop check passed.
+- Token authority stayed `rank0_send_recv_per_slot`.
+- Rank agreement passed for all rows, including `batch_throughput`; `bad_rows=[]`, `mismatched_ranks=[]`.
+- Batch throughput row passed the safety floor: batch size `16`, high watermark `16`, `92.600 tok/s` against the diagnostic `1 tok/s` floor.
+- Cache reuse passed.
+- L2 disk cache and L2 disk restore passed.
+- SSM-side hybrid cache evidence passed with `cache_stats.ssm.hit_count=14` and `live_cache.ssm_hits=14` on the batch row.
+
+What still failed:
+
+- Overall verdict: `FAIL`.
+- Failed check: `HYBRID_SSM_CACHE`.
+- Failure detail: `attention=[]`, while SSM evidence was present.
+- This means the run proves SSM/L2 behavior but does not prove attention-side hybrid cache hit/reuse for the Qwen TP4 route.
+- Decode speed is still not production-cleared: current health showed single-row decode around `8-12 tok/s` in this run, even though batch aggregate hit `92.600 tok/s`.
+
+Operational issue found:
+
+- The valid proof had to use Max2 host IP `http://100.98.111.49:8124`.
+- `http://127.0.0.1:8124` on Max2 was contaminated by an orphaned stale gateway serving `qwen36-27b-mxfp8-tp4-pod1-shardedvocab` with native MTP depth `0` and old rank dirs.
+- The stale gateway bound `127.0.0.1:8124`; the correct `batchfix3` gateway bound `0.0.0.0:8124`.
+- The AdLab proof wrapper must refuse or kill stale loopback gateways before running localhost proof, or it can test the wrong model.
+
+Remote AdLab fixes applied during this run:
+
+- `scripts/engine-patches/adlab-tpworker-direct-file-serve-decode-patch.py` already contains the multi-rank batch safety condition `if promptBatches.count > 1 && !group.isMultiRank`.
+- `scripts/adlab-qwen36-tp4-api-proof.py` now reports `bad_rows` for rank agreement failures.
+- `scripts/engine-patches/adlab-tp-hotpath-timing-patch.py` was fixed so worker sampler timing is optional/idempotent when the sampler layout has already been transformed by send/recv/direct-decode patches.
+- Direct Max2 regression: `python3 scripts/test-adlab-tp-hotpath-timing-patch.py` passed.
+
+Current classification:
+
+- Prior batch rank-divergence is fixed/narrowed by the `batchfix3` run.
+- Remaining Qwen TP4 blocker is `kernel_cache`: attention-side hybrid cache evidence is missing for TP4.
+- Separate blocker is `gateway_ui`: stale localhost gateway contamination can invalidate proof traffic.
+- This is not a model upload corruption finding.
 
 ## No fake fixes
 
