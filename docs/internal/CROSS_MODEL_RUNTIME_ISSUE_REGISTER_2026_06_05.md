@@ -1337,3 +1337,10 @@ Current classification: local quant is tool-broken independent of CB/q4, but mod
 - Proof artifact: `build/current-gemma4-vlm-prefill-guard-source-proof-20260606.json`.
 - Current VL contract artifact: `build/current-vl-media-cache-contract-after-gemma4-prefill-guard-proof-20260606.json`.
 - Release boundary: source/panel contract proof does not clear live Gemma 4 12B image generation or installed-app parity.
+
+## 2026-06-06 Step 3.7 VLM runtime/crash-falsification classification refresh
+
+- Current VLM runtime audit artifact: `build/current-step37-vlm-runtime-audit-after-gemma4-vl-refresh-20260606.json`.
+- Current crash-falsification artifact: `build/current-step37-crash-falsification-contract-after-gemma4-vl-refresh-20260606.json`.
+- Current classification: Step3p7 VLM runtime surface is present in source (`root_cause=step37_vlm_runtime_present_or_not_applicable`), and the crash-falsification contract passes.
+- Release boundary: this clears the old “missing Step3p7 VLM module” classification only. It does not clear Step37 for exhaustive live multi-turn/tool/cache/UI release unless those rows are current and passing.

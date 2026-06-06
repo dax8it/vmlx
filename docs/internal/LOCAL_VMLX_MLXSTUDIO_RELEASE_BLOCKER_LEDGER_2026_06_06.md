@@ -373,3 +373,19 @@ plain-prefix assumption forward as a release contract.
 - Release manifest: `build/current-release-regression-manifest-after-gemma4-vlm-prefill-guard-proof-20260606.json`.
 - Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
 - Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.
+
+## 2026-06-06 Step 3.7 VLM runtime/crash-falsification refresh
+
+- VLM runtime audit artifact: `build/current-step37-vlm-runtime-audit-after-gemma4-vl-refresh-20260606.json`.
+- Crash-falsification artifact: `build/current-step37-crash-falsification-contract-after-gemma4-vl-refresh-20260606.json`.
+- VLM runtime audit status: `pass`; `root_cause=step37_vlm_runtime_present_or_not_applicable`; `release_clearance=audit_does_not_block_release`.
+- Crash-falsification contract status: `pass`.
+- Focused proof: `py_compile` passed; pytest passed `15 passed, 511 deselected` for Step37 VLM runtime audit, crash-falsification contract, Step3p7 MLLM detection guard, and engine audit Step3p7 MLLM row.
+- Classification update: current source is no longer the old missing-`mlx_vlm.models.step3p7` state. Do not describe the current blocker as “only fixed by fake text-only has_vision=false”; current artifacts show a Step3p7 VLM runtime surface is present. Still require live long multi-turn/tool/cache/UI proof before release-clearing Step37 family behavior.
+
+## 2026-06-06 Objective/manifest refresh after Step37 VLM refresh
+
+- Objective proof: `build/current-objective-proof-after-step37-vlm-refresh-20260606.json`.
+- Release manifest: `build/current-release-regression-manifest-after-step37-vlm-refresh-20260606.json`.
+- Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.
