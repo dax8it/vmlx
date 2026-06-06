@@ -222,6 +222,27 @@ What remains open:
   reporter model shard/codebook hash parity, reporter installed server hash, reporter chat/session/settings parity, reporter response active-at-cancel, and reporter raw SSE lifecycle are not proven.
 - This is not enough to close issue179 or release-clear MiniMax-K; it only updates the local installed-app cancel/runtime boundary.
 
+## Installed app parity current audit
+
+Artifact:
+
+```text
+build/current-installed-app-runtime-parity-audit-after-minimax-live-refresh-20260606.json
+```
+
+Status: `open`.
+
+Failed checks:
+
+- `installed_bundled_engine_hash_parity`
+- `installed_packaged_engine_source_hash_parity`
+
+Interpretation:
+
+- The installed `/Applications/vMLX.app` has the expected runtime guards/routes in the checked surface, but it is stale relative to current source.
+- Rebuild/sign/notarize/install is required after the remaining model/runtime blockers are fixed.
+- Do not rebuild and release now: current release manifest still has MiMo and MiniMax blockers before package/signing.
+
 ## Current execution order
 
 1. Reprove or relaunch MiMo source TP4 endpoint without losing the Qwen TP4 evidence lane.
