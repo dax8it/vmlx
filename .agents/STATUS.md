@@ -355,3 +355,13 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Current result remains `status=open`, `classification=stale_ready_no_rank_workers`.
 - Exact worker counts for the gateway-configured `hiddenfix2` serve dirs are `[0,0,0,0]`; other worker counts are nonzero on some ranks because they belong to different serve dirs/runs.
 - Boundary: the Max2 `:8124` gateway is pointed at a dead/stale run ID. Fix requires relaunching resident workers for the configured targets or repointing/restarting gateway to the actual live run, then rerunning exact/cache/tool/stream/UI rows.
+
+## 2026-06-06 Codex | Qwen36 TP4 fresh live route strict proof failed
+- Stopped stale Pod1 Qwen36 single-node serves/workers that were blocking a clean TP4 run.
+- Launched fresh resident run `qwen36-mxfp8-pod1-tp4-codexlive2-20260606T160731Z` on ADLab Pod1 with native MTP auto-resolved to depth `2`, cache coordinator enabled, and L2 disk cache enabled.
+- Started separate Max2 gateway on `127.0.0.1:8125` for model `qwen36-27b-mxfp8-tp4-codexlive2`; left stale `:8124` route as known-bad evidence.
+- Strict proof remote JSON: `/tmp/adlab-qwen36-27b-mxfp8-tp4-codexlive2-qwen36-mxfp8-pod1-tp4-codexlive2-20260606T160731Z-api-proof.json`.
+- Local summary artifact: `build/current-qwen36-27b-tp4-codexlive2-strict-proof-20260606.json`.
+- Passing rows: health/model list, chat, multi-turn chat, Responses, Responses chaining, chat streaming, Responses streaming, parser leak guard, loop guard, token authority, throughput presence, native MTP depth 2 evidence, cache reuse, L2 disk cache, and L2 disk restore.
+- Failing rows: rank agreement mismatch (`[1,2,3]`), batch throughput `6.582 tok/s` below required `40`, and hybrid SSM cache proof has SSM hits but no attention evidence.
+- Boundary: Qwen36 TP4 is no longer just stale-ready when using `:8125`, but it is still release-red on rank agreement and speed. Do not publish this as production-cleared.
