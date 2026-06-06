@@ -347,3 +347,11 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Gateway `/health` and `/v1/models` still work and advertise 4 reachable/ready ranks, cache coordinator enabled, L2 disk cache enabled, and native MTP depth `0`, but all four rank snapshots show zero live `TPRankWorker` processes.
 - Root boundary: current Max2 TP4 endpoint is stale-ready from old `rankN.ready.json` files. It is not model download corruption, not local vMLX client parsing, and not Qwen TP4 MTP/cache/L2 release evidence.
 - Next TP4 work: relaunch real resident workers or patch the ADLab gateway health code to fail readiness unless live workers are present, then rerun exact output, cache/L2 hit, tools, streaming, and UI rows.
+
+## 2026-06-06 Codex | Qwen36 TP4 exact serve-dir liveness proof
+- Hardened the TP4 probe a third time so worker liveness is tied to exact `TP_SERVE_DIR=` from `ps eww`, not generic process names and not unrelated TP workers.
+- Focused validation passed again: `tests/test_qwen36_tp4_gateway_probe.py` selected `8 passed`, Python compile passed, and `git diff --check` passed.
+- Live artifact refreshed: `build/current-qwen36-27b-tp4-gateway-bounded-probe-20260606.json`.
+- Current result remains `status=open`, `classification=stale_ready_no_rank_workers`.
+- Exact worker counts for the gateway-configured `hiddenfix2` serve dirs are `[0,0,0,0]`; other worker counts are nonzero on some ranks because they belong to different serve dirs/runs.
+- Boundary: the Max2 `:8124` gateway is pointed at a dead/stale run ID. Fix requires relaunching resident workers for the configured targets or repointing/restarting gateway to the actual live run, then rerunning exact/cache/tool/stream/UI rows.
