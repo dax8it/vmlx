@@ -578,6 +578,15 @@ Still open before release:
 
 ## 2026-06-06 MiMo audit pointer refresh after text-route fix
 
-Fresh audit: `build/current-mimo-v2-jang2l-current-audit-after-text-route-fix-20260606.json`.
+Fresh audit: `build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json`.
 
 The audit now consumes the text-route proof as current evidence: long-prompt OOM/coherence and tool protocol are green for text-only simple-engine. Remaining active blockers are exactness, speed, source-vs-quant, prefix/paged/L2 cache proof, and real MiMo VL/audio/video wiring.
+
+## 2026-06-06 MiMo CB text/cache progress, media still open
+
+The MiMo CB one-shot prefill patch clears only text/cache correctness rows:
+
+- `build/current-mimo-v2-jang2l-cb-cache-after-mimo-oneshot-prefill-20260606.json`
+- `build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json`
+
+MiMo media runtime remains unbuilt. The Python path still needs a real multimodal forward that connects image/audio/video processors, media embeddings, position/rope metadata, masks, cache keys, streaming, tool calls after media, and UI settings proof. Text/cache success must not be reused as VL/audio/video proof.

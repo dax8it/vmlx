@@ -338,3 +338,23 @@ The MiMo closed-think prompt rail is partially fixed for text cache prompts: thi
 Artifact: `build/current-mimo-v2-jang2l-text-route-live-proof-20260606.json`.
 
 MiMo text-only stability improved: long prompt no longer OOMs and tool calls parse on the simple-engine text route. MiMo media is still not wired; this patch must not be described as VL/audio/video support.
+
+## 2026-06-06 MiMo CB one-shot prefill update
+
+Artifacts:
+
+```text
+build/current-mimo-v2-jang2l-cb-cache-after-mimo-oneshot-prefill-20260606.json
+build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json
+```
+
+Current MiMo status after the CB one-shot prefill fix:
+
+- Green: exact short text cache prompt on continuous batching.
+- Green: prefix cache + paged cache + block-disk L2 evidence on continuous batching.
+- Red: tool protocol on continuous batching; the model emitted punctuation garbage and no parsed `record_fact` call.
+- Red: long prompt after the tool row crashed the server with Metal OOM.
+- Red: speed remains around `1.79 tok/s`, not the `40+ tok/s` target.
+- Red: source-vs-quant and media/VL/audio/video implementation remain unproved/unwired.
+
+Do not tag, notarize, or publish a release from this state.

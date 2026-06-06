@@ -1233,7 +1233,7 @@ Release boundary:
 Artifacts:
 
 ```text
-build/current-mimo-v2-jang2l-current-audit-after-text-route-fix-20260606.json
+build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json
 build/current-objective-proof-after-mimo-text-route-fix-20260606.json
 build/current-release-regression-manifest-after-mimo-text-route-fix-20260606.json
 ```
@@ -1248,3 +1248,22 @@ Release boundary:
 
 - `release_ready=false` and `prepackage_ready=false` remain correct.
 - The text-route fix is real runtime progress, but not a release-cleared MiMo runtime.
+
+## 2026-06-06 MiMo continuous-batching one-shot prefill proof
+
+Artifacts:
+
+```text
+build/current-mimo-v2-jang2l-cb-cache-after-mimo-oneshot-prefill-20260606.json
+build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json
+```
+
+Runtime change: MiMo V2.5 text-only continuous batching now renders the same plain native assistant prefix as the simple-engine text route and bypasses the generic split-prefill optimization for MiMo mixed full/SWA KV. This is an actual decode-path change, not output injection or prompt folding.
+
+Proof movement:
+
+- Short exact cache row now passes on CB: `ACK-CACHE-742` for both repeat rows.
+- Prefix/paged/block-disk L2 is reproved on CB: `cached_tokens=37`, `cache_detail=paged+disk` then `paged`, and `l2_block_tokens_on_disk=37`.
+- Server remains not release-ready: required tool row emits punctuation garbage/no parsed tool call, long prompt after tool kills the process with Metal OOM, and decode is still about `1.79 tok/s`, far below the `40 tok/s` target.
+- Source-vs-quant classification remains blocked because no live MiMo source endpoint is available.
+- MiMo VL/audio/video remains unwired in Python/vMLX; preserved media weights do not imply media support.

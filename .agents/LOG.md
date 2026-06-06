@@ -4743,3 +4743,13 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Current audit no longer marks long prompt/tool/text first-token stop as open for the fixed text-only route.
 - Current MiMo blockers: exact cache prompt following, decode speed, source-vs-quant, prefix/paged/L2 cache proof, and VL/audio/video unwired.
 - Objective proof and release manifest refreshed; release remains false.
+
+# 2026-06-06 MiMo continuous-batching one-shot prefill partial fix
+
+- Patched `BatchedEngine` MiMo text-only rendering to use the native plain assistant prefix instead of the closed `<think></think>` rail, while preserving real generation-prompt stripping.
+- Patched `MLLMBatchGenerator` to run MiMo text-only prefill one-shot through `language_model(input_ids, cache=cache)` instead of the generic prefix-without-logits/final-token split path.
+- Focused tests passed: `tests/test_mllm_message_serialization.py -k "mimo_v2 or batched_engine_mimo"`.
+- Live proof artifact: `build/current-mimo-v2-jang2l-cb-cache-after-mimo-oneshot-prefill-20260606.json`.
+- Movement: CB exact cache rows now return `ACK-CACHE-742`; prefix/paged/block-disk L2 is reproved with `cached_tokens=37`, `paged+disk` then `paged`, and `l2_block_tokens_on_disk=37`.
+- Still blocked: CB tool row emits punctuation/no tool call, long prompt after tool crashes with Metal OOM, decode speed remains about `1.79 tok/s`, source-vs-quant is missing, and media/VL/audio/video is unwired.
+- Refreshed audit: `build/current-mimo-v2-jang2l-current-audit-after-cb-oneshot-prefill-20260606.json` -> `status=open`, blockers are long prompt, tool protocol, speed, source-vs-quant, and media.
