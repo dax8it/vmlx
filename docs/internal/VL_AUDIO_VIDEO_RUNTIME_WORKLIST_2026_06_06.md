@@ -258,6 +258,34 @@ ZAYA-VL remains open:
 
 1. Text-only exact cache prompt in the VL wrapper returns the wrong token.
 2. Multi-turn text recall is broken in the VL wrapper.
+
+## 2026-06-06 MiMo prompt-shape and speed split
+
+Fresh local evidence:
+
+- `build/current-mimo-v2-jang2l-simple-conservative-cacheprompt-probe-20260606.json` failed on the long cache-style exact `ACK` prompt even without `--is-mllm`, continuous batching, prefix cache, KV quantization, or native MTP. The response was HTTP 200 with empty visible content after about `24.27s`.
+- `build/current-mimo-v2-jang2l-mllm-conservative-probe-20260606.json` also failed with empty visible content. A source patch normalized MiMo text-only MLLM rich content parts to plain processor strings, but the live failure persisted, so rich-list prompt content was not the root cause.
+- `build/current-mimo-v2-jang2l-prompt-shape-sweep-20260606.json` separates prompt shape from cache/runtime flags:
+  - `short_user_only`: `ACK`, but slow first decode, `2` completion tokens in `23.003s`.
+  - `short_system_exact`: `ACK`, `2` completion tokens in `1.792s`.
+  - `long_cache_system_exact`: empty visible content, `completion_tokens=1`, `finish_reason=stop`, `prompt_tokens=60`.
+  - `long_cache_no_system_exact`: `ACK`, `2` completion tokens in `1.748s`.
+  - `normal_chat_short`: coherent one-sentence answer, `19` completion tokens in `11.526s`, about `1.65 tok/s`.
+  - `speed_120_words`: timed out at `90s`.
+
+Current interpretation:
+
+- The immediate-empty row is triggered by the combination of the model's own first-system-message template path plus longer exact cache-style user content. The no-system equivalent works, so the issue is not just prompt length.
+- This cannot be closed by folding system prompts into user prompts as a hidden production behavior. If MiMo system-role handling is model-artifact-sensitive, the artifact metadata/template must be corrected or documented. If the runtime is misapplying the template/defaults, the runtime path must be fixed.
+- Max2 docs confirm the promoted JANG_2L bundle was historically coherent but slow: canonical cached generation was about `1.97 tok/s` on France and `2.64 tok/s` on arithmetic. That means the current Python JANG_2L artifact is not a `40+ tok/s` release candidate. A `40 tok/s` target requires a different quant/kernel/runtime path, not a release note.
+
+Required next MiMo build checks:
+
+1. Render and compare the exact MiMo prompt strings/tokens for separate-system versus folded-user cases, including `enable_thinking=false`, `add_generation_prompt`, and stop-token IDs.
+2. Run first-divergence next-token checks against the source or highest-quality local profile for the failing `long_cache_system_exact` prompt.
+3. Verify whether the generated empty row is immediate `<|im_end|>`, `<|endoftext|>`, or another stop token and classify it as `decode_loop`, `model_artifact`, or `template/defaults`.
+4. Re-test the MiMo wrapper `inputs_embeds` forwarding separately from the prompt-shape failure; do not count the rich-list normalization patch as a release fix unless live behavior improves.
+5. Decide speed path explicitly: current JANG_2L Python affine path is around `1-2 tok/s`; `40+ tok/s` needs a faster quant profile, kernel path, speculative/MTP path, or a different bundle with full structural and quality proof.
 3. Reasoning visible final answer is still empty.
 4. Red image is misclassified as white while blue image passes.
 5. Cache telemetry is present, so current evidence points at VL text/template/model-forward semantics rather than a CCA cache crash.

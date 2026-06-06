@@ -2,6 +2,26 @@
 
 Active worktree: `/Users/eric/mlx/vllm-mlx-finite-launch-guard`.
 
+## CODEX 2026-06-06 MiMo prompt-shape/speed continuation
+
+- New live MiMo prompt-shape sweep: `build/current-mimo-v2-jang2l-prompt-shape-sweep-20260606.json`.
+- Conservative simple runtime, no continuous batching, no prefix cache, no KV quantization, no native MTP:
+  - short user-only exact prompt returned `ACK`, but first decode was slow (`2` completion tokens in `23.003s`).
+  - short separate-system exact prompt returned `ACK` in `1.792s`.
+  - long cache-style exact prompt with separate `system` role returned empty visible content with `completion_tokens=1` and `finish_reason=stop`.
+  - no-system equivalent of the same long cache prompt returned `ACK`.
+  - normal short chat was coherent but only about `1.65 tok/s`.
+  - 120-word speed row timed out at `90s`.
+- The same long cache-style prompt also failed empty in simple and MLLM conservative probes:
+  - `build/current-mimo-v2-jang2l-simple-conservative-cacheprompt-probe-20260606.json`
+  - `build/current-mimo-v2-jang2l-mllm-conservative-probe-20260606.json`
+- A source patch normalized MiMo text-only MLLM rich content lists to plain processor strings and focused tests passed, but the live MLLM failure persisted. Treat that as a partial adapter correctness patch, not the root-cause fix.
+- Max2 docs confirm this JANG_2L Python bundle was historically coherent but slow (`~1.97-2.64 tok/s` canonical cached generation). The current artifact is not `40+ tok/s` proven; speed target needs a different quant/kernel/speculative/runtime path plus full quality proof.
+- Trackers updated:
+  - `docs/internal/VL_AUDIO_VIDEO_RUNTIME_WORKLIST_2026_06_06.md`
+  - `docs/internal/CROSS_MODEL_RUNTIME_ISSUE_REGISTER_2026_06_05.md`
+- Current classification: `decode_loop` or `model_artifact` pending rendered-token and source-vs-quant first-divergence proof. Do not silently fold system prompts into user prompts as a fake production fix.
+
 Latest continuation:
 - Source commit `76e22794` (`Classify unwired media runtime errors`) was pushed to `origin/main`.
 - Source commit `fe61db17` (`Refresh package proof pointers`) was pushed to `origin/main`.
