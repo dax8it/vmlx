@@ -362,3 +362,9 @@ Do not tag, notarize, or publish a release from this state.
 ## 2026-06-06 MiMo tool/source preflight
 
 `build/current-mimo-v2-jang2l-tool-source-preflight-20260606.json` records that MiMo JANG_2L tool failure reproduces on simple and continuous-batching paths and with q4 KV disabled. This keeps MiMo release-red. It also records that current Max2 `8124` is Qwen, old MiMo rank dirs are not live-ready, and source-vs-quant remains blocked until a MiMo TP4 source endpoint is relaunched.
+
+## 2026-06-06 MiMo source proof blocker
+
+- MiMo source endpoint on Max2 was dry-run validated for `8126`, but the live preflight refused to launch because active Qwen TP4 rank workers occupy the pod.
+- This means MiMo media/runtime work remains unproved. The current local JANG_2L failures cannot yet be assigned to runtime vs quant/model upload without a live MiMo source endpoint comparison.
+- Required next step before media/VL/audio/video release claims: displace or move Qwen TP4, launch MiMo source endpoint, then run source-vs-local-quant probes including text cache, tool protocol, long prompt, speed, and media/VL/audio/video ingress.

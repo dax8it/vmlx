@@ -1285,3 +1285,11 @@ Findings:
 - Rank-local source metadata is internally complete for checked rank0/rank1 index files, but no live MiMo source endpoint is available, so source-vs-quant remains blocked.
 
 Current classification: local quant is tool-broken independent of CB/q4, but model-upload versus runtime cannot be finally classified until MiMo source TP4 is relaunched and compared.
+
+## 2026-06-06 MiMo source endpoint preflight update
+
+- Artifact: `build/current-mimo-v2-jang2l-source-endpoint-preflight-20260606.json`.
+- MiMo TP4 source launch dry-run on `erics-m5-max2.local` passed for port `8126` with `mimoV2`, rank-specific source paths, cache coordinator, L2 disk cache, `TP_TOKEN_AUTHORITY_MODE=allsum`, routed expert quantization, and `TP_NATIVE_MTP_DEPTH=0`.
+- Live preflight passed Thunderbolt/fabric checks and memory thresholds across all four nodes.
+- Live preflight failed before launch with `rc=78` because Qwen TP4 `TPRankWorker` processes were active on every rank node.
+- Classification: source-vs-local-quant MiMo proof is currently blocked by active pod occupancy, not by missing source files, bad TB fabric, or minimum memory. Do not claim MiMo source-vs-quant classification until Qwen is displaced or a free pod is available and the source endpoint is live.

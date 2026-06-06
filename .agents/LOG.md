@@ -4762,3 +4762,10 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Current Max2 `8124` is Qwen TP4, not MiMo. Old MiMo TP4 rank dirs have request/response dirs but no `ready.json`, so they are not attachable as live source workers.
 - New artifact: `build/current-mimo-v2-jang2l-tool-source-preflight-20260606.json`.
 - Audit refreshed and still open: source-vs-quant remains blocked until MiMo TP4 source is relaunched or current Qwen workers are intentionally displaced.
+
+## 2026-06-06 - MiMo source endpoint preflight evidence
+
+- Added `build/current-mimo-v2-jang2l-source-endpoint-preflight-20260606.json`.
+- Max2 MiMo source launch dry-run passed for `mimoV2` TP4 on port `8126` with rank paths under `/opt/adlab/models/tp4-source/MiMo-V2.5/rank{0..3}`, `allsum`, cache coordinator, L2 disk cache, routed expert quantization, and native MTP depth `0`.
+- Live preflight passed Thunderbolt/fabric checks and memory thresholds, then failed before launch with `rc=78` because all four rank nodes already had active Qwen `TPRankWorker` processes.
+- Current classification: MiMo source-vs-local-quant proof is blocked by pod occupancy, not by missing source files, fabric, or minimum free memory. Controlled displacement of Qwen TP4 is required before source-vs-quant tool/cache/long/speed probes can run.
