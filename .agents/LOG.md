@@ -4634,3 +4634,11 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Fresh live smoke: `build/current-all-local-model-smoke-zaya-vl-mxfp4-after-no-media-contract-20260606/summary.json`; MXFP4 now fails only `reasoning_on` empty-visible.
 - Updated objective/release/current-suite pointers to `after-zaya-vl-no-media-refresh-20260606` and fixed exact-filename tests plus release-gate default digest path.
 - Validation: py_compile passed; focused all-local smoke tests passed; focused pointer tests passed; packaged-integrity passed; full current suite is open with failed step only `release_regression_manifest`.
+
+# 2026-06-06 MiMo sink/cache falsification refresh
+
+- Coordinated MiMo live probe in `.agents/MAIL.md`.
+- Ran direct MiMo native-vs-manual sink length diagnostic: `build/current-mimo-v2-jang2l-sink-mode-length-diagnostic-20260606.json`.
+- Ran direct MiMo disable-sink length diagnostic: `build/current-mimo-v2-jang2l-disable-sink-length-diagnostic-20260606.json`.
+- Patched `tests/cross_matrix/run_mimo_v2_jang2l_current_audit.py` and `tests/test_mimo_v2_current_audit.py` so current audit preserves the sink/cache falsification boundary.
+- Focused validation passed: py_compile plus `tests/test_mimo_v2_current_audit.py` and MiMo root-cause/release-blocker tests.

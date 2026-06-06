@@ -17,8 +17,8 @@ Current package/proof state, refreshed 2026-06-06:
 - Bundled Python was rebuilt from current source and `npm run verify-bundled` passed.
 - Staged Sequoia app was rebuilt and Developer ID signed.
 - `build/current-packaged-integrity-contract-after-unsupported-media-staged-app-20260606.json` is `status=pass`.
-- `build/current-objective-proof-after-zaya-vl-no-media-refresh-20260606.json` closes the two Gemma4 26B CRACK rows for installed-app Responses visible-content/language and mixed-SWA speed.
-- `build/current-regression-suite-after-zaya-vl-no-media-refresh-20260606.json` is `status=open` with `failed_steps=["release_regression_manifest"]`; source/package/parity/contracts pass, and five live/model rows remain.
+- `build/current-objective-proof-after-mimo-sink-falsification-20260606.json` closes the two Gemma4 26B CRACK rows for installed-app Responses visible-content/language and mixed-SWA speed.
+- `build/current-regression-suite-after-mimo-sink-falsification-20260606.json` is `status=open` with `failed_steps=["release_regression_manifest"]`; source/package/parity/contracts pass, and five live/model rows remain.
 - No release tag, notarized DMG, public download update, or installed-app replacement has been produced from this continuation.
 
 The app can currently serve several text and some VLM paths, but full VL/audio/video support is not release-cleared across all model families. The remaining work must be classified as either:
@@ -279,3 +279,25 @@ Findings:
 5. Cache telemetry is not the blocker for the MXFP4 no-media path: native typed CCA cache reports `zaya_cca_v1`, prefix/paged/L2 enabled, and generic TurboQuant KV disabled for path-dependent CCA state.
 
 Next ZAYA-VL blocker is reasoning-visible compatibility, not the no-media guard. Do not fake-clear it by disabling thinking silently; trace rendered prompt, parser split, and model capability metadata first.
+
+## 2026-06-06 MiMo sink/cache falsification refresh
+
+Fresh MiMo diagnostics:
+
+- Native-vs-manual sink diagnostic: `build/current-mimo-v2-jang2l-sink-mode-length-diagnostic-20260606.json`.
+- Disable-sink diagnostic: `build/current-mimo-v2-jang2l-disable-sink-length-diagnostic-20260606.json`.
+- Refreshed current audit: `build/current-mimo-v2-jang2l-current-audit-20260606.json`.
+
+Findings:
+
+1. MiMo local artifact integrity is clean: TB5 manifest matches 173 files / 113,926,313,468 bytes, stale local backups/caches are absent, structural verify passes, text-cache narrow proof passes, selected-expert SwitchGLU parity passes, and cache-prefill vs no-cache next-token top-10 logits match at 125 prompt tokens.
+2. Manual sink SDPA does not clear length generation. Native sink and manual sink both fail the focused length prompts; this is not proven to be an MLX native sink-kernel-only issue.
+3. Disabling SWA sink is worse: tested lengths emit repeated punctuation. Do not ship a sink-disable workaround.
+4. MiMo remains release-red for local runtime quality: long-prompt coherence and OpenAI tool protocol both fail. The current evidence points beyond cache store/reconstruct and beyond sink toggles toward model/runtime weight mapping, template/defaults, or quantized forward quality.
+5. MiMo media remains unimplemented in Python: the bundle has vision/audio metadata and weights, but vMLX still registers the text-only compatibility shell and raises typed unsupported-media errors for pixel input. This is correct fail-closed behavior, not VL/audio support.
+
+Next MiMo work:
+
+1. Run source-vs-quant first-divergence against a known-good source/higher-quality MiMo profile, including rendered prompt, first bad token, router top-k, attention logits, and final-norm/lm-head logits.
+2. Compare vMLX server generation against direct `jang_tools.mimo_v2` generation with identical prompt tokens and sampling to separate API/template/parser problems from model forward problems.
+3. Do not fake-clear MiMo by disabling sinks, disabling tools, converting incomplete `<tool_call>` into a synthetic call, or suppressing MiMo media advertisement without implementing the actual media bridge.
