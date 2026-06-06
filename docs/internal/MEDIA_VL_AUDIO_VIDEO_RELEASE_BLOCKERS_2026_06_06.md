@@ -16,6 +16,9 @@ Load-only, health-only, text-only, or fail-closed unsupported-route proof does n
 
 - MiMo V2.5 JANG_2L local Python/vMLX is not a fully working VL/audio/video model today.
 - MiMo V2.5 JANG_2L local Python/vMLX is not a 40+ tok/s path today.
+- The local MiMo JANG_2L bundle was checksum-synced in place from `erics-m5-max2.local:/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` on 2026-06-06. Rsync deleted stale local `config.json.pre-text-runtime-metadata-20260606` and replaced the mismatched `config.json`; tokenizer, preprocessor, generation config, and safetensors index already matched.
+- After sync, local Python/vMLX MiMo text API proof passed health, models, capabilities, chat, math, and Responses. This is a narrow text proof only.
+- After sync, local Python/vMLX MiMo image request correctly fails closed as unsupported media because the loaded runtime media contract is text-only, then text recovery succeeds. This proves no crash/recovery regression, not VL support.
 - Max2 docs contain a historical Swift TP4/JACCL/RDMA MiMo proof around `39.228 tok/s` decode with chat, Responses, streaming, cache reuse, L2 disk restore, and rank agreement.
 - That Swift proof is stale for current release purposes until relaunched and reproved.
 - Current Max2 live gateways on ports `8124` and `8125` are Qwen3.6 TP4 gateways, not MiMo.
@@ -50,7 +53,7 @@ Load-only, health-only, text-only, or fail-closed unsupported-route proof does n
 | Qwen3.6 35B MXFP8 MTP | `gdn_sink` dense MTP crash does not reproduce on current source/installed 1.5.56 proof. | If a user sees it on older app, it is stale packaged runtime; if on fresh app, reproduce the exact bypass route. Media/VL/MTP matrix remains open. |
 | Qwen3.6 27B MXFP8/JANG_4M MTP | Local installed decode works; deterministic policy improves decode speed. Fresh Pod1 TP4 `batchfix3` host-IP proof now passes native MTP autodetect depth 2, rank agreement, streaming, multiturn, Responses chain cache, L2 disk cache/restore, paged-incompatible hybrid SSM/L2 attention evidence, and batch rank correctness. | TP4 remains release-open because single-row decode speed is still low, localhost can hit a stale depth-0 gateway, and media/VL proof plus UI/app policy parity remain open. |
 | Step3.7 Flash JANG_2L CRACK | Text-only vMLX route is stable when metadata marks `has_vision=false`; default advertised VLM path can crash. | Runtime must fail closed for unsupported Step3p7 VLM and real Step3p7 VLM implementation remains open. Tool loops/raw dialect leaks remain model/runtime compatibility blockers. |
-| MiMo V2.5 JANG_2L | Local quant endpoint healthy; text/cache narrow proof exists; source-vs-quant blocked by missing source endpoint; VL/audio sidecars are preserved but unwired in Python/vMLX. | Python media processor/embedding bridge unbuilt, source endpoint missing, long prompt/system-role stop, tool args/continuation quality, speed, restart-L2, full cache matrix. |
+| MiMo V2.5 JANG_2L | Local quant bundle checksum-synced from Max2; local Python/vMLX text API proof passes; image route fails closed as text-only and text recovery passes; historical Swift TP4 source proof has chat/Responses/streaming/cache/L2/rank agreement around 39 tok/s. | Python media processor/embedding bridge unbuilt, current source endpoint displaced by Qwen TP4 workers, local Python speed far below 40 tok/s, long prompt/system-role stop, tool args/continuation quality, restart-L2, full cache matrix. |
 | LFM 2.5 | Installed UI text/cache/tools proof exists. | Any VL/audio/video advertised variants still need full capability audit and media proof. |
 | Nemotron Omni | Static/source rows partial. | Omni audio/image/video processor bridge, cache safety, streaming, tool/JSON, UI and packaged proof. |
 | DSV4 / JANGTQ | Text/cache smoke exists; exact long-output/code/file-generation remains red. | Do not expand claims to media until exact text/cache quality and memory-gated UI rows are resolved. |
@@ -67,7 +70,15 @@ build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json
 
 Current state:
 
-- Quant endpoint: healthy at `http://127.0.0.1:8897`, served model `mimo-v2-jang2l`.
+- Quant endpoint: relaunched after checksum sync at `http://127.0.0.1:8897`, served model `mimo-v2-jang2l`.
+- Local text proof artifact: `build/current-mimo-v25-jang2l-local-sync-runtime-proof-20260606.json`.
+- Local text proof verdict: `PASS`.
+- Local proof rows: health, models, capabilities, chat France, chat math, and Responses basic passed with no parser leaks or loop flags.
+- Local speed is not acceptable for release: the France row took `46.814s` for a short 32-token-capped answer, confirming this is not the 40+ tok/s route.
+- Local image proof artifact: `build/current-mimo-v25-jang2l-local-sync-image-proof-20260606.json`.
+- Local image proof verdict: `PASS_FAIL_CLOSED`.
+- Local image result: HTTP `400` with `/v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.`
+- Local post-image text recovery result: HTTP `200`, visible text `recovered`.
 - Source path on Max2: `/Volumes/EricsLLMDrive/jangq-ai/sources/MiMo-V2.5`.
 - Source TP4 rank paths on Pod 1: `/opt/adlab/models/tp4-source/MiMo-V2.5/rank0..rank3`.
 - Current source endpoint: missing/unhealthy.
