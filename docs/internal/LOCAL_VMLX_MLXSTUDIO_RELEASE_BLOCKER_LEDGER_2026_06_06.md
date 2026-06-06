@@ -140,3 +140,14 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
 - `tool_choice=required`: HTTP 400 after about 59s because no tool call was produced.
 - Post-tool text recovery failed in the same probe, so the live runtime remains unstable after this row.
 - Classification: the schema-gated XML parser repair is valid and covered by noheavy tests, but it does not clear MiMo live tool protocol. Remaining likely blocker is MiMo local quant/runtime generation quality, not parser strictness alone.
+
+## 2026-06-06 live MiMo probe with auto tool choice enabled
+
+- Artifact: `build/current-mimo-live-auto-tool-enabled-probe-20260606.json`.
+- Local-only server: `127.0.0.1:8897`, simple engine, `--enable-auto-tool-choice`, `--tool-call-parser xml_function`, `--reasoning-parser think_xml`, `--default-enable-thinking false`, `--kv-cache-quantization none`.
+- Server log confirmed: `Tool calling: ENABLED (parser: xml_function)`.
+- Result: `status=fail`.
+- Baseline exact text before tool request failed: returned `The user said` with `finish_reason=length` instead of `READY`.
+- Auto tool request failed: punctuation/CJK-style garbage, no `tool_calls`.
+- Post-tool exact text also failed: returned `The user said`.
+- Classification update: MiMo live failure is broader than parser strictness or missing `--enable-auto-tool-choice`; this local bundle/runtime path is failing baseline exact instruction following at about 0.5-1.5 tok/s in simple/no-KV-quant mode.

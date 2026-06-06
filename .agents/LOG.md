@@ -4798,3 +4798,10 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Result: fail. Auto tool returned punctuation garbage/no tool calls after ~80s; required tool returned HTTP 400 because no tool call was produced; text recovery failed after tool rows.
 - Server was stopped and port 8897 is clear.
 - Boundary: parser repair is real but MiMo live tool/runtime quality remains open; do not mark MiMo tools release-cleared.
+
+## 2026-06-06 - MiMo auto-tool-enabled live probe still fails baseline text
+
+- Relaunched local-only MiMo with `--enable-auto-tool-choice`; server confirmed `Tool calling: ENABLED (parser: xml_function)`.
+- Probe artifact: `build/current-mimo-live-auto-tool-enabled-probe-20260606.json`.
+- Result: fail. Baseline `Reply exactly READY.` before any tool call returned `The user said`; auto tool still returned punctuation garbage/no tool calls; post-tool exact text also returned `The user said`.
+- Classification strengthened: current MiMo blocker is broader local generation/runtime quality, not just parser strictness or missing auto-tool flag.
