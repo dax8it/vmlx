@@ -1344,3 +1344,10 @@ Current classification: local quant is tool-broken independent of CB/q4, but mod
 - Current crash-falsification artifact: `build/current-step37-crash-falsification-contract-after-gemma4-vl-refresh-20260606.json`.
 - Current classification: Step3p7 VLM runtime surface is present in source (`root_cause=step37_vlm_runtime_present_or_not_applicable`), and the crash-falsification contract passes.
 - Release boundary: this clears the old “missing Step3p7 VLM module” classification only. It does not clear Step37 for exhaustive live multi-turn/tool/cache/UI release unless those rows are current and passing.
+
+## 2026-06-06 Bundled Python/package integrity refresh
+
+- Bundled Python was refreshed from the current vMLX checkout and local `jang-tools`.
+- Direct `npm run verify-bundled` passed, including Step3p7 VLM runtime, Gemma 4 unified runtime, MiMo registration, and TurboQuant kernel imports.
+- Current packaged integrity artifact: `build/current-packaged-integrity-contract-after-bundle-refresh-20260606.json`.
+- Release boundary: bundled verifier drift is cleared, but release remains blocked by objective/model/UI quality rows and must not be signed/notarized yet.

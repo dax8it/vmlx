@@ -389,3 +389,22 @@ plain-prefix assumption forward as a release contract.
 - Release manifest: `build/current-release-regression-manifest-after-step37-vlm-refresh-20260606.json`.
 - Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
 - Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.
+
+## 2026-06-06 Bundled Python/package integrity refresh
+
+- Action: ran `panel/scripts/bundle-python.sh` from `/Users/eric/mlx/vllm-mlx-finite-launch-guard`.
+- Bundled source: current `vmlx_engine` `1.5.56` from this checkout plus local `jang-tools` `2.5.30` from `/Users/eric/jang/jang-tools`.
+- Direct verifier: `cd panel && npm run verify-bundled` passed.
+- Verifier coverage included critical vmlx source parity, critical `jang_tools` source parity, relocatable console scripts, Step3p7 VLM runtime import, Gemma 4 unified runtime registration, MiMo runtime registration, TurboQuant kernels including `mpp_nax_kernel`, and VL/runtime import checks.
+- Packaged integrity artifact: `build/current-packaged-integrity-contract-after-bundle-refresh-20260606.json`.
+- Packaged integrity improvement: `bundled_python_verifier` now passes; remaining contract failure is `release_gate_skip_app`, caused by current objective rows that are still open.
+- Release boundary: this clears stale bundled-python source drift only. It does not clear prepackage/release readiness, installed app parity, signing, notarization, or public download updates.
+
+## 2026-06-06 Objective/manifest refresh after bundled Python refresh
+
+- Objective proof: `build/current-objective-proof-after-bundle-refresh-20260606.json`.
+- Release manifest: `build/current-release-regression-manifest-after-bundle-refresh-20260606.json`.
+- Packaged integrity artifact: `build/current-packaged-integrity-contract-after-bundle-refresh-20260606.json`.
+- Improvement: bundled Python verifier now passes; critical source/hash/import drift is cleared.
+- Release status remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Remaining open objective rows: cross-family live multi-turn smoke matrix, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity/root cause, real Electron UI cross-family live model matrix, and DSV4 long-output/code/file-generation quality.
