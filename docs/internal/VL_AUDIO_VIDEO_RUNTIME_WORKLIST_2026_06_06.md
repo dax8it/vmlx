@@ -535,3 +535,19 @@ Next required proof:
 Artifact: `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
 
 The local MiMo server was no longer listening on `8897` after the synced long/tool/cache proof. This strengthens the runtime blocker: MiMo Python/vMLX needs crash/process-death repro logs in addition to decode-quality/source-vs-quant analysis.
+
+## 2026-06-06 MiMo thinking-off template fix boundary
+
+Artifact: `build/current-mimo-v2-jang2l-thinking-off-template-fix-live-20260606.json`.
+
+Fixed:
+
+- MiMo text-only cache/system prompts no longer enter the native closed `<think></think>` prompt rail when `enable_thinking=false`.
+- Fresh live rows changed from empty visible output to visible `ACK` under thinking-off.
+
+Still blocked:
+
+- Exact output remains wrong: `ACK` instead of `ACK-CACHE-742`.
+- Long-prompt text row still exits the server through Metal OOM.
+- Tool row needs repro after OOM is isolated.
+- VL/audio/video remains unbuilt in Python/vMLX for MiMo; preserved media weights are not a wired media runtime.

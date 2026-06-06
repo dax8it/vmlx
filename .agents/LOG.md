@@ -4714,3 +4714,10 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - After the synced long/tool/cache proof, `curl http://127.0.0.1:8897/health` failed immediately and `lsof` found no listener on `8897`.
 - Added `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
 - Treat the fresh MiMo empty rows as potentially including runtime process death/crash, not just bad decode output. Next repro needs server logs.
+
+# 2026-06-06 MiMo thinking-off template fix
+
+- Patched `vmlx_engine/models/mllm.py` so MiMo `enable_thinking=false` renders via the native plain assistant prefix instead of the native `<think></think>` closed rail.
+- Focused unit test passed: `tests/test_mllm_message_serialization.py -k mimo_v2_thinking_false_uses_plain_template_prefix`.
+- Live cache row improved from `content=null` to visible `ACK` under `enable_thinking=false`.
+- Still blocked: exact output is `ACK` not `ACK-CACHE-742`; long prompt still kills the server with Metal OOM; tool row was not reproved after OOM; speed and media remain open.

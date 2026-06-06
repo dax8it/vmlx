@@ -326,3 +326,9 @@ Do not clear by fake behavior:
 Artifact: `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
 
 The local MiMo endpoint was down immediately after the synced long/tool/cache proof. Do not summarize those rows as harmless empty generations; they may include runtime process death and need log-backed repro before any release clearance.
+
+## 2026-06-06 MiMo thinking-off text fix does not clear media/runtime release
+
+Artifact: `build/current-mimo-v2-jang2l-thinking-off-template-fix-live-20260606.json`.
+
+The MiMo closed-think prompt rail is partially fixed for text cache prompts: thinking-off rows now produce visible `ACK` instead of `content=null`. This does not clear MiMo release because exactness, long-prompt OOM, tool proof, speed, source-vs-quant, and VL/audio/video are still open.

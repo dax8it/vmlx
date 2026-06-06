@@ -1160,3 +1160,36 @@ Release boundary:
 Artifact: `build/current-mimo-v2-jang2l-post-proof-server-health-20260606.json`.
 
 After the synced long/tool/cache proof, `curl http://127.0.0.1:8897/health` failed immediately and `lsof` found no listener on `8897`. Treat the fresh empty-output rows as potentially including process death/crash, not just low-quality decoding. Next repro must capture server logs around the first empty row and separate request-level empty output from runtime process exit.
+
+## 2026-06-06 MiMo thinking-off template compatibility fix and remaining OOM
+
+Artifacts:
+
+```text
+build/current-mimo-v2-jang2l-thinking-off-template-fix-live-20260606.json
+```
+
+Source change:
+
+- `vmlx_engine/models/mllm.py` now renders MiMo V2.5 `enable_thinking=false` through the native plain assistant prefix instead of passing the native false flag that renders `<think></think>` after the assistant prefix.
+- The API-level thinking-off contract remains enforced by server-side `think_xml` parsing/suppression; this is not synthetic output and does not fold system prompts into user prompts.
+
+Live proof:
+
+- Before fix: the cache/system prompt returned HTTP 200 with `content=null`, `completion_tokens=1`, and `finish_reason=stop`.
+- After fix: the same `enable_thinking=false` cache prompt returns visible `ACK` twice and the server remains healthy for those rows.
+- Remaining quality gap: the model returns `ACK` instead of exact `ACK-CACHE-742`, so exact prompt-following is still open.
+- Remaining runtime gap: the long-prompt row still kills the server with Metal OOM: `kIOGPUCommandBufferCallbackErrorOutOfMemory`.
+
+Classification:
+
+- `closed_think_template_stop`: runtime compatibility bug, partially fixed.
+- `long_prompt_oom`: runtime memory blocker still open.
+- `exact_prompt_following`: model/decode quality still open.
+- `tool_protocol`: needs repro after the long-prompt OOM is isolated or fail-guarded.
+
+Release boundary:
+
+- MiMo V2.5 JANG_2L is still not release-clear.
+- Do not claim this as the 40 tok/s or VL/audio/video release.
+- Next required runtime work is long-prompt OOM prevention/fix without hiding failures, then source-vs-quant proof.
