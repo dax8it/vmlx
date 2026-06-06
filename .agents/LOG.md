@@ -4784,3 +4784,9 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Added focused tests in `tests/test_xml_function_tool_parser.py` for repaired allowed function, rejected unknown function, and bare `<tool_call>` fail-closed.
 - Verification passed: py_compile, focused parser pytest (`10 passed`), and `run_tool_call_contract.py` (`status=pass`).
 - Boundary: this is a local parser robustness fix only; MiMo runtime quality and release clearance remain open.
+
+## 2026-06-06 - Tool contract pointer refreshed to XML-function repair artifact
+
+- Updated release/current-suite/objective proof pointers to `build/current-tool-call-contract-after-xml-function-repair-20260606.json`.
+- Focused pointer tests passed (`3 passed`) and py_compile passed.
+- Regenerated `build/current-release-regression-manifest-after-xml-function-repair-20260606.json`; it remains fail/not release-ready as expected because MiMo runtime quality and MiniMax provenance blockers remain open.

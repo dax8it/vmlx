@@ -121,3 +121,12 @@ Scope: local vMLX Python engine and MLXStudio/panel release path only. No adlab,
   - `.venv/bin/python -m pytest -q tests/test_xml_function_tool_parser.py` -> `10 passed`
   - `.venv/bin/python tests/cross_matrix/run_tool_call_contract.py --out build/current-tool-call-contract-after-xml-function-repair-20260606.json` -> `status=pass`
 - Release boundary unchanged: MiMo live tool protocol, long-prompt coherence/OOM, decode speed, source-vs-quant classification, and real VL/audio/video wiring remain open.
+
+## 2026-06-06 manifest pointer refresh after parser repair
+
+- Updated current proof pointers from `current-tool-call-contract-after-mimo-tool-blocker-20260606.json` to `current-tool-call-contract-after-xml-function-repair-20260606.json` in release/objective/current-suite runners.
+- Verification:
+  - py_compile for touched proof scripts/tests passed.
+  - `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py -k 'tool_calls_with_runner_artifact or source_hashes_all_referenced_code_files or source_hash_list_matches_current_suite_runner'` -> `3 passed`.
+  - `.venv/bin/python tests/cross_matrix/run_release_regression_manifest.py --out build/current-release-regression-manifest-after-xml-function-repair-20260606.json` wrote a valid manifest and exited nonzero because the release is still not ready.
+- Current release state after pointer refresh remains: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
