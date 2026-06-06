@@ -697,6 +697,10 @@ New evidence:
 - Quantized `SwitchGLU` selected-expert parity passed against manual selected-expert dequantized math for layer 1. Max absolute diff was `0.0007556`, mean absolute diff was `0.0000971`. Artifact: `build/current-mimo-v2-jang2l-quantized-switchglu-parity-20260606.json`.
 - Local JANG runtime patch changed SWA sink attention to use MLX native `scaled_dot_product_attention(..., sinks=attention_sink_bias)` by default, matching the Max2 dirty runtime direction while retaining manual sink only behind explicit `JANG_MIMO_MANUAL_SINK_SDPA`.
 - Native `sinks=` improved short/medium failure shape from punctuation/CJK to English prompt-copying for 92/125-token prompts, but it did not clear coherence. At 152+ prompt tokens output still degraded into CJK/punctuation. Artifact: `build/current-mimo-v2-jang2l-direct-length-sweep-native-sinks-20260606.json`.
+- vMLX live MLLM route initially failed with HTTP 500 because `mlx_vlm.generate` called MiMo's language model with `inputs_embeds=...`, but MiMo's MLX `Model.__call__` accepted only raw `input_ids`.
+- Local MiMo runtime patch now accepts `inputs_embeds`, prefers embedded inputs when both ids and embeddings are passed by `mlx_vlm`, and returns an object with `.logits` only on the MLLM-style call path. Direct `mlx_lm` raw-array return is preserved.
+- After syncing that local JANG runtime patch into the vMLX `.venv`, live source server returned HTTP 200 and exact short output `mimo runtime ok`.
+- The same live source server still failed long-output quality: a 152-token prompt returned visible `<think><think><think>`. Artifact: `build/current-mimo-v2-jang2l-vmlx-native-sinks-inputsembeds-smoke4-20260606.json`; log: `build/current-mimo-v2-jang2l-vmlx-native-sinks-inputsembeds-smoke4-20260606.log`.
 
 Max2 contrast evidence:
 
@@ -708,6 +712,7 @@ Max2 contrast evidence:
 Current classification:
 
 - `runtime/server parser only`: unlikely. Direct `mlx_lm` reproduces prompt-length and tool failures outside vMLX server.
+- `MLLM call-shape incompatibility`: confirmed and locally fixed in JANG runtime; this fixes HTTP 500 for short text on the MLLM route, not long-output quality.
 - `simple cache/prefix bug`: unlikely for the tested prefill row. Cache and no-cache logits matched.
 - `SWA sink-only bug`: unlikely. Sink-off made output worse, not better.
 - `RoPE convention bug`: unlikely. Numeric convention check matched reference.
@@ -719,6 +724,7 @@ Current classification:
 Required next checks:
 
 - [x] Run a valid quantized `SwitchGLU` parity check against manual dequantized selected-expert math for actual MiMo layer weights.
+- [x] Fix local MiMo MLX language-model call contract for vMLX MLLM `inputs_embeds` route and prove short source-server text no longer 500s.
 - [ ] Compare local Python `JANG_2L` against a higher-quality local/Max2 MiMo profile if disk allows, especially 4-bit routed-expert or source-shard path.
 - [ ] Add a source-vs-quant first-divergence probe for the first MoE layer that can run without loading the full 294 GB source into local memory.
 - [ ] Keep MiMo out of release-clear claims until long prompt, tools, cache, and API rows pass through the actual vMLX source/packaged runtime.
