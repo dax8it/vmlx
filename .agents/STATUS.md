@@ -389,3 +389,9 @@ Primary note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-and
 - Read the rank response files through `adlab-n1-raw`...`adlab-n4-raw`: the failed batch request has 16 result rows on every rank, but generated tokens diverge on ranks 1-3 while rank0 advertises `token_authority=rank0_send_recv_per_slot` and `engine_path=batch_engine_no_native_mtp`.
 - Patched remote ADLab scripts on Max2: `adlab-qwen36-tp4-api-proof.py` now reports `bad_rows`; `engine-patches/adlab-tpworker-direct-file-serve-decode-patch.py` now gates the concurrent batch engine to `!group.isMultiRank` so future rebuilt TP workers use the safer sequential/rank-zero sampler path under multi-rank.
 - Validation on Max2: edited scripts compile with system Python. Pytest is unavailable in Max2 system Python, and live workers were not rebuilt/relaunched yet, so `:8125` remains release-red until a fresh strict proof passes.
+
+## 2026-06-06 Codex | MiMo source-vs-quant preflight refreshed
+- Ran `tests/cross_matrix/run_mimo_v2_source_vs_quant_first_divergence.py --preflight-only` into `build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json`.
+- Result: `status=missing_prerequisites`. The Max2 source directory `/Volumes/EricsLLMDrive/jangq-ai/sources/MiMo-V2.5` exists, and the local quant directory `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` exists.
+- Blockers: no healthy MiMo source endpoint and no healthy local quant endpoint. Max2 `127.0.0.1:8080` is the ADLab gateway and does not expose MiMo source; local `127.0.0.1:8897` is not listening.
+- Boundary: this preserves the release gate and does not classify MiMo as model-artifact or runtime until real source and quant servers are launched and non-empty prompt rows execute.
