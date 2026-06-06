@@ -18,6 +18,7 @@ Current known release state:
 - DSV4 rows now proven from the current live default-cache artifact: `DSV4 cache is native SWA+CSA/HCA composite, not generic KV/TurboQuant KV`, `DSV4 can perform multiple tool iterations then final answer`, and `DSV4 default-cache multi-tool agent loop is proven`. Still open: app-launch default wiring, same-process TTFT/latency proof, restart L2 proof, and DSV4 exact code/file generation quality.
 - DSV4 same-process cache-hit/TTFT row is now proven from `build/current-dsv4-responses-cache-gate-20260606.json`: previous-response follow-up hit `5195` cached tokens with `paged+dsv4`, streaming follow-up recorded TTFT `0.3339s`, and explicit no-cache full prompt stayed uncached and took `22.17s` wall. Still open: app-launch default wiring, restart L2 proof, and DSV4 exact code/file generation quality.
 - DSV4 one-tool-after-result row is now proven from `build/current-dsv4-responses-one-tool-stop-20260606.json`: round 1 emitted exactly one structured `list_directory` call, round 2 used `previous_response_id`, kept `tools=TOOLS` with `tool_choice=auto`, emitted no function calls, and returned exactly `DONE` with native prefix+paged+block-disk L2 enabled.
+- DSV4 restart-L2 row is still open. Current artifact `build/current-dsv4-responses-restart-l2-gate-20260606.json` is `status=review`: before restart it wrote 21 DSV4 block-disk L2 blocks; after restart it read 21 disk hits from the same isolated cache dir and survived with visible `STORED`, but `restart_dsv4_cache_hit=false` and no `paged+dsv4` usage detail. Earlier exact terminal restore before the fail-closed guard hit 21 blocks / 5195 cached tokens and then crashed in Metal with `kIOGPUCommandBufferCallbackErrorTimeout`. Classification: `kernel_cache` runtime issue, not model artifact corruption.
 
 ## Status Legend
 
@@ -312,6 +313,7 @@ Known relevant examples:
 - Qwen35 MXFP8 MTP had reported packaged `gdn_sink` crash in old app; source 1.5.56 path verified no crash.
 - Step Flash CRACK text-only launch used no continuous batching, no prefix cache, no KV quant, no native MTP.
 - DSV4 cache/runtime has architecture-specific composite cache requirements; generic TurboQuant KV is not a drop-in substitute.
+- DSV4 block-disk L2 restart restore currently fails closed for disk-backed terminal `DeepseekV4Cache` state. Disk writes and disk hits are observable, but the runtime does not yet safely execute cached DSV4 composite state after process restart.
 
 Required matrix per model:
 
@@ -483,6 +485,7 @@ Known:
 - [x] Native SWA/CSA/HSA composite cache verified in current live default-cache artifact; generic TurboQuant KV stayed off.
 - [x] Responses same-process cache hit verified with `paged+dsv4`, cached-token accounting, and TTFT/wall-latency comparison.
 - [x] Responses one-tool stop after tool result verified while tools remained available on the final turn.
+- [~] Restart block-disk L2 is fail-closed, not release-cleared: disk-backed DSV4 terminal restore is rejected after live proof showed a Metal timeout on cached decode.
 - [D] Long-output/code exactness remains open.
 - [D] Full real UI DSV4 proof remains open.
 
@@ -491,6 +494,7 @@ Required:
 - [x] Native SWA/CSA/HSA composite cache verification.
 - [x] Same-process Responses cache hit/TTFT proof.
 - [x] One-tool-after-result stop proof with tools still available.
+- [ ] Safe DSV4 block-disk L2 restore after server restart with `paged+dsv4` usage detail.
 - [ ] Long output full-tail read.
 - [ ] Code/file-generation exactness.
 - [~] Tool loops and DSML parser proof: current multi-tool runtime loop passed, exact code/file-generation quality remains open.
