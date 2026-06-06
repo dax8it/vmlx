@@ -2,6 +2,31 @@
 
 Active worktree: `/Users/eric/mlx/vllm-mlx-finite-launch-guard`.
 
+## CODEX 2026-06-06 media/VL/audio/video blocker map
+
+- Added current source-of-truth tracker:
+  `docs/internal/MEDIA_VL_AUDIO_VIDEO_RELEASE_BLOCKERS_2026_06_06.md`.
+- Current answer for MiMo V2.5 JANG_2L:
+  - local Python/vMLX JANG_2L is not a fully working VL/audio/video model.
+  - local Python/vMLX JANG_2L is not a 40+ tok/s path.
+  - local quant endpoint is healthy on `127.0.0.1:8897`.
+  - source-vs-quant proof remains blocked because no MiMo source endpoint is
+    currently healthy.
+- Max2/AdLab check:
+  - current listeners `8124` and `8125` are Qwen3.6 TP4 gateways, not MiMo.
+  - Pod 1 MiMo source rank dirs exist under
+    `/opt/adlab/models/tp4-source/MiMo-V2.5/rank0..rank3`.
+  - materializer status is stale/incomplete: rank0/rank2/rank3 report `93`
+    output safetensors, rank1 reports `81`; latest old materializer logs ended
+    `rc=143`.
+  - old MiMo Swift TP4 proof documents `39.228 tok/s` decode with chat,
+    Responses, streaming, cache reuse, L2 disk restore, and rank agreement, but
+    that proof is stale for current release until relaunched/reproved.
+- Next valid action is to coordinate before disrupting current Qwen TP4 workers,
+  relaunch MiMo Swift TP4 source on a free port such as `8126`, then rerun
+  `build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-20260606.json`
+  against source and quant endpoints.
+
 ## CODEX 2026-06-06 MiMo prompt-shape/speed continuation
 
 - New live MiMo prompt-shape sweep: `build/current-mimo-v2-jang2l-prompt-shape-sweep-20260606.json`.
