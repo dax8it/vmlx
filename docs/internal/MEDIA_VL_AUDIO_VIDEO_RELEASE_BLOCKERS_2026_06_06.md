@@ -79,6 +79,8 @@ Current state:
 - Local image proof verdict: `PASS_FAIL_CLOSED`.
 - Local image result: HTTP `400` with `/v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.`
 - Local post-image text recovery result: HTTP `200`, visible text `recovered`.
+- JANGQ/JANG-tools doc committed and pushed: `docs/mimo-v25-python-vl-runtime-gap-20260606.md` at commit `c00fed3`.
+- Exact runtime gap: `vmlx_engine.models.mllm` installs a text-only `mlx_vlm.models.mimo_v2` compatibility wrapper over `jang_tools.mimo_v2.mlx_model`; `VisionConfig` and `AudioConfig` are stubs, `visual.*` / `audio_encoder.*` / `speech_embeddings.*` are filtered at load, `pixel_values` raises `UnsupportedMediaModalityError`, and no `jang_tools/mimo_v2/mimo_v2_multimodal.py` exists locally.
 - Source path on Max2: `/Volumes/EricsLLMDrive/jangq-ai/sources/MiMo-V2.5`.
 - Source TP4 rank paths on Pod 1: `/opt/adlab/models/tp4-source/MiMo-V2.5/rank0..rank3`.
 - Current source endpoint: missing/unhealthy.
