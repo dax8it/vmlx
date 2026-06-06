@@ -1227,3 +1227,24 @@ Release boundary:
 
 - This is a real runtime fix and materially improves text-only MiMo stability.
 - It does not clear MiMo for full release, speed, cache/L2, source-vs-quant, UI, or media.
+
+## 2026-06-06 MiMo audit refresh after text-route fix
+
+Artifacts:
+
+```text
+build/current-mimo-v2-jang2l-current-audit-after-text-route-fix-20260606.json
+build/current-objective-proof-after-mimo-text-route-fix-20260606.json
+build/current-release-regression-manifest-after-mimo-text-route-fix-20260606.json
+```
+
+Current audit classification:
+
+- Cleared by current source/live proof: long-prompt text coherence, tool protocol, and the old MLLM text first-token stop path for text-only requests.
+- Still blocked: exact cache prompt-following, decode speed, source-vs-quant first divergence, prefix/paged/L2 cache proof on the release cache route, and MiMo VL/audio/video wiring.
+- Stale MiMo local state is absent after deleting the Hugging Face `transformers_modules/MiMo_hyphen_V2_dot_5_hyphen_JANG_2L` cache again.
+
+Release boundary:
+
+- `release_ready=false` and `prepackage_ready=false` remain correct.
+- The text-route fix is real runtime progress, but not a release-cleared MiMo runtime.

@@ -575,3 +575,9 @@ Still open before release:
 - Continuous-batching prefix/paged/L2 cache proof is not refreshed.
 - MiMo source-vs-quant is still blocked by no source endpoint.
 - MiMo VL/audio/video remains unwired.
+
+## 2026-06-06 MiMo audit pointer refresh after text-route fix
+
+Fresh audit: `build/current-mimo-v2-jang2l-current-audit-after-text-route-fix-20260606.json`.
+
+The audit now consumes the text-route proof as current evidence: long-prompt OOM/coherence and tool protocol are green for text-only simple-engine. Remaining active blockers are exactness, speed, source-vs-quant, prefix/paged/L2 cache proof, and real MiMo VL/audio/video wiring.

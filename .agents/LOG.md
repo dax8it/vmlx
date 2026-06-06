@@ -4736,3 +4736,10 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Live first-request long prompt now returns HTTP 200 with `BLUE-CAT-742.` and server remains healthy; previous path OOMed.
 - Live tool row returns parsed `record_fact({"value":"blue-cat"})`.
 - Still open: speed, exact cache prompt-following, continuous-batching cache/L2 proof, source-vs-quant, UI parity, and MiMo media.
+
+# 2026-06-06 MiMo audit refresh after text-route fix
+
+- Updated MiMo audit/default proof pointers to `build/current-mimo-v2-jang2l-current-audit-after-text-route-fix-20260606.json`.
+- Current audit no longer marks long prompt/tool/text first-token stop as open for the fixed text-only route.
+- Current MiMo blockers: exact cache prompt following, decode speed, source-vs-quant, prefix/paged/L2 cache proof, and VL/audio/video unwired.
+- Objective proof and release manifest refreshed; release remains false.
