@@ -293,6 +293,15 @@ Live proof:
   proves system-scope MiMo XML fallback still fails live required-tool E2E:
   structural prefix appears, but the argument/closing XML is punctuation
   garbage and speed remains about `1.2 tok/s`.
+- `build/current-mimo-v25-required-tool-cache-vs-full-logits-20260607.json`
+  proves the current MiMo failure is an incremental cache/decode divergence:
+  full forward after `blue` ranks `-cat` first, while cached decode after
+  `blue` ranks newline/punctuation and puts `-cat` far down.
+- `build/current-mimo-v25-cache-decode-mask-ab-20260607.json` proves simply
+  disabling cached decode masks does not fix the divergence.
+- `build/current-mimo-v25-required-tool-cache-vs-full-logits-after-attn-cache-patch-20260607.json`
+  records that a diagnostic attention cache patch did not fix the divergence;
+  that patch was removed and is not a claimed fix.
 
 Matrix impact:
 
@@ -300,6 +309,8 @@ Matrix impact:
 - `MIMO-TOOL-PROMPT-SCOPE-001` is improved at source-test/render level.
 - `MIMO-TOOL-001` remains red.
 - `MIMO-SPEED-001` remains red.
+- `MIMO-CACHE-DECODE-001` is now the active narrowed runtime blocker for the
+  required-tool continuation.
 - `MIMO-SOURCE-VS-QUANT-001` remains red until source and quant endpoints are
   intentionally running and prompt rows execute.
 - `RELEASE-001` remains red.

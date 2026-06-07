@@ -334,6 +334,51 @@ Updated classification:
   source-vs-quant classification and/or real guided XML decode/model-artifact
   work.
 
+## 2026-06-07 required-tool logits/cache divergence proof
+
+Artifacts:
+
+- `build/current-mimo-v25-required-tool-value-logits-20260607.json`
+- `build/current-mimo-v25-prefix-completions-continuation-20260607`
+- `build/current-mimo-v25-required-tool-value-continuation-logits-20260607.json`
+- `build/current-mimo-v25-required-tool-cache-vs-full-logits-20260607.json`
+- `build/current-mimo-v25-cache-decode-mask-ab-20260607.json`
+- `build/current-mimo-v25-required-tool-cache-vs-full-logits-after-attn-cache-patch-20260607.json`
+
+Findings:
+
+- Direct full-forward logits after the rendered prompt plus
+  `<tool_call>\n<function=record_fact>\n<parameter=value>` rank `blue` first
+  with logprob about `-0.0006`.
+- `/v1/completions` continuation from the same rendered prompt plus prefix
+  starts with `blue`, proving the first value token is not a parser artifact.
+- Direct full-forward logits after `blue` rank `-cat` first with logprob about
+  `-0.0006`.
+- Direct full-forward logits after `blue-cat` rank `</` first with logprob
+  about `-0.0009`.
+- Cached incremental decode diverges after `blue`: the same model/cache state
+  ranks newline first and `-cat` around `-10.84`.
+- Cached incremental decode also diverges after forced `blue-cat`: newline/EOS
+  outrank the expected closing XML.
+- Rotating cache offsets after the 406-token prefill remain absolute (`406`),
+  so this is not a simple RoPE offset reset.
+- Disabling cached decode masks for the diagnostic row does not change the bad
+  ranking.
+- A diagnostic patch that forced MiMo attention to pass `cache=None` to SDPA
+  after manual `update_and_fetch` also did not change the bad ranking; it was
+  removed and is not claimed as a fix.
+
+Updated classification:
+
+- The MiMo required-tool failure is now narrowed to incremental cache/decode
+  divergence after the first generated value token.
+- Full-forward model logits know the correct `blue-cat</...` continuation.
+- The current cached decode path corrupts the continuation into newline and
+  punctuation.
+- This is a runtime/cache/decode compatibility blocker unless source-vs-quant
+  later proves the local artifact has different cache behavior than source.
+- MiMo remains release-red.
+
 ## 2026-06-07 ChatML tool-fallback framing fix and live result
 
 Source change:
