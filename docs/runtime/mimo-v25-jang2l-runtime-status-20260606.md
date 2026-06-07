@@ -10,10 +10,11 @@ Do not use `/Users/eric/vmlx`, ADLab, TB/RDMA workflows, or Swift-only paths for
 
 MiMo V2.5 JANG_2L is not release-green.
 
-Working pieces are real and live-proven, including the narrow required-tool
-row and the 64-word long-prefix cache row. Remaining red items are speed,
-full tool-result/multiturn matrix, media/VL/audio/video, UI parity, and
-release packaging/signing/notarization.
+Working pieces are real and live-proven, including repeated text cache,
+multiturn recall, required-tool parsing after prior turns, and the 64-word
+long-prefix cache row. Remaining red items are speed, full tool-result and
+loop-stop matrix, media/VL/audio/video, UI parity, and release
+packaging/signing/notarization.
 
 ## Live proofs completed
 
@@ -197,6 +198,63 @@ Latest result:
 ## Release gate
 
 Do not release, sign, notarize, or call MiMo/MLXStudio/vMLX green yet.
+
+## 2026-06-07 no-media source smoke after tight-memory tool prefill chunking
+
+Artifact:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-tight-tool-prefill-chunk-20260607/JANGQ_MiMo-V2.5-JANG_2L/result.json`
+
+Runtime change:
+
+- Text-only MLLM prefill now uses a smaller chunked prefix path under detected
+  tight Metal working-set margin, including shorter fallback-tool-schema prompts
+  that were previously below the long-prompt chunking threshold.
+- This is a real runtime prefill/chunking change, not a media guard, request
+  rejection, or synthesized tool-call fallback.
+
+Summary:
+
+- Runner summary: `status=pass`, `row_count=1`, `failed=0`.
+- Model path: `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Served as MLLM through current source `vmlx_engine.cli serve`.
+- Prior broad sequence failure was a native Metal OOM on the final
+  `tool_required` request after text/cache/multiturn/reasoning rows.
+- Current run completed all 5 requests and server health remained live.
+
+Request results:
+
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=67`,
+  `cache_detail=paged`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `reasoning_on`: HTTP 200, no harness validation failure, but output quality
+  remains poor/repetitive and does not clear reasoning quality.
+- `tool_required`: HTTP 200, no visible text, parsed real tool call
+  `record_fact({"value":"blue-cat"})`.
+
+Cache and memory evidence:
+
+- Server log shows tight-memory allocator drains before prefills and after batch
+  finish instead of a native Metal process death.
+- Server log shows mixed-SWA VLM cache layout detected from extracted
+  `RotatingKVCache` layers and clean prompt-boundary store.
+- Final cache stats: paged cache hit tokens `67`.
+- Block-disk L2 wrote `12` blocks / `583` tokens.
+- Native cache reports `mimo_v2` / `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`.
+- Generic TurboQuant KV remains disabled; storage-boundary q4 KV remains active
+  for full and sliding attention KV with rotating metadata preserved.
+
+Remaining red items from this run:
+
+- Speed remains far below target: aggregate generation `112` tokens in
+  `63.85s`, about `1.75 tok/s`.
+- `reasoning_on` output is low quality/repetitive.
+- This run is no-media only and does not prove image/video/audio.
+- This run does not prove tool-result continuation, auto-tool loop stopping,
+  Anthropic/Ollama/Responses parity, UI settings parity, installed packaged app,
+  or release notarization.
 
 ## 2026-06-07 no-media source smoke after keep=0 cache fix
 
