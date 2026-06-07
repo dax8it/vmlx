@@ -5080,3 +5080,17 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
   `.venv/bin/python -m pytest -q tests/test_structured_output.py -k 'repair or structured or chat_completion_repairs'`
   -> `43 passed, 2 skipped`.
 - Classification: this improves structured-output diagnostics and scoring integrity. It does not clear exact code/whitespace failures, raw JSON drift, or hard constrained decoding for LFM, Gemma4, MiMo, Step, or other model families.
+
+## 2026-06-07 local - Deterministic sampling filters no longer inherit bundle top-p/top-k
+
+- Scope stayed in active Python engine worktree; no deprecated wrapper, Swift, ADLab/TB/RDMA work, package, signing, notarization, tag, upload, appcast, or public release action.
+- Found a runtime kwargs-resolution ambiguity behind the Gemma4 exact-output investigation: effective `temperature=0` requests could still inherit bundle `top_p/top_k` defaults such as Gemma4 `top_p=0.95` and `top_k=64`.
+- Patched `vmlx_engine/server.py` with `_normalize_deterministic_sampling_filters()` and wired it at every `_set_resolved_top_k()` route assembly site. Greedy requests now forward `top_p=1.0` and omit `top_k` when those filters were not explicitly requested and no explicit server default exists.
+- Explicit request filters and explicit server defaults are preserved; this is not a hidden forced sampling policy for stochastic requests.
+- Added route/source tests in `tests/test_engine_audit.py` for the bundle-default reproduction, route-site coverage, and explicit-filter preservation.
+- Focused validation:
+  `.venv/bin/python -B -m py_compile vmlx_engine/server.py tests/test_engine_audit.py`
+  and
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'deterministic_filters or temperature_zero_omits or temperature_zero_preserves or log_and_forward_supported_sampling_kwargs'`
+  -> `4 passed`.
+- Classification: real runtime-default fix. It improves deterministic exact-output proof hygiene, but LFM/Gemma4 remain release-red until their raw JSON/code gates are rerun and pass under the patched route.
