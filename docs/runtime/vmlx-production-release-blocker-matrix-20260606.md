@@ -289,10 +289,15 @@ Live proof:
 - `build/current-mimo-v2-jang2l-source-vs-quant-first-divergence-prefix-preflight-20260607.json`
   proves current source-vs-quant classification is still blocked by missing
   endpoints, not missing model paths.
+- `build/current-mimo-v25-required-tool-system-fallback-live-20260607`
+  proves system-scope MiMo XML fallback still fails live required-tool E2E:
+  structural prefix appears, but the argument/closing XML is punctuation
+  garbage and speed remains about `1.2 tok/s`.
 
 Matrix impact:
 
 - `MIMO-TOOL-METADATA-001` is improved at source-test level.
+- `MIMO-TOOL-PROMPT-SCOPE-001` is improved at source-test/render level.
 - `MIMO-TOOL-001` remains red.
 - `MIMO-SPEED-001` remains red.
 - `MIMO-SOURCE-VS-QUANT-001` remains red until source and quant endpoints are

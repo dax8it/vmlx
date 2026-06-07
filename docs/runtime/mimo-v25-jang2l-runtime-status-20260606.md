@@ -290,6 +290,50 @@ Source-vs-quant preflight:
 - No source-vs-quant classification can be claimed until both endpoints are
   intentionally launched and the prompt rows execute.
 
+## 2026-06-07 XML fallback system-scope prompt fix
+
+Source change:
+
+- `vmlx_engine/api/tool_calling.py` now tries MiMo/XML-function fallback
+  injection in the ChatML system turn before falling back to user-turn
+  injection.
+- This keeps the concrete native XML example in instruction scope instead of
+  prepending it to the user's request.
+- This is not a tool-call synthesis fix and does not fabricate arguments.
+
+No-heavy proof:
+
+- `py_compile` passed for `vmlx_engine/api/tool_calling.py` and
+  `tests/test_tool_fallback_injection.py`.
+- Focused parser/fallback tests passed: `13 passed`.
+- Real local MiMo tokenizer render proof:
+  - `system_has_tool_prompt=True`
+  - `user_has_tool_prompt=False`
+  - `system_has_record_fact=True`
+  - `system_has_blue_cat=True`
+
+Live artifact:
+
+`build/current-mimo-v25-required-tool-system-fallback-live-20260607`
+
+Live result:
+
+- HTTP 400 remained because no parsed tool call was produced.
+- Raw preview:
+  `<tool_call>\n<function=record_fact>\n<parameter=value>` followed by
+  punctuation/fullwidth-comma garbage.
+- Measured server speed: 96 tokens in 80.02s, about `1.2 tok/s`.
+
+Updated classification:
+
+- MiMo XML fallback prompt placement is now cleaner and proven with the real
+  tokenizer.
+- MiMo required tool E2E remains red.
+- MiMo speed remains red.
+- The remaining blocker is not just fallback placement; it still requires
+  source-vs-quant classification and/or real guided XML decode/model-artifact
+  work.
+
 ## 2026-06-07 ChatML tool-fallback framing fix and live result
 
 Source change:
