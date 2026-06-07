@@ -240,6 +240,29 @@ Current classification:
 - This is not a media clearance: image, audio, video, media-expanded cache keys, and post-media recovery remain unbuilt/unproven for MiMo.
 - This is not a release clearance: speed, reasoning quality, full E2E UI/settings parity, largest-context cache, restart/L2 restore, cancellation cleanup, and packaged-app parity remain open.
 
+## 2026-06-07 rejected MiMo compiled-MoE speed attempt
+
+Artifact:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-compiled-moe-decode-20260607/JANGQ_MiMo-V2.5-JANG_2L/result.json`
+
+What was tried:
+
+- A vMLX registration-layer patch compiled the whole single-token MiMo MoE decode block, not only the router.
+- It kept the same routing, expert weights, cache behavior, and tool parsing semantics.
+- Server log confirmed the attempted patch activated: `Installed vMLX MiMo-V2 compiled single-token MoE decode patch`.
+
+Result:
+
+- Correctness stayed green: runner `status=pass`, `failed=0`, and the required tool call still parsed as `record_fact({"value": "blue-cat"})`.
+- Speed did not improve: generation throughput was `1.7457 tok/s`, versus `1.7586 tok/s` before the attempt.
+- Request timings were effectively unchanged.
+
+Decision:
+
+- The compiled-MoE patch was removed and must not be treated as a speed fix.
+- MiMo's speed blocker likely requires a real optimized routed-expert/gather-qmm path or a different artifact/runtime class, not simply wrapping the generic `SwitchGLU` call in `mx.compile`.
+
 Current release status: red.
 
 ## 2026-06-07 required-tool metadata propagation and decode proof

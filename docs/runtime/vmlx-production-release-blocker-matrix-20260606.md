@@ -1101,3 +1101,22 @@ Release boundary:
 - This supersedes the earlier narrow statement that current MiMo required tools always corrupt under the normal source runner.
 - It does not clear MiMo, vMLX, or MLXStudio for release.
 - Do not sign, notarize, tag, publish, or update public downloads from this proof.
+
+## 2026-06-07 MiMo rejected compiled-MoE speed attempt
+
+Artifact:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-compiled-moe-decode-20260607/JANGQ_MiMo-V2.5-JANG_2L/result.json`
+
+Findings:
+
+- A temporary source patch compiled the single-token MiMo MoE decode block.
+- The patch activated and preserved correctness: the smoke still passed and `tool_required` still returned parsed `record_fact({"value": "blue-cat"})`.
+- It did not improve speed: generation throughput was `1.7457 tok/s`, compared with `1.7586 tok/s` before.
+- The temporary patch was removed. Do not carry it forward as a release fix.
+
+Next speed work:
+
+- Profile or replace the actual routed-expert `gather_qmm`/SwitchGLU decode path.
+- Confirm whether a different MiMo JANG_K/non-TQ or prepacked expert artifact exists with the expected `40+ tok/s` target.
+- Do not advertise MiMo speed as fixed from the keep=0 tool/cache repair.
