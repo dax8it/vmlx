@@ -1065,3 +1065,39 @@ Classification:
 - This is not a cache-only failure: the same class had already reproduced with cache disabled, and the current run proves cache can work while tools fail.
 - This is not missing schema injection: fallback/schema placement has been fixed and current template already contains native XML tool instructions.
 - This is not release-cleared MiMo. The remaining blocker is model artifact versus runtime decode/tool-grammar compatibility, pending source-vs-quant first divergence or a real constrained/guided XML decoder.
+
+## 2026-06-07 MiMo no-media source smoke after keep=0 cache fix
+
+Artifact:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-keep0-cache-fix-20260607/JANGQ_MiMo-V2.5-JANG_2L/result.json`
+
+What changed:
+
+- Current source now passes the focused MiMo no-media smoke with tools enabled.
+- Runner summary is `status=pass`, `row_count=1`, `failed=0`.
+- The server loaded `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` as MLLM.
+- Server log confirms both MiMo runtime patches: fallback compiled decode router and keep=0 SWA rotating cache.
+
+Proof details:
+
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=67`, `cache_detail=paged`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `tool_required`: HTTP 200, parsed OpenAI `record_fact` tool call with `{"value": "blue-cat"}` and no visible text leak.
+- Native cache reports `mimo_v2` / `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`.
+- Prefix, paged cache, and block-disk L2 are enabled.
+- Block-disk L2 stores `173` tokens across `5` written blocks by the end of the smoke.
+
+Still red:
+
+- Generation speed is still about `1.76 tok/s` in final health and `0.1-1.7 tok/s` in request logs, far below the `40+ tok/s` target.
+- `reasoning_on` did not fail the runner, but its visible text is repetitive/messy and is not release-quality reasoning proof.
+- Tool-result continuation, auto-tool behavior, loop-stop, streaming tool parity, Anthropic/Ollama parity, largest-context cache, restart/L2 restore, cancellation cleanup, installed-app/UI settings parity, and MiMo media remain unproven.
+- MiMo image/audio/video support remains unwired/unproven and must not be advertised as working.
+
+Release boundary:
+
+- This supersedes the earlier narrow statement that current MiMo required tools always corrupt under the normal source runner.
+- It does not clear MiMo, vMLX, or MLXStudio for release.
+- Do not sign, notarize, tag, publish, or update public downloads from this proof.

@@ -193,6 +193,53 @@ Latest result:
 
 Do not release, sign, notarize, or call MiMo/MLXStudio/vMLX green yet.
 
+## 2026-06-07 no-media source smoke after keep=0 cache fix
+
+Artifact:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-after-keep0-cache-fix-20260607/JANGQ_MiMo-V2.5-JANG_2L/result.json`
+
+Summary:
+
+- Runner summary: `status=pass`, `row_count=1`, `failed=0`.
+- Model path: `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Served as MLLM through current source `vmlx_engine.cli serve`.
+- Server log confirms `Installed vMLX fallback compiled MiMo-V2 decode router`.
+- Server log confirms `Installed vMLX MiMo-V2 keep=0 rotating-cache patch`.
+- Runtime cache family reports `mimo_v2` / `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`.
+- Generic TurboQuant KV remains disabled for MiMo; native storage-boundary q4 KV is active for full and sliding attention KV while preserving rotating-window metadata.
+- Prefix cache, paged cache, and block-disk L2 are enabled.
+
+Request results:
+
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`, no validation failures.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `prompt_tokens_details.cached_tokens=67`, `cache_detail=paged`, no validation failures.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`, no validation failures.
+- `reasoning_on`: HTTP 200, no runner validation failure, but visible output is messy/repetitive and is not a release-quality reasoning proof.
+- `tool_required`: HTTP 200, parsed OpenAI tool call `record_fact` with arguments `{"value": "blue-cat"}`, empty visible content, no validation failures.
+
+Cache/L2 proof:
+
+- Final scheduler cache hit tokens: `67`.
+- Final cache hits: `4`.
+- Block-disk L2 writes: `5`.
+- L2 block tokens on disk: `173`.
+- Last cache execution: `cache_detail=paged`, `cached_tokens=67`, `reconstructed=true`, `dequantized=true`.
+
+Speed proof:
+
+- Prompt throughput in final health: about `24.76 prompt tok/s`.
+- Generation throughput in final health: about `1.76 generation tok/s`.
+- Server request logs show `0.1 tok/s`, `1.1 tok/s`, `1.2 tok/s`, `1.7 tok/s`, and `1.5 tok/s` across the smoke.
+- This remains far below the `40+ tok/s` target and is a release blocker.
+
+Current classification:
+
+- The previous narrow MiMo required-tool corruption is fixed for this exact no-media current-source smoke.
+- This is not a full tool-system clearance: tool-result continuation, auto-tool behavior, loop-stop, long-context tool prompts, streaming tool parity, Anthropic/Ollama parity, and UI-launched tool settings remain unproven.
+- This is not a media clearance: image, audio, video, media-expanded cache keys, and post-media recovery remain unbuilt/unproven for MiMo.
+- This is not a release clearance: speed, reasoning quality, full E2E UI/settings parity, largest-context cache, restart/L2 restore, cancellation cleanup, and packaged-app parity remain open.
+
 Current release status: red.
 
 ## 2026-06-07 required-tool metadata propagation and decode proof
