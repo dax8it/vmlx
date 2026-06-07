@@ -148,6 +148,9 @@ Implemented behavior:
 - XML function fallback requires concrete `<function=name>` examples, not generic `example_function_name` only.
 - XML function fallback injects into first user turn and preserves native `tools` during re-render.
 - Required-tool failures now log a bounded raw preview for diagnosis.
+- MiMo XML-function fallback instructions stay inside the rendered ChatML
+  system turn when MiMo's template drops synthetic fallback messages; vMLX no
+  longer prefixes those instructions before `<|im_start|>system`.
 
 Focused source tests:
 
@@ -156,6 +159,22 @@ Focused source tests:
 Latest result:
 
 - 6 passed, 515 deselected.
+
+Additional focused parser/template proof after ChatML fallback fix:
+
+`tests/test_tool_fallback_injection.py::test_mimo_xml_function_direct_fallback_stays_inside_chatml_system`
+
+Latest result:
+
+- 1 passed.
+
+Full focused parser/fallback slice:
+
+`tests/test_tool_fallback_injection.py::test_mimo_xml_function_fallback_matches_parser_dialect tests/test_tool_fallback_injection.py::test_mimo_xml_function_direct_fallback_stays_inside_chatml_system tests/test_xml_function_tool_parser.py`
+
+Latest result:
+
+- 12 passed.
 
 ## Next required checks
 
@@ -175,6 +194,68 @@ Latest result:
 Do not release, sign, notarize, or call MiMo/MLXStudio/vMLX green yet.
 
 Current release status: red.
+
+## 2026-06-07 ChatML tool-fallback framing fix and live result
+
+Source change:
+
+- `vmlx_engine/api/tool_calling.py` now keeps MiMo/XML-function fallback tool
+  instructions inside the first rendered ChatML system turn if MiMo's template
+  drops synthetic fallback messages during re-render.
+- `tests/test_tool_fallback_injection.py` now covers this regression.
+
+No-heavy proof:
+
+- `py_compile` passed for `vmlx_engine/api/tool_calling.py` and
+  `tests/test_tool_fallback_injection.py`.
+- Focused parser/fallback tests passed: 12 passed.
+- Render proof for the real local MiMo tokenizer showed
+  `inside_system=True` and `prefix_outside_chatml=False`.
+
+Live proof:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-after-chatml-tool-fallback-20260607`
+
+Command boundary:
+
+- Current source venv.
+- Installed model:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Continuous batching, paged cache, block-disk L2, and native mixed full/SWA
+  cache active.
+- `--kv-cache-quantization none`.
+- No media/video/reasoning; tools included.
+
+Live positives:
+
+- `text_cache_repeat_1`: HTTP 200, `ACK`.
+- `text_cache_repeat_2`: HTTP 200, `ACK`, `cached_tokens=67`,
+  `cache_detail=paged`.
+- `text_multiturn_recall`: HTTP 200, `blue cat`.
+- Block-disk L2 wrote 4 blocks / 141 tokens.
+- Native cache remained `mimo_v2` / `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`.
+- Generic TurboQuant KV remained disabled for this diagnostic.
+
+Live failure:
+
+- `tool_required`: HTTP 400, no parsed tool calls.
+- Server raw preview:
+  `<tool_call>\n\n：，，，。：，，。。。。。。，。。。。，。。，。。，，...`
+- The model still failed to emit `<function=record_fact>` or
+  `<parameter=value>blue-cat</parameter>`.
+- Generation speed for the tool failure was about `1.7 tok/s`.
+
+Classification:
+
+- The ChatML fallback-framing bug is fixed.
+- MiMo required-tool generation remains red after the framing fix.
+- The remaining blocker is deeper than parser aliasing or prompt placement:
+  current decode/model/runtime path still cannot reliably continue the
+  XML-function grammar for required tool calls.
+- Do not clear MiMo until a corrected artifact, source-vs-quant divergence fix,
+  or a real constrained/guided XML decoder is implemented and live-proven
+  without synthetic tool-call fabrication.
 
 ## Remote canonical artifact comparison
 

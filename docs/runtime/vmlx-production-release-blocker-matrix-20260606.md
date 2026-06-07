@@ -207,6 +207,62 @@ Matrix impact:
 - `MIMO-SPEED-001` remains red.
 - Runtime stale-package integration is partially fixed, but MiMo remains blocked for release.
 
+## 2026-06-07 MiMo ChatML XML-tool fallback framing fix
+
+Source change:
+
+- `vmlx_engine/api/tool_calling.py` now keeps MiMo/XML-function fallback tool
+  instructions inside the rendered ChatML system turn when the MiMo template
+  drops synthetic fallback messages during re-render.
+- `tests/test_tool_fallback_injection.py` now covers this regression.
+- This is a prompt-framing fix only; it does not fabricate tool calls or
+  synthesize arguments.
+
+No-heavy proof:
+
+- `py_compile` passed for the edited tool-calling source and fallback test.
+- Focused parser/fallback tests passed: 12 passed.
+- Render proof with the real local MiMo tokenizer showed the fallback
+  instructions are inside the system turn and no longer prefix the ChatML
+  conversation.
+
+Live proof:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-after-chatml-tool-fallback-20260607`
+
+- Current source venv.
+- Installed model:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Continuous batching, paged cache, block-disk L2, native mixed full/SWA cache.
+- `--kv-cache-quantization none`.
+- No media/video/reasoning; tools included.
+
+Live positives:
+
+- `text_cache_repeat_1`: HTTP 200, `ACK`.
+- `text_cache_repeat_2`: HTTP 200, `ACK`, `cached_tokens=67`,
+  `cache_detail=paged`.
+- `text_multiturn_recall`: HTTP 200, `blue cat`.
+- Block-disk L2 wrote 4 blocks / 141 tokens.
+- Native cache remained `mimo_v2` / `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`.
+
+Live failure:
+
+- `tool_required`: HTTP 400, no parsed tool calls.
+- Raw preview remained `<tool_call>` followed by punctuation/fullwidth
+  punctuation garbage, without `<function=record_fact>`.
+- Tool failure generation speed remained about `1.7 tok/s`.
+
+Matrix impact:
+
+- `MIMO-TEMPLATE-001` for outside-ChatML fallback placement is fixed.
+- `MIMO-TOOL-001` remains red.
+- `MIMO-SPEED-001` remains red.
+- MiMo remains red until corrected artifact/source-vs-quant fix or a real
+  constrained/guided XML decoder is live-proven without synthetic tool-call
+  fabrication.
+
 ## 2026-06-06 Qwen3.6 35B MXFP8-MTP bundled smoke proof
 
 Artifact:
