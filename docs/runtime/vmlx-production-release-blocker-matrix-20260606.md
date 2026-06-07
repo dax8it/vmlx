@@ -47,7 +47,7 @@ No source-only, load-only, health-only, or one-prompt text smoke may clear a bro
 |---|---:|---|---|---|
 | MiMo V2.5 JANG_2L | Red | Text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache | Required XML tool call corrupts output; speed around 1-2 tok/s; long/system prompt quality not cleared; VL/audio/video unwired | Source-vs-quant first divergence or replacement artifact proof; then tool decode/template/runtime fix; then full cache+tool+media matrix |
 | Qwen 3.6 35B MXFP8 MTP | Partial | Bundled-engine smoke passes text/cache, multiturn, reasoning, required tool, image, video, post-media text recovery; native MTP active D3; paged+SSM hit; block + SSM L2 evidence; no `gdn_sink` TypeError | Responses/Anthropic/Ollama, streaming parity, real Electron UI settings, largest-context cache, restart/L2 restore, cancellation/recovery, and 27B parity incomplete | Run missing API/UI/restart/largest-context rows and then 27B parity |
-| Qwen 3.6 27B MXFP4/MXFP8/JANG_4M MTP | Partial | MXFP4-MTP live slice passes text/cache, multiturn, reasoning, required tool, image, video, post-media recovery; Responses text/tool, Anthropic, Ollama, and Chat streaming pass; native MTP active D2; paged+SSM and block+SSM L2 evidence; JANG_4M installed-app MTP A/B reaches about 50.65 tok/s and 1.70x over AR | MXFP8 deterministic policy/UI parity, largest-context cache, restart/L2 restore, cancellation/recovery, TP4 route rank/speed evidence remain open | Run UI/restart/largest-context/cancel rows; verify MXFP8 deterministic policy in UI/session |
+| Qwen 3.6 27B MXFP4/MXFP8/JANG_4M MTP | Partial | MXFP4-MTP live slice passes text/cache, multiturn, reasoning, required tool, image, video, post-media recovery; Responses text/tool, Anthropic, Ollama, and Chat streaming pass; restart/L2 restore hits paged+SSM+disk; native MTP active D2; paged+SSM and block+SSM L2 evidence; JANG_4M installed-app MTP A/B reaches about 50.65 tok/s and 1.70x over AR | MXFP8 deterministic policy/UI parity, largest-context cache, cancellation/recovery, TP4 route rank/speed evidence remain open | Run UI/largest-context/cancel rows; verify MXFP8 deterministic policy in UI/session |
 | Nemo / Nemotron Omni | Red | Some source rows exist in older matrix | Omni audio/video processor bridge, tool dialect, cache/media salt, UI proof incomplete | Build live Omni text/audio/video/tool/cache smoke |
 | LFM / LFM2.5 | Partial | Source rows exist in older cross-family matrix | Full installed-app multiturn/tool/cache/UI proof incomplete | Run installed-app LFM matrix with loop stop and structured output |
 | MiniMax / MiniMax-M2.7 / JANGTQ_K | Red | Public/local route drift narrowed; public DMG cancel route present | Reporter parity/root cause still open; JANGTQ/runtime/speed/tool/cancel recovery not fully cleared | Finish reporter provenance and live MiniMax model proof |
@@ -317,7 +317,7 @@ Installed-app native MTP speed A/B:
 Nuance / still open:
 
 - This strengthens Qwen27 MXFP4 and JANG_4M evidence, but the family remains `Partial`.
-- Missing rows: MXFP8 deterministic policy through UI/session, `/v1/responses`, Anthropic `/v1/messages`, Ollama, streaming/non-streaming equivalence, real Electron UI settings, largest-context cache, restart/L2 restore, cancellation/recovery, and TP4 route rank/speed evidence.
+- Missing rows: MXFP8 deterministic policy through UI/session, `/v1/responses`, Anthropic `/v1/messages`, Ollama, streaming/non-streaming equivalence, real Electron UI settings, largest-context cache, cancellation/recovery, and TP4 route rank/speed evidence.
 - The speed A/B was cache-off and text-only; it does not by itself clear media/cache/UI release rows.
 
 ## 2026-06-07 Qwen3.6 27B MXFP4-MTP API parity probe
@@ -357,7 +357,69 @@ Cache / L2 / architecture evidence:
 Nuance / still open:
 
 - This clears current Qwen27 MXFP4-MTP non-Chat API parity for short text/tool rows, not the whole family.
-- Missing Qwen27 rows remain: real Electron UI settings, largest-context cache hit, restart/L2 restore, cancellation/recovery, MXFP8 deterministic policy through UI/session, and TP4 route rank/speed evidence.
+- Missing Qwen27 rows remain: real Electron UI settings, largest-context cache hit, cancellation/recovery, MXFP8 deterministic policy through UI/session, and TP4 route rank/speed evidence.
+
+## 2026-06-07 Qwen3.6 27B MXFP4-MTP restart/L2 restore proof
+
+Artifact:
+
+`build/current-qwen27-mxfp4-mtp-restart-l2-restore-20260607`
+
+Command boundary:
+
+- Model: `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP4-MTP`.
+- Runtime: source venv `vmlx serve`.
+- Two separate server processes used the same block cache directory:
+  `shared_block_cache`.
+- Served with MLLM route, continuous batching, paged cache, block-disk L2,
+  `--ssm-state-cache-mb 1024`, default thinking off, and `--is-mllm`.
+- This was not a packaging/signing/notarization run.
+
+Phase 1 result:
+
+- Text request returned visible `ACK`.
+- Usage reported `prompt_tokens=64`, `completion_tokens=2`, and no cache hit.
+- Block disk cache wrote 1 block and 63 block tokens.
+- SSM companion disk wrote 1 entry and 63 SSM tokens.
+- Native MTP was active at depth 2.
+- No server errors were observed.
+
+Phase 2 fresh-process restore result:
+
+- Text request returned visible `ACK`.
+- Usage reported `prompt_tokens_details.cached_tokens=63`.
+- Usage reported `cache_detail=paged+ssm+disk`.
+- Scheduler reported `cache_hit_tokens=63` and
+  `cache_hit_tokens_by_detail={"paged+ssm+disk":63}`.
+- `last_cache_execution.disk_hit=true`.
+- Disk reconstruction and dequantization succeeded.
+- Reconstruction time was about `0.040493s`; dequantization time was about
+  `0.000007s`.
+- Block disk cache reported 1 disk hit, 1 block, 63 tokens on disk, and no new
+  disk writes in phase 2.
+- SSM companion disk reported 1 hit, 1 entry, 63 tokens on disk, and hit rate
+  `1.0`.
+
+Cache / L2 / architecture evidence:
+
+- Native cache remains `qwen3_5` / `hybrid_ssm_v1` / `hybrid_ssm_typed`.
+- Components remain attention KV, SSM companion state, and async rederive.
+- Generic TurboQuant KV remains attention-KV-only for the hybrid attention
+  layers; SSM companion state remains native.
+- Storage-boundary attention KV quantization remains q4, group size 64,
+  attention layers only.
+- Phase 2 server log includes `VLM HYBRID cache HIT ... 63 cached (KV+SSM)`.
+- Phase 2 server log shows native MTP active at depth 2.
+- No `gdn_sink` `TypeError` or server error was observed.
+
+Matrix impact:
+
+- This clears the current Qwen27 MXFP4-MTP restart/L2 restore row for the short
+  text path with hybrid attention KV plus SSM companion state.
+- Qwen27 remains `Partial`, not green, because real Electron UI settings,
+  largest-context cache, cancellation/recovery, MXFP8 deterministic
+  policy/session parity, TP4 route rank/speed, and full media/UI release rows
+  remain open.
 - Responses streaming and tool-result continuation were not covered in this probe.
 
 ## 2026-06-06 LFM2.5 MXFP4 focused source smoke
