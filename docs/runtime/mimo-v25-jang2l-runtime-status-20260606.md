@@ -12,9 +12,10 @@ MiMo V2.5 JANG_2L is not release-green.
 
 Working pieces are real and live-proven, including repeated text cache,
 multiturn recall, required-tool parsing after prior turns, tool-result
-continuation, and the 64-word long-prefix cache row. Remaining red items are
-speed, broader auto-tool/loop-stop/raw-markup matrix, media/VL/audio/video, UI
-parity, and release packaging/signing/notarization.
+continuation, strict JSON, exact code/whitespace, and the 64-word long-prefix
+cache row. Remaining red items are speed, broader auto-tool/loop-stop/raw-markup
+matrix, media/VL/audio/video, UI parity, and release
+packaging/signing/notarization.
 
 ## Live proofs completed
 
@@ -315,6 +316,48 @@ Remaining red items from this run:
 - No-media only: image/video/audio are still unwired.
 - This does not prove auto-tool behavior, adversarial loop-stop, Responses /
   Anthropic / Ollama parity, streaming, installed-app UI, or release packaging.
+
+## 2026-06-07 strict JSON and exact code/whitespace harness rows
+
+Artifact:
+
+`build/current-all-local-model-smoke-mimo-v25-jang2l-json-code-tools-nomedia-20260607/JANGQ_MiMo-V2.5-JANG_2L/result.json`
+
+Harness change:
+
+- `bench/all_local_model_smoke.py` now always includes:
+  - `structured_json_exact`: output must parse with `json.loads` and equal
+    `{"status":"ok","value":"blue-cat","count":3}`.
+  - `exact_code_whitespace`: output must exactly equal:
+    `def add(a, b):\n    return a + b\nprint(add(2, 3))`.
+- These checks fail on markdown fences, trailing prose, malformed JSON,
+  type/value drift, lost indentation, changed punctuation, or extra whitespace.
+
+Live MiMo source result:
+
+- Runner summary: `status=pass`, `row_count=1`, `failed=0`.
+- Eight requests completed: text cache repeat, cache hit repeat, multiturn
+  recall, reasoning-on, required tool, tool-result continuation, strict JSON,
+  and exact code/whitespace.
+- `structured_json_exact`: HTTP 200, visible
+  `{"status":"ok","value":"blue-cat","count":3}`, parsed exactly.
+- `exact_code_whitespace`: HTTP 200, visible code matched exactly with
+  indentation and newlines preserved.
+- Paged cache hit remains `cached_tokens=67`.
+- Block-disk L2 wrote `16` blocks / `797` tokens.
+- Native cache remains `mimo_v2` / `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`.
+
+Remaining red items from this run:
+
+- Speed remains far below target: aggregate generation `153` tokens in
+  `87.09s`, about `1.76 tok/s`.
+- Reasoning-on output remains low quality/repetitive despite no validation
+  failure in this narrow row.
+- No-media only: image/video/audio are still unwired.
+- This does not prove JSON schema constrained decoding, JSON repair, XML
+  structured output, Responses / Anthropic / Ollama parity, streaming,
+  installed-app UI, or release packaging.
 
 ## 2026-06-07 no-media source smoke after keep=0 cache fix
 
