@@ -169,3 +169,44 @@ Nuance / still open:
 
 - Exact visible output is correct, but short exact prompts report high `completion_tokens` counts (`208`, `380`, `252`). This needs a follow-up parser/stop-token/accounting check before calling LFM fully clean.
 - This is source-runtime no-media proof only. Installed-app parity, streaming, Responses/Anthropic/Ollama, largest-context cache, restart/L2 restore, and UI settings remain open.
+
+## 2026-06-06 Nemotron Omni MXFP4 focused source smoke
+
+Initial artifact:
+
+`build/current-all-local-model-smoke-nemotron-omni-mxfp4-tools-nomedia-20260606/dealign.ai_Nemotron-Omni-Nano-MXFP4-CRACK/result.json`
+
+Initial result:
+
+- Text/cache/multiturn/tool passed.
+- `reasoning_on` failed because the default 256-token reasoning probe stopped with hidden reasoning only and empty visible output.
+
+Harness fix:
+
+- Nemotron/Omni reasoning probes now receive the same 512-token budget treatment as ZAYA while retaining strict visible `FINAL=OK` validation.
+
+Passing artifact:
+
+`build/current-all-local-model-smoke-nemotron-omni-mxfp4-tools-nomedia-after-reasoning-budget-20260606/dealign.ai_Nemotron-Omni-Nano-MXFP4-CRACK/result.json`
+
+Result:
+
+- Overall row: `pass`.
+- Model type: `nemotron_h`.
+- Cache family: `hybrid_ssm`.
+- Native cache: `nemotron_h` / `hybrid_ssm_v1` / `hybrid_ssm_typed`.
+- Components: `attention_kv`, `ssm_companion_state`, `async_rederive`.
+- Generic TurboQuant KV correctly disabled with reason `hybrid_ssm_state`.
+- Attention KV storage quantization active: q4, group size 64, storage-boundary only.
+- Prefix/paged/block-disk L2 active.
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=57`, `cache_detail=paged+ssm`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `reasoning_on`: HTTP 200, visible `FINAL=OK`, reasoning chars `1824`, completion tokens `488`.
+- `tool_required`: HTTP 200, OpenAI `tool_calls[0].function.name=record_fact`, arguments `{"value":"blue-cat"}`.
+- Logs show hybrid paged hit plus SSM clean companion rederive and next-fetch-ready storage.
+
+Nuance / still open:
+
+- Server log warns `nemotron_h: unresolved eos strings ['<|im_end|>']`; registry/tokenizer EOS mapping needs follow-up before full release clearance.
+- This is source-runtime no-media proof only. Omni audio/video/image bridge, installed app parity, streaming, Responses/Anthropic/Ollama, largest-context cache, restart/L2 restore, and UI settings remain open.
