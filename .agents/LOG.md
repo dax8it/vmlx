@@ -5012,3 +5012,25 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Coverage counts: engine/API `26 passed`; panel/settings/request-builder `54 passed`, `334 skipped` by vitest filter.
 - Contract coverage includes: startup `--max-tokens` is only omitted-request output default; explicit Chat/Responses/Completions/Anthropic/Ollama caps can go below/above startup default without mutating prompt context; prompt/context aliases clamp context without rewriting output caps; panel separates Max Output Tokens from Max Context Tokens; explicit max context emits max prompt/context CLI flag; per-chat `maxTokens` is request-scoped; stale legacy `32768` session output caps are migrated; `maxThinkingTokens` is template thinking budget only.
 - Classification: source and panel unit wiring for max-output/max-context boundary is green after Qwen long-context proof. Still release-partial until live installed-app UI/session proves actual selected max context/max output launches expected args and matches `/health`, request, and cache telemetry.
+
+## 2026-06-07 local - Qwen27 JANG_4M-MTP installed-app UI max-context proof
+
+- Scope stayed in active Python engine/panel worktree; no deprecated wrapper, Swift, ADLab/TB/RDMA work, package, signing, notarization, tag, upload, appcast, or public release action.
+- Patched `panel/scripts/live-real-ui-model-proof.mjs` so the real UI proof can pass explicit max prompt/context env into the server command and record it in `requestContract`.
+- Added focused manifest tests so success and failure result blocks both record `requestMaxPromptTokens`.
+- Focused validation already passed:
+  `node --check panel/scripts/live-real-ui-model-proof.mjs`,
+  `.venv/bin/python -B -m py_compile tests/test_release_regression_manifest.py`,
+  and
+  `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py -k 'real_ui_script_records_request_contract'`
+  -> `2 passed`.
+- Ran installed-app UI proof with `/Applications/vMLX.app` and installed bundled Python:
+  `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-27b-jang4m-mtp-maxcontext-20260607-proof.json`,
+  `status=pass`.
+- Server command included `--max-tokens 128`, `--max-prompt-tokens 8192`, paged cache, block disk L2, and `--is-mllm`.
+- Proof recorded `requestMaxTokens=128`, `requestMaxPromptTokens=8192`, and `/health.max_prompt_tokens=8192`.
+- Proven surfaces included installed app UI, settings persistence, server cache controls, chat completions, cache endpoint stats, cache hit telemetry, L2 disk storage, native cache status, real loaded model, and generation defaults.
+- Second UI turn reported `cachedTokens=18`, `cacheDetail=paged+ssm`; cache stats after the run showed block disk L2 writes/hits and SSM companion disk stores.
+- Native cache health reported Qwen3.6 hybrid SSM typed cache with TurboQuant attention-KV storage only on attention layers, native companion state for SSM layers, prefix/paged cache, and block disk L2.
+- MTP health reported native runtime active D3, text+VL scope, and artifact tensors present. UI chat requests used non-deterministic default sampling, so native MTP was available but request-policy-skipped for those exact requests.
+- Classification: this narrows the Qwen27 installed-app max-output/max-context blocker, but it is not release clearance. Normal local-session installed-app launch/settings, media/VL/audio/video, broader API parity, cancellation/recovery, speed, signing/notarization, and public download updates remain blocked.
