@@ -1120,3 +1120,76 @@ Next speed work:
 - Profile or replace the actual routed-expert `gather_qmm`/SwitchGLU decode path.
 - Confirm whether a different MiMo JANG_K/non-TQ or prepacked expert artifact exists with the expected `40+ tok/s` target.
 - Do not advertise MiMo speed as fixed from the keep=0 tool/cache repair.
+
+## 2026-06-07 LFM2.5 installed no-media tools/cache smoke
+
+Artifact:
+
+`build/current-all-local-model-smoke-lfm25-installed-tools-nomedia-20260607/summary.json`
+
+Scope:
+
+- Current source `vmlx_engine.cli serve`.
+- Installed local models under `/Users/eric/.mlxstudio/models`.
+- No media.
+- Required-tool probe enabled.
+- Repeated prompt cache probe and multiturn recall probe included.
+
+Rows:
+
+- `LFM2.5-8B-A1B-JANG_2L`: pass.
+- `LFM2.5-8B-A1B-MXFP4`: pass.
+- `LFM2.5-8B-A1B-MXFP8`: pass.
+
+Proof details:
+
+- Summary: `status=pass`, `row_count=3`, `failed=0`.
+- All three rows returned visible `ACK` for cache-repeat probes.
+- All three rows returned visible `blue cat` for multiturn recall.
+- All three rows returned parsed OpenAI `record_fact({"value": "blue-cat"})` for `tool_required` with no visible tool text leak.
+- All three rows reported cache hit evidence on the second repeat: `cached_tokens=64`, `cache_detail=paged+ssm`.
+- All three rows reported typed native cache family `lfm2` / `hybrid_ssm_v1` with components `attention_kv`, `ssm_companion_state`, and `async_rederive`.
+- Generic TurboQuant KV is correctly disabled for LFM hybrid SSM state; attention KV storage-boundary q4 is active with native companion SSM state.
+- Block-disk L2 is enabled and disk hits were reported in the run summary.
+
+Still open:
+
+- This is not media proof.
+- This is not restart/L2 restore proof.
+- This is not largest-context proof.
+- This is not UI/settings or installed-app launch-arg proof.
+- This is not Anthropic/Ollama/Responses/streaming parity proof.
+- This is not structured JSON/XML benchmark repair proof.
+
+## 2026-06-07 Step 3.7 Flash installed no-media tools/cache smoke
+
+Artifact:
+
+`build/current-all-local-model-smoke-step37-flash-installed-tools-nomedia-20260607/summary.json`
+
+Scope:
+
+- Current source `vmlx_engine.cli serve`.
+- Installed local model `/Users/eric/.mlxstudio/models/JANGQ-AI/Step-3.7-Flash-JANG_2L`.
+- No media.
+- Required-tool probe enabled.
+- Repeated prompt cache probe and multiturn recall probe included.
+
+Proof details:
+
+- Summary: `status=pass`, `row_count=1`, `failed=0`.
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=61`, `cache_detail=paged`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `reasoning_on`: HTTP 200, visible `FINAL=OK`.
+- `tool_required`: HTTP 200, parsed OpenAI `record_fact({"value": "blue-cat"})`.
+- Native cache reports `step3p7` / `mixed_swa_kv_v1` / `step3p7_full_sliding_kv`.
+- Prefix, paged cache, storage-boundary q4 KV, and block-disk L2 are enabled.
+- Server log explicitly routes Step3.7 advertised VLM metadata to text-only:
+  `step3p7_advertised_vlm_text_only`.
+
+Important blockers:
+
+- VLM remains not production-cleared for Step3.7. The successful row is text-only.
+- MTP metadata is inconsistent for this bundle: config advertises `num_nextn_predict_layers=3`, but the bundle index has no `mtp.*` tensors.
+- The run proves short no-media tools/cache/multiturn only, not full loop-stop, long context, streaming/API parity, media, UI, or restart/L2 restore.
