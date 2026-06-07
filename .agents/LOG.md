@@ -4951,3 +4951,18 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Runtime evidence: 27B MXFP4 native MTP `READY D2`; 27B MXFP8 and 35B MXFP8 native MTP `READY D3`; all three used hybrid attention-KV q4 plus native SSM/GatedDelta companion state, paged cache, block L2, and SSM companion L2.
 - No `gdn_sink` TypeError, stream crash, raw XML tool leak, required-tool failure, strict JSON failure, or exact-code failure occurred in this Qwen gate.
 - Classification: Qwen27 MXFP4/MXFP8 MTP are source no-media tool/structured/cache green but release-partial; Qwen35 MXFP8 MTP remains red for thinking-mode visible-finalization under native MTP/MoE plus missing UI/API/media/restart/largest-context rows. Do not disable thinking as a fake release fix.
+
+## 2026-06-07 local - Qwen35 MoE MTP reasoning probe budget corrected
+
+- Scope stayed in active Python engine worktree; no package/sign/notarize/tag/release action.
+- Added Qwen3.6 MoE MTP to the same 512-token reasoning probe budget class already used for ZAYA/Nemotron. This is a harness budget correction, not a runtime/parser fallback.
+- Focused validation passed:
+  `.venv/bin/python -B -m py_compile bench/all_local_model_smoke.py tests/test_all_local_model_smoke.py`
+  and
+  `.venv/bin/python -m pytest -q tests/test_all_local_model_smoke.py -k 'reasoning_probe_gets_budget_for_visible_final_answer'`
+  -> `3 passed`.
+- Live Qwen35 follow-up passed:
+  `build/current-all-local-model-smoke-qwen36-35b-mxfp8-mtp-json-code-tools-nomedia-after-reasoning-budget-20260607/`, `status=pass`, `failed=0`.
+- Reasoning row changed from empty-visible at 256 tokens to visible `FINAL=OK` at 512-token budget, with `reasoning_chars=1038`, `completion_tokens=274`, native MTP D3, and no validation failures.
+- Other Qwen35 rows in the follow-up passed: text cache `ACK`, paged+SSM hit `cached_tokens=56`, multiturn `blue cat`, required tool `record_fact({"value":"blue-cat"})`, tool-result continuation `STORED blue-cat`, strict JSON, exact code/whitespace, block L2 and SSM companion L2.
+- Classification updated: Qwen35 no-media source gate is green after budget correction, but release remains partial for UI/API/media/restart-L2/largest-context/installed-app parity and explicit max-output-token UX behavior.
