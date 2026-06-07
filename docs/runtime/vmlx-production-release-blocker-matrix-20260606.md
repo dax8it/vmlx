@@ -45,7 +45,7 @@ No source-only, load-only, health-only, or one-prompt text smoke may clear a bro
 
 | Family / artifact lane | Current status | Proven current positives | Current blockers | Next proof/fix |
 |---|---:|---|---|---|
-| MiMo V2.5 JANG_2L | Red | Current Python path returns text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache; current source preserves tool metadata into MLLM decode; keep=0 SWA cache patch fixes required-tool cache decode; narrow live required-tool row now returns `record_fact({"value":"blue-cat"})` | Speed remains about 0.6 tok/s on the fixed tool row and is far below target; long/system prompt quality not fully cleared; tool-result continuation/full multi-turn tool matrix not cleared; VL/audio/video unwired; full cache/L2/UI matrix incomplete; no local `jang_config.json` in current bundle | Run full MiMo tool-result/cache/L2/long-prompt smoke with keep=0; then fix speed/kernel path; then implement/prove media bridge or keep capabilities text-only |
+| MiMo V2.5 JANG_2L | Red | Current Python path returns text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache; current source preserves tool metadata into MLLM decode; keep=0 SWA cache patch fixes required-tool cache decode; narrow live required-tool row now returns `record_fact({"value":"blue-cat"})`; 64-word long-prefix MLLM row now passes with `cached_tokens=435`, `cache_detail=paged`, and 7 block-disk writes after tight-memory drain plus live `RotatingKVCache` mixed-SWA detection | Speed remains about 0.2 tok/s first turn and about 1.4 tok/s cached second turn on the 64-word row, far below target; long/system prompt quality not fully cleared; tool-result continuation/full multi-turn tool matrix not cleared; VL/audio/video unwired; full UI/installed-app matrix incomplete; no local `jang_config.json` in current bundle | Run full MiMo tool-result/cache/L2/restart/largest-context/UI smoke; then fix speed/kernel path; then implement/prove media bridge or keep capabilities text-only |
 | Qwen 3.6 35B MXFP8 MTP | Partial | Bundled-engine smoke passes text/cache, multiturn, reasoning, required tool, image, video, post-media text recovery; native MTP active D3; paged+SSM hit; block + SSM L2 evidence; deterministic long Responses row activates MTP D3 and writes block/SSM L2; no `gdn_sink` TypeError; saved deterministic required-tool request now passes with configured D3 available, request-local D1 cap logged, and real `function_call` returned; full deterministic long Responses/tool/cache gate now passes strict tool-call, tool-evidence, cache-hit, no-loop, and no-raw-markup criteria | Anthropic/Ollama, streaming parity, real Electron UI settings, largest-context cache, restart/L2 restore, cancellation/recovery, and 27B parity incomplete | Run missing API/UI/restart/largest-context rows and 27B parity |
 | Qwen 3.6 27B MXFP4/MXFP8/JANG_4M MTP | Partial | MXFP4-MTP live slice passes text/cache, multiturn, reasoning, required tool, image, video, post-media recovery; Responses text/tool, Anthropic, Ollama, and Chat streaming pass; restart/L2 restore hits paged+SSM+disk; deterministic Responses cancellation/recovery passes with native MTP active D2; paged+SSM and block+SSM L2 evidence; JANG_4M installed-app MTP A/B reaches about 50.65 tok/s and 1.70x over AR | MXFP8 deterministic policy/UI parity, largest-context cache, TP4 route rank/speed evidence remain open | Run UI/largest-context rows; verify MXFP8 deterministic policy in UI/session |
 | Nemo / Nemotron Omni | Red | Some source rows exist in older matrix | Omni audio/video processor bridge, tool dialect, cache/media salt, UI proof incomplete | Build live Omni text/audio/video/tool/cache smoke |
@@ -119,8 +119,8 @@ Current status: red. No release action allowed.
 
 ## Current next actions
 
-1. Keep MiMo red; current normal Python engine proof shows text/cache/multiturn work, but `tool_choice=required` still emits malformed raw XML/punctuation and returns HTTP 400.
-2. Obtain a corrected MiMo artifact or build a real constrained/guided XML decoder; do not synthesize fake tool calls from `tool_choice=required`.
+1. Keep MiMo red; current normal Python engine proof now shows text/cache/multiturn, narrow required tool, and 64-word long-prefix cache work, but speed, full tool-result/multiturn tool behavior, media, UI, and installed-app rows remain open.
+2. Do not synthesize fake tool calls from `tool_choice=required`; if more tool failures appear, fix parser/template/decode compatibility or use a real constrained/guided XML decoder.
 3. Enumerate all old/local MiMo copies before deleting anything. Delete bad past MiMo copies only after a replacement/current artifact is proven better by the same tool/cache/long-prompt/speed rows.
 4. Add harness knobs for per-family cache/TQ/L2 diagnostics so A/B rows are reproducible instead of manual one-off commands.
 5. Refresh cross-family smoke matrix after the harness can record runtime modalities and architecture-specific cache evidence.
@@ -258,6 +258,40 @@ Matrix impact:
 
 - `MIMO-TEMPLATE-001` for outside-ChatML fallback placement is fixed.
 - `MIMO-TOOL-001` remains red.
+
+## 2026-06-07 MiMo long-prefix MLLM cache and tight-memory fix
+
+Source changes:
+
+- `vmlx_engine/mllm_batch_generator.py` drains MLX allocator state before MLLM
+  prefills and after batch finish when startup detects a tight Metal
+  working-set configuration.
+- `vmlx_engine/mllm_scheduler.py` detects live `RotatingKVCache` in extracted
+  MLLM cache objects and routes those rows through the clean mixed-SWA
+  prompt-boundary store path.
+- `tests/test_mllm_scheduler_cache.py` pins both contracts.
+
+Live proof:
+
+`build/current-local-long-context-cache-mimo-v25-installed-64w-after-tight-memory-rotating-store-20260607`
+
+Result:
+
+- `status=pass`.
+- First request returned `LONGCTX-OK`.
+- First cleanup detected mixed-SWA from extracted `RotatingKVCache`.
+- Paged/L2 store wrote 7 blocks / 435 tokens.
+- Second request returned `LONGCTX-OK`.
+- Second request reported `cached_tokens=435`, `cache_detail=paged`.
+- No Metal OOM/server disconnect on the row that previously crashed.
+
+Matrix impact:
+
+- MiMo long-prefix cache row moves from red to narrow green for 64 words.
+- `CACHE-001` improves for MiMo MLLM mixed-SWA + block L2, but remains red for
+  restart/L2 restore, largest-context, UI parity, and other families.
+- MiMo release status remains red because speed, full tool behavior, media, UI,
+  and installed-app parity remain incomplete.
 
 ## 2026-06-07 MiMo required-tool prefix propagation proof
 

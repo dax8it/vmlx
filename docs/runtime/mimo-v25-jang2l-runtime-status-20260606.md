@@ -10,7 +10,10 @@ Do not use `/Users/eric/vmlx`, ADLab, TB/RDMA workflows, or Swift-only paths for
 
 MiMo V2.5 JANG_2L is not release-green.
 
-Working pieces are real and live-proven, but required tool calling is still red and speed is far below the expected 40+ tok/s target.
+Working pieces are real and live-proven, including the narrow required-tool
+row and the 64-word long-prefix cache row. Remaining red items are speed,
+full tool-result/multiturn matrix, media/VL/audio/video, UI parity, and
+release packaging/signing/notarization.
 
 ## Live proofs completed
 
@@ -56,7 +59,7 @@ Finding:
 
 ### MIMO-TOOL-001: required tool calling corrupts output
 
-Failing request:
+Earlier failing request:
 
 `Use the record_fact tool exactly once with value blue-cat. Do not answer in visible text.`
 
@@ -90,10 +93,12 @@ Observed with thinking enabled in SimpleEngine:
 
 Current classification:
 
-- Not a parser-only issue: parser supports `<tool_call><function=name><parameter=k>v</parameter></function></tool_call>`.
-- Not a generic TQ-KV issue: failure reproduces with `--kv-cache-quantization none`.
-- Not a paged/L2 issue: failure reproduces with prefix cache disabled and SimpleEngine.
-- Likely one of: installed MiMo artifact corruption, MiMo template/decode incompatibility in current runtime, tokenizer/template mismatch, or model not trained/stable for required tool calls in this quant.
+- This was red before the ChatML fallback and keep=0 rotating-cache fixes.
+- The current narrow no-media source smoke now parses the required tool call
+  correctly as `record_fact({"value":"blue-cat"})`.
+- This does not clear the full tool matrix yet. Tool-result continuation,
+  auto-tool behavior, loop-stop behavior, multi-turn tool memory, and raw XML
+  leakage checks still need full E2E proof.
 
 ### MIMO-SPEED-001: speed far below target
 
@@ -217,6 +222,59 @@ Request results:
 - `text_multiturn_recall`: HTTP 200, visible `blue cat`, no validation failures.
 - `reasoning_on`: HTTP 200, no runner validation failure, but visible output is messy/repetitive and is not a release-quality reasoning proof.
 - `tool_required`: HTTP 200, parsed OpenAI tool call `record_fact` with arguments `{"value": "blue-cat"}`, empty visible content, no validation failures.
+
+## 2026-06-07 long-prefix MiMo MLLM cache crash fix
+
+Source changes:
+
+- `vmlx_engine/mllm_batch_generator.py` now performs a tight-memory MLLM
+  allocator drain around prefills and after batch finish when startup detects
+  that model residency leaves only a small Metal working-set margin.
+- `vmlx_engine/mllm_scheduler.py` now detects mixed-SWA VLM cache layout from
+  the live extracted cache when wrappers hide `cache_subtype`; seeing
+  `RotatingKVCache` forces the clean prompt-boundary store path.
+- `tests/test_mllm_scheduler_cache.py` pins both behaviors.
+
+Why this was a runtime issue:
+
+- The previous 64-word MiMo long-context cache row crashed the server on the
+  second request with native Metal OOM before a Python error could be returned.
+- The model could answer the prompt; the failure was allocator/cache lifecycle
+  plus runtime cache-layout detection.
+- The runtime was treating MiMo's extracted `RotatingKVCache` layout like a
+  generic cache in cleanup, so no paged/L2 store was produced for repeat hits.
+
+Live proof:
+
+`build/current-local-long-context-cache-mimo-v25-installed-64w-after-tight-memory-rotating-store-20260607`
+
+Result:
+
+- `status=pass`.
+- First turn: HTTP 200, visible `LONGCTX-OK`.
+- Runtime detected mixed-SWA from extracted `RotatingKVCache`.
+- Clean prompt-boundary store wrote 7 block-disk blocks / 435 tokens.
+- Second turn: HTTP 200, visible `LONGCTX-OK`.
+- Second turn reported `prompt_tokens_details.cached_tokens=435`.
+- Second turn reported `cache_detail=paged`.
+- No native Metal OOM or server disconnect.
+
+Smaller confirmation:
+
+`build/current-local-long-context-cache-mimo-v25-installed-16w-rotating-detect-store-20260607`
+
+- `status=pass`.
+- `second_cached_tokens=147`.
+- `cache_detail=paged`.
+- Block-disk L2 wrote 3 blocks / 147 tokens.
+
+Remaining MiMo blockers after this fix:
+
+- Speed remains far below the 40+ tok/s target. The 64-word proof still shows
+  about `0.2 tok/s` first turn and about `1.4 tok/s` cached second turn.
+- Full required/auto/tool-result/multiturn tool matrix is not yet cleared.
+- VL/audio/video runtime remains preserved but unwired.
+- UI settings/process parity and installed-app release proof remain open.
 
 Cache/L2 proof:
 
