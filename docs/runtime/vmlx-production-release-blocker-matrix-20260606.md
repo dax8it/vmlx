@@ -210,3 +210,30 @@ Nuance / still open:
 
 - Server log warns `nemotron_h: unresolved eos strings ['<|im_end|>']`; registry/tokenizer EOS mapping needs follow-up before full release clearance.
 - This is source-runtime no-media proof only. Omni audio/video/image bridge, installed app parity, streaming, Responses/Anthropic/Ollama, largest-context cache, restart/L2 restore, and UI settings remain open.
+
+## 2026-06-06 LFM2.5 MXFP8 focused source smoke
+
+Artifact:
+
+`build/current-all-local-model-smoke-lfm25-mxfp8-tools-nomedia-20260606/JANGQ_LFM2.5-8B-A1B-MXFP8/result.json`
+
+Result:
+
+- Overall row: `pass`.
+- Model type: `lfm2_moe`.
+- Cache family: `hybrid_ssm`.
+- Native cache: `lfm2` / `hybrid_ssm_v1` / `hybrid_ssm_typed`.
+- Components: `attention_kv`, `ssm_companion_state`, `async_rederive`.
+- Generic TurboQuant KV correctly disabled with reason `hybrid_ssm_state`.
+- Attention KV storage quantization active: q4, group size 64, storage-boundary only.
+- Prefix/paged/block-disk L2 active.
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=64`, `cache_detail=paged+ssm`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `tool_required`: HTTP 200, OpenAI `tool_calls[0].function.name=record_fact`, arguments `{"value":"blue-cat"}`.
+- Logs show hybrid paged hit plus SSM clean companion rederive and next-fetch-ready storage.
+
+Nuance / still open:
+
+- Same as MXFP4: visible output is exact, but short exact rows report high completion-token counts (`156`, `229`, `128`). Follow-up needed for parser/stop-token/accounting before full LFM clearance.
+- This is source-runtime no-media proof only. Installed-app parity, streaming, Responses/Anthropic/Ollama, largest-context cache, restart/L2 restore, and UI settings remain open.
