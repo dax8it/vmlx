@@ -5001,3 +5001,14 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Cache/runtime evidence: native MTP `READY D3`; q4 KV quant round-trip passed; 16 attention layers use `TurboQuantKVCache`; 48 SSM companion layers remain native; first turn wrote 114 block L2 blocks; cache totals included `l2_block_tokens_on_disk=7235` and `l2_ssm_tokens_on_disk=14467`; second turn VLM hybrid cache HIT `(KV+SSM)`, re-compressed 16 KV layers to TurboQuant, and clean SSM re-derive stored companion state.
 - Scheduler evidence: `last_cache_execution.cached_tokens=7235`, `dequantized=true`, `dequantization_ok=true`, `reconstructed=true`, `reconstruction_ok=true`.
 - Classification: Qwen27 JANG_4M-MTP is source-green for a 7,236-token long-prefix cache reuse near the explicit 8k cap. Still release-partial for UI max-context/settings behavior, contexts above 8k if required, installed-app parity, media, API parity, cancellation/timeout cleanup, packaging, signing, notarization, and public download updates.
+
+## 2026-06-07 local - Max output/context UI/API contract after Qwen long-context boundary
+
+- Scope stayed in active Python engine/panel worktree; no package/sign/notarize/tag/upload/release action.
+- Ran:
+  `.venv/bin/python -B -s tests/cross_matrix/run_max_output_context_contract.py --out build/current-max-output-context-contract-after-qwen27-long-context-20260607.json`.
+- Artifact:
+  `build/current-max-output-context-contract-after-qwen27-long-context-20260607.json`, `status=pass`, `failed=[]`, `missing_markers=[]`.
+- Coverage counts: engine/API `26 passed`; panel/settings/request-builder `54 passed`, `334 skipped` by vitest filter.
+- Contract coverage includes: startup `--max-tokens` is only omitted-request output default; explicit Chat/Responses/Completions/Anthropic/Ollama caps can go below/above startup default without mutating prompt context; prompt/context aliases clamp context without rewriting output caps; panel separates Max Output Tokens from Max Context Tokens; explicit max context emits max prompt/context CLI flag; per-chat `maxTokens` is request-scoped; stale legacy `32768` session output caps are migrated; `maxThinkingTokens` is template thinking budget only.
+- Classification: source and panel unit wiring for max-output/max-context boundary is green after Qwen long-context proof. Still release-partial until live installed-app UI/session proves actual selected max context/max output launches expected args and matches `/health`, request, and cache telemetry.
