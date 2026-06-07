@@ -173,6 +173,40 @@ Updated classification:
 - Valid paths remain either a corrected MiMo artifact that naturally emits the XML tool grammar, or a real constrained/guided XML tool decoder proven end-to-end without fabricating arguments.
 - MiMo speed remains red until an optimized routed-expert decode path is implemented/proven; current generic path is around 1-2 tok/s on this 106GB bundle.
 
+## 2026-06-06 MiMo remote runtime delta and compiled-router fallback
+
+Remote checked:
+
+`erics-m5-max2.local:/Users/eric/jang`
+
+Findings:
+
+- Local bundled `jang_tools.mimo_v2.mlx_model.py` SHA-256: `7b6a0a524b486907f5e2fd2c5a122c1dc58726be1d8d6c2c1304a9aafda57f7d`.
+- Remote `~/jang/jang-tools/jang_tools/mimo_v2/mlx_model.py` SHA-256: `a33ec86fc409e83feccf049c74d4c19be813ec6f5d130a6a20bf19d713d9372d`.
+- Remote runtime includes a compiled single-token MiMo router and JANGTQ weighted decode hooks missing from the local bundled package.
+- Remote quant contract says the coherent canonical affine JANG_2L path measured about `1.974-2.640 generation tok/s` and explicitly is not a `30 tok/s` path on the local M5 Max.
+- The faster `5.626 generation tok/s` fit candidate failed arithmetic and was rejected.
+
+vMLX source change:
+
+- vMLX MiMo registration now installs a fallback compiled decode router when bundled `jang_tools` is stale.
+- The patch is a no-op when newer `jang_tools` already exposes `run_compiled_mimo_decode_router`.
+- This preserves vMLX `inputs_embeds` compatibility and does not synthesize tool calls.
+
+Live proof:
+
+`build/current-mimo-v25-compiled-router-live-probe-20260606`
+
+- Server log confirms `Installed vMLX fallback compiled MiMo-V2 decode router`.
+- Direct XML continuation still generated `blue` plus punctuation/newline garbage instead of `blue-cat` and closing XML.
+- First short request speed was 16 completion tokens in 30.67s, about `0.5 tok/s`; this does not clear speed.
+
+Matrix impact:
+
+- `MIMO-TOOL-001` remains red.
+- `MIMO-SPEED-001` remains red.
+- Runtime stale-package integration is partially fixed, but MiMo remains blocked for release.
+
 ## 2026-06-06 LFM2.5 MXFP4 focused source smoke
 
 Artifact:

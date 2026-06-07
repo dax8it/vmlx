@@ -264,3 +264,49 @@ Conclusion:
 - Remaining likely causes are model/artifact/tool-template training incompatibility or missing optimized MiMo/JANG_2L decode support for this bundle.
 - A runtime-side fake tool-call synthesis would be incorrect and must not be used as a release fix.
 - A legitimate future runtime fix would need constrained/guided XML tool decoding or a proven better MiMo artifact that naturally emits valid XML tools.
+
+## Remote `~/jang` runtime comparison
+
+Remote checked:
+
+`erics-m5-max2.local:/Users/eric/jang`
+
+Findings:
+
+- Remote implementation doc: `research/MIMO-V2.5-IMPLEMENTATION.md`.
+- Remote quant contract: `docs/runtime/2026-05-27-mimo-v2-jang-2l-quant-contract.md`.
+- Remote runtime source: `jang-tools/jang_tools/mimo_v2/mlx_model.py`.
+- Local bundled runtime SHA-256: `7b6a0a524b486907f5e2fd2c5a122c1dc58726be1d8d6c2c1304a9aafda57f7d`.
+- Remote runtime SHA-256: `a33ec86fc409e83feccf049c74d4c19be813ec6f5d130a6a20bf19d713d9372d`.
+
+Remote docs confirm:
+
+- The promoted coherent canonical MiMo JANG_2L path was measured at about `1.974-2.640 generation tok/s` on the local M5 Max.
+- The docs explicitly say the current affine MLX path is coherent but not a `30 tok/s` path on this local M5 Max.
+- A faster candidate reached `5.626 generation tok/s` on cached France but failed arithmetic with output `45.` for `2 + 2`, so it was rejected.
+- Current 40+ tok/s expectations therefore require a different optimized artifact/runtime class, not just a serving flag on this 106GB affine JANG_2L bundle.
+
+Runtime integration delta:
+
+- Local bundled `jang_tools` lacked the remote MiMo compiled single-token router.
+- vMLX now installs a narrow fallback compiled router during MiMo MLLM registration if the bundled `jang_tools` runtime is stale.
+- The patch preserves the existing vMLX `inputs_embeds` compatibility wrapper and does not override newer `jang_tools` runtimes that already expose `run_compiled_mimo_decode_router`.
+
+Live fallback-router probe:
+
+Artifact:
+
+`build/current-mimo-v25-compiled-router-live-probe-20260606`
+
+Result:
+
+- Server log confirms `Installed vMLX fallback compiled MiMo-V2 decode router`.
+- Prompt prefilled through `<tool_call>\n<function=record_fact>\n<parameter=value>\n` still generated `blue` plus punctuation/newline garbage.
+- Short first request speed was 16 completion tokens in 30.67s, about `0.5 tok/s`; this does not prove a speed win and includes first compiled-router request overhead.
+
+Conclusion:
+
+- The stale-runtime compiled-router integration miss is real and now patched in vMLX.
+- It is not sufficient to clear `MIMO-TOOL-001`.
+- It is not sufficient to clear `MIMO-SPEED-001`.
+- Do not call MiMo fixed until either a better artifact is proven or a real constrained/guided XML decoder plus optimized routed-expert decode path is implemented and E2E-proven.
