@@ -280,3 +280,67 @@ Nuance / still open:
 - This proves the current text-only guard and text/tool/cache route, not Step3.7 VLM.
 - The bundle still advertises vision/image/video while runtime support is intentionally text-only. Model upload metadata should be clarified or vMLX-specific metadata supplied.
 - Source-runtime no-media proof only. Installed-app parity, streaming, Responses/Anthropic/Ollama, largest-context cache, restart/L2 restore, real Step3.7 VLM, and UI settings remain open.
+
+## 2026-06-06 Gemma4 12B JANG_4M focused source smoke
+
+Initial artifact:
+
+`build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-20260606`
+
+Initial result:
+
+- Both local rows structurally passed:
+- `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`
+- `/Users/eric/models/dealignai/Gemma-4-12B-it-JANG_4M-CRACK`
+- The `tool_required` probe returned a valid OpenAI `tool_calls[0].function.name=record_fact` with arguments `{"value": "blue-cat"}`.
+- The same response also leaked visible content `thought`, which is not acceptable for a tool-only response.
+- The harness did not previously reject this marker leak, so the initial pass was not release-clean proof.
+
+Harness/server fix:
+
+- `tool_required` validation now rejects visible content alongside tool calls as `tool_visible_text_leak`.
+- Chat/Responses finalization now drops only known hidden-channel marker literals (`thought`, `analysis`) when native tool calls are present.
+- The fix does not force a fake tool call, does not rewrite tool arguments, and does not hide arbitrary visible text. It only removes leaked channel marker text after native tool parsing has already produced tool calls.
+- Gemma4/Gemma4 unified harness classification is `swa_rotating`, matching runtime mixed full/sliding-window KV, not hybrid SSM.
+
+Failing artifact after stricter validation:
+
+`build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-tool-leak-check-20260606`
+
+Failure:
+
+- Both local rows failed only `tool_visible_text_leak`.
+- Leaked visible content: `thought`.
+- Native OpenAI tool call was still present and correctly parsed.
+
+Passing artifact after server cleanup and cache-family fix:
+
+`build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json`
+
+Result:
+
+- Overall row: `pass`.
+- Model type: `gemma4_unified`.
+- Harness cache family: `swa_rotating`.
+- Runtime media declares `text`, `vision`, `audio`, and `video` as runtime supported.
+- Capabilities: tools supported, thinking supported, `tool_parser=gemma4`, `reasoning_parser=gemma4`.
+- Native cache: `gemma4` / `mixed_swa_kv_v1` / `mixed_swa_kv`.
+- Components: `full_attention_kv`, `sliding_window_kv`, `rotating_window_metadata`.
+- Generic TurboQuant KV correctly disabled for this native mixed-SWA route.
+- Storage-boundary KV quantization active: q4, group size 64, applies to full and sliding attention KV, preserving rotating-window metadata.
+- Prefix/paged/block-disk L2 active.
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`, completion tokens `6`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=56`, `cache_detail=paged+mixed_swa`, completion tokens `6`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `reasoning_on`: HTTP 200, visible `FINAL=OK`, reasoning chars `402`.
+- `tool_required`: HTTP 200, visible content empty, OpenAI `tool_calls[0].function.name=record_fact`, arguments `{"value": "blue-cat"}`.
+- Cache after run: 5 block-L2 files, 227 block tokens on disk, cache hit tokens `56`.
+- Short smoke generation stats: `generation_tps=50.28720244969087`.
+
+Nuance / still open:
+
+- This proves the source-runtime no-media text/cache/reasoning/tool path for JANG_4M only.
+- It does not yet prove MXFP4 or MXFP8 Gemma4 rows.
+- It does not yet prove real image/audio/video quality, VLM image prefill guard behavior, media cache salting under live media requests, or video/audio processing.
+- It does not yet prove installed-app parity, MLXStudio UI settings, max-output-token settings, streaming, Responses/Anthropic/Ollama parity, largest-context cache, restart/L2 restore, or notarized app behavior.
+- Runtime reports media as supported, but that remains release-red until real VL/audio/video E2E probes pass with visible semantic proof.
