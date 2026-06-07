@@ -379,6 +379,65 @@ Updated classification:
   later proves the local artifact has different cache behavior than source.
 - MiMo remains release-red.
 
+## 2026-06-07 keep=0 rotating-cache fix and required-tool pass
+
+Root cause artifact:
+
+`build/current-mimo-v25-rotating-cache-keep-ab-20260607.json`
+
+Finding:
+
+- MiMo's stale text runtime created SWA caches with
+  `RotatingKVCache(max_size=sliding_window, keep=4)`.
+- `keep=4` made cached decode after `blue` rank newline/punctuation first and
+  put `-cat` around logprob `-10.84`.
+- `keep=0` made cached decode after `blue` rank `-cat` first with logprob about
+  `-0.0004`, matching full-forward behavior.
+- `keep=8` was also wrong, proving this is specifically the preserved-prefix
+  SWA cache behavior, not generic cache use.
+
+Source fix:
+
+- `vmlx_engine/models/mllm.py` now patches stale MiMo text runtimes at
+  registration time so `Model.make_cache()` constructs SWA
+  `RotatingKVCache(..., keep=0)`.
+- This is a cache-layout fix only. It does not synthesize tool calls, alter
+  parser output, or force argument values.
+
+Focused source proof:
+
+- `py_compile` passed for `vmlx_engine/models/mllm.py` and
+  `tests/test_mimo_v2_rotating_cache_patch.py`.
+- Focused test passed: `tests/test_mimo_v2_rotating_cache_patch.py`.
+
+Direct cache/logit proof after fix:
+
+`build/current-mimo-v25-cache-vs-full-after-keep0-patch-20260607.json`
+
+- First SWA cache rows report `keep=0`.
+- Cached decode after `blue` ranks `-cat` first.
+- Cached decode after `blue-cat` ranks `</` first.
+
+Live required-tool proof after fix:
+
+`build/current-mimo-v25-required-tool-live-after-keep0-patch-20260607`
+
+- `/v1/chat/completions` returned HTTP 200.
+- `finish_reason="tool_calls"`.
+- Returned OpenAI tool call:
+  `record_fact({"value":"blue-cat"})`.
+- Server log confirms the keep=0 patch installed:
+  `Installed vMLX MiMo-V2 keep=0 rotating-cache patch`.
+- Speed remains red: 22 completion tokens in 35.02s, about `0.6 tok/s`.
+
+Updated classification:
+
+- `MIMO-CACHE-DECODE-001` is fixed for the required-tool continuation.
+- `MIMO-TOOL-001` has a narrow required-tool pass for this `record_fact` row.
+- MiMo is still not release-green: speed, long-prompt quality, tool-result
+  continuation, full cache/L2 matrix, UI parity, and VL/audio/video remain
+  open.
+
 ## 2026-06-07 ChatML tool-fallback framing fix and live result
 
 Source change:

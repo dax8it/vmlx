@@ -45,7 +45,7 @@ No source-only, load-only, health-only, or one-prompt text smoke may clear a bro
 
 | Family / artifact lane | Current status | Proven current positives | Current blockers | Next proof/fix |
 |---|---:|---|---|---|
-| MiMo V2.5 JANG_2L | Red | Current Python path returns text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache; current source preserves tool metadata into MLLM decode and can force the required XML structural prefix | Required XML tool call still returns HTTP 400 because after `<tool_call>\n<function=record_fact>\n<parameter=value>` the model emits punctuation/fullwidth-comma garbage instead of the argument value and closing XML; exact plain XML copying also fails; speed remains about 0.3-1.4 tok/s in latest narrow probes; long/system prompt quality not cleared; VL/audio/video unwired; no local `jang_config.json` in current bundle | Source-vs-quant first divergence or replacement artifact proof; then real guided XML decode or model/template/artifact fix that preserves model-provided arguments; then MiMo-specific speed/cache/kernel work; then full cache+tool+media matrix |
+| MiMo V2.5 JANG_2L | Red | Current Python path returns text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache; current source preserves tool metadata into MLLM decode; keep=0 SWA cache patch fixes required-tool cache decode; narrow live required-tool row now returns `record_fact({"value":"blue-cat"})` | Speed remains about 0.6 tok/s on the fixed tool row and is far below target; long/system prompt quality not fully cleared; tool-result continuation/full multi-turn tool matrix not cleared; VL/audio/video unwired; full cache/L2/UI matrix incomplete; no local `jang_config.json` in current bundle | Run full MiMo tool-result/cache/L2/long-prompt smoke with keep=0; then fix speed/kernel path; then implement/prove media bridge or keep capabilities text-only |
 | Qwen 3.6 35B MXFP8 MTP | Partial | Bundled-engine smoke passes text/cache, multiturn, reasoning, required tool, image, video, post-media text recovery; native MTP active D3; paged+SSM hit; block + SSM L2 evidence; deterministic long Responses row activates MTP D3 and writes block/SSM L2; no `gdn_sink` TypeError; saved deterministic required-tool request now passes with configured D3 available, request-local D1 cap logged, and real `function_call` returned; full deterministic long Responses/tool/cache gate now passes strict tool-call, tool-evidence, cache-hit, no-loop, and no-raw-markup criteria | Anthropic/Ollama, streaming parity, real Electron UI settings, largest-context cache, restart/L2 restore, cancellation/recovery, and 27B parity incomplete | Run missing API/UI/restart/largest-context rows and 27B parity |
 | Qwen 3.6 27B MXFP4/MXFP8/JANG_4M MTP | Partial | MXFP4-MTP live slice passes text/cache, multiturn, reasoning, required tool, image, video, post-media recovery; Responses text/tool, Anthropic, Ollama, and Chat streaming pass; restart/L2 restore hits paged+SSM+disk; deterministic Responses cancellation/recovery passes with native MTP active D2; paged+SSM and block+SSM L2 evidence; JANG_4M installed-app MTP A/B reaches about 50.65 tok/s and 1.70x over AR | MXFP8 deterministic policy/UI parity, largest-context cache, TP4 route rank/speed evidence remain open | Run UI/largest-context rows; verify MXFP8 deterministic policy in UI/session |
 | Nemo / Nemotron Omni | Red | Some source rows exist in older matrix | Omni audio/video processor bridge, tool dialect, cache/media salt, UI proof incomplete | Build live Omni text/audio/video/tool/cache smoke |
@@ -302,15 +302,25 @@ Live proof:
 - `build/current-mimo-v25-required-tool-cache-vs-full-logits-after-attn-cache-patch-20260607.json`
   records that a diagnostic attention cache patch did not fix the divergence;
   that patch was removed and is not a claimed fix.
+- `build/current-mimo-v25-rotating-cache-keep-ab-20260607.json` proves
+  `RotatingKVCache(keep=4)` is the source of the bad cached continuation and
+  `keep=0` restores `blue -> -cat` parity.
+- `build/current-mimo-v25-cache-vs-full-after-keep0-patch-20260607.json`
+  proves the vMLX registration patch creates `keep=0` SWA caches and cached
+  decode now ranks `-cat` after `blue` and `</` after `blue-cat`.
+- `build/current-mimo-v25-required-tool-live-after-keep0-patch-20260607`
+  proves the narrow live required-tool row now returns HTTP 200 with
+  `record_fact({"value":"blue-cat"})`.
 
 Matrix impact:
 
 - `MIMO-TOOL-METADATA-001` is improved at source-test level.
 - `MIMO-TOOL-PROMPT-SCOPE-001` is improved at source-test/render level.
-- `MIMO-TOOL-001` remains red.
+- `MIMO-TOOL-001` has a narrow required-tool pass for `record_fact`; broader
+  tool-result continuation and multi-turn tool matrix remain open.
 - `MIMO-SPEED-001` remains red.
-- `MIMO-CACHE-DECODE-001` is now the active narrowed runtime blocker for the
-  required-tool continuation.
+- `MIMO-CACHE-DECODE-001` is fixed for the required-tool continuation, but
+  larger cache/L2/restart rows remain open.
 - `MIMO-SOURCE-VS-QUANT-001` remains red until source and quant endpoints are
   intentionally running and prompt rows execute.
 - `RELEASE-001` remains red.
