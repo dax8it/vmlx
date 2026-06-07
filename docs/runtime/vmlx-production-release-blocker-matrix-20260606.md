@@ -52,7 +52,7 @@ No source-only, load-only, health-only, or one-prompt text smoke may clear a bro
 | LFM / LFM2.5 | Red | Expanded installed-source no-media gate confirms all three local LFM2.5 variants still pass required tool and tool-result continuation; MXFP4 and MXFP8 pass strict JSON parsing; hybrid SSM/paged cache telemetry remains present | Expanded structured-output gate is red: JANG_2L wraps JSON in markdown fences and emits `def add(a, b:`; MXFP4/MXFP8 emit `print(add(2, 3)` missing the final `)`; all exact-code failures ended with `finish_reason=stop`, so this is not a max-token false positive; installed-app/UI/API/media/largest-context rows remain incomplete | Keep LFM release-red; add JSON repair diagnostics where appropriate, but do not claim exact-code/codegen green until exact syntax/whitespace passes without runtime fabrication |
 | MiniMax / MiniMax-M2.7 / JANGTQ_K | Red | Public/local route drift narrowed; public DMG cancel route present | Reporter parity/root cause still open; JANGTQ/runtime/speed/tool/cancel recovery not fully cleared | Finish reporter provenance and live MiniMax model proof |
 | DSV4 Flash / DeepSeek-V4-Flash-JANGTQ-K | Red | Native composite cache smoke passed; required tool row passed in focused smoke | Long-output/code/file-generation exactness red; thinking-closed rail corrupts identifiers; memory-gated UI rows open | Fix/diagnose exact-code rail and rerun long/code/file-generation proof |
-| Step 3.7 Flash | Partial | Text-only guard prevents unsupported advertised-VLM crash; source/staged proof of media rejection and text recovery exists | Real VLM not implemented/proven; tool loops/raw XML and multiturn synthesis still open; installed/public parity depends on release | Live installed-app text/tool/multiturn matrix; keep VLM fail-closed until real support lands |
+| Step 3.7 Flash | Partial | Text-only guard prevents unsupported advertised-VLM crash; expanded installed-source no-media gate passes text cache, paged cache hit, multiturn recall, reasoning-on, required tool, tool-result continuation, strict JSON, and exact code/whitespace; native cache reports `step3p7` / `mixed_swa_kv_v1` / `step3p7_full_sliding_kv`; block L2 writes present | Real VLM not implemented/proven; metadata still advertises MTP next-token layers while bundle index has no `mtp.*` tensors; adversarial loop-stop, streaming, Responses/Anthropic/Ollama, installed-app UI, media rejection/recovery, restart/L2 restore, and public parity remain incomplete | Keep Step text lane partial-green but release-red; keep VLM fail-closed until real support lands; run missing API/UI/restart/L2/loop-stop rows |
 | Gemma 4 12B MXFP4/MXFP8/JANG_4M | Partial | JANG_4M source/installed speed around 46 tok/s; image small/reject text recovery proof exists | Full VL/audio/video/tools/cache/UI matrix incomplete; speed rows per quant not all cleared | Run per-quant media/tool/cache/UI matrix; verify image prefill guard on installed app |
 | ZAYA/ZAYA-VL | Partial | ZAYA text pass; ZAYA-VL capability truth and some media/tool/cache rows pass | Reasoning/media/UI matrix needs current installed-app proof | Refresh installed-app ZAYA/ZAYA-VL live matrix |
 | Hybrid SSM / nonstandard cache families | Red | Some native cache contracts exist | Async rederive/companion state/L2 restore not exhaustively proven per family | Add architecture-specific cache matrix rows and prove no plain-KV substitution |
@@ -102,6 +102,10 @@ syntax, and MXFP4/MXFP8 fail exact-code syntax. Cross-family JSON/code/XML
 parity, JSON repair integration, Responses/Anthropic/Ollama parity, streaming,
 and installed-app UI proof remain incomplete.
 
+Step 3.7 installed source no-media now also passes the strict JSON and exact
+code/whitespace rows, but that does not clear Step VLM, API parity, UI, restart
+L2, adversarial loop-stop, or release readiness.
+
 ## 2026-06-07 LFM2.5 expanded no-media structured-output gate
 
 Artifact:
@@ -136,6 +140,47 @@ Classification:
 - Exact-code failures are model/output quality blockers unless a real guided
   decoding or syntax-constrained mode is implemented and proven; silently
   repairing chat code output would be a fake fix for release claims.
+
+## 2026-06-07 Step 3.7 expanded no-media structured-output gate
+
+Artifact:
+
+`build/current-all-local-model-smoke-step37-jang2l-json-code-tools-nomedia-20260607/summary.json`
+
+Command scope:
+
+- Models root: `/Users/eric/.mlxstudio/models`
+- Filter: `Step-3.7-Flash-JANG_2L`
+- Media disabled.
+- Tools enabled.
+- Current source `vmlx_engine.cli serve`.
+
+Results:
+
+- Overall status: `pass`, `failed=0`, `row_count=1`.
+- Text cache repeat passed; second repeat reported `cached_tokens=61` with
+  `cache_detail=paged`.
+- Multiturn recall passed with visible `blue cat`.
+- Reasoning-on passed with visible `FINAL=OK`.
+- Required tool passed with real `record_fact({"value":"blue-cat"})` and
+  `finish_reason=tool_calls`.
+- Tool-result continuation passed with visible `STORED blue-cat` and no second
+  tool call.
+- Strict JSON passed with exact raw JSON
+  `{"status":"ok","value":"blue-cat","count":3}`.
+- Exact code/whitespace passed exactly:
+  `def add(a, b):\n    return a + b\nprint(add(2, 3))`.
+- Native cache reported `step3p7` / `mixed_swa_kv_v1` /
+  `step3p7_full_sliding_kv`; block-disk L2 wrote `10` blocks / `472` tokens.
+
+Remaining blockers:
+
+- This is text/no-media only. It does not prove Step3p7 VLM.
+- MTP metadata remains inconsistent: config expects next-token prediction
+  layers, but the bundle index has no `mtp.*` tensors.
+- It does not prove adversarial loop-stop, streaming, Responses / Anthropic /
+  Ollama parity, installed-app UI, media rejection/recovery, restart/L2 restore,
+  public release parity, signing, or notarization.
 
 ### MEDIA-001: VL/audio/video runtime incomplete
 
