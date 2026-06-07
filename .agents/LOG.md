@@ -1,3 +1,74 @@
+# 2026-06-07 - MiMo V2.5 JANG_2L speed root cause narrowed
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no ADLab, no
+  deprecated `/Users/eric/vmlx`, no Swift, no release packaging.
+- Added MiMo affine SwitchGLU fast-path activation counters/logs and unit proof.
+- Focused validation passed:
+  `.venv/bin/python -m py_compile vmlx_engine/models/mllm.py tests/test_engine_audit.py`
+  and
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'mimo_v2_affine_switchglu_fast_path or inference_mode_reaches_mimo or runtime_quantizes_passthrough_decode_hotspots or mllm_mimo_v2_quantizes_python_list_decoder_layers or mllm_mimo_v2_turboquant_skip or mllm_mimo_v2_compiled_router'`
+  -> `7 passed, 531 deselected`.
+- Live source speed gate:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-after-fastpath-counters-20260607.json`
+  -> `status=review`, exact coherency passed, PP `78.41/106.43 tok/s`,
+  bundle decode `1.79 tok/s`, greedy `1.83 tok/s`.
+- Live log proved the runtime path installed and hit the affine SwitchGLU fast
+  path: counters reached `calls=4096`, `compiled_shapes=2`.
+- Decode trace proved Python/model step construction is not the remaining speed
+  bottleneck: `last_step_ms` about `2-3 ms`, while async GPU/Metal completion
+  stayed about `503-597 ms/token`.
+- Current model bundle issue remains real: no local `jang_config.json`, and
+  `lm_head`/`embed_tokens` are bf16 without intended 8-bit affine sidecars.
+  Runtime-quantizing those two modules only moved decode into the same
+  `1.7-1.8 tok/s` range, so re-export alone is not enough evidence for
+  `40 tok/s`.
+- Current classification: MiMo speed remains release-red and primarily
+  runtime/kernel-side unless a corrected bundle disproves it. Likely real fix is
+  fused affine/JANG expert decode or a MiMo JANGTQ/TurboQuant fused path, not
+  top-k, sink disabling, generic TQ-KV, or a fake guard.
+- Updated the MiMo no-heavy current-audit harness to consume the latest
+  decode-speed artifact and refreshed proof pointers in the release manifest and
+  objective summary.
+- Deleted stale local HF remote-code cache only:
+  `/Users/eric/.cache/huggingface/modules/transformers_modules/MiMo_hyphen_V2_dot_5_hyphen_JANG_2L`.
+- Refreshed audit:
+  `build/current-mimo-v2-jang2l-current-audit-after-fastpath-speed-proof-stale-clean-20260607.json`
+  -> `status=open`, `stale_local_state_absent=true`.
+- Remaining MiMo blockers from that audit: long-prompt coherence, tool
+  protocol, decode speed, CB working-set pressure, source-vs-quant, and
+  VL/audio/video wiring.
+- Focused pointer/audit validation passed:
+  `8 passed, 300 deselected`.
+- Refreshed no-heavy release manifest:
+  `build/current-release-regression-manifest-after-mimo-fastpath-speed-proof-20260607.json`.
+  The command exited non-zero as expected because `prepackage_ready=false` and
+  `release_ready=false`.
+- Current manifest blockers still include MiMo runtime quality, MiniMax
+  reporter/root cause, cross-family live multi-turn smoke, real Electron UI
+  cross-family matrix, DSV4 long/code/file quality, packaged integrity, and
+  signing/notarization. Do not package or release.
+- Pushed `d8198029` to `origin/codex/pr-intake-manifest`:
+  `Expose MiMo speed and media blockers`.
+- Release manifest validator now exposes MiMo `decode_speed_target_blocked`,
+  `cb_working_set_pressure_blocked`, `media_unwired`,
+  `current_audit_blockers`, and `latest_decode_speed_evidence` instead of
+  hiding them behind generic root-cause prose.
+- Focused validation:
+  `.venv/bin/python -m py_compile tests/cross_matrix/release_regression_manifest.py tests/test_release_regression_manifest.py`
+  and
+  `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py -k 'mimo_v2_root_cause or runtime_quality_open or release_clearance'`
+  -> `4 passed, 304 deselected`.
+- Ran current DSV4 long/code exactness preflight without launching the model:
+  `build/current-dsv4-route-mode-code-exactness-preflight-after-release-manifest-refresh-20260607.json`
+  -> `status=skipped`, `reason=insufficient_vm_stat_memory`,
+  `available_for_gate_gb=105.09`, `required_free_gb=120.0`,
+  `selected_cases=chat_off_no_punct_rep1,responses_off_no_punct_rep1`.
+- Updated the DSV4 exactness preflight pointer and pushed `b156344c`
+  (`Refresh DSV4 exactness preflight`) to `origin/codex/pr-intake-manifest`.
+- Focused DSV4 manifest validation:
+  `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py -k 'dsv4_exactness or dsv4_proof_artifact_freshness or route_mode_code_exactness'`
+  -> `10 passed, 298 deselected`.
+
 # 2026-05-24 20:57 PDT - API gateway single-model auto-switch audited
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no Swift and no
@@ -4562,7 +4633,7 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Release remains blocked by live packaged media/UI/model rows; no tag, notarization, or public release performed.
 
 ## 2026-06-06 Codex | live smoke proof refresh | Gemma26/MiniMax K pass, MiMo remains red
-- Ran source all-local smoke for Gemma-4-26B-A4B-it-JANG_4M-CRACK and MiniMax-M2.7-JANGTQ_K-CRACK: both passed. Split proof artifacts: `build/current-all-local-model-smoke-gemma26-jang4m-tools-media-continuation-20260606/summary.json` and `build/current-all-local-model-smoke-minimaxk-tools-continuation-20260606/summary.json`.
+- Ran source all-local smoke for Gemma-4-26B-A4B-it-JANG_4M-CRACK and MiniMax-M2.7-JANGTQ_K-CRACK: both passed. Split proof artifacts: `build/current-all-local-model-smoke-gemma26-jang4m-bundled-tools-media-20260607/summary.json` and `build/current-all-local-model-smoke-minimaxk-tools-continuation-20260606/summary.json`.
 - Ran current MiMo all-local smoke: `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-media-rerun-20260606/summary.json` failed with empty/rambling exact-cache output and required-tool 400/no tool call, while cache/L2/TQ telemetry was present.
 - Ran MiMo conservative simple/no-prefix/no-KV-quant diagnostic: `build/current-mimo-conservative-diagnostic-20260606/summary.json`; exact ACK passed, required tools failed both thinking on/off with no tool calls and ~96s latency.
 - Refreshed objective/current-suite/release-manifest proof pointers to current artifacts and updated exact-pointer tests.
@@ -5106,3 +5177,1337 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
   -> `status=fail`, `completed=3`, `failed=3`.
 - Gemma residuals after the runtime-default fix: JANG_4M still inserts one leading space before `print(add(2, 3))`; MXFP4 still echoes the cache prefix instead of exact `ACK`, returns JSON value `" blue-cat"`, and inserts the leading code space; MXFP8 still returns JSON value `" blue-cat"` and inserts the leading code space.
 - Classification: inherited bundle `top_p/top_k` on greedy requests was a runtime bug and is fixed/pushed. The remaining LFM/Gemma exact-output failures reproduce after that fix, so they stay release-red as model/template/decode-quality blockers unless a narrower runtime decoder/template cause is proven.
+
+## 2026-06-07 local - MiMo source runtime cache/OOM fixes and remaining speed blocker
+
+- Scope stayed in active Python engine worktree `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, Swift, ADLab/TB/RDMA, package, signing, notarization, tag, upload, appcast, or public release action.
+- Fixed source MLLM MiMo load path so generic TurboQuant KV is skipped at the MLLM call site for MiMo-V2. Earlier lower-level tokenizer guards did not affect the packaged MLLM load path.
+- Added `_is_mimo_v2_runtime_object_or_name()` in `vmlx_engine/models/mllm.py` and tests proving MiMo loaded-object detection and non-MiMo negative behavior.
+- Fixed MiMo runtime quantization traversal: `jang_tools.mimo_v2` stores decoder layers in a normal Python list, so root-level `nn.quantize()` only saw `lm_head`. Added `_quantize_mimo_v2_runtime_modules()` to walk `model.layers[N]` explicitly and prefix paths as `model.layers.N...`.
+- Added regression proof that list-held MiMo decoder layers become `QuantizedLinear` / `QuantizedSwitchLinear` modules.
+- Fixed tight-memory MiMo text prefill: short prompts stay one-shot for exactness, but tight-memory text prompts longer than the reduced chunk size fall through to the existing chunked text prefill path. This avoids one-shot Metal OOM on 512/1024-token PP rows.
+- Updated decode-speed gate cache-health policy so `mimo_v2_asymmetric_swa` accepts native `mixed_swa_kv` with generic TurboQuant KV disabled.
+- Focused validation passed:
+  `.venv/bin/python -m py_compile vmlx_engine/models/mllm.py vmlx_engine/mllm_batch_generator.py tests/cross_matrix/run_decode_speed_gate.py tests/test_engine_audit.py tests/test_cross_matrix_audit_runner.py`
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'mimo_v2_cached_text_fast_path_uses_absolute_positions or mllm_mimo_v2_quantizes_python_list_decoder_layers or mllm_mimo_v2_turboquant_skip or mllm_mimo_v2_compiled_router'` -> `5 passed`
+  `.venv/bin/python -m pytest -q tests/test_cross_matrix_audit_runner.py -k 'decode_speed_gate'` -> `3 passed`
+- Source live artifact after MLLM TQ skip:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-after-mllm-callsite-tq-skip-20260607.json`.
+  Result still `status=error`, but health proved generic `turboquant_kv_cache.enabled=false`, native cache `mixed_swa_kv_v1`, exact coherency `READY\n17+28=45\nCERULEAN`, and remaining crash was Metal OOM on PP.
+- Source live artifact after manual layer quantization:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-after-manual-layer-quant-20260607.json`.
+  Server log proved `MiMo-V2 load quantized 192 runtime modules`; speed remained about `1.6 tok/s`; PP still OOM before the prefill chunking patch.
+- Source live artifact after tight-memory chunked prefill:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-after-tight-prefill-chunk-20260607.json`.
+  Result moved from crash to `review`; PP completed at `75.79` and `103.49` tok/s; exact coherency survived; decode remained about `1.61 tok/s`.
+- No-continuous-batching A/B artifact:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-no-continuous-after-tight-prefill-20260607.json`.
+  PP improved to `106.35` and `171.98` tok/s, but decode stayed about `1.63 tok/s`, so decode bottleneck is not primarily continuous-batching overhead.
+- Clean source live artifact after cache-policy fix:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-after-cache-policy-fix-20260607.json`.
+  Result `status=review` with only real performance notes: `PP below expected 400.00: 76.39, 104.60` and `bundle decode 1.63 < expected 40.00`.
+- Classification: source runtime now fixes MiMo generic TQ cache flattening and PP Metal OOM for 512/1024-token text PP rows. MiMo remains release-red because decode speed is still about `1.6 tok/s` versus the `40 tok/s` target, PP is below target, VL/audio/video are still not wired, and installed/release app bundles remain stale until rebuilt and tested.
+
+## 2026-06-07 local - MiniMax current-source cancel proof tracked in manifest
+
+- Scope stayed in active Python engine worktree `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated wrapper, Swift, ADLab/TB/RDMA, package, signing, notarization, tag, upload, appcast, or public release action.
+- Committed and pushed `ec8b47f1` (`Track MiniMax local cancel proof in manifest`) to `origin/codex/pr-intake-manifest`.
+- `release_regression_manifest.py` now preserves and validates `local_responses_cancel_probe` inside `.current_proof_sweep.issue179_minimax_k_root_cause_audit`.
+- Required proof fields: artifact exists, status pass, response id seen, cancel HTTP 200, cancel route present, and no bad text captured.
+- Focused validation passed: `.venv/bin/python -m py_compile tests/cross_matrix/release_regression_manifest.py tests/test_release_regression_manifest.py` plus pytest issue179/MiniMax manifest slice -> `50 passed, 288 deselected`.
+- Regenerated local no-heavy manifest at `build/current-release-regression-manifest-after-minimax-cancel-field-20260607.json`; it exposes local cancel proof as green but still reports `prepackage_ready=false` and `release_ready=false`.
+- Classification: current-source MiniMax cancel route is not the active blocker. Reporter parity/provenance/root-cause evidence remains open, so no release/sign/notarize/public-download action is allowed.
+
+## 2026-06-07 local - MiMo async decode bottleneck exposed in proof sweep
+
+- Scope stayed in active Python engine worktree `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated wrapper, Swift, ADLab/TB/RDMA, package, signing, notarization, tag, upload, appcast, or public release action.
+- Updated local-only `AGENTS.md` with a front-loaded release control board covering MiMo, Qwen 27/35 MTP, Nemotron/Nemo Omni, LFM, MiniMax, DSV4, Step 3.7, Gemma4, ZAYA/hybrid/SSM, APIs, tools, cache, media, UI, and release rows. This file remains local-only and uncommitted.
+- Committed and pushed `8212ba7c` (`Expose MiMo async decode bottleneck`) to `origin/codex/pr-intake-manifest`.
+- `run_mimo_v2_jang2l_current_audit.py` now parses the decode-speed log for MiMo SwitchGLU fast-path counters and `VMLINUX_DECODE_TRACE_NEXT` async/total/step/materialize timings.
+- Current proof artifact: `build/current-mimo-v2-jang2l-current-audit-after-fastpath-async-bottleneck-20260607.json`.
+- Current evidence: bundle decode `1.7918 tok/s`, greedy decode `1.8323 tok/s`, fast path active, max fast-path calls `4096`, max compiled shapes `2`, max async wait `597.49 ms`, classification `switchglu_fastpath_active_but_metal_async_wait_dominates`.
+- Release manifest proof sweep now exposes `switchglu_fastpath_active_but_slow=true`, `async_decode_wait_dominates=true`, and the bottleneck classification.
+- Focused validation passed: py_compile plus `tests/test_release_regression_manifest.py -k 'mimo_v2_root_cause or mimo_v2_current_audit_extracts_fastpath_async_bottleneck or proof_sweep_includes_mimo'` -> `5 passed, 306 deselected`.
+- Full `tests/test_release_regression_manifest.py` remains non-green with 4 stale pointer-contract failures unrelated to this MiMo patch: DSV4 proof freshness missing the 2026-06-07 preflight in older manifest/suite/objective artifacts, ZAYA-VL artifact expectation drift, current regression suite pointer expectation drift, and run_release_regression_manifest DEFAULT_OUT expectation drift.
+- Classification: MiMo speed is still release-red. Active fast path is not enough; Metal async wait dominates. Next runtime work should profile/fuse the actual affine/JANG routed-expert or attention/decode kernel path, while bundle-side requant should only be used to eliminate metadata/sidecar uncertainty.
+
+2026-06-07 MiMo JANGTQ2 source-runtime update:
+- Copied promoted /Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2 from erics-m5-max2.local and deleted known bad local MiMo JANG_2L/stale cache paths.
+- JANG tools main d67d753 accepts prestacked MiMo JANGTQ bundles in verify_bundle with synthetic metadata-truth test.
+- vMLX codex/pr-intake-manifest c2a0b3c8 points MiMo gates at MiMo-V2.5-JANGTQ_2.
+- vMLX codex/pr-intake-manifest edb0581c binds prestacked MiMo JANGTQ tensors in the MLLM runtime and adds a MiMo TurboQuant SwitchGLU decode fast path.
+- Source live proof: build/current-decode-speed-live-mimo-v25-jangtq2-source-after-tq-decode-fastpath-20260607.json status=review, coherent READY/math/color and count outputs, bundle decode=38.94 tok/s, greedy=39.93 tok/s, server log shows MiMo-V2 TurboQuant SwitchGLU decode fast path active calls=4096.
+- Remaining blockers: packaged vMLX.app bundled Python still old and fails MiMo JANGTQ2 startup; PP remains ~145 tok/s below current 400 gate; broader UI/cache/tool/VL/audio/video release matrix not rerun. Do not tag/sign/notarize/release from this source proof alone.
+
+2026-06-07 MiMo JANGTQ2 packaged-runtime refresh:
+- Locally refreshed staged `panel/release/mac-arm64/vMLX.app` bundled `site-packages/vmlx_engine/models/mllm.py` from source commit edb0581c and removed bundled vmlx_engine pyc/cache files. This is a local staged-app refresh, not a signed/notarized release rebuild.
+- Packaged gate artifact: `build/current-decode-speed-live-mimo-v25-jangtq2-packaged-after-bundled-refresh-20260607.json`.
+- Result: `status=review`, but startup blocker is fixed and decode speed clears floor: bundle `40.1556 tok/s`, greedy `40.6678 tok/s`.
+- Server log proves `MiMo-V2 TurboQuant SwitchGLU decode fast path active: calls=4096 compiled_shapes=1` in bundled Python.
+- Health/cache proof: MiMo native `mixed_swa_kv_v1`, q4 storage quantization, prefix=true, paged=true, block_disk_l2=true, generic TurboQuant KV disabled.
+- Remaining MiMo blockers: PP `127.76/124.87 tok/s` below 400 target; pp row generated "The user wants me..." instead of exact READY under long prompt; count-row semantic acceptance still needs stronger full-output check; full tool-result/auto-tool/multiturn/adversarial loop-stop/cache-hit-restart/media/UI matrix still open.
+- Release boundary: staged app was modified locally and is not a notarized release artifact. No tag/sign/notarize/download update is allowed from this proof alone.
+
+## 2026-06-07 MiMo JANGTQ2 audit pointer refreshed
+
+- Committed and pushed `ea307a21 Refresh MiMo JANGTQ2 audit proof` on `codex/pr-intake-manifest`.
+- Current promoted local MiMo bundle remains `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`.
+- Generated local size/path manifest `build/current-mimo-jangtq2-local-manifest-20260607.tsv` for the promoted bundle.
+- Regenerated `build/current-mimo-v2-jang2l-current-audit-after-jangtq2-packaged-speed-proof-20260607.json`.
+- MiMo audit status remains `open`, but `manifest_integrity=true` and `decode_speed_target=true` after packaged JANGTQ2 proof.
+- Remaining MiMo blockers: long-prompt coherence, tool protocol, CB/system-prompt working-set pressure, source-vs-quant first divergence, and unwired VL/audio/video.
+- Reran `build/current-release-regression-manifest-after-mimo-jangtq2-audit-refresh-20260607.json`: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Do not sign/notarize/tag/release from this state.
+
+## 2026-06-07 MiMo JANGTQ2 source/quant and objective pointer refresh
+
+- Committed and pushed `fabb60b0 Refresh MiMo JANGTQ2 source quant proof pointers` on `codex/pr-intake-manifest`.
+- Committed and pushed `ec5d0715 Refresh MiMo JANGTQ2 objective digest` on `codex/pr-intake-manifest`.
+- Current source-vs-quant preflight artifact: `build/current-mimo-v2-jangtq2-source-vs-quant-first-divergence-preflight-20260607.json`.
+- Current source-vs-quant preflight status: `missing_prerequisites`; both model paths exist, source endpoint `erics-m5-max2.local:8126` and quant endpoint `127.0.0.1:8897` are down.
+- Current MiMo audit artifact: `build/current-mimo-v2-jang2l-current-audit-after-jangtq2-source-quant-preflight-refresh-20260607.json`.
+- Current objective digest artifact: `build/current-objective-proof-after-mimo-jangtq2-source-quant-preflight-refresh-20260607.json`.
+- Objective digest now reports MiMo `decode_speed_blocked=false` from the current JANGTQ2 audit, while keeping MiMo open for long-prompt/tool-context quality, tool protocol, CB/system-prompt working-set pressure, source-vs-quant classification, and VL/audio/video wiring.
+- Latest release manifests remain red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- No package/sign/notarize/tag/release/download update is allowed from this state.
+
+## 2026-06-07 no-heavy contract refresh after MLLM guard
+
+- Fixed native-MTP unit construction crash in `vmlx_engine/mllm_batch_generator.py`: finish-time tight-memory allocator drain now uses `getattr(self, "_tight_memory_prefill_drain", False)` so `__new__`-constructed MLLM generator tests and equivalent partial construction paths do not raise `AttributeError`.
+- Refreshed no-heavy contracts with current source hashes:
+  - `build/current-tool-call-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-max-output-context-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-cache-architecture-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-model-family-detection-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-parser-registry-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-model-artifact-format-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-generation-defaults-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-native-mtp-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-vl-media-cache-contract-after-current-mimo-proof-20260607.json` pass
+  - `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json` pass
+- Current objective digest: `build/current-objective-proof-after-dsv4-preflight-refresh-20260607.json`.
+- Objective no-heavy rows now pass; remaining objective open rows are live/model/release rows: cross-family live multi-turn smoke, MiMo behavior/media/source-vs-quant, MiniMax #179 reporter/root cause, real Electron UI cross-family matrix, and DSV4 long-output/code/file quality.
+- Current release manifest: `build/current-release-regression-manifest-after-issue179-public-dmg-provenance-20260607.json`; still `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Committed/pushed `e73ab9ae Refresh no-heavy release contracts after MLLM guard` to `codex/pr-intake-manifest`.
+- No package/sign/notarize/tag/release/download update is allowed from this state.
+
+## 2026-06-07 - Codex current-suite pointer refresh and release blocker boundary
+
+- Pushed `b83381bc` to `origin/codex/pr-intake-manifest`: refreshed current suite/release proof pointers after the MLLM tight-memory guard lane.
+- Pushed `818899dc` to `origin/codex/pr-intake-manifest`: aligned the ZAYA-VL manifest proof assertion with the current MXFP4 thinking-capability artifact.
+- Validation:
+  - stale pointer scan clean for the targeted old artifact names.
+  - `py_compile` passed for current suite/release/objective/public issue audit files.
+  - focused proof-pointer pytest passed: `179 passed, 406 deselected`.
+  - wrapper rerun wrote `build/current-regression-suite-after-dsv4-preflight-refresh-20260607.json` with `focused_regression_pytest` fixed.
+- Current release boundary remains red, not packaged/signed/notarized:
+  - `packaged_integrity_contracts` fails on bundled Python verifier/release-gate skip-app.
+  - `release_regression_manifest` reports `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+  - `release_gate_skip_app` fails at bundled Python import gate.
+  - open objective rows: cross-family live multi-turn smoke, MiMo V2.5 runtime/tool/long-prompt quality, MiniMax-M2.7 reporter root cause, real Electron UI cross-family live model matrix, DSV4 long-output/code/file-generation quality.
+
+## 2026-06-07 - Codex bundled Python refresh, package blocker surfacing, MiMo JANGTQ2 gate boundary
+
+- Refreshed `panel/bundled-python` from `/Users/eric/mlx/vllm-mlx-finite-launch-guard` with `./panel/scripts/bundle-python.sh`.
+- Verified bundled runtime: `cd panel && npm run verify-bundled` passed, including bundled engine/JANG hash parity, MiMo V2 registration, Step3p7 VLM runtime, Gemma4 unified VLM/audio register, TurboQuant kernels, and Gemma4 vision coercion.
+- Pushed `a4170d4b` to `origin/codex/pr-intake-manifest`: package integrity now surfaces `packaged_app_developer_id_signing_blocked` in top-level `failed` instead of reporting `status=fail` with `failed=[]`.
+- Focused validation: `tests/test_packaged_integrity_contract.py` selected signing/package tests passed (`10 passed, 39 deselected`); refreshed package artifact reports `failed=["packaged_app_developer_id_signing_blocked"]`.
+- Current suite refreshed at `build/current-regression-suite-after-dsv4-preflight-refresh-20260607.json`: `status=open`; failed steps are now only `packaged_integrity_contracts` and `release_regression_manifest`; `release_gate_skip_app` no longer fails.
+- Remaining release blockers: staged app is ad-hoc/not hardened-runtime signed; prepackage/release manifest still false because cross-family live matrix, MiMo JANGTQ2 quality, MiniMax #179 root cause, real UI matrix, and DSV4 long-output/code/file-generation rows remain open.
+- MiMo JANGTQ2 audit artifact `build/current-mimo-v2-jang2l-current-audit-after-jangtq2-packaged-speed-proof-20260607.json` proves manifest integrity and decode speed target but remains open for long-prompt coherence, tool protocol, CB/system-prompt working-set pressure, source-vs-quant first divergence, and media wiring. Do not release-clear MiMo from speed-only proof.
+
+## 2026-06-07 - Codex stopped MiMo source-vs-quant due RAM boundary
+
+Eric explicitly said not to do source-vs-quant comparison because there is not enough RAM. I stopped the local quant server attempt on `127.0.0.1:8897` and the Max2 source server attempt on `erics-m5-max2.local:8126`; no listener remains on either port.
+
+MiMo `source_vs_quant_first_divergence=false` remains an honest open release blocker. Do not brute-force this lane again unless Eric reauthorizes it with enough RAM/headroom.
+
+## 2026-06-07 - Codex signed staged Sequoia app and refreshed parser pointer
+
+- Eric explicitly authorized signing. Signed `panel/release/sequoia-app/mac-arm64/vMLX.app` with `Developer ID Application: ShieldStack LLC (55KGF2S5AY)` and hardened runtime entitlements.
+- Signing result: 500 bundled native files signed; `codesign --verify --deep --strict` passed; app reports `Authority=Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, `TeamIdentifier=55KGF2S5AY`, runtime flag present.
+- Refreshed packaged-integrity artifact: signing preflight now passes (`developer_id_signed=true`, `signature_is_adhoc=false`, `hardened_runtime_enabled=true`, `codesign_verify_rc=0`).
+- Packaged-integrity is still not release-green because the staged app engine/source hash parity checks are false and dry release-gate objective digest pointer is false. This means the signed app is not a final current-source release artifact.
+- Pushed `f7062c3d` to `origin/codex/pr-intake-manifest`: refreshed parser-registry proof pointer.
+- Parser/tool/reasoning/max-output/VL focused slice passed: `15 passed, 29 deselected`.
+
+## 2026-06-07 - release gate/cache API continuation
+
+- Stayed in active Python/app worktree `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; did not touch deprecated `/Users/eric/vmlx`, Swift, ADLab/TB/RDMA, or source-vs-quant.
+- Fixed stale release-gate objective digest pointer in `panel/scripts/release-gate-python-app.py` and matching unit test.
+- Pushed commit `6f36d3c1` to `origin/codex/pr-intake-manifest`.
+- Focused validation: `124 passed, 44 deselected` for packaged/current-suite/release-gate metadata tests.
+- No-heavy cache/API/Responses validation: `run_noheavy_api_cache_contract.py` status `pass`; `run_api_surface_contract.py` status `pass`.
+- Packaged integrity now passes standalone and inside aggregate suite: `build/current-packaged-integrity-contract-after-staged-sequoia-rebuild-current-source-20260607.json` status `pass`, failed `[]`.
+- Aggregate suite now has only `release_regression_manifest` failed: `build/current-regression-suite-after-dsv4-preflight-refresh-20260607.json` status `open`, failed_steps `['release_regression_manifest']`.
+- Release remains blocked: `prepackage_ready=false`, `release_ready=false`; open rows are cross-family live multi-turn smoke, MiMo V2.5 runtime/tool/long-prompt quality, MiniMax reporter/root-cause, real Electron UI cross-family live matrix, and DSV4 long-output/code/file generation.
+- Do not notarize, tag, publish, or update downloads from this state.
+
+## 2026-06-07 - objective proof evidence pointer refresh
+
+- Stayed in active Python/app worktree only.
+- Fixed objective proof evidence lists so open release rows cite current existing 202606 artifacts instead of missing stale 202605 files.
+- Did not change per-family validation payloads or mark any open row green; cross-family, MiMo, MiniMax, real UI, and DSV4 release rows remain open.
+- Validation:
+  - `py_compile` passed for `summarize_objective_proof.py` and `release_regression_manifest.py`.
+  - Focused objective/manifest slice: `26 passed, 392 deselected`.
+  - Refreshed objective digest has `missing_evidence_requirements=[]` and `open_requirement_detail_failures=[]`.
+  - Aggregate suite is still `status=open`, now with failed_steps `['release_regression_manifest']` only.
+- Pushed commit `1e8ce83b` to `origin/codex/pr-intake-manifest`.
+- Release remains blocked; no notarization/tag/public release allowed.
+
+## 2026-06-07 - issue175-177 audit accounting refresh
+
+- Ran dedicated #175-#177 audit scripts.
+- Installed runtime audit now exists and passes at `build/current-issue175-177-installed-runtime-audit-20260602-v1554-installed-tahoe.json`.
+- Live runtime audit now exists but fails at `build/current-issue175-177-live-runtime-audit-20260601-local-refresh.json`; source live-stress artifacts are absent, so checks for Qwen cache-hit TTFT/L2/paged+SSM, MiniMax paged+TQ/L2/restart, and admin sleep deep-unload are false. This remains a real live-proof blocker, not a missing-file blocker.
+- Fixed `tests/test_issue175_177_live_runtime_audit.py` to use hermetic pass-case fixtures instead of assuming historical local build artifacts exist.
+- Validation: `4 passed, 312 deselected` for #175-#177 installed/live audit tests; release manifest still `prepackage_ready=false`, `release_ready=false`.
+- Current manifest no longer fails `issue175_177_installed_runtime_audit`; it still fails `issue175_177_live_runtime_audit` plus the broader live/MiMo/MiniMax/UI/DSV4 blockers.
+- Pushed commit `1a472251` to `origin/codex/pr-intake-manifest`.
+
+## 2026-06-07 - issue175 admin sleep proof pointer
+
+- Updated `run_issue175_177_live_runtime_audit.py` to use current admin sleep proof `build/current-issue175-admin-sleep-probe-after-gemma4-vlm-recovery-20260606.json` instead of missing 202605 installed artifact.
+- Live #175-#177 audit now clears `admin_sleep_lifecycle_probe_passed=true` and `admin_sleep_deep_unload_observed=true`.
+- Remaining live #175-#177 failures are real Qwen/MiniMax live cache stress rows: Qwen installed cache-hit TTFT/L2/paged+SSM/visible/metal metrics/capacity projection, MiniMax installed paged+TQ/TurboQuant/L2/latency/visible/restart reader/cold paged+disk+TQ.
+- Validation: `tests/test_issue175_177_live_runtime_audit.py` focused slice passed; refreshed release manifest still `prepackage_ready=false`, `release_ready=false` with admin failures removed from `issue175_177_live_runtime_audit`.
+- Pushed commit `b9fb7663` to `origin/codex/pr-intake-manifest`.
+
+## 2026-06-07 - Codex MiMo API/cache/Responses contract gate
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; did not touch deprecated `/Users/eric/vmlx`, Swift, ADLab/TB/RDMA, or source-vs-quant.
+- Added explicit MiMo audit gating for the no-heavy API/cache/Responses contract: Responses sampling, streaming cache-detail usage, `previous_response_id`, cache stats/reuse telemetry, cache warm/entries/clear endpoints, output-vs-context cap separation, Anthropic, and Ollama adapter surfaces.
+- Boundary: this is source-route contract proof only. It does not clear live MiMo model output, tool exactness, cache-hit/L2 restart, media, UI, or release readiness.
+- Refreshed artifacts:
+  - `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json` -> status pass, missing_markers=[].
+  - `build/current-mimo-v2-jang2l-current-audit-after-api-cache-responses-contract-20260607.json` -> status open, `component_ok.api_cache_responses_contract=true`.
+  - `build/current-release-regression-manifest-after-api-cache-responses-contract-20260607.json` -> current_proof_sweep=fail, prepackage_ready=false, release_ready=false.
+- Focused validation passed:
+  - MiMo/release slice: `19 passed, 295 deselected`.
+  - MiMo/objective/release pointer slice: `127 passed, 293 deselected`.
+- Current MiMo blockers remain: long-prompt coherence, tool protocol, JANGTQ2 exactness (`blue-cat` -> `blue cat`), CB system-prompt working-set pressure, source-vs-quant evidence gap, and unwired VL/audio/video.
+
+## 2026-06-07 - Codex full-objective checklist and current-suite wiring
+
+- Stayed in active Python/app worktree `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; did not touch deprecated `/Users/eric/vmlx`, Swift, ADLab/TB/RDMA, source-vs-quant, package build, signing, notarization, tags, or public downloads.
+- Updated local-only `AGENTS.md` with the full release objective: Python engine + MLXStudio app, all family live APIs, tools, JSON/XML/code exactness, cache reuse, prefix/paged/L2, native cache, media, UI, signing/notarization only after gates are green.
+- Added no-heavy machine-readable checklist:
+  - `tests/cross_matrix/run_full_release_objective_checklist.py`
+  - `tests/test_full_release_objective_checklist.py`
+  - artifact `build/current-full-release-objective-checklist-20260607.json`
+- Wired checklist into `run_current_regression_suite.py` and current-suite tests. Open checklist status is treated as expected blocker evidence, not a current-suite command failure.
+- Fixed Gemma4 release-manifest proof wording so cold wall decode/TTFT remains tracked separately from visible stream TPS.
+- Validation:
+  - checklist tests: `2 passed`.
+  - focused checklist/current-suite/Gemma4 manifest slice: `5 passed, 72 deselected`.
+  - release-manifest source-hash/source-tracking slice: `5 passed, 308 deselected`.
+  - aggregate current suite: `status=open`, failed_steps only `['release_regression_manifest']`; focused pytest is now clean.
+- Current checklist open rows include: prepackage/release false, real UI matrix, MiMo long/tool/exactness/CB/source-vs-quant/media, Gemma4 media rows, Step3p7 real VLM, Nemotron Omni media rows, MiniMax #179 root cause, and DSV4 exactness/memory.
+
+## 2026-06-07 - Codex structured-output gate hardening
+
+- Stayed in active Python/app worktree only. No model loads, source-vs-quant, packaging, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, or TB/RDMA work.
+- Hardened `run_noheavy_api_cache_contract.py` so JSON response-format/schema coverage is required:
+  - chat streaming calls `parse_json_output` for response_format validation.
+  - Responses streaming validates JSON format.
+  - strict streaming JSON failures emit `json_validation_failed`.
+  - Responses text format preserves `json_schema` data.
+- Hardened `run_full_release_objective_checklist.py` so the full objective consumes `current-tool-call-contract-after-jangtq2-objective-refresh-20260607.json` and exposes XML/DSML/tool residue checks alongside API/cache/Responses checks.
+- Refreshed artifacts:
+  - `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json` -> status pass, missing_markers=[], API route contracts now 40 passed.
+  - `build/current-full-release-objective-checklist-20260607.json` -> status open, failed_count=17; JSON/XML/tool contract rows are green.
+- Validation:
+  - focused no-heavy/checklist/current-suite tests: `4 passed, 72 deselected`.
+  - release-manifest/current-suite/checklist source-tracking slice: `8 passed, 381 deselected`.
+- Remaining blockers unchanged: release is still blocked by live family/UI/model rows, not by source-route JSON/XML/tool contract gaps.
+
+## 2026-06-07 - Codex full-objective checklist manifest alignment
+
+- Stayed in active Python/app worktree only; no model loads, source-vs-quant, package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, or TB/RDMA work.
+- Fixed full-objective checklist artifact drift:
+  - `run_full_release_objective_checklist.py` now reads the canonical current-suite release manifest `build/current-release-regression-manifest-after-issue179-public-dmg-provenance-20260607.json`.
+  - `run_current_regression_suite.py` now regenerates `full_release_objective_checklist` after `release_regression_manifest`, so checklist status reflects the current manifest instead of a stale side artifact.
+- Validation:
+  - focused checklist/current-suite ordering tests: `5 passed, 71 deselected`.
+  - aggregate current suite refreshed: `build/current-regression-suite-after-full-objective-checklist-20260607.json` -> status open, failed_steps only `['release_regression_manifest']`.
+- The checklist remains open for real blockers: cross-family live multi-turn smoke, MiMo runtime/tool/long-prompt/exactness/media, MiniMax #179 root cause, real Electron UI live matrix, and DSV4 long-output/code/file quality.
+
+## 2026-06-07 - Codex Qwen 3.6 MTP checklist hardening
+
+- Stayed in active Python/app worktree only; no model loads, source-vs-quant, package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, or TB/RDMA work.
+- Strengthened `run_full_release_objective_checklist.py` Qwen 3.6 rows from artifact-presence checks to evidence checks:
+  - Qwen27 MXFP4 MTP Responses cancel: streaming response id, cancel route 200, no bad text, native MTP active, hybrid SSM cache policy.
+  - Qwen27 API parity: Responses text, required tool, Anthropic, Ollama, chat SSE, MTP active, `hybrid_ssm_v1`, cache-hit tokens, block L2 writes/hits, SSM companion disk stores.
+  - Qwen27 restart/L2: phase1 block/SSM stores, phase2 `paged+ssm+disk` cached tokens, block L2 hit, native cache, MTP active.
+  - Qwen35 MXFP8 MTP startup: model loaded, native MTP active, depth 3, `hybrid_ssm_v1`, trained K=8 preserved.
+  - Qwen35 long Responses/tool/cache: 3 turns, previous_response_id, cache reuse each later turn, `paged+ssm`, block/SSM L2, tool calls, no XML/tool leak, no loop tail, final no-tools visible output, plus explicit overall/tool-evidence grounding checks.
+- Current result: Qwen27 rows are green. Qwen35 rows are green for MTP/cache/reuse/L2/no-leak/no-loop, but open for `qwen35_long_tool_cache_overall_pass=False` and `qwen35_long_tool_cache_tool_evidence_grounded=False` from the current artifact.
+- Validation:
+  - `tests/test_full_release_objective_checklist.py` -> `2 passed`.
+  - focused current-suite/checklist tests -> `4 passed, 72 deselected`.
+  - aggregate current suite refreshed -> status open, failed_steps only `['release_regression_manifest']`.
+- Refreshed artifact: `build/current-full-release-objective-checklist-20260607.json` now has failed_count=19 due the newly surfaced Qwen35 grounding blockers.
+
+## 2026-06-07 - Codex panel settings checklist hardening
+
+- Stayed in active Python/app worktree only; no model loads, source-vs-quant, package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, or TB/RDMA work.
+- Hardened `run_full_release_objective_checklist.py` so the release objective directly consumes `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`.
+- New checklist group `ui_settings_parser_cache_contract` requires panel settings status pass, coverage count, no missing source markers, DSV4 native cache controls, generic KV suppression, max output/context split, chat max-output override, MiniMax parser detection, native MTP D3 policy, model-family parser registry, engine cache architecture registry, panel-emitted CLI flag registration, and panel typecheck.
+- Updated `AGENTS.md` local-only guard to name this panel settings contract as a release prerequisite while preserving the rule that it is not a substitute for real Electron live-model proof.
+- Validation: `.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py -q` -> 2 passed.
+- Refreshed `build/current-full-release-objective-checklist-20260607.json` -> status open, failed_count=19. Open rows are still real release blockers: prepackage/release false, real UI live matrix, MiMo long/tool/exactness/CB/source-vs-quant/media, Qwen35 tool evidence, Gemma4 media, Step3p7 real VLM, Nemotron Omni media, MiniMax #179, and DSV4 exactness/memory.
+
+## 2026-06-07 - Codex Qwen35 tool-evidence gate fairness fix
+
+- Stayed in active Python/app worktree only; no package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, TB/RDMA, or source-vs-quant work.
+- Inspected `build/current-qwen35-mxfp8-mtp-responses-long-tool-cache-20260607/summary.json` and raw turn artifacts. Current Qwen35 failure is specifically `tool_evidence_each_required_turn=false`; previous_response_id, `paged+ssm`, block/SSM L2, tool calls, no raw tool markup leak, no loop tail, and final no-tools visible output are green.
+- Found proof-harness fairness issue: a model-chosen bad `inspect_symbol` path could produce `is not a readable file` with no file:line marker, while strict `--require-tool-evidence` requires citing a marker from tool output.
+- Patched `tests/cross_matrix/run_responses_long_tool_cache_gate.py` so unreadable/missing in-repo inspect targets include a fallback in-repo file:line marker. This preserves strict grounding while making the evidence contract satisfiable.
+- Updated existing gate unit test to require a fallback file:line marker for bad paths.
+- Validation: `.venv/bin/python -m pytest tests/test_engine_audit.py -q -k "responses_long_context_tool_cache_gate"` -> 20 passed.
+- Release boundary: Qwen35 remains open until a live long Responses/tool/cache rerun passes grounded tool evidence with this fixed harness.
+
+## 2026-06-07 - Codex Qwen35 live native-MTP required-tool rerun
+
+- Stayed in active Python/app worktree only; no package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, TB/RDMA, or source-vs-quant work.
+- Relaunched Qwen35 MXFP8 MTP through supported `vmlx serve` CLI in a persistent foreground tool session after finding background launch processes are cleaned up by the tool shell.
+- Correct release launch nuance: direct `python -m vmlx_engine.server` bypassed current CLI cache flag translation; explicit `--kv-cache-quantization q4` disables JANG-calibrated live TurboQuant KV. The valid gate launch omitted explicit KV quantization and used `VMLINUX_FORCE_TQ_AUTO=1`, `--use-paged-cache`, `--enable-block-disk-cache`, `--native-mtp-sampling-policy compatible-only`, parser flags, and deterministic request sampling.
+- Health proof showed Qwen35 native MTP active at depth 3, hybrid SSM typed cache, live TurboQuant attention KV enabled, q4 storage-boundary cache enabled, and block disk/SSM L2 active.
+- Ran `tests/cross_matrix/run_responses_long_tool_cache_gate.py` with 3 turns, deterministic sampling, `tool_choice=required`, in-turn tool resolution, strict tool evidence, strict cache-each-turn, final turn no tools/thinking disabled.
+- Patched the gate to preserve HTTP error responses in rows/SUMMARY instead of aborting before evidence write; focused gate tests still passed (`20 passed`), combined focused slice passed (`22 passed`).
+- Fresh artifact `build/current-qwen35-mxfp8-mtp-responses-long-tool-cache-after-tool-fallback-20260607/SUMMARY.json` -> `overall_pass=false`: turn 1 grounded tool evidence passed, turn 2 returned HTTP 400 because required tool produced no tool call, turn 3 visible final output and cache reuse passed.
+- Updated full release checklist Qwen35 pointer to this artifact and added explicit `qwen35_long_tool_cache_no_http_errors`; refreshed checklist is `status=open`, failed_count=21. Qwen35 current blockers are no-http-errors, required tool each turn, strict cache each later turn after the 400, and overall pass.
+- Aggregate current suite refreshed: `build/current-regression-suite-after-full-objective-checklist-20260607.json` -> status open, failed_steps only `['release_regression_manifest']`.
+- Release boundary: Qwen35 is not release-cleared. The current blocker is deterministic native-MTP required-tool compliance / Responses HTTP 400 under `tool_choice=required`, not gdn_sink, MTP autodetect, TurboQuant/L2 availability, or raw XML/tool leakage.
+
+## 2026-06-07 - Codex Responses required-tool raw preview parity
+
+- Stayed in active Python/app worktree only; no package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, TB/RDMA, or source-vs-quant work.
+- Inspected required-tool enforcement after the Qwen35 live native-MTP gate returned HTTP 400 on turn 2. Chat Completions already logged `raw_preview`, but Responses only logged a generic warning before raising 400.
+- Patched `vmlx_engine/server.py` so Responses required-tool failures log the cleaned parse preview before returning strict HTTP 400. This does not fabricate tool calls or weaken `tool_choice=required`; it preserves diagnostics needed to classify future parser-vs-model failures.
+- Updated `tests/test_engine_audit.py` to require both required-tool enforcement paths to include `raw_preview` and to pin the current XML-function rendered ChatML splice fallback instead of an old brittle message-list mutation string.
+- Validation: `.venv/bin/python -m pytest tests/test_engine_audit.py -q -k "xml_function_tool_fallback_requires_concrete_function_examples or responses_long_context_tool_cache_gate or required"` -> 30 passed.
+- Release boundary: Qwen35 remains blocked on required-tool compliance under deterministic native-MTP Responses; this diagnostic patch only improves future evidence quality.
+
+## 2026-06-07 - Codex Qwen35 auto-tool-choice classification
+
+- Stayed in active Python/app worktree only; no package build, signing, notarization, tagging, public release, Swift, deprecated wrapper, ADLab, TB/RDMA, or source-vs-quant work.
+- Relaunched Qwen35 MXFP8 MTP through supported `vmlx serve` with `--enable-auto-tool-choice`, explicit qwen parser, deterministic request sampling, native-MTP compatible policy, paged cache, block disk L2, and auto TurboQuant attention KV.
+- Fresh artifact: `build/current-qwen35-mxfp8-mtp-responses-long-tool-cache-auto-tool-choice-20260607/SUMMARY.json` -> `overall_pass=false`.
+- Turn 1 passed: required `grep_repo` tool call, exact grounded `TOOL_EVIDENCE`, no tool-markup leak.
+- Turn 2 failed: `/v1/responses` HTTP 400 because `tool_choice=required` produced no tool call. Server `raw_preview` shows ordinary prose about `CACHE_CORRUPTION_PATTERNS`, not raw tool syntax. This classifies the failure as model required-tool noncompliance under the strict deterministic native-MTP Responses gate, not a parser miss.
+- Turn 3 passed final no-tools visible output and cache reuse. Cache telemetry showed hybrid SSM typed cache, live TurboQuant attention KV, q4 storage-boundary cache, block disk L2 writes/hits, SSM L2 stores, and native MTP active.
+- Updated full checklist Qwen35 pointer to the auto-tool-choice artifact; refreshed `build/current-full-release-objective-checklist-20260607.json` remains open with failed_count=21.
+- Validation: `.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py tests/test_engine_audit.py -q -k "full_release_objective_checklist or xml_function_tool_fallback_requires_concrete_function_examples or responses_long_context_tool_cache_gate or required"` -> 32 passed.
+- Release boundary: Qwen35 remains blocked until model/tool behavior can satisfy required tool calls across multi-turn Responses; runtime cache/MTP/TQ/L2 pieces are not the current failing component.
+
+## 2026-06-07 Codex | Qwen required-tool Responses prompt contract tightened
+
+- Active blocker reduced: Qwen 3.6 35B MXFP8-MTP `/v1/responses` long tool/cache gate where cache/L2/MTP/TurboQuant evidence was present but `tool_choice=required` turn 2 emitted prose instead of a native tool call.
+- Patched `vmlx_engine/api/tool_calling.py` so Qwen native fallback tool instructions detect `tool_choice=required` from template kwargs and explicitly require exactly one native tool call before any prose.
+- This is pre-generation model-facing instruction only. It does not synthesize or repair a missing tool call after generation; strict HTTP 400 enforcement remains intact.
+- Added focused coverage in `tests/test_tool_format.py` for Qwen required-tool fallback instructions and concrete native function examples.
+- Validation: `.venv/bin/python -m pytest tests/test_tool_format.py -q -k "qwen_required_tool_choice_fallback_injects_hard_first_call_contract or qwen_fallback_injects_concrete_native_tool_example"` -> 2 passed. `py_compile` for `vmlx_engine/api/tool_calling.py` and `tests/test_tool_format.py` passed.
+- Remaining proof: rerun live Qwen35 Responses long-tool-cache gate with canonical `VMLX_FORCE_TQ_AUTO=1` to determine whether turn-2 required-tool compliance is cleared.
+
+## 2026-06-07 Codex | Qwen35 required-tool/cache live rerun after template plumbing
+
+- Active blocker reduced: Qwen 3.6 35B MXFP8-MTP `/v1/responses` long tool/cache gate.
+- Source fixes applied:
+  - `vmlx_engine/api/tool_calling.py`: Qwen fallback prompt detects `tool_choice=required`, adds hard first native tool-call contract, and appends a current-turn required-tool reminder to the latest user message.
+  - `vmlx_engine/server.py`: Chat Completions and Responses non-streaming paths now forward `tool_choice` into `chat_template_kwargs` so fallback prompt injection sees the same contract the API enforces.
+  - Tests updated in `tests/test_tool_format.py` and `tests/test_engine_audit.py`.
+- Focused validation passed: `tests/test_full_release_objective_checklist.py tests/test_tool_format.py tests/test_engine_audit.py -k "full_release_objective_checklist or qwen_required_tool_choice_fallback_injects_hard_first_call_contract or qwen_fallback_injects_concrete_native_tool_example or V4bToolChoiceRequired"` -> 8 passed. `py_compile` passed for edited files.
+- Live proof artifact: `build/current-qwen35-mxfp8-mtp-responses-long-tool-cache-after-current-turn-required-reminder-20260607/SUMMARY.json`.
+- Live result remains red: `overall_pass=false`; turn 1 produced `grep_repo` and grounded evidence, turn 2 returned HTTP 400 because `tool_choice=required` produced no model tool call, turn 3 produced visible final answer with `cached_tokens=128`.
+- Runtime/cache evidence in this run remains good: native MTP active with tool-context D1 cap, `paged+ssm` cache hit, TurboQuant KV recompress/dequantize, block disk L2 writes/hits, and SSM companion L2 stores.
+- Current classification: runtime cache/TQ/L2/MTP path is active; Qwen35 chained Responses required-tool behavior remains a model/tool-policy compliance blocker after runtime prompt plumbing. No fake post-generation tool-call injection was added.
+- Full checklist refreshed: `build/current-full-release-objective-checklist-after-qwen35-required-reminder-20260607.json` -> `status=open`, `failed_count=21`.
+
+## 2026-06-07 Codex | MiMo JANGTQ2 tool protocol vs exactness split
+
+- Active blocker reduced: MiMo V2.5 JANGTQ2 release audit taxonomy.
+- Current no-media smoke artifact shows MiMo emits a real `record_fact` tool call, but mutates literal `blue-cat` to `blue cat` in tool args and structured JSON.
+- Patched `tests/cross_matrix/run_mimo_v2_jang2l_current_audit.py` so current JANGTQ2 smoke owns the tool-protocol row; older synced/CB tool failures no longer override current parsed-tool evidence when a current smoke artifact exists.
+- Exact literal failures remain red under `mimo_jangtq2_artifact_exactness_blocked`; no parser fake/argument rewrite was added.
+- Focused tests passed: `tests/test_full_release_objective_checklist.py tests/test_mimo_v2_current_audit.py -k "full_release_objective_checklist or tool_protocol_is_separate_from_literal_argument_exactness or current_smoke_tool_protocol_beats_legacy_synced_tool_failure or current_audit"` -> 5 passed. `py_compile` passed for touched audit/checklist files.
+- Refreshed MiMo audit: `build/current-mimo-v2-jang2l-current-audit-after-tool-protocol-exactness-split-20260607.json` -> `status=open`, `tool_protocol=true`, `artifact_exactness=false`.
+- Refreshed full checklist: `build/current-full-release-objective-checklist-after-mimo-tool-protocol-exactness-split-20260607.json` -> `status=open`, `failed_count=20`.
+- Remaining MiMo blockers: long-prompt coherence, JANGTQ2 artifact exactness (`blue-cat` -> `blue cat`), CB system-prompt working-set pressure, source-vs-quant missing endpoints, and VL/audio/video unwired.
+
+## 2026-06-07 - MiMo XML parser exactness and Responses/cache gate update
+
+- Added focused parser regression: `tests/test_xml_function_tool_parser.py::TestXMLFunctionToolParser::test_hyphenated_literal_parameter_is_preserved`.
+- Result: passed. The MiMo XML function parser preserves `blue-cat` as a literal parameter value and does not mutate it to `blue cat`.
+- Classification: current MiMo `blue-cat -> blue cat` failures are not explained by XML parser mutation; keep them under `mimo_jangtq2_artifact_exactness_blocked` unless later live evidence proves a runtime decode bug.
+- Release gate reminder: cache reuse and `/v1/responses` endpoint behavior remain explicit blockers. Required proof is multi-turn Responses API with stable request state, no HTTP 400/500, real tool-call continuation where required, cached-token reuse on later turns, parser selection honored, and no fake injected tool calls.
+
+## 2026-06-07 - Qwen35 Responses cache/tool gate cleared after historical-tool-result prompt fix
+
+- Fixed a Qwen required-tool fallback ambiguity in `vmlx_engine/api/tool_calling.py`: historical tool results in a chained Responses conversation no longer satisfy the current-turn `tool_choice=required` instruction.
+- Added/updated focused coverage:
+  - `tests/test_tool_format.py::TestToolPromptFallback::test_qwen_required_tool_choice_fallback_injects_hard_first_call_contract`
+  - `tests/test_xml_function_tool_parser.py::TestXMLFunctionToolParser::test_hyphenated_literal_parameter_is_preserved`
+- Focused validation passed: `tests/test_full_release_objective_checklist.py tests/test_tool_format.py tests/test_xml_function_tool_parser.py -k "full_release_objective_checklist or qwen_required_tool_choice_fallback_injects_hard_first_call_contract or hyphenated_literal_parameter_is_preserved"` -> 4 passed.
+- Live Qwen35 gate rerun against current source `vmlx serve` passed:
+  - artifact: `build/current-qwen35-mxfp8-mtp-responses-long-tool-cache-after-historical-tool-required-20260607/SUMMARY.json`
+  - turn 1: HTTP 200, tool call emitted, cached_tokens=0
+  - turn 2: HTTP 200, tool call emitted, cached_tokens=128
+  - turn 3: HTTP 200, tools disabled final visible answer, cached_tokens=256
+  - `overall_pass=True`
+- Runtime proof included `/v1/responses`, `previous_response_id`, strict required tools, in-turn tool resolution, strict tool evidence, cache reuse each later turn, paged+SSM cache detail, block disk L2, SSM companion L2, live TurboQuant KV recompress, and native MTP active under compatible sampling.
+- Full release checklist refreshed: `build/current-full-release-objective-checklist-after-qwen35-cache-responses-pass-20260607.json` -> `status=open`, `failed_count=16`. Qwen35 cache/Responses rows are no longer open.
+
+## 2026-06-07 - MiMo sentinel exactness proof added; release still locked
+
+- Added MiMo-only sentinel exactness probes to `bench/all_local_model_smoke.py`:
+  - `mimo_tool_required_sentinel` expects `record_fact({"value":"B7-CAT-09"})`.
+  - `mimo_structured_json_sentinel` expects `{ "status":"ok", "value":"B7-CAT-09", "count":3 }`.
+- Existing `tool_required` and `structured_json_exact` `blue-cat` gates remain strict and unchanged; this is diagnostic evidence, not a fake pass.
+- Focused tests passed:
+  - `tests/test_all_local_model_smoke.py`
+  - `tests/test_mimo_v2_current_audit.py`
+  - `tests/test_full_release_objective_checklist.py`
+  - focused result: `10 passed`.
+- Live MiMo JANGTQ2 no-media smoke rerun:
+  - artifact: `build/current-all-local-model-smoke-mimo-v25-jangtq2-bundled-tools-nomedia-20260607/summary.json`
+  - status: `fail`, 4 failures.
+  - `tool_required`: expected `blue-cat`, actual `blue-123`.
+  - `mimo_tool_required_sentinel`: expected `B7-CAT-09`, actual `B7CAT-09`.
+  - `structured_json_exact`: expected `blue-cat`, actual `bluecat`.
+  - `mimo_structured_json_sentinel`: expected `B7-CAT-09`, actual `B7CCAT-09`.
+- Classification: MiMo exactness failure is broader literal-copy/punctuation corruption, not just semantic dehyphenation of `blue-cat` and not XML parser mutation.
+- Runtime/cache evidence from the same run remains separately useful:
+  - tool protocol emits real `record_fact` calls.
+  - generation TPS about `48.9`, above the accepted speed floor.
+  - native cache family `mimo_v2`, schema `mixed_swa_kv_v1`, storage-boundary q4, prefix+paged+block-L2 enabled.
+  - latest cache execution had `cached_tokens=128`, `cache_detail=paged`, reconstruction/dequantization OK.
+  - block disk L2 wrote 25 blocks / 1262 tokens.
+- Updated MiMo audit pointer and regenerated:
+  - `build/current-mimo-v2-jang2l-current-audit-after-sentinel-exactness-proof-20260607.json`
+  - status remains `open`.
+- Updated full objective checklist pointer and regenerated:
+  - `build/current-full-release-objective-checklist-after-mimo-sentinel-exactness-proof-20260607.json`
+  - status `open`, failed_count `16`.
+
+Do not package, sign, notarize, tag, push release, or update downloads. MiMo remains blocked by long-prompt coherence, artifact exactness, CB working-set pressure, source-vs-quant/equivalent classification, and media wiring.
+
+## 2026-06-07 - DSV4 exactness preflight refreshed after MiMo sentinel run
+
+- Reran DSV4 route-mode code exactness memory preflight only:
+  - artifact: `build/current-dsv4-route-mode-code-exactness-preflight-after-release-manifest-refresh-20260607.json`
+  - status: `skipped`
+  - reason: `insufficient_vm_stat_memory`
+  - required_available_gb: `120.0`
+  - available_for_gate_gb: `53.27`
+  - memory_gap_gb: `66.73`
+  - active_heavy_process_count: `0`
+  - launch_decision: `do_not_launch`
+- Did not launch DSV4. This remains a real memory/resource gate, not a runtime pass.
+- Updated full objective checklist pointer and regenerated:
+  - `build/current-full-release-objective-checklist-after-dsv4-preflight-refresh-20260607.json`
+  - status `open`, failed_count `16`.
+
+## 2026-06-07 - Gemma4 12B JANG_4M image media row cleared in current source
+
+- Verified current VLM image prefill guard is already memory-aware in source:
+  - default single-buffer guard scales with Metal working set.
+  - explicit `VMLINUX_VLM_IMAGE_PREFILL_BUFFER_GB=8` preserves the old 8GB cap.
+  - focused VLM guard tests passed.
+- Ran live Gemma4 12B JANG_4M image media smoke:
+  - artifact: `build/current-gemma4-12b-jang4m-media-smoke-after-vlm-prefill-guard-20260607.json`
+  - status: `pass`
+  - row: `jang4m_image`
+  - chat code: `200`
+  - content: `Red`
+  - checks: capabilities ok, vision advertised, visible answer, red detected, no channel leak.
+- Wired that artifact into `tests/cross_matrix/run_full_release_objective_checklist.py` instead of hard-failing Gemma4 media unconditionally.
+- Focused validation passed:
+  - `tests/test_full_release_objective_checklist.py`
+  - `tests/test_vl_video_regression.py -k vlm_image_prefill_*`
+  - result: `4 passed`.
+- Refreshed full checklist:
+  - `build/current-full-release-objective-checklist-after-gemma4-jang4m-media-pass-20260607.json`
+  - status `open`, failed_count `15`.
+
+Release remains locked. This clears only the current Gemma4 12B JANG_4M image media row; audio/video broader media matrices still remain represented by other open family rows where applicable.
+
+## 2026-06-07 - Nemotron Omni media/cache row cleared in current source
+
+- Live Nemotron Omni MXFP4 media gate passed:
+  - artifact: `build/current-nemotron-omni-mxfp4-media-gate-20260607/SUMMARY.json`
+  - status: `PASS`
+  - requests: `image_blue`, `video_blue`, `audio_blue`, `turn2_recall` all HTTP 200.
+  - outputs: image/video/audio `Blue`; turn-2 recall `color=blue, animal=cat`.
+- The proof includes cache and L2 evidence:
+  - turn-2 recall: `cached_tokens=24`, `cache_detail=paged+ssm`.
+  - final cache: native `nemotron_h` `hybrid_ssm_v1`, block disk L2 writes/hits, SSM companion disk stores, L2 block/SSM tokens on disk.
+  - log tail confirms `/v1/chat/completions` route for the media requests.
+- Wired `tests/cross_matrix/run_full_release_objective_checklist.py` to require the current Nemotron media gate instead of a placeholder hard fail.
+- Focused validation:
+  - `py_compile` passed for checklist runner and test.
+  - `tests/test_full_release_objective_checklist.py`: `2 passed`.
+- Refreshed checklist:
+  - `build/current-full-release-objective-checklist-after-nemotron-media-cache-pass-20260607.json`
+  - status `open`, failed_count `14`.
+
+Release remains locked. Nemotron media/cache is green, but packaging/UI, MiMo, Step3.7 real VLM, MiniMax #179, and DSV4 rows remain open.
+
+## 2026-06-07 - MiMo media/runtime metadata classified without fake clearance
+
+- Added MiMo media/runtime classification to `tests/cross_matrix/run_mimo_v2_jang2l_current_audit.py`.
+- Focused validation:
+  - `py_compile` passed for MiMo audit and full checklist runner/tests.
+  - `tests/test_mimo_v2_current_audit.py`: `3 passed`.
+  - `tests/test_full_release_objective_checklist.py`: `2 passed`.
+- Current MiMo audit:
+  - artifact: `build/current-mimo-v2-jang2l-current-audit-after-media-runtime-metadata-classification-20260607.json`
+  - status: `open`
+  - media classification: `runtime_implementation_gap_with_model_metadata_overadvertising`.
+- Current media evidence:
+  - media weights preserved: 364 `visual.*` tensors, 95 audio/speech tensors, `preprocessor_config.json`, `audio_tokenizer/`.
+  - runtime capabilities safe: `/capabilities` exposes `modalities=["text"]` and marks vision/image/video/audio as `preserved_unwired`.
+  - runtime implementation missing: `VisionModel`/`AudioModel` stubs, `visual.*`/`audio_encoder.*` skipped at load, image `pixel_values` raises unsupported modality, no `mimo_v2_multimodal.py`.
+  - model metadata over-advertises: `config.json` has `capabilities.modalities=["text","vision","audio"]` and lacks the text-runtime preserved/unwired metadata contract.
+- Updated full checklist pointer:
+  - `build/current-full-release-objective-checklist-after-mimo-media-runtime-metadata-classification-20260607.json`
+  - status `open`, failed_count `14`.
+
+Release remains locked. This is not a MiMo media fix; it is a precise model-vs-runtime classification and a guard against fake media clearance.
+
+## 2026-06-07 - MiMo media subgates exposed in full release checklist
+
+- Added first-class full-checklist rows for MiMo media subgates:
+  - `mimo_media_weights_preserved`
+  - `mimo_media_runtime_capabilities_safe`
+  - `mimo_media_model_metadata_text_only_contract`
+  - `mimo_media_runtime_implementation`
+  - `mimo_mimo_media_wired`
+- Focused validation:
+  - `py_compile` passed for full checklist runner/test.
+  - `tests/test_full_release_objective_checklist.py`: `2 passed`.
+- Current full checklist:
+  - `build/current-full-release-objective-checklist-after-mimo-media-subgates-20260607.json`
+  - status `open`, failed_count `16`.
+- The failed count increased because MiMo metadata and real media runtime implementation are now independently visible. This is not a new runtime regression.
+
+Release remains locked.
+
+## 2026-06-07 - MiniMax issue179 subgates exposed in full release checklist
+
+- Replaced the collapsed `issue179_root_cause` simple status row in `tests/cross_matrix/run_full_release_objective_checklist.py` with explicit MiniMax #179 rows.
+- Green rows from the current artifact:
+  - current source Responses cancel contract
+  - latest public DMG cancel route
+  - local installed bundle cancel route
+  - local installed live cancel probe
+  - local real UI diagnostics clean
+  - installed session/settings parity
+- Remaining red rows:
+  - root cause status pass
+  - reporter parity artifact
+  - reporter server hash parity
+  - reporter prompt reproduction or reporter-log proof
+- Focused validation:
+  - `py_compile` passed for full checklist runner/test.
+  - `tests/test_full_release_objective_checklist.py`: `2 passed`.
+- Current full checklist:
+  - `build/current-full-release-objective-checklist-after-issue179-subgates-20260607.json`
+  - status `open`, failed_count `19`.
+
+Release remains locked. MiniMax #179 is not a current-source cancel-route blocker now; it remains a reporter parity/provenance/reproduction blocker.
+
+## 2026-06-07 - Step3.7 VLM subgates exposed in full release checklist
+
+- Wired `build/current-step37-vlm-runtime-audit-after-gemma4-vl-refresh-20260606.json` into `tests/cross_matrix/run_full_release_objective_checklist.py`.
+- Added Step3.7 rows:
+  - `step37_vlm_runtime_audit_exists`
+  - `step37_vlm_noheavy_runtime_surface`
+  - `step37_vlm_rejects_fake_clearance_paths`
+  - `step37_real_vlm_runtime_complete`
+- Current evidence:
+  - text/no-media smoke is green with required tool call, multiturn recall, reasoning, `paged` cache hit, and `step3p7_full_sliding_kv`.
+  - no-heavy VLM runtime audit is green: Step3p7 runtime symbols and source-owned vision/projector/processor surfaces exist.
+  - live image/video media proof remains missing, so `step37_real_vlm_runtime_complete` remains red.
+- Focused validation:
+  - `py_compile` passed for full checklist runner/test.
+  - `tests/test_full_release_objective_checklist.py`: `2 passed`.
+- Current full checklist:
+  - `build/current-full-release-objective-checklist-after-step37-vlm-subgates-20260607.json`
+  - status `open`, failed_count `19`.
+
+Release remains locked.
+
+## 2026-06-07 - API/cache and DSV4 memory subgates tightened
+
+- Added parent `status=pass` enforcement for the no-heavy API/cache artifact so cache reuse, `/v1/responses`, previous_response_id, streaming cache telemetry, output cap, JSON response format/schema, Anthropic, and Ollama rows cannot pass under a failed parent proof.
+- Replaced collapsed DSV4 exactness rows with explicit memory/preflight rows:
+  - artifact exists
+  - memory floor valid
+  - heavy-process context clean
+  - safe no-launch behavior under insufficient memory
+  - resource availability
+  - exactness status pass
+  - exactness case matrix present
+  - exact code/file long-output complete
+- Current DSV4 artifact remains a safe skip for `insufficient_vm_stat_memory`, not a release pass. Release remains locked.
+- Refreshed checklist: `build/current-full-release-objective-checklist-after-dsv4-memory-subgates-20260607.json`, status `open`, failed_count `20`.
+
+## 2026-06-07 - MiMo metadata text-runtime contract corrected
+
+- Patched promoted local MiMo config metadata for `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`:
+  - runtime modalities now text-only.
+  - vision/audio are marked preserved and unwired.
+  - multimodal status is `weights_preserved_text_runtime`.
+- Updated `build/current-mimo-jangtq2-local-manifest-20260607.tsv` for the config size change.
+- Refreshed MiMo audit: `build/current-mimo-v2-jang2l-current-audit-after-artifact-exactness-boundary-20260607.json`.
+- Refreshed full checklist: `build/current-full-release-objective-checklist-after-mimo-metadata-contract-20260607.json`, status `open`, failed_count `19`.
+- Important boundary: this is not a fake VL/audio fix. It prevents metadata over-routing while keeping real MiMo media runtime rows red.
+
+## 2026-06-07 - Release manifest pointer refreshed after MiMo metadata contract
+
+- Regenerated compact release manifest with `tests/cross_matrix/run_release_regression_manifest.py`:
+  - `build/current-release-regression-manifest-after-issue179-public-dmg-provenance-20260607.json`
+  - rows: 26
+  - `current_proof_sweep=fail`
+  - `prepackage_ready=false`
+  - `release_ready=false`
+- Updated the full objective checklist to read this current manifest and use `current_proof_sweep.component_ok` for packaged integrity and real UI matrix rows.
+- Focused validation passed:
+  - `tests/test_full_release_objective_checklist.py`
+  - `tests/test_release_regression_manifest.py`
+  - result: `315 passed`
+- Refreshed top-level checklist: `build/current-full-release-objective-checklist-after-release-manifest-refresh-20260607.json`, status `open`, failed_count `17`.
+- This does not clear packaging/signing/notarization. It keeps the release lock current.
+
+## 2026-06-07 - DSV4 preflight and current proof artifacts refreshed
+
+- Ran DSV4 route-mode exactness preflight only:
+  - artifact: `build/current-dsv4-route-mode-code-exactness-preflight-after-release-manifest-refresh-20260607.json`
+  - status: `skipped`
+  - reason: `insufficient_vm_stat_memory`
+  - did_not_launch: `true`
+  - available_for_gate_gb: `53.27`
+  - required_available_gb: `120.0`
+  - memory_gap_gb: `66.73`
+  - active_heavy_process_count: `0`
+- Refreshed no-heavy proof artifacts:
+  - objective digest: `build/current-objective-proof-after-dsv4-preflight-refresh-20260607.json`
+  - release manifest: `build/current-release-regression-manifest-after-issue179-public-dmg-provenance-20260607.json`
+  - aggregate current suite: `build/current-regression-suite-after-dsv4-preflight-refresh-20260607.json`
+  - full checklist: `build/current-full-release-objective-checklist-after-dsv4-preflight-refresh-20260607.json`
+- Aggregate suite remains open: failed steps are `packaged_integrity_contracts`, `release_regression_manifest`, `release_gate_skip_app`.
+- Focused DSV4/release/objective validation passed: `70 passed, 351 deselected`.
+- Release remains locked.
+
+## 2026-06-07 - MiniMax #179 public DMG provenance narrowed
+
+- Downloaded missing public release DMGs:
+  - `vMLX-1.5.50-sequoia-arm64.dmg`
+  - `vMLX-1.5.50-tahoe-arm64.dmg`
+  - `vMLX-1.5.52-sequoia-arm64.dmg`
+  - `vMLX-1.5.52-tahoe-arm64.dmg`
+- Generated no-heavy DMG server route/hash contracts for v1.5.50 and v1.5.52. All have cancel route and engine abort marker.
+- Refreshed MiniMax audit:
+  - `build/current-issue179-minimax-k-root-cause-audit-after-public-dmg-provenance-refresh-20260607.json`
+  - `public_release_checked_count=6`
+  - `missing_required_public_release_contracts=[]`
+  - status remains `open`.
+- Remaining #179 blocker: reporter server hash drift/provenance unknown plus missing reporter parity artifact and no local bad-text reproduction.
+- Focused validation passed: `64 passed, 268 deselected`.
+- Refreshed release/checklist artifacts:
+  - `build/current-release-regression-manifest-after-issue179-public-dmg-provenance-20260607.json`
+  - `build/current-full-release-objective-checklist-after-issue179-public-dmg-provenance-20260607.json`
+- Release remains locked.
+
+## 2026-06-07 - Codex MiMo sentinel pointer refresh and current gate rerun
+- Refreshed stale MiMo evidence pointers from older media/literal prompt probes to the current sentinel JANGTQ2 proof: `build/current-all-local-model-smoke-mimo-v25-jangtq2-bundled-tools-nomedia-20260607/summary.json`.
+- Updated objective digest/current-suite/release-manifest pointers to:
+  - `build/current-objective-proof-after-mimo-sentinel-pointer-refresh-20260607.json`
+  - `build/current-release-regression-manifest-after-mimo-sentinel-pointer-refresh-20260607.json`
+  - `build/current-regression-suite-after-mimo-sentinel-pointer-refresh-20260607.json`
+- Current MiMo evidence remains red for exact literal preservation, not for cache availability or parser mutation. Parsed tool calls exist, tool-result continuation works, cache hits are present, but model output mutates sentinel literals. No fake parser rewrite was added.
+- Aggregate current suite rerun completed: status `open`; failed steps `packaged_integrity_contracts`, `release_regression_manifest`, `release_gate_skip_app`; open requirements remain cross-family live matrix, MiMo, MiniMax #179, real UI cross-family matrix, and DSV4 long-output/code/file-generation.
+- Focused validation passed: MiMo/objective digest `7 passed`; objective/release/current-suite pointer slice `420 passed`; release/checklist/current-suite slice `318 passed`; release manifest focused suite `313 passed`.
+- Release remains locked. No signing, notarization, tag, push, or public download update was performed.
+
+## 2026-06-07 - Codex MiMo exactness-boundary audit
+- Added `artifact_exactness_boundary` to `run_mimo_v2_jang2l_current_audit.py` and regression coverage in `tests/test_mimo_v2_current_audit.py`.
+- Generated `build/current-mimo-v2-jang2l-current-audit-after-artifact-exactness-boundary-20260607.json`.
+- Current classification: valid parser/tool/JSON structure with wrong generated literal values, i.e. `model_generated_literal_mutation_after_valid_parser_structure`.
+- Concrete examples from the current sentinel proof: `blue-cat -> blue-123`, `B7-CAT-09 -> B7CAT-09`, `blue-cat -> bluecat`, `B7-CAT-09 -> B7CCAT-09`.
+- Refreshed objective/release/checklist/current-suite proof chain to `*-after-mimo-exactness-boundary-20260607.json` artifacts.
+- Validation passed: MiMo audit tests `3 passed`; focused MiMo/checklist/objective/release suite `424 passed`; final focused proof chain `429 passed, 69 deselected`.
+- Aggregate suite remains open with real release blockers. No commit, push, signing, notarization, tag, or public release was performed.
+
+## 2026-06-07 - Codex ZAYA text current-smoke pointer refresh
+- Fixed stale objective-digest evidence for `zaya_text`: the digest now uses `build/current-all-local-model-smoke-zaya-text-vl-tools-media-after-reasoning-budget-20260606/summary.json` instead of missing `build/current-all-local-model-smoke-zaya-text-bundled-20260524/summary.json`.
+- Regenerated proof chain:
+  - `build/current-objective-proof-after-zaya-text-current-smoke-refresh-20260607.json`
+  - `build/current-release-regression-manifest-after-zaya-text-current-smoke-refresh-20260607.json`
+  - `build/current-full-release-objective-checklist-after-zaya-text-current-smoke-refresh-20260607.json`
+  - `build/current-regression-suite-after-zaya-text-current-smoke-refresh-20260607.json`
+- Current cross-family smoke objective now reports `missing_required_family_keys=['mimo_v2']` instead of `['mimo_v2', 'zaya_text']`.
+- Validation passed: objective digest suite `106 passed`; focused proof-chain slice `420 passed, 73 deselected`.
+- Aggregate suite remains open with failed steps `packaged_integrity_contracts`, `release_regression_manifest`, `release_gate_skip_app`. No commit, push, signing, notarization, tag, or public release was performed.
+
+## 2026-06-07 - Codex packaged integrity current-drift refresh
+- Fixed stale objective digest default in `panel/scripts/release-gate-python-app.py` from `after-mllm-tight-memory-guard` to `build/current-objective-proof-after-zaya-text-current-smoke-refresh-20260607.json`.
+- Regenerated packaged-integrity artifact `build/current-packaged-integrity-contract-after-staged-sequoia-rebuild-current-source-20260607.json`.
+- Release-gate unit tests now pass inside packaged-integrity (`47 passed`); packaged integrity remains red for bundled Python source drift (`server.py` source hash differs from bundled hash) and open objective requirements.
+- Refreshed release manifest/checklist to `build/current-release-regression-manifest-after-packaged-integrity-current-drift-refresh-20260607.json` and `build/current-full-release-objective-checklist-after-packaged-integrity-current-drift-refresh-20260607.json`.
+- Focused validation passed: `370 passed, 115 deselected`.
+- No rebundle, re-sign, notarization, tag, push, or public release was performed.
+
+## 2026-06-07 - Codex staged Sequoia rebuild and package integrity pass
+- Rebuilt bundled Python from current vMLX source and local JANG tools. `npm run verify-bundled` passed, including vMLX/JANG source parity, TurboQuant kernels, MiMo, Step3p7, Gemma4 unified, VL/audio dependencies, and critical imports.
+- Rebuilt `panel/release/sequoia-app/mac-arm64/vMLX.app` with electron-builder dir output. App signing completed; notarization was skipped. No DMG was created.
+- New package artifact `build/current-packaged-integrity-contract-after-staged-sequoia-rebuild-current-source-20260607.json` -> `status=pass`, `failed=[]`.
+- Refreshed manifest/checklist/current suite: `build/current-release-regression-manifest-after-zaya-vl-bundled-tool-pass-20260607.json`, `build/current-full-release-objective-checklist-after-packaged-integrity-pass-20260607.json`, `build/current-regression-suite-after-packaged-integrity-pass-20260607.json`.
+- Aggregate current suite now has failed steps only `release_regression_manifest`; package/hash/staged-app drift is closed.
+- Focused validation passed: `370 passed, 115 deselected`.
+- Release remains locked on model/objective blockers. No push, tag, notarization, DMG publication, or website/download update.
+
+2026-06-07: Added explicit full-release checklist coverage for OpenAI Chat
+Completions and legacy Completions API/cache rows alongside the existing
+Responses/cache-reuse/output-context rows. Recorded that current no-heavy
+API/cache/Responses contract is pass but live per-family API/UI/cache E2E remains
+release-blocking.
+
+2026-06-07: Reran ZAYA-VL MXFP4 smoke with bundled Python. It replaced a
+non-bundled evidence gap with a real bundled-runtime blocker: valid structured
+tool call but wrong `record_fact` argument (`argument` vs `blue-cat`) and failed
+tool-result continuation (`{"ok":true,"stored":"blue-cat"}` instead of
+`STORED blue-cat`). Cache hit telemetry was present. Updated manifest/checklist
+pointers to `after-zaya-vl-bundled-tool-failure` artifacts.
+
+2026-06-07: Fixed ZAYA/Zyphra fallback extraction for `value argument must be
+the literal string "blue-cat"` and improved ZAYA-VL tool-history coercion. Focused
+pytest slice passed. Source ZAYA-VL smoke improved: required tool now emits
+`{"value":"blue-cat"}`, but tool-result continuation still fails exact final
+answer by returning structured JSON `{"entity_status":"STORED","entity_value":"blue-cat"}`.
+Release remains blocked; bundled Python was not rebuilt.
+
+2026-06-07: ZAYA-VL source smoke now passes after merging adjacent synthetic user
+turns and rendering stored tool results as `STORED <value>`. Focused pytest slice
+3 passed. Refreshed manifest/checklist to `after-zaya-vl-source-tool-pass`; gate
+still red because this is source evidence, not bundled Python, and broader MiMo /
+Step3p7 / MiniMax / DSV4 / real-UI blockers remain.
+
+2026-06-07: Refreshed bundled Python with current source and local jang-tools.
+Bundle verification passed. ZAYA-VL MXFP4 bundled smoke now passes at
+`build/current-all-local-model-smoke-zaya-vl-mxfp4-bundled-after-source-tool-pass-20260607/summary.json`.
+Manifest/checklist refreshed to `after-zaya-vl-bundled-tool-pass`; release still
+blocked by Gemma4/MiniMax/Qwen non-bundled smoke rows plus MiMo, Step3p7,
+MiniMax #179, real UI matrix, and DSV4 blockers.
+
+2026-06-07 - MiniMax bundled tool/cache repro and harness HTTP capture
+- Patched `bench/all_local_model_smoke.py` to preserve request exceptions in request records/failures, then to handle `urllib.error.HTTPError` as real HTTP status/body instead of code `0`, and to include `response_detail` in summary request records.
+- Reran bundled MiniMax smoke three times to separate harness/transport from model/runtime behavior:
+  - `build/current-all-local-model-smoke-minimaxk-bundled-after-code0-error-capture-20260607`
+  - `build/current-all-local-model-smoke-minimaxk-bundled-after-http400-body-capture-20260607`
+  - `build/current-all-local-model-smoke-minimaxk-bundled-after-http400-detail-capture-20260607`
+- Final classification: MiniMax `tool_required` is a real HTTP 400 required-tool noncompliance caused by raw `<minimax:tool_call>` markup and zero parsed tool calls. Cache reuse and L2/TurboQuant telemetry are present in the same run; JSON/code/tool-result continuation rows pass.
+- Syntax validation: `.venv/bin/python -m py_compile bench/all_local_model_smoke.py` passed.
+
+2026-06-07 - Release manifest pointer update after MiniMax K required-tool repro
+- Replaced stale MiniMax K source/non-bundled pointer with `build/current-all-local-model-smoke-minimaxk-bundled-after-http400-detail-capture-20260607/summary.json` in manifest/objective scaffolding.
+- Removed MiniMax K from covered live/tool smoke maps because current bundled required-tool proof is red; kept artifact in manifest notes as blocker evidence.
+- Updated focused tests so current non-MiMo matrix remains open rather than pretending the failing MiniMax/DSV4 surface is pass.
+- Generated `build/current-release-regression-manifest-after-minimaxk-http400-detail-20260607.json`: fail, prepackage false, release false.
+- Focused tests passed for the changed pointer/open-state rows; full release remains locked.
+
+2026-06-07 - MiniMax K required-tool/parser/cache smoke fixed and bundled
+- Implemented strict MiniMax-native tool support improvements: concrete fallback scaffold, bounded lenient parser for recoverable native blocks, no-fake guard for dangling parameter prefixes, required-tool `raw_preview` in HTTP 400 bodies, and MiniMax-specific 256-token required-tool smoke budget.
+- Direct source probe proved the root cause: 96-token smoke budget yielded only `<minimax:tool_call>`, while 256 tokens produced a real parsed `record_fact({"value":"blue-cat"})` at 120 completion tokens.
+- Source smoke passed: `build/current-all-local-model-smoke-minimaxk-source-after-required-tool-256-20260607/summary.json`.
+- Rebuilt bundled Python via `panel/scripts/bundle-python.sh` without packaging/signing/notarization; bundle verification passed.
+- Bundled smoke passed: `build/current-all-local-model-smoke-minimaxk-bundled-after-required-tool-256-20260607/summary.json` with required tool, paged+tq cache hit, block-disk evidence, tool-result continuation, JSON exact, and code exact all green.
+- Updated release manifest/objective pointers to current bundled MiniMax pass. Regenerated manifest remains fail/release false for real remaining blockers.
+
+## 2026-06-07 local - Qwen27 JANG_4M-MTP bundled tools/media/cache gate
+
+- Scope stayed in active Python engine worktree; no deprecated wrapper, Swift,
+  ADLab/TB/RDMA work, package, signing, notarization, tag, upload, or public
+  release action.
+- Ran bundled tools/media smoke:
+  `build/current-all-local-model-smoke-qwen36-27b-jang4m-mtp-bundled-tools-media-20260607/summary.json`,
+  `status=pass`, `failed=0`.
+- Bundled launch proof: `start.json` command uses
+  `panel/bundled-python/python/bin/python3.12`, `--is-mllm`, paged cache,
+  block disk cache, SSM state cache, `--default-enable-thinking false`, and the
+  model path `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP`.
+- Rows passed: text cache `ACK`, cached repeat `cached_tokens=56` with
+  `cache_detail=paged+ssm`, multiturn `blue cat`, reasoning-on `FINAL=OK`,
+  required tool `record_fact({"value":"blue-cat"})`, tool-result continuation
+  `STORED blue-cat`, strict JSON, exact code/whitespace, `vl_blue_image`,
+  `text_no_media_after_image`, `vl_blue_image_repeat`, `vl_red_image_changed`,
+  `vl_blue_video`, and `text_no_media_after_video`.
+- Cache/runtime proof: L2 block tokens on disk `673`, L2 SSM tokens on disk
+  `993`, q4 attention-KV storage, hybrid SSM typed cache, pixel cache hit, and
+  native MTP final depth `3`.
+- Manifest live-smoke and live-tool-smoke pointers for `qwen36_moe_crack` now
+  target this bundled tools/media artifact instead of the filtered no-media
+  artifact.
+
+## 2026-06-07 local - post-Qwen manifest/objective refresh
+
+- Focused manifest tests passed:
+  `tests/test_release_regression_manifest.py::test_release_regression_manifest_tracks_covered_live_smoke_artifacts`,
+  `...rejects_missing_or_failing_covered_live_smoke_artifacts`,
+  `...rejects_live_smoke_missing_required_request_coverage`,
+  `...rejects_live_smoke_wrong_capability_family`,
+  and `...rejects_live_tool_smoke_without_repeat_cache_hit`.
+- Refreshed row manifest:
+  `build/current-release-regression-manifest-after-qwen36-bundled-media-pass-20260607.json`.
+- Refreshed proof sweep validation:
+  `build/current-proof-sweep-validation-after-qwen36-bundled-media-pass-20260607.json`,
+  `status=fail`; Qwen is cleared from live-smoke/live-tool-smoke not-pass rows;
+  Gemma4 remains not-pass because its current proof uses non-bundled Python.
+- Refreshed objective checklist:
+  `build/current-full-release-objective-checklist-after-qwen36-bundled-media-pass-20260607.json`,
+  still `OPEN` on cross-family/cache/parser/media/UI/MiMo/MiniMax/DSV4 quality
+  gates. No signing, notarization, tag, upload, or release action was taken.
+
+## 2026-06-07 local - API/cache/Responses endpoint contract refresh
+
+- Ran no-heavy endpoint/cache contract:
+  `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json`.
+- Result: `status=pass`, `missing_markers=[]`.
+- Counts: API route contracts `40 passed`, scheduler cache contracts `8 passed`,
+  TQ/MLLM cache contracts `32 passed`, DSV4 DSML tool contracts `21 passed`,
+  Responses history contracts `3 passed`.
+- Manifest/objective pointers now target this artifact instead of
+  `build/current-noheavy-api-cache-contract-after-jangtq2-objective-refresh-20260607.json`.
+
+## 2026-06-07 local - objective pointer sync after Qwen/API-cache refresh
+
+- Synced `tests/cross_matrix/run_current_regression_suite.py` release manifest
+  command to `build/current-release-regression-manifest-after-qwen36-bundled-media-api-cache-pass-20260607.json`.
+- Synced `tests/cross_matrix/summarize_objective_proof.py` to the same release
+  manifest artifact and to the current ZAYA-VL bundled proof
+  `build/current-all-local-model-smoke-zaya-vl-mxfp4-bundled-after-source-tool-pass-20260607/summary.json`.
+
+## 2026-06-07 local - final pointer-sync artifacts for Qwen/API-cache slice
+
+- Regenerated:
+  `build/current-release-regression-manifest-after-qwen36-bundled-media-api-cache-pointer-sync-20260607.json`.
+- Regenerated:
+  `build/current-proof-sweep-validation-after-qwen36-bundled-media-api-cache-pointer-sync-20260607.json`,
+  `status=fail`, with Gemma4 `command_python_not_bundled` as the remaining
+  live-smoke/live-tool-smoke not-pass row.
+- Regenerated:
+  `build/current-full-release-objective-checklist-after-qwen36-bundled-media-api-cache-pointer-sync-20260607.json`.
+- Tests passed:
+  `tests/test_release_regression_manifest.py` focused Qwen live-smoke/tool-smoke
+  slice: `5 passed`.
+- Tests passed:
+  `tests/test_objective_proof_digest.py` focused API-cache/objective pointer
+  slice: `4 passed`.
+
+## 2026-06-07 local - Gemma4 26B bundled tools/media/cache gate
+
+- Ran bundled tools/media smoke:
+  `build/current-all-local-model-smoke-gemma26-jang4m-bundled-tools-media-20260607/summary.json`,
+  `status=pass`, `failed=0`.
+- Bundled launch proof: `start.json` command uses
+  `panel/bundled-python/python/bin/python3.12`, `--is-mllm`, paged cache,
+  block disk cache, `--default-enable-thinking false`, and the model path
+  `/Users/eric/models/dealign.ai/Gemma-4-26B-A4B-it-JANG_4M-CRACK`.
+- Rows passed: text cache `ACK`, cached repeat `cached_tokens=56` with
+  `cache_detail=paged+mixed_swa`, multiturn `blue cat`, reasoning-on
+  `FINAL=OK`, required tool `record_fact({"value":"blue-cat"})`, tool-result
+  continuation `STORED blue-cat`, strict JSON, exact code/whitespace,
+  `vl_blue_image`, `text_no_media_after_image`, `vl_blue_image_repeat`,
+  `vl_red_image_changed`, `vl_blue_video`, and `text_no_media_after_video`.
+- Cache/runtime proof: L2 block tokens on disk `612`, q4 mixed SWA/full KV
+  storage-boundary quantization, rotating-window metadata preservation, pixel
+  cache hit, and no generic TurboQuant KV on Gemma4 mixed-SWA cache.
+- Manifest live-smoke and live-tool-smoke pointers for `gemma4_crack` now target
+  this bundled artifact instead of the non-bundled 20260606 artifact.
+
+## 2026-06-07 local - live-smoke/live-tool-smoke sweep green
+
+- Focused tests passed after Gemma4/Nemotron cache-family correction:
+  `tests/test_release_regression_manifest.py` live-smoke/tool-smoke slice and
+  `tests/test_objective_proof_digest.py::test_objective_proof_digest_live_smoke_pointers_match_release_manifest_current_map`.
+- Proof sweep artifact:
+  `build/current-proof-sweep-validation-after-gemma4-nemotron-cache-family-fix-20260607.json`.
+- Result: `live_smoke_status=pass`, `live_tool_smoke_status=pass`, both
+  `not_pass=[]`.
+
+## 2026-06-07 local - no-heavy contract refresh after live-smoke green
+
+- Tool-call/maxToolIterations contract passed: `engine_dsv4_dsml_tool_contracts=22`,
+  `panel_tool_loop_security=78`, `engine_family_tool_parser_matrix=144`.
+- Max output/context contract passed: `engine_output_context_resolution=26`,
+  `panel_output_context_wiring=54`.
+- Cache architecture contract passed: `cache_family_pytest=419`,
+  `panel_cache_launch_policy=102`, no missing markers/API checks/panel markers.
+- Model family detection contract passed: engine `56`, panel `48`, launch wiring `6`.
+- Parser registry contract passed: engine `147`, panel `46`.
+- Model artifact format contract passed: `160` selected tests.
+- Generation defaults contract passed: panel `26`, engine `53`, local metadata audit `5`.
+- Native MTP contract passed: engine `127`, panel controls `16`, panel detection `8`.
+- VL media/cache contract passed: engine `45`, panel follow-up `13`, VLM settings `12`, family detection `14`.
+
+## 2026-06-07 local - current MiMo V2.5 JANGTQ_2 bundled proof still red
+
+- Ran bundled no-media tools/cache smoke with no source-vs-quant comparison:
+  `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/.mlxstudio/models --only MiMo-V2.5-JANGTQ_2 --max-models 1 --include-tools --no-media --port 63007 --load-timeout-s 900 --request-timeout-s 300 --out build/current-all-local-model-smoke-mimo-v25-jangtq2-bundled-tools-nomedia-20260607`.
+- Result: `probe_failed`, `failures=5`.
+- Cache/runtime telemetry: `cache_detail=paged`, repeated cache hits, `cached_tokens`
+  including `67` and `128`, L2 block tokens on disk `1263`, q4 storage-boundary
+  KV quantization, native cache `family=mimo_v2`, `schema=mixed_swa_kv_v1`,
+  `cache_subtype=mimo_v2_asymmetric_swa`, no generic TurboQuant KV.
+- Failures: reasoning-on empty visible answer; required tool emitted
+  `record_fact({"value":"blue-123"})`; sentinel tool emitted
+  `record_fact({"value":"B7CAT-09"})`; JSON exact row emitted
+  `{"status":"ok","value":"blue-1","count":3}`; sentinel JSON emitted
+  `{"status":"ok","value":"B7CCAT-09","count":3}`.
+
+## 2026-06-07 local - MiMo tokenizer roundtrip isolation
+
+- Ran bundled tokenizer roundtrip with `AutoTokenizer.from_pretrained(...,
+  local_files_only=True)` on `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`.
+- Exact roundtrip passed for `blue-cat`, `B7-CAT-09`, `blue-123`, `B7CAT-09`,
+  and `B7CCAT-09`.
+- Classification strengthened: current MiMo exact tool/JSON mutations are not
+  explained by tokenizer decode losing hyphens or changing strings.
+
+## 2026-06-07 local - MiMo capability truth and current release gate refresh
+
+- Bundled Python rebuild completed from current source and local JANG tools before rerun.
+- Added MiMo capability truth in source and bundled runtime: MiMo V2.5 is not advertised as thinking-capable; `think_xml` no-tag behavior no longer hides visible text; XML tools remain enabled.
+- Updated smoke harness so MiMo no-media proof does not run a false reasoning probe and reports normalized capability metadata.
+- Ran MiMo bundled no-media tools/cache smoke: `build/current-all-local-model-smoke-mimo-v25-jangtq2-bundled-tools-nomedia-after-mimo-capability-snapshot-fix-20260607/summary.json` -> `probe_failed`, `failures=4`.
+- Passed runtime/cache surface in that proof: paged cache reuse, cache hit telemetry, multiturn recall, parsed XML tool call shape, tool-result continuation, exact code/whitespace, no visible/hidden reasoning split error under no-thinking policy.
+- Failed exactness rows remain: tool `blue-cat -> blue-123`, sentinel tool `B7-CAT-09 -> B7CAT-09`, JSON `blue-cat -> blue-1`, sentinel JSON `B7-CAT-09 -> B7CCAT-09`.
+- Updated objective pointers to latest MiMo artifact and regenerated release/objective/checklist artifacts:
+  - `build/current-release-regression-manifest-after-mimo-capability-snapshot-fix-20260607.json`
+  - `build/current-objective-proof-after-mimo-capability-snapshot-fix-20260607.json`
+  - `build/current-full-release-objective-checklist-after-mimo-capability-snapshot-fix-20260607.json`
+- Focused validation passed: objective digest selector `11 passed`; release-manifest live smoke/tool smoke selector `32 passed`.
+- Full checklist remains `status=open`, `failed_count=18`; blockers include MiMo exactness/long/CB/source/media, Step3p7 real VLM proof, MiniMax #179 reporter parity/root cause, real UI matrix, and DSV4 memory/exactness/code rows.
+
+## 2026-06-07 local - proof-chain source-hash refresh after MiMo capability truth
+
+- Found objective rows still open because old no-heavy artifacts had stale source hashes after the MiMo capability/registry/decode-speed changes.
+- Fixed `tests/cross_matrix/run_decode_speed_gate.py` so `mimo_v25_jang2l` no longer declares `reasoning_parser=think_xml`; XML tools remain enabled.
+- Reran current-source no-heavy contracts: cache architecture, model family detection, parser registry, model artifact format, generation defaults, native MTP, and VL/media cache. All passed.
+- Regenerated release/objective/checklist artifacts under `after-current-source-contract-refresh-20260607` names.
+- Objective digest now shows PASS for cache architecture, high-risk model family/parser/artifact gates, and generation/native-MTP/VL-media gates.
+- Validation passed: objective digest selector `15 passed`; release-manifest selector `47 passed`.
+- Release remains blocked by live/model/UI blockers only: MiMo, Step3p7 live VLM, MiniMax #179, real Electron UI matrix, and DSV4 memory/exactness/code rows.
+
+## 2026-06-07 local - Step3p7 source VLM live proof and API/cache release rows
+
+- Fixed Step3p7 MLLM detection in `vmlx_engine/api/utils.py`: advertised Step3p7 VLM metadata now routes to MLLM only when the source-owned `vmlx_engine.models.step3p7_mlx_vlm` runtime surface is available; missing runtime still blocks forced MLLM and stays text-only.
+- Ran source live Step3p7 smoke: `build/current-all-local-model-smoke-step37-jang2l-source-tools-media-after-vlm-routing-20260607/summary.json` -> `status=pass`, `failed=0`.
+- Live proof covered text cache repeat, paged+mixed_swa cache reuse (`cached_tokens=61`), tool call, tool-result continuation, reasoning-on visible answer, exact JSON, exact code, image blue/repeat/red-change, video request path, and no-media text recovery after image/video.
+- Generated Step3p7 VLM audit: `build/current-step37-vlm-runtime-audit-after-source-live-media-proof-20260607.json` -> `status=pass`, `release_clearance=audit_does_not_block_release`, `live_media_proof.pass=true`.
+- Made `/v1/responses`, previous_response_id, streaming cache detail usage, cache stats/entries/warm/clear endpoints, and panel single-model cache endpoint autoswitch explicit full-release checklist rows through the API-surface contract.
+- Regenerated current release artifacts:
+  - `build/current-release-regression-manifest-after-step37-live-vlm-proof-20260607.json` -> release still open.
+  - `build/current-full-release-objective-checklist-after-step37-live-vlm-proof-20260607.json` -> `status=open`, `failed_count=17`.
+  - `build/current-objective-proof-after-step37-live-vlm-proof-20260607.json` -> 20 PASS, 6 OPEN.
+- Focused validation passed: Step3p7/API/checklist/manifest pointer slice `37 passed`; py_compile passed for touched runners/tests.
+- Release remains blocked by: MiMo exactness/long/CB/source/media rows, MiniMax #179 reporter parity/root cause, real Electron UI live matrix, DSV4 memory/exactness/code/file-generation rows, and packaging/release state. No signing/notarization/tag/download update performed.
+
+## 2026-06-07 local - MiMo KV-none/no-prefix exactness isolation and cache/Responses status
+
+- Added `build/current-all-local-model-smoke-mimo-v25-jangtq2-bundled-tools-nomedia-kvnone-noprefix-20260607/summary.json` to the MiMo current audit.
+- Regenerated `build/current-mimo-v2-jang2l-current-audit-after-kvnone-noprefix-exactness-isolation-20260607.json`.
+- Result: MiMo remains `status=open`, `local_release_clearance=false`.
+- Cache/Responses endpoint contract is green via `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json`.
+- MiMo cache proof distinction: the same literal exactness failures reproduce with runtime KV quantization disabled, native storage quantization disabled, prefix cache disabled, paged cache disabled, block-disk L2 disabled, and zero cache hits.
+- Therefore do not chase prefix cache reuse, paged/L2 disk cache, or runtime KV quantization as the primary current MiMo exactness cause.
+- Current MiMo blockers remain: long-prompt coherence, JANGTQ2 artifact literal exactness, CB system-prompt working-set pressure, source-vs-quant/equivalent classification, VL/audio/video unwired, and media runtime implementation missing.
+- Refreshed current artifacts:
+  - `build/current-release-regression-manifest-after-mimo-kvnone-isolation-20260607.json`
+  - `build/current-full-release-objective-checklist-after-mimo-kvnone-isolation-20260607.json`
+  - `build/current-objective-proof-after-mimo-kvnone-isolation-20260607.json`
+- Current checklist remains red: `failed_count=17`.
+- Current objective proof remains `20 PASS / 6 OPEN`.
+- Narrow validation passed: release-gate objective pointer, API cache pointer, MiMo current audit tests, objective pointer, and full checklist tests (`9 passed`).
+- Broader selected pytest still exposes unrelated stale release-manifest expectations; do not treat release as clear until those are fixed or explicitly scoped out.
+
+## 2026-06-07 local - Release execution tracker and AGENTS current gate snapshot
+
+- Updated `AGENTS.md` with a current 2026-06-07 gate snapshot pointing to:
+  - `build/current-full-release-objective-checklist-after-mimo-kvnone-isolation-20260607.json`
+  - `build/current-objective-proof-after-mimo-kvnone-isolation-20260607.json`
+  - `build/current-release-regression-manifest-after-mimo-kvnone-isolation-20260607.json`
+  - `build/current-mimo-v2-jang2l-current-audit-after-kvnone-noprefix-exactness-isolation-20260607.json`
+  - `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json`
+- Added durable tracker `docs/internal/VMLX_MLXSTUDIO_RELEASE_EXECUTION_TRACKER_2026_06_07.md`.
+- Tracker keeps release status red, lists 6 open objective rows, itemizes MiMo blockers, preserves the cache/Responses distinction, and lists per-family cache/tool/media/UI/release requirements.
+- Release lock remains active: no signing, notarization, tag, appcast/download update, or public release while objective rows remain open.
+
+## 2026-06-07 local - MiniMax #179 memory-preflight classification refresh
+
+- Selected next open objective row: `MiniMax-M2.7-JANGTQ_K reporter parity/root cause is release-cleared`.
+- Ran missing local reporter-prompt reproduction command through the existing MiniMax Responses cancel probe harness:
+  - `build/current-issue179-minimax-k-responses-cancel-probe-installed-badtext-20260528.json`
+  - result: `status=skipped`, `reason=insufficient_vm_stat_memory`; no unsafe bypass of memory guard was performed.
+- Refreshed root-cause audit:
+  - `build/current-issue179-minimax-k-root-cause-audit-after-local-repro-memory-preflight-20260607.json`
+  - result: `status=open`.
+- Current issue179 classification:
+  - local Responses cancel probe remains green.
+  - local reporter-prompt reproduction artifact now exists but is memory-preflight skipped, not clean.
+  - reporter parity artifact is still missing.
+  - reporter server hash still drifts from current source/local/latest public bundle.
+  - reporter log/session/cancel lifecycle proof is still missing.
+- Refreshed current release artifacts:
+  - `build/current-release-regression-manifest-after-issue179-memory-preflight-20260607.json`
+  - `build/current-full-release-objective-checklist-after-issue179-memory-preflight-20260607.json`
+  - `build/current-objective-proof-after-issue179-memory-preflight-20260607.json`
+  - `build/current-public-app-issue-audit-after-issue179-memory-preflight-20260607.json`
+  - `build/current-issue175-179-release-boundary-audit-after-issue179-memory-preflight-20260607.json`
+- Current release remains red: full checklist `failed_count=17`, objective proof 20 PASS / 6 OPEN.
+
+## 2026-06-07 local - Real UI LFM25 refresh
+
+- Selected next open objective row: real Electron UI live model matrix.
+- Ran current Electron dev real UI proof for LFM2.5 MXFP4 with Responses, builtin tools, cache controls, and max output 256:
+  - proof: `docs/internal/agent-notes/current-real-ui-live-model-lfm25-mxfp4-responses-tools-cachecontrols-20260607-proof.json`
+  - screenshot: `docs/internal/agent-notes/current-real-ui-live-model-lfm25-mxfp4-responses-tools-cachecontrols-20260607-chat.png`
+- Proof status: `pass`.
+- Covered surfaces include: `responses_api`, `responses_delta_streaming`, `long_tool_loop`, `tool_l2_cache_integrated`, `cache_hit_telemetry`, `native_cache_status`, `server_cache_controls`, `l2_disk_storage`, `settings_persistence`, parser/language leak checks, and live speed floor.
+- Runtime/cache proof: LFM native cache is `family=lfm2`, `schema=hybrid_ssm_v1`, `cache_type=hybrid_ssm_typed`, components include `attention_kv`, `ssm_companion_state`, and `async_rederive`; generic TurboQuant KV is disabled for `hybrid_ssm_state`; attention KV storage-boundary q4 is active; prefix/paged/block-disk L2 are true; cache hit tokens observed `2759`; L2 block tokens `1559`; L2 SSM tokens `4631`.
+- Updated LFM real UI proof pointers so the matrix no longer mixes stale JANG_2L and current MXFP4 identities.
+- Refreshed current artifacts:
+  - `build/current-release-regression-manifest-after-real-ui-qwen-mtp-toolblock-20260607.json`
+  - `build/current-full-release-objective-checklist-after-real-ui-qwen-mtp-toolblock-20260607.json`
+  - `build/current-objective-proof-after-mimo-manifest-classifier-sync-20260607.json`
+- Current UI matrix classification: LFM family is now pass; covered non-DSV4 families are pass, but aggregate `real_ui_live_model_proof` still fails on stale individual proof identity checks and DSV4 remains missing/memory-gated. Full UI release row remains open.
+
+## CODEX 2026-06-07 Qwen MTP real UI cache/Responses proof refresh
+- now: replaced stale Qwen3.6 MXFP4 real-UI proof pointers with current `Qwen3.6-27B-JANG_4M-MTP` evidence.
+- proof: `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-cachecontrols-deterministic-mtp-20260607-proof.json`.
+- result: `status=fail`, `failureStage=release_assertions`, `assertionFailures=[requested real built-in tools but proof did not record long_tool_loop surface]`.
+- green subproofs: current model identity, Responses API, Responses delta streaming, cache detail usage, cache-hit telemetry, native hybrid SSM cache status, TurboQuant attention KV storage, block-disk L2, SSM companion L2, server cache controls, settings persistence, parser/language leak checks.
+- tool diagnosis: UI persisted tool events and executed the requested files, but the first tool call used malformed empty args (`run_command {}`) before recovery, so the proof correctly does not record `long_tool_loop`.
+- harness fix: `panel/scripts/live-real-ui-model-proof.mjs` now writes release assertion failures back into the proof JSON before throwing, preventing failed proofs from being serialized as `status=pass`.
+- refreshed artifacts: `build/current-release-regression-manifest-after-real-ui-qwen-mtp-toolblock-20260607.json`, `build/current-full-release-objective-checklist-after-real-ui-qwen-mtp-toolblock-20260607.json`, and `build/current-objective-proof-after-mimo-manifest-classifier-sync-20260607.json`.
+- release boundary: cache/Responses endpoints are not enough for release; Qwen MTP long tool-loop, current image/video/reasoning UI coverage, MiMo, MiniMax #179, DSV4, and full installed UI matrix remain open. No signing/notarization/tag/release was done.
+
+## CODEX 2026-06-07 Qwen MTP real UI tools/cache/MTP pass
+- now: fixed the Qwen 3.6 JANG_4M-MTP real-UI tool-loop blocker without masking tool errors.
+- runtime changes:
+  - `vmlx_engine/api/tool_calling.py` strengthens Qwen native fallback instructions when the user explicitly names an available tool: emit the native tool call first, do not fabricate a result, do not emit empty calls, and include non-empty required params.
+  - `vmlx_engine/server.py` drops parsed tool calls whose request-tool schema has missing/empty required arguments, so malformed `<function=run_command>` no longer becomes executable `{}`.
+  - `panel/scripts/live-real-ui-model-proof.mjs` records release assertion failures into proof JSON before throwing and supports explicit sampling overrides for deterministic native-MTP UI proofs.
+- proof: `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-cachecontrols-deterministic-mtp-20260607-proof.json`.
+- result: `status=pass`.
+- proven: current model identity, Responses API, Responses delta streaming, cache detail usage, built-in `run_command` tool loop, settings persistence, deterministic UI sampling overrides (`temperature=0`, `repeatPenalty=1`), native MTP activation under tool-compatible D1, hybrid SSM typed cache, TurboQuant attention KV, block-disk L2, SSM companion L2, server cache controls, parser/language leak checks.
+- evidence highlights: `last_native_mtp.fallback_reason=null`, accepted 8/14 in last turn; `cacheHitTokens=23225`; L2 totals show block tokens 4555 and SSM tokens 23225.
+- release boundary: this clears the Qwen27 real-UI Responses/tools/cache/MTP slice only. Qwen media/reasoning UI, Qwen35, MiMo, MiniMax #179, DSV4, installed-app matrix, signing, notarization, tagging, and public release remain open.
+
+## CODEX 2026-06-07 release gate refresh after Qwen MTP UI pass
+- refreshed no-heavy contracts after source edits: tool-call, max-output/context, cache architecture, model-family detection, parser registry, model-artifact format, generation defaults/local metadata, native MTP, VL media cache, and no-heavy API/cache all pass current-source checks.
+- Step3p7 metadata audit updated to record current source behavior: advertised Step3p7 vision routes MLLM by default when source runtime is available, instead of stale text-only guard expectation.
+- release manifest refreshed: `build/current-release-regression-manifest-after-real-ui-qwen-mtp-toolblock-20260607.json` remains `prepackage_ready=false`, `release_ready=false`.
+- full checklist refreshed: `build/current-full-release-objective-checklist-after-real-ui-qwen-mtp-toolblock-20260607.json` remains `status=open`, `failed_count=17`; `real_ui_live_model_proof=true`, `real_ui_full_model_matrix=false`.
+- objective proof refreshed: `build/current-objective-proof-after-mimo-manifest-classifier-sync-20260607.json` is 20 PASS / 6 OPEN.
+- validation: node syntax + Python py_compile passed; focused release gate slice `9 passed`; engine tool slice previously `61 passed`; local generation metadata `5 passed`.
+- release boundary: no signing, notarization, tagging, push, package release, or public download update. Remaining blockers are MiMo quality/media, MiniMax #179 reporter/root cause, DSV4 memory/exact long-output, cross-family live multi-turn matrix, and full installed UI/media matrix.
+
+## CODEX 2026-06-07 Qwen35/cache/Responses release-gate refresh
+- selected blocker class: `api/ui` plus `cache/storage`; reduced real-UI Qwen MTP coverage and refreshed generated release gates.
+- Qwen35 proof in scope: `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-cachecontrols-deterministic-mtp-20260607-proof.json` with screenshot `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-cachecontrols-deterministic-mtp-20260607-chat.png`.
+- Qwen35 result: `status=pass`; real UI Responses streaming, built-in tool loop, cache detail usage, deterministic recorded sampling, native MTP active under tool-compatible D1, hybrid SSM cache, TurboQuant attention KV, block-disk L2, SSM companion L2, server cache controls, settings persistence, and parser/language leak checks are proven.
+- regenerated release gates: `build/current-release-regression-manifest-after-real-ui-qwen-mtp-toolblock-20260607.json`, `build/current-full-release-objective-checklist-after-real-ui-qwen-mtp-toolblock-20260607.json`, `build/current-objective-proof-after-mimo-manifest-classifier-sync-20260607.json`.
+- generated state remains red: manifest `prepackage_ready=false` and `release_ready=false`; checklist `status=open`, `failed_count=17`; objective proof 20 PASS / 6 OPEN.
+- cache reuse/Responses endpoints are green only as no-heavy/API contract proof; full per-family live E2E for cache/restart/cancel/media/UI remains required before release.
+- no signing, notarization, tag, release, public download update, or push-to-main claim was performed.
+
+## 2026-06-07 local - Gemma4 12B JANG_4M Responses/tools/image/cache proof
+
+- Ran current Electron dev real UI proof for `JANGQ-AI/gemma-4-12B-it-JANG_4M` with Responses, built-in tools, image, cache controls, deterministic sampling, and default optimized server flags.
+- Proof passed:
+  - `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-responses-tools-image-cachecontrols-after-media-fallback-20260607-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-responses-tools-image-cachecontrols-after-media-fallback-20260607-chat.png`
+- Runtime evidence: server health `engine_type=batched`; text/tool turns used Gemma4 native `mixed_swa_kv_v1`, `paged+mixed_swa`, `cache_hit_tokens=8354`, block-disk L2 writes, and `l2_block_tokens_on_disk=3016`.
+- Media evidence: image turn returned `Red` and server log recorded `Using simple MLLM media streaming fallback for gemma4 with 1 image(s), 0 video(s)`.
+- Classification: model artifact/upload is not the source of the Gemma4 image corruption. The bug was the optimized batched Gemma4 media prefill/output path; current source routes Gemma4 media through a scoped simple MLLM fallback while leaving text/tool cache on the optimized batched path.
+- Regenerated gates after the proof: release manifest remains `prepackage_ready=false`, `release_ready=false`; full checklist remains `status=open`, `failed_count=17`; objective proof remains 20 PASS / 6 OPEN.
+- Boundary: this does not claim full Gemma4 release clearance. MXFP4/MXFP8 media UI, audio/video, installed-app parity, optimized batched media-cache parity, full matrix, signing, notarization, tagging, and public release remain blocked.
+
+## 2026-06-07 local - AGENTS release loop and MiMo current audit refresh
+
+- Hardened `AGENTS.md` with a mandatory continuation loop: stay in the active Python/Electron worktree, name the blocker, prefer live proofs, update status/log/tracker, regenerate gates only when meaningful, and do not sign/notarize/tag/publish while objective rows are open.
+- Added a concrete minimum evidence standard for "working": visible output, multi-turn, required/auto/no-tool/tool-result behavior, raw leak checks, JSON/XML/code/whitespace exactness, cache miss/hit telemetry, typed native cache, L2 restart restore, largest-context tail inspection, UI settings reflection, and installed-app parity before release.
+- Refreshed no-heavy MiMo current-artifact audit without source-vs-quant load:
+  - `build/current-mimo-v2-jang2l-current-audit-after-agents-release-loop-20260607.json`
+- MiMo remains `status=open`, `local_release_clearance=false`.
+- Current MiMo green subproofs: manifest integrity, stale local state absent, structural verify, SwitchGLU selected-expert parity, text cache narrow proof, cache-vs-nocache next-token parity, OpenAI tool structure, prefix/paged/L2 cache reproved, decode speed target near 40 tok/s, no-heavy API/cache/Responses contract, and exactness not caused by prefix/paged/L2/KV quantization.
+- Current MiMo blockers: literal exactness still mutates values (`blue-cat`, `B7-CAT-09`), long-prompt coherence remains blocked, CB system-prompt working-set pressure remains blocked, source-vs-quant/equivalent artifact classification remains unresolved under current RAM constraint, and MiMo VL/audio/video is preserved but unwired.
+- Updated full-objective checklist pointer so future generated gates consume the refreshed MiMo audit.
+
+## 2026-06-07 local - Qwen27 MTP media/reasoning UI proof
+
+- Ran current Electron dev real UI proof for `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP` with Responses, built-in tools, reasoning enabled, image input, cache controls, deterministic sampling, and MTP.
+- First run at `max_tokens=96` failed release assertions:
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-image-reasoning-cachecontrols-20260607-proof.json`
+  - The image answer was semantically correct (`Red.`) and `vl_image` was proven, but turn 2 used the budget on reasoning-only output and missed visible/tool-loop completion.
+- Reran at `max_tokens=256`; proof passed:
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-image-reasoning-cachecontrols-max256-20260607-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-image-reasoning-cachecontrols-max256-20260607-chat.png`
+- Proven surfaces: `long_tool_loop`, `reasoning_display`, `vl_image`, `tool_l2_cache_integrated`, Responses streaming/cache detail, native cache, block L2, SSM L2, server cache controls, settings persistence, parser/language leak checks.
+- Runtime/cache evidence: native MTP active for text+VL, D3 configured but capped to D1 when tools are present, `hybrid_ssm_v1`, TurboQuant attention KV for attention layers only, SSM companion native/full precision, block-disk L2 tokens, SSM companion L2 tokens, and media-safe skip of media prompt cache store.
+- Updated release manifest Qwen27 reasoning/image row to use the max-256 passing proof.
+- Boundary: this clears Qwen27 dev-Electron tools+image+reasoning+cache slice only. Qwen35 media/reasoning, Qwen video, installed-app parity, largest-context/restart matrix, and release remain open.
+- Regenerated gates after pointer update: release manifest remains `prepackage_ready=false`, `release_ready=false`; full checklist remains `status=open`, `failed_count=17`; objective proof remains 20 PASS / 6 OPEN.
+
+## 2026-06-07 local - Qwen35 MTP media/reasoning UI proof
+
+- Ran current Electron dev real UI proof for `/Users/eric/models/JANGQ/Qwen3.6-35B-A3B-MXFP8-MTP` with Responses, built-in tools, reasoning enabled, image input, cache controls, deterministic sampling, and MTP.
+- Proof passed:
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-image-reasoning-cachecontrols-max256-20260607-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-image-reasoning-cachecontrols-max256-20260607-chat.png`
+- Proven surfaces: `long_tool_loop`, `reasoning_display`, `vl_image`, `tool_l2_cache_integrated`, Responses streaming/cache detail, native cache, block L2, SSM L2, server cache controls, settings persistence, parser/language leak checks.
+- Runtime/cache evidence: native MTP active for text+VL, D3 configured but capped to D1 when tools are present, no `gdn_sink` crash, trained active experts 8, `hybrid_ssm_v1`, TurboQuant attention KV for attention layers only, SSM companion native/full precision, block-disk L2 tokens, SSM companion L2 tokens, and media-safe skip of media prompt cache store.
+- Added release manifest Qwen35 reasoning/image row pointing at the max-256 passing proof.
+- Boundary: this clears Qwen35 dev-Electron tools+image+reasoning+cache slice only. Qwen video, installed-app parity, largest-context/restart matrix, and release remain open.
+- Regenerated gates after Qwen35 pointer update: release manifest remains `prepackage_ready=false`, `release_ready=false`; full checklist remains `status=open`, `failed_count=17`; objective proof remains 20 PASS / 6 OPEN.
+
+## 2026-06-07 local - Qwen MTP video UI proofs
+
+- Ran current Electron dev video proofs using existing 14 KB red/green/blue MP4 data URLs.
+- Qwen27 JANG_4M MTP video proof passed:
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-video-reasoning-cachecontrols-max256-20260607-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-27b-jang4m-mtp-responses-tools-video-reasoning-cachecontrols-max256-20260607-chat.png`
+- Qwen35 MXFP8 MTP video first failed at max-256:
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-video-reasoning-cachecontrols-max256-20260607-proof.json`
+  - Frames decoded and runtime stayed healthy, but final video turn ended reasoning-only at length with no visible description.
+- Qwen35 MXFP8 MTP video rerun passed at max-512:
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-live-model-qwen36-35b-mxfp8-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-chat.png`
+- Proven Qwen video surfaces: `video_where_supported`, `long_tool_loop`, `reasoning_display`, Responses streaming/cache detail, native MTP active for text+VL, typed `hybrid_ssm_v1`, TurboQuant attention KV, block L2, SSM L2, server cache controls, settings persistence, parser/language leak checks.
+- Updated release manifest video rows for Qwen27 and Qwen35.
+- Boundary: this clears dev-Electron Qwen video slices only. Installed-app parity, largest-context/restart matrix, MiMo, MiniMax #179, DSV4, and release remain open.
+- Regenerated gates after Qwen video pointer update: release manifest remains `prepackage_ready=false`, `release_ready=false`; full checklist remains `status=open`, `failed_count=17`; objective proof remains 20 PASS / 6 OPEN.
+
+## 2026-06-07 local - cache reuse/Responses endpoint release boundary tightened
+
+- Recorded installed-app Qwen27 proof after process exit:
+  `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-27b-jang4m-mtp-responses-tools-image-reasoning-cachecontrols-max256-20260607-proof.json`.
+- Installed Qwen27 result: `status=pass`; bundled `/Applications/vMLX.app` Python reported `vmlx_engine 1.5.56` and passed Responses streaming, tool loop, reasoning display, image answer, native MTP, hybrid SSM cache, TurboQuant attention KV, block L2, SSM L2, server cache controls, settings persistence, parser/language leak checks, and installed-app UI route.
+- Packaged perf risk: installed app proof reported `nax_symbols=0` / `naxtile_symbols=0`; functional slice is green, but packaged acceleration/speed parity is not cleared.
+- Tightened the release tracker's cache/Responses section so no-heavy endpoint-contract green cannot be mistaken for release clearance.
+- Current no-heavy API/cache/Responses contract remains green:
+  `build/current-noheavy-api-cache-contract-after-qwen36-bundled-media-pass-20260607.json`.
+- Explicit green plumbing rows include `responses_previous_response_history`, `cache_stats_reuse_skip_telemetry`, `cache_reuse_endpoints`, streaming cache detail usage, JSON schema/text-format preservation, and max output/context separation.
+- Boundary: every release-critical family still needs live visible stream/non-stream output, tool-result continuation, cancellation cleanup, typed native cache, first-miss/second-hit cache telemetry, block-disk L2 write, restart/fresh-process restore, largest-context tail inspection, and UI/installed-app parity before release.
+
+## 2026-06-07 local - Qwen35 installed-app image/reasoning/cache proof
+
+- First installed-app Qwen35 attempt used invalid media env `VMLINUX_REAL_UI_CHECK_IMAGE=1`; it passed text/tools/reasoning/cache but did not exercise image media (`requestedMedia=false`). This was not recorded as an image pass.
+- Corrected installed-app Qwen35 run used `VMLINUX_REAL_UI_CHECK_MEDIA=1` and passed:
+  `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-35b-mxfp8-mtp-responses-tools-image-reasoning-cachecontrols-max256-20260607-proof.json`.
+- Installed Qwen35 result: `status=pass`; bundled `/Applications/vMLX.app` Python reported `vmlx_engine 1.5.56`; image media was actually exercised (`requestedMedia=true`, `num_images_processed=1`, `vl_image`).
+- Proven surfaces: Responses streaming/cache detail, built-in tool loop, reasoning display, image answer, native MTP, trained top-k 8, typed `hybrid_ssm_v1`, TurboQuant attention KV for attention layers only, block-disk L2, SSM companion L2, server cache controls, settings persistence, parser/language leak checks, and installed-app UI route.
+- Correct media-cache boundary observed: media prompt cache store was skipped as path-dependent rather than reusing a text-only cache entry.
+- Speed/perf note: installed Qwen35 live samples were about `83-89 live tok/s`; installed app still reports `nax_symbols=0` / `naxtile_symbols=0`, so packaged acceleration symbol parity remains a release risk even though this functional slice is green.
+- Remaining Qwen blockers: installed-app video, largest-context, restart/fresh-process L2 restore, cancellation cleanup matrix, and full installed-app cross-family matrix. No signing/notarization/tag/download update.
+
+## 2026-06-07 local - Qwen27 restart-L2 restore proof recorded
+
+- Inspected current checklist artifact:
+  `build/current-qwen27-mxfp4-mtp-restart-l2-restore-20260607/summary.json`.
+- Result: `status=pass`.
+- Pass conditions: phase 1 ack, phase 2 ack, positive phase 2 cache-hit tokens, phase 2 block disk hit, L2 tokens on disk, native MTP active, and no errors.
+- Phase 1 wrote block L2: `total_tokens_on_disk=63`, `disk_writes=1`, typed native cache `hybrid_ssm_v1`, attention-only TurboQuant KV, native SSM companion policy, and native MTP active.
+- Phase 2 fresh-process restore hit disk: `cached_tokens=63`, `cache_detail=paged+ssm+disk`, `disk_hits=1`, typed native cache `hybrid_ssm_v1`, and native MTP active.
+- Boundary: this clears Qwen27 restart-L2 restore only. Qwen35 restart-L2 restore, Qwen installed-app video, largest-context tail inspection, cancellation cleanup matrix, and full installed-app cross-family matrix remain open.
+
+## 2026-06-07 local - Qwen35 restart-L2 restore proof and checklist wiring
+
+- Ran a controlled bundled-Python Qwen35 restart-L2 proof with two fresh `vmlx_engine.cli serve` processes sharing one block-cache directory.
+- Artifact:
+  `build/current-qwen35-mxfp8-mtp-restart-l2-restore-20260607/summary.json`.
+- Result: `status=pass`; both phases returned visible `ACK-QWEN35-L2`.
+- Phase 1 wrote 27 block-L2 entries (`total_tokens_on_disk=1695`) plus SSM companion disk state (`stores=2`, `total_tokens_on_disk=3359`).
+- Phase 2 restored from disk: `cached_tokens=1695`, `cache_detail=paged+ssm+disk`, block disk `disk_hits=27`, SSM companion disk `hits=1`, typed native cache `hybrid_ssm_v1`, attention-only TurboQuant KV, and native MTP active at depth 3.
+- Wired the proof into the full objective checklist:
+  `tests/cross_matrix/run_full_release_objective_checklist.py`.
+- Added focused fixture coverage:
+  `tests/test_full_release_objective_checklist.py`.
+- Validation passed: py_compile for edited files and focused checklist pytest (`2 passed`).
+- Regenerated full checklist:
+  `build/current-full-release-objective-checklist-after-qwen35-restart-l2-restore-20260607.json`.
+- Generated state remains release-red: `status=open`, `failed_count=17`. Remaining blockers are MiMo exactness/long/CB/source/media, MiniMax #179 reporter parity/root cause, DSV4 memory/exact code-file-long output, full real UI/installed-app matrix, and prepackage/release gates.
+
+## 2026-06-07 local - Qwen installed-app video proofs
+
+- Ran installed-app Qwen27 video with `/Applications/vMLX.app` and bundled Python `vmlx_engine 1.5.56`.
+- Qwen27 max-256 failed:
+  `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-27b-jang4m-mtp-responses-tools-video-reasoning-cachecontrols-max256-20260607-proof.json`.
+- Qwen27 max-256 classification: server decoded the MP4 and processed video, but the final media turn stopped reasoning-only at max tokens with no visible answer. This is a thinking-mode output-budget boundary, not a video runtime crash.
+- Qwen27 max-512 passed:
+  `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-27b-jang4m-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-proof.json`.
+- Qwen35 max-512 passed:
+  `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-35b-mxfp8-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-proof.json`.
+- Both passing installed-app video proofs decoded the MP4 data URL, extracted six frames, returned visible video content, and proved `video_where_supported`, reasoning display, Responses streaming/cache detail, built-in tool loop, native MTP, typed `hybrid_ssm_v1`, TurboQuant attention KV, block L2, SSM L2, server cache controls, settings persistence, parser/language leak checks, and media-safe skip of media prompt cache store.
+- Boundary: this records installed-app video evidence but does not yet wire these video artifacts into the generated manifest/checklist. Remaining Qwen blockers are largest-context tail inspection, cancellation cleanup matrix, installed-app video manifest/checklist wiring, and packaged acceleration symbol parity.
+
+## 2026-06-07 local - Qwen installed-app video objective wiring
+
+- Wired Qwen installed-app video proofs into the full objective checklist:
+  `tests/cross_matrix/run_full_release_objective_checklist.py`.
+- Added focused fixture coverage:
+  `tests/test_full_release_objective_checklist.py`.
+- Enforced artifacts:
+  - `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-27b-jang4m-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-installed-app-qwen36-35b-mxfp8-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-proof.json`
+- New checklist assertions require installed-app route, requested video, visible output, `video_where_supported`, reasoning display, Responses streaming/cache detail, tool+L2 integration, six processed frames, typed `hybrid_ssm_v1`, native MTP depth 3, `paged+ssm` cache detail, block L2 writes, and SSM companion disk stores.
+- Validation passed: py_compile for edited files and focused checklist pytest (`2 passed`).
+- Regenerated full checklist:
+  `build/current-full-release-objective-checklist-after-qwen-installed-video-wiring-20260607.json`.
+- Generated state remains release-red: `status=open`, `failed_count=17`. Remaining generated blockers are MiMo exactness/long/CB/source/media, MiniMax #179 reporter parity/root cause, DSV4 insufficient memory/exact code-file-long output, real UI full matrix, and prepackage/release gates.
+
+## 2026-06-07 local - MiniMax #179 refreshed boundary
+
+- Refreshed MiniMax #179 root-cause audit:
+  `build/current-issue179-minimax-k-root-cause-audit-after-qwen-installed-video-wiring-20260607.json`.
+- Result remains `status=open`.
+- Local proven clean rows: current source Responses cancel contract, inactive cancel 404 contract, latest public DMG cancel route, local installed bundle cancel route, local installed session settings parity, local installed Responses cancel live probe, and local real-UI diagnostics.
+- Current missing reporter rows: reporter parity artifact, reporter model shard/codebook hash comparison, reporter model manifest, reporter installed/public/local server hash match, reporter response active at cancel, reporter chat/session/settings parity, screenshot-shaped prompt reproduction, and proof that 404 cancel caused the screenshot rather than followed stream abort.
+- Updated full-objective checklist pointer to consume the refreshed audit.
+- Validation passed: py_compile for edited checklist files and focused checklist pytest (`2 passed`).
+- Regenerated full checklist:
+  `build/current-full-release-objective-checklist-after-issue179-refresh-20260607.json`.
+- Generated state remains release-red: `status=open`, `failed_count=17`.
+- Boundary: MiniMax #179 cannot be honestly cleared from local-only evidence. Reporter-machine parity metadata must be captured with `tests/cross_matrix/run_issue179_reporter_parity_metadata.py --capture-provenance reporter_machine ...` or equivalent reporter logs/session/cancel lifecycle proof.
+
+## 2026-06-07 local - Qwen27 long-context cache-tail proof
+
+- Ran installed/bundled Qwen27 long-context cache-tail proof:
+  `build/current-qwen27-jang4m-mtp-installed-long-context-cache-tail-20260607.json`.
+- Result: `status=pass`.
+- Cold request used a `31,647` input-token prompt and returned exact begin/middle/end anchor markers.
+- Cold cache writes: 495 block-L2 entries, `31,646` block tokens on disk, and `63,262` SSM companion tokens on disk.
+- Warm request returned exact markers again in `9.5s` with `cached_tokens=31646`, `cache_detail=paged+ssm`, 1,485 block-disk hits, typed `hybrid_ssm_v1`, TurboQuant attention KV enabled, and native MTP active.
+- Wired the proof into the full objective checklist and added focused fixture coverage.
+- Validation passed: py_compile for edited files and focused checklist pytest (`2 passed`).
+- Regenerated full checklist:
+  `build/current-full-release-objective-checklist-after-qwen27-long-context-cache-tail-20260607.json`.
+- Generated state remains release-red: `status=open`, `failed_count=17`.
+- Boundary: Qwen27 largest-context cache-tail is now green; Qwen35 still needs comparable 30k-token largest-context tail proof, and Qwen cancellation cleanup/packaged acceleration parity remain open.
+
+## 2026-06-07 local - MiMo loader/defaults work
+
+- Patched `vmlx_engine/models/mllm.py` to install split-shard packed affine MiMo qkv and dense MLP projections as `nn.QuantizedLinear` instead of leaving uint32 packed tensors inside plain `nn.Linear`.
+- Confirmed classic MiMo JANG_2L no longer dies at the first qkv/MLP matmul path and reaches generation, but measured path is still speed-red under tight memory.
+- Treated MiMo JANGTQ_2 speed as accepted by Eric for now; kept exact speed evidence in status rather than claiming a hidden 40+ steady-state default.
+- Patched `vmlx_engine/server.py` so `generation_config.do_sample=false` is respected as greedy sampling for omitted request defaults unless JANG chat sampling metadata or explicit request/CLI values override it.
+- Patched panel generation-default plumbing in `panel/src/main/ipc/models.ts`, `panel/src/main/sessions.ts`, `panel/src/main/server.ts`, `panel/src/env.d.ts`, `panel/src/shared/chatSettingsResetPolicy.ts`, `panel/src/renderer/src/components/sessions/CreateSession.tsx`, `panel/src/renderer/src/components/sessions/SessionSettings.tsx`, and `panel/src/renderer/src/components/sessions/SessionConfigForm.tsx`.
+- Validation: Python compile passed, panel typecheck passed, live MiMo JANGTQ_2 omitted-sampling request logged deterministic defaults and returned `ok`.
+
+## 2026-06-07 local - do_sample=false regression + MiMo deterministic rerun
+
+- Added regression coverage for `generation_config.do_sample=false` in backend and panel generation defaults.
+- Refreshed generation defaults contract to `build/current-generation-defaults-contract-after-do-sample-false-mimo-20260607.json` and updated current release/objective pointers.
+- Reran MiMo JANGTQ_2 no-media tools/cache smoke after the deterministic-default fix. Cache, block-L2, tool parser structure, code whitespace, and speed are green, but exact literal tool/JSON values still mutate under deterministic sampling.
+- Refreshed MiMo audit and full release checklist. Release remains blocked; no signing/notarization/release work performed.
+
+## 2026-06-07 local - startup parity made explicit
+
+- Tightened AGENTS and the release tracker so startup proof must cover both CLI `vmlx serve` and MLXStudio generated launch/session settings.
+- Required parity now includes parser, reasoning, cache, MTP, max output, max context, and model-owned generation defaults.
+- Current green source contract is still `build/current-generation-defaults-contract-after-do-sample-false-mimo-20260607.json`; it is not a substitute for per-family live API/UI/installed-app proof.
+
+## 2026-06-07 local - full release objective guard expanded
+
+- Expanded `AGENTS.md` with the current objective execution contract for the active Python engine plus MLXStudio app release.
+- Added explicit surfaces future agents must keep tied together: CLI startup, MLXStudio startup, Chat Completions, Responses, tools, structured output, cache, TurboQuant KV, media, installed app, per-family model gates, and signing/notarization lock.
+- Added per-family must-prove rows for MiMo, Qwen MTP, Gemma4, Step3.7, LFM, Nemo/Nemotron Omni, MiniMax, DSV4, ZAYA, and hybrid families.
+- This is not a release-clearance claim. It is a control-plane hardening step so future work does not narrow the objective to a single test, one model smoke, upload chore, or deprecated workspace.
+
+## 2026-06-07 local - control-plane validation
+
+- Focused validation passed: py_compile for checklist/manifest/proof summary scripts and `tests/test_full_release_objective_checklist.py` (`2 passed`).
+- Added and passed `tests/test_agents_release_control_plane.py` (`3 passed`) so future edits that remove the active vMLX/MLXStudio release objective, startup parity, per-family gates, no-fake-fix rules, or release lock will fail a no-heavy regression test.
+- Wired `tests/test_agents_release_control_plane.py` into the current regression suite focused pytest command and source-hash set.
+- Focused suite validation passed: `4 passed`, `73 deselected`; compile validation for the edited suite/test files also passed.
+- Added explicit release manifest source-hash expectation for `tests/test_agents_release_control_plane.py`.
+- Focused manifest validation passed: `1 passed`, `386 deselected`; compile validation for the manifest test/source files also passed.
+- Regenerated full checklist:
+  `build/current-full-release-objective-checklist-after-agents-control-plane-20260607.json`.
+- Expected result remains red: `status=open`, `failed_count=17`.
+- No model launch, source-vs-quant load, package build, signing, notarization, tag, push, or public download update was performed.
+
+## 2026-06-07 local - MiMo exactness no-source classifier
+
+- Added no-heavy MiMo classifier runner and tests.
+- Artifact: `build/current-mimo-v2-no-source-exactness-classifier-after-do-sample-false-20260607.json`.
+- Classification: `model_generated_literal_mutation_after_valid_parser_structure`.
+- Excluded by current evidence: parser-side semantic rewrite, cache/KV/L2 primary cause, hidden stochastic sampling where deterministic logs are present.
+- Still unresolved: artifact quantization vs runtime decode logits because source-vs-quant load remains disallowed for RAM; long prompt, CB/system prompt pressure, and media runtime remain red.
+- Validation: `tests/test_mimo_v2_no_source_exactness_classifier.py` passed (`2 passed`); py_compile passed. Runner returned open/nonzero as expected because this is not release-cleared.
+- Wired the classifier unit test into the current regression suite focused pytest gate/source-hash list and release manifest source-hash expectation.
+- Focused wiring validation passed: `4 passed`, `385 deselected`; compile validation passed.
+- Wired the classifier artifact into the full release checklist MiMo group.
+- Full-checklist validation passed (`2 passed`) and regenerated
+  `build/current-full-release-objective-checklist-after-mimo-manifest-classifier-sync-20260607.json`.
+- Generated checklist remains `status=open`, `failed_count=17`; this preserves release lock while improving MiMo exactness evidence.
+- Updated full-checklist default output and current-regression-suite command to use the MiMo-classifier checklist artifact.
+- Focused pointer validation passed: `5 passed`, `72 deselected`; compile validation passed.
+
+## 2026-06-07 local - MiMo classifier release-manifest wiring
+
+- Wired `build/current-mimo-v2-no-source-exactness-classifier-after-do-sample-false-20260607.json` into `_validate_current_mimo_v2_jang2l_root_cause`.
+- The release manifest now exposes classifier status, classification, parser/cache/sampling exclusion, unresolved artifact/decode surfaces, and the no-source/source-vs-quant skip boundary.
+- Focused validation passed: `5 passed`, `308 deselected`; compile validation passed.
+- Regenerated release manifest:
+  `build/current-release-regression-manifest-after-mimo-no-source-classifier-20260607.json`.
+- Manifest remains red: `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
+
+## 2026-06-07 local - classifier-aware full checklist manifest sync
+
+- Updated full-checklist release-manifest pointer to `build/current-release-regression-manifest-after-mimo-no-source-classifier-20260607.json`.
+- Regenerated full checklist:
+  `build/current-full-release-objective-checklist-after-mimo-manifest-classifier-sync-20260607.json`.
+- Result remains red: `status=open`, `failed_count=17`.
+- Updated current-suite/default checklist pointers to the manifest-sync artifact.
+- Focused validation passed: `10 passed`, `382 deselected`; compile validation passed.
+
+## 2026-06-07 local - objective proof refreshed after classifier manifest sync
+
+- Refreshed current no-heavy contracts used by objective digest so stale source hashes no longer create false open rows.
+- Regenerated `build/current-objective-proof-after-mimo-manifest-classifier-sync-20260607.json`.
+- Digest is now back to the true high-level state: 20 PASS / 6 OPEN.
+- Focused validation passed: `108 passed`, `385 deselected`; compile validation passed.
+- No model load, source-vs-quant, package build, signing, notarization, tag, push, or download update.
+
+## 2026-06-07 local - CLI/UI startup parity guardrail refresh
+
+- Patched `AGENTS.md` to refresh current classifier-aware artifact pointers and explicitly state that CLI startup and MLXStudio startup are independent release gates.
+- Patched `tests/test_agents_release_control_plane.py` to pin that distinction.
+- Validation: `.venv/bin/python -m pytest -q tests/test_agents_release_control_plane.py` -> `3 passed`.
+- Regenerated current no-heavy release manifest, full checklist, and objective proof artifacts; release remains blocked.
+
+## 2026-06-07 local - generation defaults startup-parity gate refresh
+
+- Patched `tests/cross_matrix/run_generation_defaults_contract.py` to add `panel_cli_startup_contract` and matrix row `cli_mlxstudio_startup_parity`.
+- Patched `tests/test_generation_defaults_contract.py` to pin the current artifact path and startup-parity matrix row.
+- Validation: `tests/test_generation_defaults_contract.py tests/test_panel_cli_flag_contract.py` -> `12 passed`.
+- Regenerated `build/current-generation-defaults-contract-after-do-sample-false-mimo-20260607.json` -> `status=pass`, no missing markers.
+- Focused manifest/objective validation -> `128 passed`, `368 deselected`.
+
+## 2026-06-07 local - real-UI unblocked non-MiMo classifier refresh
+
+- Patched `tests/cross_matrix/release_regression_manifest.py` for current DSV4 memory preflight path and exact Qwen36 variant set handling.
+- Patched `tests/test_release_regression_manifest.py` fixtures/assertions for DSV4 memory blocker, Qwen36 27B+35B required variants, and current LFM25/Qwen36 proof filenames.
+- Validation: focused DSV4/unblocked matrix tests -> `6 passed`; broader real-UI matrix/current-suite/objective selectors -> `143 passed`, `350 deselected`; py_compile passed.
+- Regenerated current release manifest, full checklist, and objective proof; unblocked non-MiMo row is PASS, release remains locked.
+
+## 2026-06-07 local - cross-family live smoke matrix stale ZAYA aggregation refresh
+
+- Patched `tests/cross_matrix/summarize_objective_proof.py` to use current filtered ZAYA text live smoke artifact.
+- Patched `tests/test_objective_proof_digest.py` fixture to cover the current filtered ZAYA text artifact.
+- Regenerated current objective proof, release manifest, and full checklist. Non-MiMo live smoke is green; cross-family row remains open only because MiMo is still red.
+- Validation: `tests/test_objective_proof_digest.py -k cross_family_live_smoke` -> `2 passed`; broader objective/current-suite/manifest selectors -> `108 passed`, `385 deselected`; py_compile passed.
