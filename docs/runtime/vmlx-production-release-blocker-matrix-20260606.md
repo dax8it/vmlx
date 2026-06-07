@@ -45,7 +45,7 @@ No source-only, load-only, health-only, or one-prompt text smoke may clear a bro
 
 | Family / artifact lane | Current status | Proven current positives | Current blockers | Next proof/fix |
 |---|---:|---|---|---|
-| MiMo V2.5 JANG_2L | Red | Current Python path returns text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache; current source preserves tool metadata into MLLM decode; keep=0 SWA cache patch fixes required-tool cache decode; narrow live required-tool row returns `record_fact({"value":"blue-cat"})`; tool-result continuation row returns exact `STORED blue-cat` with no second tool call and no raw markup after MiMo template tool-argument normalization; strict JSON row parses exactly; exact code/whitespace row preserves indentation and punctuation; 64-word long-prefix MLLM row passes with `cached_tokens=435`, `cache_detail=paged`, and 7 block-disk writes after tight-memory drain plus live `RotatingKVCache` mixed-SWA detection; expanded no-media source gate now passes 8/8 rows with 16 L2 block writes / 797 L2 tokens | Speed remains about 1-2 tok/s in current MiMo source gates, far below target; reasoning output remains low quality/repetitive; broader auto-tool/adversarial loop-stop/full multi-turn tool matrix not cleared; VL/audio/video unwired; full UI/installed-app matrix incomplete; no local `jang_config.json` in current bundle | Run broader MiMo auto-tool/loop-stop/cache/L2/restart/largest-context/UI smoke; then fix speed/kernel path; then implement/prove media bridge or keep capabilities text-only |
+| MiMo V2.5 JANG_2L | Red | Current Python path returns text `ACK`; paged cache hit `cached_tokens=67`; L2 block write; multiturn `blue cat`; native mixed full/SWA cache detected; generic flat TQ-KV skipped for rotating cache; current source preserves tool metadata into MLLM decode; keep=0 SWA cache patch fixes required-tool cache decode; narrow live required-tool row returns `record_fact({"value":"blue-cat"})`; tool-result continuation row returns exact `STORED blue-cat` with no second tool call and no raw markup after MiMo template tool-argument normalization; strict JSON row parses exactly; exact code/whitespace row preserves indentation and punctuation; 64-word long-prefix MLLM row passes with `cached_tokens=435`, `cache_detail=paged`, and 7 block-disk writes after tight-memory drain plus live `RotatingKVCache` mixed-SWA detection; expanded no-media source gate now passes 8/8 rows with 16 L2 block writes / 797 L2 tokens; current source runtime-quantizes 2 missing passthrough decode hotspots and proves the affine SwitchGLU fast path activates; latest speed gate keeps exact coherency `READY/17+28=45/CERULEAN`, native mixed-SWA cache, prefix/paged/block-L2, and non-generic TQ-KV policy | Speed remains about 1.8 tok/s in current MiMo source gates, far below 40 tok/s target; live trace with active affine SwitchGLU fast path still waits about 500-600 ms/token in Metal async completion; PP remains about 78/106 tok/s versus 400 target; current bundle lacks local `jang_config.json`; current bundle has bf16 `lm_head` and `embed_tokens` instead of intended 8-bit sidecars; reasoning output remains low quality/repetitive; broader auto-tool/adversarial loop-stop/full multi-turn tool matrix not cleared; VL/audio/video unwired; full UI/installed-app matrix incomplete | Treat speed as runtime/kernel-side until a real fused affine/JANG expert decode kernel or JANGTQ path is implemented and live-proven; if re-exporting the model, fix the missing `jang_config.json`, `lm_head`, and `embed_tokens` sidecars, but do not expect requant alone to clear 40 tok/s |
 | Qwen 3.6 35B MXFP8 MTP | Partial | Bundled-engine smoke passes text/cache, multiturn, reasoning, required tool, image, video, post-media text recovery; native MTP active D3; paged+SSM hit; block + SSM L2 evidence; deterministic long Responses row activates MTP D3 and writes block/SSM L2; no `gdn_sink` TypeError; saved deterministic required-tool request now passes with configured D3 available, request-local D1 cap logged, and real `function_call` returned; full deterministic long Responses/tool/cache gate passes strict tool-call, tool-evidence, cache-hit, no-loop, and no-raw-markup criteria; expanded no-media Chat Completions gate now passes after the reasoning probe budget was corrected from 256 to 512 for Qwen3.6 MoE MTP: visible `FINAL=OK`, required tool, tool-result continuation, strict JSON, exact code, native MTP D3, paged+SSM cache, block/SSM L2, and no `gdn_sink` crash | The 256-token diagnostic failed by stopping during hidden reasoning before visible final text; this remains a max-output-token UX/settings nuance, not a runtime crash. Anthropic/Ollama, streaming parity, real Electron UI settings, largest-context cache, restart/L2 restore, cancellation/recovery, media rows, and installed-app parity incomplete | Keep Qwen35 release-partial; run missing API/UI/restart/largest-context/media rows and ensure UI max-output-token behavior makes this budget boundary visible |
 | Qwen 3.6 27B MXFP4/MXFP8/JANG_4M MTP | Partial | MXFP4-MTP live slice passes text/cache, multiturn, reasoning, required tool, image, video, post-media recovery; Responses text/tool, Anthropic, Ollama, and Chat streaming pass; restart/L2 restore hits paged+SSM+disk; deterministic Responses cancellation/recovery passes with native MTP active D2; paged+SSM and block+SSM L2 evidence; JANG_4M installed-app MTP A/B reaches about 50.65 tok/s and 1.70x over AR; expanded no-media Chat Completions gate now passes MXFP4-MTP, MXFP8-MTP, and JANG_4M-MTP across text cache, multiturn, reasoning-on, required tool, tool-result continuation, strict JSON, exact code, native MTP, paged+SSM cache, and block/SSM L2; JANG_4M-MTP restart/L2 restore passes with `cache_detail=paged+ssm+disk`, 27 cached tokens, block disk hit, and SSM disk hit; JANG_4M-MTP long-prefix cache gate passes at 7,236 prompt tokens with 7,235 cached tokens, `cache_detail=paged+ssm`, 114 block L2 writes, SSM re-derive, and TurboQuant recompression; no-heavy max-output/max-context contract passes source API plus panel launch/request wiring after the long-context boundary; installed-app UI remote-session proof now launches `/Applications/vMLX.app`, starts installed bundled Python with `--max-tokens 128 --max-prompt-tokens 8192`, records `requestMaxTokens=128` and `requestMaxPromptTokens=8192`, reports `/health.max_prompt_tokens=8192`, and shows paged+SSM cache plus block/SSM L2 telemetry | Normal local-session installed-app launch flow, MXFP8 deterministic policy/UI parity, larger-than-8k context expansion if intended, TP4 route rank/speed evidence, media rows, installed-app parity beyond the remote-session proof, and full release API matrix remain open | Run normal installed-app local model-session launch/settings row, media rows, restart/L2 restore for remaining variants where not already covered, and verify MXFP8 deterministic policy in UI/session |
 | Nemo / Nemotron Omni | Red | Some source rows exist in older matrix | Omni audio/video processor bridge, tool dialect, cache/media salt, UI proof incomplete | Build live Omni text/audio/video/tool/cache smoke |
@@ -318,6 +318,108 @@ Classification:
 - These gates are no-media only and do not prove image/audio/video, media
   prefill/recovery, streaming, Responses / Anthropic / Ollama, installed-app UI,
   restart/L2 restore, signing, or notarization.
+
+## 2026-06-07 MiMo V2.5 JANG_2L speed root-cause update
+
+Artifact:
+
+`build/current-decode-speed-live-mimo-v25-jang2l-source-after-fastpath-counters-20260607.json`
+
+Current audit:
+
+`build/current-mimo-v2-jang2l-current-audit-after-fastpath-speed-proof-stale-clean-20260607.json`
+
+Live command scope:
+
+- Current source Python engine, not deprecated `/Users/eric/vmlx`.
+- Model:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Row: `mimo_v25_jang2l`.
+- MLLM route, `xml_function` tools, `think_xml` reasoning parser.
+- Continuous batching, paged cache, block disk L2, MiMo native mixed full/SWA
+  cache.
+- Decode tracing:
+  `VMLINUX_DECODE_TRACE=1`, `VMLINUX_DECODE_TRACE_EVERY=16`.
+
+Result:
+
+- Overall status: `review`.
+- Exact coherency passed:
+  `READY\n17+28=45\nCERULEAN`.
+- Bundle decode speed: `1.79 tok/s`.
+- Greedy `top_k=0` decode speed: `1.83 tok/s`.
+- PP rows: `78.41 tok/s` at 752 prompt tokens and `106.43 tok/s` at 1444
+  prompt tokens.
+- Health reported native MiMo cache:
+  `mixed_swa_kv_v1`, `prefix=true`, `paged=true`, `block_disk_l2=true`.
+- Health reported generic TurboQuant KV disabled:
+  `generic_turboquant_kv.enabled=false`.
+- Health reported affine weight dispatch:
+  `codec=affine_quantized_matmul`,
+  `primary=mlx_affine_quantized_matmul`.
+- Load path runtime-quantized two passthrough decode hotspot modules:
+  `lm_head` and `embed_tokens`.
+- The affine SwitchGLU decode fast path installed and activated:
+  log counters reached `calls=4096`, `compiled_shapes=2`.
+- The refreshed current audit is still `status=open`, but stale local MiMo
+  remote-code/cache state is now clean:
+  `stale_local_state_absent=true`.
+- Remaining current-audit blockers are:
+  `mimo_long_prompt_coherence_blocked`, `mimo_tool_protocol_blocked`,
+  `mimo_decode_speed_below_release_target`,
+  `mimo_cb_system_prompt_working_set_pressure_blocked`,
+  `mimo_source_vs_quant_first_divergence_missing_or_failed`, and
+  `mimo_vl_audio_video_unwired`.
+
+Trace finding:
+
+- With the active fast path, Python/model step construction is not the current
+  bottleneck. Trace rows show about `2.2-3.1 ms` for `last_step_ms`.
+- The wall time is dominated by async GPU/Metal completion:
+  `last_async_ms` repeatedly measured about `503-597 ms`.
+- This reproduces at normal bundle sampling and greedy `top_k=0`, so it is not
+  a top-k/sampler issue.
+
+Bundle/model-artifact finding:
+
+- The current local bundle is not a perfect match for the intended MiMo JANG
+  contract. It has no local `jang_config.json`.
+- The current safetensor/index state has bf16 `lm_head.weight` and
+  `model.embed_tokens.weight` without affine sidecars, while the intended MiMo
+  JANG docs call for 8-bit affine embeddings/lm_head.
+- Runtime-quantizing those two missing sidecar modules improved decode only
+  slightly, from about `1.63 tok/s` to about `1.7-1.8 tok/s`.
+
+Classification:
+
+- Re-exporting the model should fix the missing metadata/sidecar defects, but
+  that is not enough evidence to expect a jump to 40 tok/s.
+- The current 40 tok/s blocker is runtime/kernel-side unless disproven by a
+  corrected bundle: active affine expert decode still lands in slow Metal
+  completion.
+- A real fix likely needs a fused affine/JANG SwitchGLU expert decode kernel,
+  a real JANGTQ/TurboQuant fused expert path for MiMo, or an MLX kernel/runtime
+  fix that collapses the current gather-qmm expert work into a much faster
+  execution path.
+- Do not clear MiMo speed with fake guards, sink disabling, top-k tweaks, or
+  runtime forcing. The live trace says those are not the root bottleneck.
+
+If Eric re-exports the model:
+
+- Include a correct `jang_config.json` for MiMo V2.5 with the native mixed
+  full/SWA cache topology and text/tool/media capabilities stated honestly.
+- Include affine sidecars for `model.embed_tokens` and `lm_head`.
+- Keep expert sidecars internally consistent with the actual bundle policy:
+  current local expert tensors are group-size 128 for routed experts, and the
+  config summary should not claim incompatible role bits.
+- Preserve qkv 8-bit affine sidecars and the dense layer policy.
+- Preserve MiMo-specific cache metadata; do not advertise generic flat
+  TurboQuant KV as safe for rotating/SWA layers.
+- Do not add fake MTP capability unless `mtp.*` tensors and runtime heads are
+  present and proven.
+- After upload, rerun the same speed gate plus source-vs-quant, cache/L2,
+  tool-continuation, strict JSON/code, and media capability rows before any
+  release claim.
 
 ## 2026-06-07 Qwen 3.6 MTP expanded no-media structured-output gate
 
