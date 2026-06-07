@@ -142,3 +142,30 @@ Matrix impact:
 - `MiMo V2.5 JANG_2L` remains red.
 - `CACHE-001` improves for MiMo text cache evidence but remains red for largest-context, restart/L2 restore, and cross-family rows.
 - `TOOL-001` remains red.
+
+## 2026-06-06 LFM2.5 MXFP4 focused source smoke
+
+Artifact:
+
+`build/current-all-local-model-smoke-lfm25-mxfp4-tools-nomedia-20260606/JANGQ_LFM2.5-8B-A1B-MXFP4/result.json`
+
+Result:
+
+- Overall row: `pass`.
+- Model type: `lfm2_moe`.
+- Cache family: `hybrid_ssm`.
+- Native cache: `lfm2` / `hybrid_ssm_v1` / `hybrid_ssm_typed`.
+- Components: `attention_kv`, `ssm_companion_state`, `async_rederive`.
+- Generic TurboQuant KV correctly disabled with reason `hybrid_ssm_state`.
+- Attention KV storage quantization active: q4, group size 64, storage-boundary only.
+- Prefix/paged/block-disk L2 active.
+- `text_cache_repeat_1`: HTTP 200, visible `ACK`.
+- `text_cache_repeat_2`: HTTP 200, visible `ACK`, `cached_tokens=64`, `cache_detail=paged+ssm`.
+- `text_multiturn_recall`: HTTP 200, visible `blue cat`.
+- `tool_required`: HTTP 200, OpenAI `tool_calls[0].function.name=record_fact`, arguments `{"value":"blue-cat"}`.
+- Block disk L2 after tool row: 6 blocks on disk, 265 block tokens, 265 SSM companion tokens, 3 disk hits.
+
+Nuance / still open:
+
+- Exact visible output is correct, but short exact prompts report high `completion_tokens` counts (`208`, `380`, `252`). This needs a follow-up parser/stop-token/accounting check before calling LFM fully clean.
+- This is source-runtime no-media proof only. Installed-app parity, streaming, Responses/Anthropic/Ollama, largest-context cache, restart/L2 restore, and UI settings remain open.
