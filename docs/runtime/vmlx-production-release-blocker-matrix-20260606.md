@@ -621,6 +621,43 @@ Artifact:
 
 `build/current-all-local-model-smoke-mimo-v25-jang2l-tools-nomedia-kvnone-extra-args-20260606/JANGQ_MiMo-V2.5-JANG_2L/result.json`
 
+## 2026-06-07 MiMo decode speed gate row and PP OOM proof
+
+- `tests/cross_matrix/run_decode_speed_gate.py` now has a dedicated
+  `mimo_v25_jang2l` row for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- The row uses the real MiMo route: MLLM mode, `xml_function` tool parser,
+  `think_xml` reasoning parser, paged cache, block disk L2, and q4
+  storage-boundary KV.
+- The row enforces `expected_min_tps=40.0` and records partial live evidence if
+  a later request kills the server.
+- Focused validation passed: py_compile plus
+  `tests/test_current_regression_suite.py -k 'decode_speed_gate'` (`3 passed`).
+
+Live artifact:
+
+`build/current-decode-speed-live-mimo-v25-jang2l-source-partial-evidence-20260607.json`
+
+Observed result:
+
+- `status=error`.
+- Warm request completed but server log reported about `0.2 tok/s`.
+- Deterministic coherency request returned exact
+  `READY\n17+28=45\nCERULEAN` at `1.58 tok/s`.
+- The first PP request crashed the server with Metal OOM before returning.
+- `/health` before crash reported MiMo native mixed-SWA cache
+  `mixed_swa_kv_v1`, q4 storage-boundary KV, prefix cache, paged cache, and
+  block disk L2. Generic flat TurboQuant KV was disabled, which is correct for
+  this rotating/full cache layout.
+
+Classification:
+
+- MiMo speed remains red and is now directly covered by the standard decode
+  speed gate.
+- MiMo largest-context/PP cache proof remains red because the PP request kills
+  the server before a cache-hit row can complete.
+- This is not a model replacement proof and not a release blocker removal.
+
 Finding:
 
 - `--kv-cache-quantization none` is now reproducible through the smoke harness.

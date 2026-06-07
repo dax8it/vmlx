@@ -200,6 +200,70 @@ Latest result:
 
 Do not release, sign, notarize, or call MiMo/MLXStudio/vMLX green yet.
 
+## 2026-06-07 decode speed gate row and partial-evidence crash proof
+
+Source/harness changes:
+
+- `tests/cross_matrix/run_decode_speed_gate.py` now includes a
+  `mimo_v25_jang2l` row for the normal local artifact:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- The row uses the real MiMo route: `--is-mllm`, `xml_function` tool parser,
+  `think_xml` reasoning parser, paged cache, block disk L2, and q4
+  storage-boundary KV.
+- The row enforces the intended release floor with `expected_min_tps=40.0`.
+- The row uses a smaller decode batch (`--completion-batch-size 64`) and
+  reduced PP targets (`512`, `1024`) so the speed harness is not accidentally
+  testing the generic 512-token decode batch shape for this tight-memory model.
+- The harness now preserves partial live evidence on later server death:
+  `health_before`, warm usage, coherency result, completed PP rows, bundle row,
+  greedy row, and log tail.
+
+Focused validation:
+
+- `.venv/bin/python -B -m py_compile tests/cross_matrix/run_decode_speed_gate.py tests/test_current_regression_suite.py`
+- `.venv/bin/python -m pytest -q tests/test_current_regression_suite.py -k 'decode_speed_gate'`
+- Result: `3 passed`.
+
+Live artifact:
+
+`build/current-decode-speed-live-mimo-v25-jang2l-source-partial-evidence-20260607.json`
+
+Result:
+
+- `status=error`
+- Error: `RemoteDisconnected('Remote end closed connection without response')`
+- Server log tail ends with Metal OOM during the first PP request:
+  `[METAL] Command buffer execution failed: Insufficient Memory`
+- Warm request completed: `4` completion tokens, server log `0.2 tok/s`.
+- Deterministic coherency request completed:
+  `READY\n17+28=45\nCERULEAN`
+- Coherency speed: `16` completion tokens in `10.12s`, `1.58 tok/s`.
+- No PP rows completed; the first PP probe crashed before returning.
+
+Runtime/cache facts from `/health` before the crash:
+
+- Native cache family: `mimo_v2`.
+- Schema: `mixed_swa_kv_v1`.
+- Cache subtype: `mimo_v2_asymmetric_swa`.
+- Components: full-attention KV, sliding-window KV, rotating-window metadata.
+- Generic flat TurboQuant KV: disabled, reason `not_active`.
+- Storage quantization: enabled, q4, applies to full and sliding attention KV,
+  with rotating-window metadata preserved.
+- Prefix cache, paged cache, and block disk L2: enabled.
+- Existing block disk cache totals showed `37` tokens on disk from previous MiMo
+  cache activity, but this speed run did not reach a cache-reuse PP success.
+
+Classification:
+
+- This is a runtime/source blocker, not a release clearance.
+- MiMo speed is still far below the `40 tok/s` target.
+- MiMo largest-context/cache speed proof is red because the PP probe crashes the
+  server under Metal OOM before any PP row completes.
+- The current issue is not generic flat TurboQuant KV being enabled; the runtime
+  correctly disables generic TQ-KV for MiMo mixed full/SWA rotating cache.
+- Do not delete or replace MiMo artifacts based on this result alone. This proves
+  current vMLX runtime still cannot make the installed artifact release-green.
+
 ## 2026-06-07 no-media source smoke after tight-memory tool prefill chunking
 
 Artifact:

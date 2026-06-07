@@ -5034,3 +5034,21 @@ Detailed note: `docs/internal/agent-notes/current-gemma4-12b-release-boundary-an
 - Native cache health reported Qwen3.6 hybrid SSM typed cache with TurboQuant attention-KV storage only on attention layers, native companion state for SSM layers, prefix/paged cache, and block disk L2.
 - MTP health reported native runtime active D3, text+VL scope, and artifact tensors present. UI chat requests used non-deterministic default sampling, so native MTP was available but request-policy-skipped for those exact requests.
 - Classification: this narrows the Qwen27 installed-app max-output/max-context blocker, but it is not release clearance. Normal local-session installed-app launch/settings, media/VL/audio/video, broader API parity, cancellation/recovery, speed, signing/notarization, and public download updates remain blocked.
+
+## 2026-06-07 local - MiMo decode speed gate row and PP OOM proof
+
+- Scope stayed in active Python engine worktree; no deprecated wrapper, Swift, ADLab/TB/RDMA work, package, signing, notarization, tag, upload, appcast, or public release action.
+- Added `mimo_v25_jang2l` to `tests/cross_matrix/run_decode_speed_gate.py` using the normal local artifact `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- MiMo speed row uses MLLM mode, `xml_function` tool parser, `think_xml` reasoning parser, paged cache, block disk L2, q4 storage-boundary KV, `expected_min_tps=40.0`, reduced PP targets, and `--completion-batch-size 64`.
+- Updated the speed harness so error artifacts preserve partial live evidence instead of losing warm/coherency/health data when a later request kills the server.
+- Focused validation passed:
+  `.venv/bin/python -B -m py_compile tests/cross_matrix/run_decode_speed_gate.py tests/test_current_regression_suite.py`
+  and
+  `.venv/bin/python -m pytest -q tests/test_current_regression_suite.py -k 'decode_speed_gate'`
+  -> `3 passed`.
+- Live MiMo artifact:
+  `build/current-decode-speed-live-mimo-v25-jang2l-source-partial-evidence-20260607.json`.
+- Live result: `status=error`, server disconnected after Metal OOM during first PP request.
+- Partial evidence preserved: warm row completed at about `0.2 tok/s`; deterministic coherency row returned exact `READY\n17+28=45\nCERULEAN` at `1.58 tok/s`.
+- `/health` before crash reported MiMo native cache `mixed_swa_kv_v1`, q4 storage-boundary KV, prefix cache, paged cache, block disk L2, and generic flat TurboQuant KV disabled.
+- Classification: MiMo remains release-red for speed and PP/largest-context cache. This is not a model replacement proof and not a release clearance.
