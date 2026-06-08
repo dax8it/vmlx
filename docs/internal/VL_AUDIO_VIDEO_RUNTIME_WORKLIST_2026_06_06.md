@@ -612,3 +612,12 @@ Correction:
 - The generated raw preview starts `<tool_call>` and then punctuation/fullwidth-comma garbage, without `<function=record_fact>` or `<parameter=value>blue-cat</parameter>`.
 - Classification remains `decode_loop` versus `model_artifact` until source-vs-quant first divergence or a replacement artifact proves otherwise.
 - Do not advertise MiMo VL/audio/video: runtime modalities remain text-only until a real multimodal forward path is implemented and proven.
+
+## 2026-06-08 MiMo object-media live-smoke update
+
+- Artifact: `build/current-all-local-model-smoke-mimo-v25-jangtq2-object-media-e2e-20260608`.
+- Harness change: MiMo media release smoke now validates colored square-object image/video prompts instead of degenerate 16x16 solid-frame dominant-color prompts.
+- Live MiMo JANGTQ2 media result: image/video media rows pass (`Blue`, repeated `Blue`, changed `Red`, video `Blue`) and text-after-media recovers with `NONE`.
+- Failure count moved from `8` to `4`; remaining failures are exact literal/tool mutation rows, not image/video runtime transport rows.
+- Caveat: solid full-frame dominant-color prompts remain a model-behavior caveat and must not be used to claim broad visual reasoning quality. The current pass only proves media processor/token splice/vision/video bridge/post-media recovery for object-color rows.
+- Release boundary: MiMo remains unreleased/un-cleared until JANG_2L and JANGTQ2 exactness, long-prompt, cache/prefix/L2, audio waveform E2E, UI/API settings parity, and cross-family gates are current-green.
