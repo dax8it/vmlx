@@ -6,6 +6,8 @@ Purpose: never lose track of model/runtime/config/VL/audio/tool/cache regression
 
 Related narrative document: `docs/internal/CROSS_MODEL_RUNTIME_FAILURE_CLASSES_2026_06_05.md`
 
+Reporter credit: recent public/runtime issue reports from GitHub `@Hornsan1` must be credited in release notes, changelog entries, or public acknowledgements that mention these fixes.
+
 Current known release state:
 
 - Qwen36 27B MXFP8 TP4 continuation, 2026-06-06: `tests/cross_matrix/run_qwen36_tp4_gateway_probe.py` now snapshots rank directories through `erics-m5-max2.local` as the jump host, matches recent gateway request IDs to expected per-rank response files, and records exact-serve-dir `TPRankWorker` process rows from `ps eww` `TP_SERVE_DIR=`. Live artifact `build/current-qwen36-27b-tp4-gateway-bounded-probe-20260606.json` remains `status=open` with `classification=stale_ready_no_rank_workers`: `/health` and `/v1/models` work, the gateway advertises 4 reachable/ready ADLab ranks plus cache coordinator and L2 disk cache, but native MTP depth is `0`; the deterministic chat request times out at 15s, all four ranks have stale `rankN.ready.json` files, all four ranks have zero exact-serve-dir workers for the configured `hiddenfix2` run, and the detected other TP workers are for different serve directories. Classification is remote TP4 gateway readiness/runtime orchestration, not local vMLX client parsing and not download-corruption proof. Do not count this route as Qwen MTP/cache/L2 release evidence until live rank workers, matched rank responses, exact output, repeat cache/L2 hit, tools, streaming, and UI-spawned installed-app rows pass.
@@ -1389,3 +1391,52 @@ Current classification: local quant is tool-broken independent of CB/q4, but mod
 - Current bundle has `model_type=mimo_v2`, native XML tool template, media sidecars, and no `jang_config.json`; vMLX classification must come from config/tokenizer/template/registry rather than missing JANG metadata.
 - This supersedes older narrow rows that said MiMo `record_fact` was parsed. MiMo tool protocol is red again under the current normal-engine proof.
 - Classification: unresolved `decode_loop` versus `model_artifact`, not cache-only, not parser-only, and not missing schema injection. Source-vs-quant first divergence remains required before blaming upload versus runtime.
+
+## 2026-06-07 - MiniMax/JANGTQ_K bundled required-tool dialect blocker
+
+Evidence:
+- `build/current-all-local-model-smoke-minimaxk-bundled-after-http400-detail-capture-20260607/dealign.ai_MiniMax-M2.7-JANGTQ_K-CRACK/result.json`
+- server log in the same artifact directory.
+
+Observed:
+- Text repeat/cache row passes with `cached_tokens=60`, `cache_detail=paged+tq`, `cache_hits=2`, and `disk_hits=3`.
+- Tool-result continuation passes with visible `STORED blue-cat`.
+- Structured JSON exact and exact code/whitespace rows pass.
+- Required tool row returns HTTP 400 because `tool_choice='required'` was set and no parsed tool call was produced.
+- Server raw preview shows MiniMax dialect markup: `<minimax:tool_call>\n<invoke name="record_fact">...`.
+
+Classification:
+- Not cache/L2/TurboQuant failure.
+- Not a silent process crash.
+- Not a transport code-0 failure after harness fix.
+- Current blocker is MiniMax tool-call dialect compatibility: either model/template must emit supported OpenAI/function-call structure, or runtime needs a real MiniMax parser with strict tests. Do not fake this by treating arbitrary visible markup as a successful tool call without parser/schema validation.
+
+Release status:
+- MiniMax/JANGTQ_K remains red for required-tool compatibility.
+- This evidence does not clear real UI parity, cancellation reporter parity/root cause, media, or full cross-family release readiness.
+
+## 2026-06-07 - MiniMax/JANGTQ_K required-tool dialect blocker reduced
+
+Evidence:
+- Source pass: `build/current-all-local-model-smoke-minimaxk-source-after-required-tool-256-20260607/summary.json`
+- Bundled pass: `build/current-all-local-model-smoke-minimaxk-bundled-after-required-tool-256-20260607/summary.json`
+- Regenerated manifest: `build/current-release-regression-manifest-after-minimaxk-required-tool-pass-20260607.json`
+
+Fixes:
+- Added MiniMax-native fallback prompt examples for required tools.
+- Added bounded lenient MiniMax parser handling for recoverable truncated native blocks.
+- Preserved strict no-fake behavior: dangling parameter prefixes do not become fabricated tool calls.
+- Added required-tool `raw_preview` in 400 responses for future classification.
+- Raised MiniMax required-tool smoke budget to 256 after direct proof showed 96 tokens truncates before the complete native call while 256 returns a real parsed call.
+
+Current MiniMax K smoke status:
+- Required tool: pass, parsed `record_fact({"value":"blue-cat"})`.
+- Visible raw tool markup leak: none in pass row.
+- Tool-result continuation: pass with `STORED blue-cat`.
+- JSON exact: pass.
+- Code/whitespace exact: pass.
+- Cache: `cached_tokens=60`, `cache_detail=paged+tq`, block-disk writes/hits observed, TurboQuant mentioned.
+- Bundled Python parity: pass using `panel/bundled-python/python/bin/python3.12`.
+
+Remaining boundary:
+- This does not clear MiniMax issue179 reporter parity/root-cause audit, real UI parity, cancellation reporter reproduction, or full release readiness.
