@@ -369,3 +369,16 @@ Focused validation passed:
 - Focused validation passed: `tests/test_mimo_v2_local_bundle_metadata_contract.py` plus current-suite/release-manifest source-hash selectors -> `7 passed`, `383 deselected`.
 - Full current suite was run and remains `status=open`. New MiMo metadata step passed, but failed steps remain `packaged_integrity_contracts`, `focused_regression_pytest`, `release_regression_manifest`, and `release_gate_skip_app`.
 - Release boundary: this is metadata honesty only. MiMo VL/audio/video runtime remains unwired until real `mimo_v2_multimodal.py` or equivalent forward path, media embedding bridge, and media-aware cache/L2 proof exist.
+
+## 2026-06-08 MiMo safe-headroom cache proof refresh
+
+| Item | Artifact / proof | Status |
+| --- | --- | --- |
+| MiMo mixed-SWA explicit cap regression | `tests/test_mllm_scheduler_cache.py::TestMLLMMixedSWACleanStorePolicy::test_tight_memory_mixed_swa_skips_clean_prompt_above_configured_cap` | PASS after scheduler fix; explicit cap wins over safe-headroom unless force env is set. |
+| Focused scheduler proof | `.venv/bin/python -m pytest -q tests/test_mllm_scheduler_cache.py -k 'tight_memory_mixed_swa_skips_clean_prompt_above_configured_cap or mixed_swa_tight_memory_store_uses_clean_prefill_when_headroom_is_safe or tight_memory_mixed_swa_force_env_overrides_cap'` | PASS; 3 passed. |
+| Cache architecture contract | `build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json` | PASS; `cache_family_pytest` 426 passed, no failed/missing markers. |
+| API/cache contract | `build/current-noheavy-api-cache-contract-after-dsv4-preflight-refresh-20260608.json` | PASS with current scheduler/test hashes. |
+| VL/media cache contract | `build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json` | PASS with current scheduler/test hashes. |
+| Objective proof digest | `build/current-objective-proof-after-mimo-safe-headroom-contract-refresh-20260608.json` | Cache architecture, generation defaults/Native MTP/VL media, current-source API/cache, and real UI unblocked non-MiMo rows are now PASS. Release remains OPEN on live/model-quality rows. |
+
+Remaining release blockers: cross-family live multi-turn smoke, MiMo V2.5 JANG_2L runtime/tool/long-prompt quality, MiniMax-M2.7-JANGTQ_K reporter parity, real Electron UI full cross-family matrix, and DSV4 long-output/code/file-generation quality. No signing/notarization/tag/download update from this proof.
