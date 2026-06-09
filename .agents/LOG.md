@@ -7117,3 +7117,40 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof artifact: `build/current-issue175-179-release-boundary-audit-after-issue185-empty-lora-fix-20260609.json`, `status=open`; issue 178 LoRA source checks pass with `empty_lora_lists_noop_regression_test_present=true` and `lora_scale_without_path_still_rejected=true`. The artifact stays open for unrelated installed/live rows.
 - Validation: full `tests/test_image_gen.py` passed `75/75`; focused image API LoRA slice passed `3/3`; panel CLI LoRA contract passed `1/1`; full objective checklist passed `5/5`; focused current-suite/release-manifest slices passed; `py_compile` and `git diff --check` passed.
 - Boundary: current-source/no-heavy fix only. No image model was launched, no app was rebuilt/installed, and no package/sign/notarize/tag/download/release action was taken.
+
+# 2026-06-09 - Cross-architecture fix compatibility ledger
+
+- User requirement: every runtime/parser/cache/media fix must be checked against other model architectures and quant formats before calling it release-safe. Do not assume a Gemma fix applies to Qwen/N2/MiMo/DSV4/LFM/Step, and do not assume a JANG fix applies to JANGTQ/MXFP4/MXFP8 or vice versa.
+- Required per-fix cross-check dimensions:
+  - model family: Gemma4/Gemma4 Unified, MiMo V2.5, N2/Qwen3.5/3.6, DSV4, Step3p7, LFM2.5, MiniMax, ZAYA, Nemotron/Nemo.
+  - attention/cache architecture: full attention, mixed SWA, asymmetric SWA, hybrid SSM, DSV4 SWA/CSA/HCA, ZAYA CCA, media-expanded VLM prompt cache, native MTP cache, plain KV.
+  - quant format/runtime: affine JANG, stacked JANG, JANGTQ/MXTQ, MXFP4 native/QAT, MXFP8, mixed sidecars, passthrough embeddings/lm_head, TurboQuant KV storage, live TurboQuant attention KV, block-disk L2.
+  - API surface: Chat Completions, Responses nonstream/stream, Responses function_call_arguments delta/done, previous_response_id, Anthropic, Ollama, cancellation, cache endpoints.
+  - UI/CLI surface: generated launch flags, parser/reasoning selection, cache toggles, max output/context, model-owned generation_config defaults, installed app parity.
+  - media surface: image/audio/video advertised-vs-weight-backed capability, media-salted cache keys, post-media text recovery, no text-only fallback that hides missing waveform/video bridge.
+- Current fix boundaries to preserve:
+  - Hybrid SSM L2 restart fix is for hybrid VLM/cache families where block KV and SSM companion L2 must remain consistent. It must not be treated as generic KV proof, and it must be checked for N2/Qwen35/Qwen27/LFM-hybrid before release claims.
+  - Responses tool-argument streaming fixes must remain parser-output based. Do not synthesize tool args from visible prose or disable reasoning as a workaround. Check Gemma/Qwen/MiniMax/Step/MiMo parser dialects separately.
+  - Gemma4 QAT/native MXFP4 media capability must be weight-backed: E2B/E4B have real audio tower weights; 26B/31B do not. Token IDs alone must not schedule audio. Video must be proven by actual processor/runtime support, not token presence alone.
+  - MiMo JANGTQ2 exactness failures currently show valid parser structure but wrong literal values. Do not fix by JSON repair, tool-argument rewrite, cache disabling, prompt-only formatting, or hidden sampling clamps. Treat as artifact/quantization/logit/runtime decode quality until stronger evidence says otherwise.
+  - N2 JANGTQ2 source proof is green for chat/cache/Responses; N2 JANG_1L remains memory-gated. Do not claim N2 family release-clear from JANGTQ2 alone.
+  - Gemma QAT inventory currently sees model rows and multiple live smokes, but full release still needs explicit proof mapping for all required surfaces and installed/UI parity. Do not conflate source smoke pass with package release readiness.
+  - DSV4 must use native SWA/CSA/HCA composite cache. Do not substitute generic TurboQuant KV for DSV4 cache proof.
+- Release rule: a fix can be marked family-wide only after either each architecture/quant/API/media surface has direct current proof, or the source code has a mechanically architecture-neutral contract plus tests/proofs covering representative plain KV, mixed SWA, hybrid SSM, and media-expanded VLM paths.
+
+# 2026-06-09 - Gemma QAT source-smoke map and N2 L2 proof gate
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, Swift, ADLab, Max2, or transport work.
+- Pushed `7e19117c` (`Track Gemma QAT source smokes and N2 L2 proof`) to `origin/main` and `origin/codex/pr-intake-manifest`.
+- Gemma QAT/native MXFP4 inventory now records source live-smoke proof paths for required E2B, E4B, 12B, 26B, and 31B/31V rows:
+  - `build/current-all-local-model-smoke-gemma4-e2b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json`
+  - `build/current-all-local-model-smoke-gemma4-e4b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json`
+  - `build/current-all-local-model-smoke-gemma4-12b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json`
+  - `build/current-all-local-model-smoke-gemma4-26b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/summary.json`
+  - `build/current-all-local-model-smoke-gemma4-31b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/summary.json`
+- Release checklist now exposes `gemma_qat_native_mxfp4_all_source_live_smokes_present` separately from `gemma_qat_native_mxfp4_all_live_proofs_present` so source-smoke progress cannot be mistaken for installed-app/release clearance.
+- Refreshed artifact: `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json` has `status=open`, `missing_required_rows=[]`, `source_live_smoke_open_rows=[]`, but all required rows remain open for full media/cache/tool/Responses/UI/installed-app proof.
+- Refreshed objective checklist: `build/current-full-release-objective-checklist-after-gemma-qat-source-smoke-map-20260609.json` has `status=open`, `failed_count=116`; Gemma source-smoke row is green, release live-proof row remains red.
+- N2 chat/cache gate now records which optional probes were requested for skipped runs and adds an explicit `--include-l2-restart-probe` path requiring a fresh-process cache hit with `cache_detail` containing `disk`, block-disk hits, and SSM companion disk hits.
+- Validation: `py_compile` passed for the changed gate/checklist files; focused pytest `tests/test_n2_chat_cache_gate.py tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_full_release_objective_checklist.py` passed `21/21`; `git diff --check` passed.
+- Boundaries: no package, signing, notarization, tag, download, or release action. MiMo exactness/media, N2 JANG_1L memory-safe live proof, Gemma full installed-app/UI/Responses/media matrix, DSV4 memory-gated live proof, MiniMax random-language/cache isolation, and package/sign/notarize remain open.
