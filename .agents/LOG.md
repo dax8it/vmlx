@@ -7242,3 +7242,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Follow-up pushed `ac66181f` (`Add N2 JANG1L memory preflight runner`) because the runner file was still untracked after `bb2e4cb7`; main now has both the test and runner.
 - Validation: Gemma objective/N2 objective/current-suite focused tests passed `6/6`; N2 preflight/current-suite follow-up tests passed `4/4`; `py_compile` and `git diff --check` passed.
 - Boundary: no live N2 JANG_1L launch, no Gemma installed-app/UI/tunnel proof, no package/sign/notarize/tag/download action.
+
+# 2026-06-09 - Responses raw-SSE no reasoning-disable workaround gate
+
+- Blocker reduced: `Responses streaming tool args: local vs tunnel, no reasoning-disable workaround`.
+- Source change: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now emits `checks.no_reasoning_disable_workaround`; `tests/cross_matrix/run_full_release_objective_checklist.py` now surfaces that row in the umbrella release checklist.
+- Focused red/green: the contract test first failed on missing `no_reasoning_disable_workaround`, and the checklist test first failed because the umbrella row did not exist.
+- Regenerated artifacts:
+  - `build/current-responses-raw-sse-parity-direct-gateway-gemma4-e2b-after-parser-20260609.json`: `status=fail`, direct/gateway `authoritative_arguments={"value": "blue-cat"}`, `reasoning_events=0`, `no_reasoning_disable_workaround=false`, tunnel missing.
+  - `build/current-responses-raw-sse-parity-mixed-model-tunnel-output-index-20260609.json`: `status=fail`, tunnel Qwen has reasoning/tool args but differs from direct/gateway Gemma and still has invalid output indices.
+  - `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`: `status=open`, `failed_count=121`, now explicitly includes `responses_raw_sse_parity_no_reasoning_disable_workaround=false`.
+- Validation: `tests/test_responses_raw_sse_parity_contract.py tests/test_full_release_objective_checklist.py -k "raw_sse_parity or responses_tunnel_capture or reasoning_disable_workaround"` passed `12/12`; `py_compile` passed.
+- Boundary: stricter classification only. Direct/gateway tool args are not enough to close #190/#192 until same-model direct/gateway/tunnel raw SSE proves authoritative args, valid output indices, and no reasoning-disable workaround.
