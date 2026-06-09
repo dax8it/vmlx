@@ -1,3 +1,13 @@
+# 2026-06-09 - Qwen/N2 hybrid TurboQuant package parity coverage
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
+- Reduced blocker class: N2/Qwen-family hybrid SSM + TurboQuant KV packaged/runtime parity.
+- Root cause found: `vmlx_engine/utils/hybrid_tq_cache.py` controls Qwen3.6/N2 selective live TurboQuant KV for attention layers while preserving SSM companion caches, and is imported by scheduler/tokenizer/JANG loader paths, but it was missing from bundled-python, release-gate, packaged-integrity, and installed-app parity hash lists. A stale packaged helper could silently alter N2/Qwen hybrid cache behavior after source tests passed.
+- Source/proof fix: added `utils/hybrid_tq_cache.py` to `panel/scripts/verify-bundled-python.sh`, `panel/scripts/release-gate-python-app.py`, `tests/cross_matrix/run_packaged_integrity_contract.py`, and `tests/cross_matrix/run_installed_app_runtime_parity_audit.py`.
+- Regression: package/parity tests now assert that `utils/hybrid_tq_cache.py` is covered in the release gate, bundled verifier, staged app integrity gate, and installed-app runtime parity audit.
+- Red/green proof: the focused package/parity test set failed before the manifest fix on missing `utils/hybrid_tq_cache.py`, then passed after the fix (`6 passed`, including current-suite source-hash guards). `py_compile` and `git diff --check` passed.
+- Boundary: package/parity coverage only. This does not run or clear N2 JANG_1L/JANGTQ live cache/tool/UI proof, DSV4, MiMo exactness/media, Gemma installed-app/UI/tunnel, signing, notarization, tag, or download rows.
+
 # 2026-06-09 - Gemma4 Unified packaged parity hash coverage
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
