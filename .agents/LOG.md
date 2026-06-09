@@ -6973,3 +6973,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof: `tests/test_mlx_lm_runtime_patches.py` passed `6/6`; direct probe reports `short_negative_reverse=-1`, `short_negative_found=0`, and patched marker true; current-suite source hash checks passed `2/2`; `py_compile` and `git diff --check` passed.
 - Commit: `b2f05a4e` pushed to `origin/main` and `origin/codex/pr-intake-manifest`.
 - Boundary: source/runtime compatibility fix only. No model-family release clearance, no installed-app proof, no package/sign/notarize/tag/download action.
+
+# 2026-06-09 05:23 PDT - MiniMax bare invoke parser and live cache smoke
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx` work.
+- Root cause from live MiniMax Small JANGTQ proof: `tool_required` generated a complete native MiniMax invoke block, `<invoke name="record_fact"><parameter name="value">blue-cat</parameter></invoke>`, without the outer `<minimax:tool_call>` wrapper. The runtime parser previously ignored that shape and the server returned HTTP 400 for required tool choice.
+- Fix: `vmlx_engine/tool_parsers/minimax_tool_parser.py` now parses complete bare `<invoke>...</invoke>` blocks using the existing MiniMax parameter parser. It does not accept truncated bare invoke fragments; lenient truncated parsing remains scoped to native wrapped `<minimax:tool_call>` blocks.
+- Regression: `tests/test_tool_parsers.py::TestMiniMaxToolParser::test_bare_invoke_parameter_block` covers the exact live output shape.
+- Verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/tool_parsers/minimax_tool_parser.py tests/test_tool_parsers.py` -> pass.
+  - `.venv/bin/python -m pytest -q tests/test_tool_parsers.py -k MiniMax` -> `20 passed`.
+  - Live source smoke: `build/current-all-local-model-smoke-minimax-small-jangtq-cache-language-after-bare-invoke-tool-20260609/summary.json` -> `status=pass`, `failures=0` for `MiniMax-M2.7-Small-JANGTQ` with tools, cache repeat, multiturn recall, reasoning, structured JSON, exact code whitespace, and L2 restart enabled.
+- Boundary: this clears the current-source MiniMax Small JANGTQ bare-invoke tool parser failure. It does not clear reporter parity, public installed/downloaded app parity, or the broader random Chinese/visible planning isolation row; those remain active release blockers.
