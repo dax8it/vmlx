@@ -893,3 +893,11 @@ Classification:
 - Regression: `tests/test_gemma4_tool_parser.py::TestGemma4ToolParser::test_native_tool_call_strips_bare_modality_sentinel_leak` failed before the fix and passes after.
 - Live proof: 12B QAT JANG_4M rerun at `build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json`, `status=pass`.
 - Current QAT JANG_4M source-smoke status: E2B, E4B, 12B, 26B, and 31B no-media tool/cache/L2 smokes pass; `source_live_smoke_open_rows=[]`. Release remains open for media/video/audio, Responses raw SSE, UI/CLI, installed app, and packaging/signing/notarization.
+
+## 2026-06-09 Responses/Qwen35 raw SSE output-index release gate
+
+- Source/proof-map fix: full release checklist now requires raw Responses SSE output-item index validity and consumes `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json` in the Qwen35 group.
+- Current proof: Qwen35 tunnel has authoritative `record_fact({"value": "blue-cat"})` args and reasoning events, but reuses `output_index=0` for both message and function_call.
+- Regenerated checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=73`, with `qwen35_raw_sse_status_pass` and `qwen35_raw_sse_valid_output_item_indices` red.
+- Parallel handoff: `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md`.
+- Boundary: no release, package, signing, notarization, tag, or download action. Next proof must fix/recapture same-model direct/gateway/tunnel raw SSE with valid output indices and no reasoning-disable workaround.

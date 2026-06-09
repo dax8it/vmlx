@@ -1,6 +1,6 @@
 {
   "boundary": "No-heavy checklist only. A pass here would mean current evidence claims every listed gate is green; it still must be backed by the live artifacts referenced by each row. Open rows are release blockers.",
-  "created_at": "2026-06-09T15:58:52-0700",
+  "created_at": "2026-06-09T16:06:47-0700",
   "failed": [
     {
       "detail": false,
@@ -332,6 +332,31 @@
     {
       "evidence": "build/current-mimo-v2-jang2l-current-audit-after-cache-vs-nocache-logprobs-20260609.json",
       "name": "mimo_mimo_media_wired",
+      "ok": false
+    },
+    {
+      "detail": "fail",
+      "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+      "name": "qwen35_raw_sse_status_pass",
+      "ok": false
+    },
+    {
+      "detail": {
+        "conflicting_output_indices": {
+          "direct": [
+            0
+          ],
+          "gateway": [
+            0
+          ],
+          "tunnel": [
+            0
+          ]
+        },
+        "missing_captures": []
+      },
+      "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+      "name": "qwen35_raw_sse_valid_output_item_indices",
       "ok": false
     },
     {
@@ -1325,7 +1350,7 @@
       "ok": false
     }
   ],
-  "failed_count": 71,
+  "failed_count": 73,
   "groups": {
     "api_cache_responses_contract": [
       {
@@ -5454,6 +5479,58 @@
         "ok": true
       },
       {
+        "detail": "fail",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_artifact_exists",
+        "ok": true
+      },
+      {
+        "detail": "fail",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_status_pass",
+        "ok": false
+      },
+      {
+        "detail": true,
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_same_model_surfaces",
+        "ok": true
+      },
+      {
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_authoritative_args",
+        "ok": true
+      },
+      {
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_reasoning_events",
+        "ok": true
+      },
+      {
+        "detail": {
+          "conflicting_output_indices": {
+            "direct": [
+              0
+            ],
+            "gateway": [
+              0
+            ],
+            "tunnel": [
+              0
+            ]
+          },
+          "missing_captures": []
+        },
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_valid_output_item_indices",
+        "ok": false
+      },
+      {
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json",
+        "name": "qwen35_raw_sse_local_source_guards",
+        "ok": true
+      },
+      {
         "detail": "pass",
         "evidence": "docs/internal/agent-notes/current-real-ui-installed-app-qwen36-35b-mxfp8-mtp-responses-tools-video-reasoning-cachecontrols-max512-20260607-proof.json",
         "name": "qwen35_installed_video_artifact_exists",
@@ -5824,6 +5901,12 @@
         "detail": true,
         "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
         "name": "responses_raw_sse_parity_gateway_argument_stream_passthrough_guard",
+        "ok": true
+      },
+      {
+        "detail": true,
+        "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
+        "name": "responses_raw_sse_parity_all_present_surfaces_have_valid_output_item_indices",
         "ok": true
       },
       {

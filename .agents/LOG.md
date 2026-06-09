@@ -7774,3 +7774,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Live proof after fix: `build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json`, `status=pass`.
 - Board result: all QAT JANG_4M source no-media smokes pass for E2B/E4B/12B/26B/31B; `source_live_smoke_open_rows=[]`; checklist remains `status=open`, `failed_count=71` because full release surfaces are still open.
 - Boundary: no release, no package/sign/notarize/tag/download. Remaining Gemma work is media/video/audio, Responses raw SSE args/content deltas, UI/CLI settings parity, installed-app parity, and full release proof.
+
+# 2026-06-09 - Responses/Qwen35 raw SSE output-index release gate
+
+- Source/proof-map fix: the full release checklist now requires valid output-item indices for raw Responses SSE parity, and the Qwen35 raw-SSE tunnel artifact is consumed as a first-class Qwen release row.
+- Regenerated checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=73`.
+- New explicit red rows: `qwen35_raw_sse_status_pass` and `qwen35_raw_sse_valid_output_item_indices`; detail reports conflicting `output_index=0` for message and function_call on direct/gateway/tunnel copies of the current Qwen35 tunnel capture.
+- Parallel handoff: wrote `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with current green Gemma QAT JANG_4M rows and the best next work for Responses, Gemma media/UI, MiMo, N2, DSV4, and MiniMax.
+- Validation passed: focused full-checklist tests `4/4`, `py_compile`, and regenerated checklist. No release, package, sign, notarize, tag, or download action.

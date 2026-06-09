@@ -712,3 +712,10 @@
 - live proof: reran 12B QAT JANG_4M after the fix at `build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json`, `status=pass`.
 - result: all five QAT JANG_4M source no-media tool/cache/L2 smokes now pass: E2B, E4B, 12B, 26B, 31B. Inventory has `source_live_smoke_open_rows=[]` and `all_required_source_live_smokes_present=true`.
 - boundary: this is not full Gemma release clearance. Media/video/audio E2E, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, package/signing/notarization remain open.
+
+## CODEX - 2026-06-09 Responses/Qwen35 raw SSE output-index release gate
+- blocker reduced: #190/#192 Responses raw SSE proof-map completeness for Qwen/Qwen3.6 tunnel output indices.
+- source/proof-map fix: full release checklist now requires `all_present_surfaces_have_valid_output_item_indices` for the generic Responses raw-SSE parity row and adds a Qwen35-specific raw-SSE gate consuming `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json`.
+- regenerated checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=73`; new explicit Qwen failures are `qwen35_raw_sse_status_pass` and `qwen35_raw_sse_valid_output_item_indices` with conflicting index `0` on direct/gateway/tunnel copies of the Qwen35 tunnel capture.
+- coordination: wrote `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` so the parallel agent can pick up same-model Responses capture/fix work, Gemma media/UI, MiMo, N2, DSV4, and MiniMax without relying on chat context.
+- validation: focused full-checklist tests for Responses/Qwen35/Gemma green fixture passed `4/4`; `py_compile` passed. No package, sign, notarize, tag, download, or release action was run.
