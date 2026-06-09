@@ -6747,3 +6747,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Found 11 Gemma config rows: local Gemma4 12B JANG/MXFP variants, Gemma4 26B JANG_4M CRACK, and Gemma4 31B JANG_4M-MTP. All present Gemma4 rows advertise vision/audio/video at config level, so release proof must either pass media or capability-gate honestly per bundle.
 - Did not find Gemma 3n E2B/E4B QAT/native 4-bit bundles locally. Keep rows open until models are downloaded/provided and live tested.
 - Boundary: inventory is not live runtime proof; no signing/release/package work.
+
+# 2026-06-09 03:24 PDT - Gemma QAT/native MXFP4 inventory gate
+
+- Added no-heavy cross-matrix gate `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` and tests `tests/test_gemma_qat_native_mxfp4_inventory_gate.py`.
+- The gate inventories local Gemma configs, classifies required QAT/native rows, and records required live proof surfaces. It intentionally keeps present rows `open` until live media/cache/tool/Responses/UI/installed-app proof exists.
+- Refreshed `build/current-gemma-qat-native-mxfp4-local-inventory-20260609.json`: `status=open`, `count=11`, missing `gemma3n_e2b_qat_native4` and `gemma3n_e4b_qat_native4`; open present `gemma4_12b_native_mxfp4`, `gemma4_26b_vl`, `gemma4_31v_or_31b_vl`.
+- Updated tracked release execution tracker with the gate status and exact missing/open row names.
+- Validation: `.venv/bin/python -m pytest -q tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_model_config_registry.py -k "gemma_qat_native_mxfp4_inventory_gate or gemma3n_e2b_e4b_qat_configs"` -> 3 passed; runner completed; `py_compile` and `git diff --check` passed.
+- Boundary: no downloads, no live heavy model load, no package/sign/notarize/release. This reduces proof tracking only and keeps release locked.
