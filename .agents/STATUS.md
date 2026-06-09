@@ -533,3 +533,10 @@
 - proof-map fix: MiMo objective evidence now uses current present artifacts only: structural verify, `build/current-mimo-v2-jang2l-current-audit-after-cache-vs-nocache-logprobs-20260609.json`, `build/current-mimo-v2-no-source-exactness-classifier-after-lossless-token-trace-20260609.json`, and `build/current-mimo-v2-jangtq2-cache-vs-nocache-next-token-logprobs-after-unit-label-20260609.json`.
 - result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; MiMo `missing_evidence=[]`, `current_evidence_missing=[]`, cache-vs-no-cache `status=pass`, row remains `OPEN`.
 - boundary: no MiMo release clearance. Exactness, decode speed, VL/audio/video wiring/E2E proof, JANGTQ2/JANG_2L media/L2, UI, installed app, package, signing, notarization, tag, download, and release remain open.
+
+## CODEX - 2026-06-09 Gemma QAT objective detail guard
+- blocker reduced: Gemma QAT/native MXFP4 release-board evidence drift.
+- integrated in-flight objective digest coverage for the five Gemma4 QAT/native MXFP4 rows: E2B, E4B, 12B, 26B, and 31B.
+- guard now asserts the objective details expose exact source-smoke artifacts for all five rows and media-backing truth: E2B/E4B audio tower backed, 12B audio embed-only with vision backed and video proof required.
+- validation: `tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_gemma_qat_native_mxfp4_release_blocker` passed; `py_compile` and `git diff --check` passed for the touched test/source surfaces.
+- boundary: proof-map/coverage only. No Gemma QAT release clearance, no model launch, no installed-app/UI/tunnel proof, no package/sign/notarize/tag/download.

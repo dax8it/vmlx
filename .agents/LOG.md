@@ -7514,3 +7514,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; MiMo `missing_evidence=[]`, `current_evidence_missing=[]`, `cache_vs_nocache_status=pass`, and row remains `OPEN`.
 - Validation: focused MiMo/N2 objective tests passed `5/5`; broader focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; `py_compile` and `git diff --check` passed.
 - Boundary: no MiMo runtime/release clearance. JANGTQ2 artifact exactness, decode speed, VL/audio/video wiring/E2E proof, JANGTQ2/JANG_2L media/L2, UI, installed app, package, signing, notarization, tag, download, and release remain open.
+
+# 2026-06-09 - Gemma QAT objective detail guard
+
+- Continued from current active worktree after N2/MiMo objective commits; did not touch deprecated `/Users/eric/vmlx` or release/package/signing paths.
+- Integrated the existing in-flight `tests/test_objective_proof_digest.py` guard for Gemma QAT/native MXFP4 objective details.
+- The guard pins exact source-smoke artifact paths for Gemma4 E2B, E4B, 12B, 26B, and 31B QAT/native MXFP4 rows.
+- The guard also pins honest media-backing details: E2B/E4B have audio tower backing, while 12B is audio-embed-only, vision-backed, and still requires video runtime proof.
+- Validation: focused objective digest test passed `1/1`; `py_compile` and `git diff --check` passed for the touched files.
+- Boundary: this is proof-map coverage only. It does not clear Gemma QAT live runtime/media/cache/API/UI/installed-app/tunnel rows and does not authorize package/sign/notarize/tag/download.
