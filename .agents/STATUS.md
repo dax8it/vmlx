@@ -515,3 +515,9 @@
 - regression coverage: installed-app parity, packaged integrity, release-gate, engine audit, current-suite, and release-manifest tests now assert every top-level reasoning parser file is covered.
 - red/green proof: five focused guard tests failed before manifest wiring on missing reasoning parser files, then passed `5/5`; the engine audit script assertion passed `1/1`; `bash -n panel/scripts/verify-bundled-python.sh`, `py_compile`, and `git diff --check` passed.
 - boundary: package/source-hash parity only. This does not clear live Gemma QAT/native rows, N2 JANG_1L runtime/cache/API/UI proof, MiMo exactness/media/tool rows, raw direct/gateway/tunnel SSE parity, installed-app behavior, or any release/signing step.
+
+## CODEX - 2026-06-09 N2 JANGTQ2 live proof objective consumption
+- blocker reduced: N2 release-board accuracy for current-source JANGTQ2 chat/cache/Responses proof.
+- source/proof-map fix: `summarize_objective_proof.py`, current regression suite, full checklist, and release manifest now point at `build/current-objective-proof-after-n2-jangtq2-live-proof-20260609.json`; the N2 objective row includes `build/current-n2-jangtq2-chat-cache-responses-proof-after-responses-parser-20260609.json`.
+- proof fields recorded: `status=pass`, `stable_text=true`, tool/Responses/stream probes pass, `cache_hit_cache_detail=paged+ssm`, `cache_hit_cached_tokens=8`, block-disk writes/hits present, and SSM disk stores present.
+- boundary: N2 remains `OPEN`. This does not clear JANG_1L runtime/cache/API/UI, media, installed-app/UI, same-model tunnel parity, fresh-process L2 restart, package, signing, notarization, tag, download, or release readiness.

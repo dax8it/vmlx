@@ -7489,3 +7489,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Regressions: installed-app parity, packaged integrity, release-gate, engine audit, current-suite, and release-manifest tests now dynamically assert every top-level `vmlx_engine/reasoning/*.py` file is hash-covered.
 - Verification: red proof failed on missing reasoning parser files; green proof passed focused guards `5/5` plus engine audit `1/1`; `bash -n`, `py_compile`, and `git diff --check` passed.
 - Boundary: source/package parity only. Live Gemma, N2, MiMo, installed-app/UI/tunnel, and release rows remain open.
+
+# 2026-06-09 - N2 JANGTQ2 live proof objective consumption
+
+- Reduced blocker: N2 release-board/objective accuracy after the current-source JANGTQ2 live proof.
+- Fix: objective digest default, current regression suite pointer, full release checklist objective pointer, and release manifest rows now use `build/current-objective-proof-after-n2-jangtq2-live-proof-20260609.json`.
+- Objective row evidence now includes `build/current-n2-jangtq2-chat-cache-responses-proof-after-responses-parser-20260609.json`; recorded fields include `status=pass`, `stable_text=true`, `tool_probe_pass=true`, `responses_probe_pass=true`, `responses_stream_probe_pass=true`, `cache_hit_cache_detail=paged+ssm`, `cache_hit_cached_tokens=8`, block-disk writes/hits, and SSM disk stores.
+- Validation: focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; `py_compile` passed; `git diff --check` passed.
+- Boundary: N2 row remains `OPEN`. This consumes current-source JANGTQ2 proof only and does not clear JANG_1L runtime/cache/API/UI, media, installed-app/UI, same-model tunnel parity, fresh-process L2 restart, package, signing, notarization, tag, download, or release readiness.
