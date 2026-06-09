@@ -1,3 +1,19 @@
+# 2026-06-09 - Gemma QAT media-backed inventory gate
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, release packaging, signing, notarization, tag, or download work.
+- Reduced blocker class: `media` + `parser/template` proof classification for Gemma QAT/native MXFP4 release rows.
+- Source gate fix: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` now separates config-advertised modalities from weight-backed/runtime-proven modalities.
+- New no-heavy evidence in `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json`:
+  - Gemma4 E2B/E4B QAT/native MXFP4 have `audio_tower.*` and vision weights; source smokes remain narrower than installed-app/UI/tunnel proof.
+  - Gemma4 12B QAT/native MXFP4 has image weights (`vision_embedder`/`embed_vision`) but only `embed_audio.embedding_projection.weight`, so audio metadata is not native audio proof.
+  - Gemma4 12B/26B/31B have video token metadata but no video-specific weight family; checklist now records that live frame-through-vision runtime proof is still required.
+- Full objective checklist regenerated at `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=125`, with explicit Gemma rows for 12B audio backing and 12B/26B/31B video runtime proof.
+- Validation passed:
+  - `.venv/bin/python -m pytest -q tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_blocks_open_gemma_qat_inventory tests/test_current_regression_suite.py::test_current_regression_suite_hashes_gemma_qat_inventory_gate_sources tests/test_current_regression_suite.py::test_current_regression_suite_runs_gemma_qat_inventory_gate tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_gemma_qat_native_mxfp4_release_blocker` -> `10 passed`.
+  - `py_compile` passed for changed Gemma inventory/checklist source and tests.
+  - `git diff --check` passed.
+- Boundary: this is an honest proof-classification/source-gate fix. It does not clear Gemma release rows; remaining work is live Responses/tool/media/cache/UI/installed-app parity and tunnel/gateway proof.
+
 # 2026-06-09 - N2 JANG_1L careful-RAM preflight and blocker ledger refresh
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no Max2/adlab/transport lane.
