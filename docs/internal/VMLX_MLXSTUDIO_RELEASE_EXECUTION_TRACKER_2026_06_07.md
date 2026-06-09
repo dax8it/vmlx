@@ -839,3 +839,18 @@ Classification:
 - Proof: `build/current-all-local-model-smoke-gemma4-e2b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E2B-it-qat-JANG_4M/result.json`, `status=pass`.
 - Covered source surfaces: Gemma4 autodetect/parser selection, visible text, reasoning separation, required tool call, tool-result continuation, JSON/code exactness, mixed-SWA cache hit telemetry, block-disk writes, and fresh-process L2 restart for E2B QAT JANG_4M.
 - Release boundary: source no-media E2B proof only. Gemma4 QAT JANG_4M remains open for media/video, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, larger QAT JANG_4M bundles, and release packaging/signing/notarization.
+
+## 2026-06-09 MiMo media runtime boundary correction
+
+- Source/proof-map fix: MiMo audit now separates source media component presence from runtime media support.
+- Current audit: `build/current-mimo-v2-jang2l-current-audit-after-cache-vs-nocache-logprobs-20260609.json`, `status=open`.
+- Current finding: `source_media_components_present=true`, `raw_audio_request_ingestion=true`, `runtime_capabilities_media_supported=false`, `runtime_media_wired=false`, `media_runtime_implementation=false`, classification `media_components_present_runtime_capabilities_text_only`.
+- Side checklist: `build/current-full-release-objective-checklist-after-mimo-media-runtime-boundary-20260609.json`, `status=open`, `failed_count=72`.
+- N2 boundary: available memory rechecked at about `111.16 GiB`, below the Nex/N2 Pro 397B JANG_1L `118.57 GiB` launch gate. Do not lower the guard; run one-at-a-time only when headroom is real or a smaller-runtime strategy exists.
+- Release boundary: no sign/notarize/package/tag/download action. MiMo still needs live VL/audio/video runtime and L2 proof, exactness artifact/logit/quant or runtime decode fix, decode speed, UI, and installed-app parity.
+
+## 2026-06-09 Gemma4 E4B QAT JANG_4M source smoke
+
+- Proof: `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E4B-it-qat-JANG_4M/result.json`, `status=pass`.
+- Covered source surfaces: Gemma4 parser/runtime autodetect, visible text, reasoning separation, required tool call, tool-result continuation, JSON/code exactness, mixed-SWA cache hit telemetry, block-disk writes, and fresh-process L2 restart for E4B QAT JANG_4M.
+- Release boundary: source no-media E4B proof only. Gemma4 QAT JANG_4M remains open for media/video, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, 12B/26B/31B QAT JANG_4M source smokes, and release packaging/signing/notarization.

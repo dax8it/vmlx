@@ -645,9 +645,26 @@
 - boundary: Gemma4 QAT JANG_4M remains open. The existing no-media source smoke is `probe_failed`; release proof still requires autodetect, model-owned `generation_config`, Gemma4 tool/reasoning parser, mixed-SWA/prefix cache, TurboQuant KV boundary where valid, block-disk L2, Responses streaming args/content deltas, media honesty, UI/CLI parity, and installed-app parity.
 - focused validation: `uv run pytest tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_gemma_qat_native_mxfp4_release_blocker tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_blocks_open_gemma_qat_jang4m_row -q` passed `10/10`.
 
+## CODEX - 2026-06-09 N2/MiMo focus correction
+- blocker reduced: MiMo V2.5 media/runtime truthfulness for the N2/MiMo release lane; no release/sign/package action.
+- source/proof-map fix: `tests/cross_matrix/run_mimo_v2_jang2l_current_audit.py` no longer treats source media component presence as live runtime media support. It records `source_media_components_present` separately and only clears `runtime_media_wired` / `media_runtime_implementation` when runtime capabilities or live E2E prove media support.
+- stale detector fix: the raw-audio bridge check now follows the current source split, where `audio=all_audio if all_audio else None` lives in `vmlx_engine/engine/batched.py` and the batch generator handles raw audio processing/processor forwarding.
+- refreshed MiMo audit: `build/current-mimo-v2-jang2l-current-audit-after-cache-vs-nocache-logprobs-20260609.json`, `status=open`; media weights and source components are present, raw audio ingestion is present, runtime capabilities are text-only, `runtime_media_wired=false`, and `media_runtime_implementation=false`.
+- refreshed classifier/checklist: `build/current-mimo-v2-no-source-exactness-classifier-after-artifact-diagnosis-20260609.json` remains `status=open`; side checklist `build/current-full-release-objective-checklist-after-mimo-media-runtime-boundary-20260609.json` remains `status=open`, `failed_count=72`, with `mimo_media_runtime_implementation` and `mimo_mimo_media_wired` explicitly red.
+- N2 current boundary rechecked this turn: available memory was about `111.16 GiB`, still below the JANG_1L live-gate requirement of `118.57 GiB`; do not lower the guard just to launch Nex/N2 Pro 397B.
+- validation: MiMo audit/classifier/checklist focused tests passed `36/36`; `py_compile` passed for the edited MiMo audit files.
+- boundary: MiMo is not release-cleared. Remaining MiMo work is real VL/audio/video runtime support and live media/L2 proof, artifact/logit/quant exactness or decode fix, decode speed target, UI/installed-app parity. N2 Pro 397B remains open until memory-safe JANG_1L live proof or a real smaller-runtime strategy exists.
+
 ## CODEX - 2026-06-09 Gemma4 E2B QAT JANG_4M source smoke
 - blocker reduced: Gemma4 QAT JANG_4M source-live text/tool/cache/L2 coverage for the smallest downloaded bundle.
 - proof: `build/current-all-local-model-smoke-gemma4-e2b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E2B-it-qat-JANG_4M/result.json`, `status=pass`; summary at `build/current-all-local-model-smoke-gemma4-e2b-qat-jang4m-tools-nomedia-l2-20260609/summary.json`.
 - proven surfaces: autodetect `model_type=gemma4`, tool/reasoning parser `gemma4`, model-owned launch defaults with `--default-enable-thinking false`, visible ACK repeat, multi-turn `blue cat`, reasoning separation, required `record_fact({"value":"blue-cat"})`, tool-result continuation `STORED blue-cat.`, exact JSON/code probes, mixed-SWA cache hit `cached_tokens=56` with `cache_detail=paged+mixed_swa`, block-disk writes, and fresh-process L2 restart `pass`.
 - updated artifacts: Gemma inventory/objective/checklist now consume the E2B QAT JANG_4M source smoke; `source_live_smoke_open_rows` still lists E4B, 12B, 26B, and 31B QAT JANG_4M.
 - boundary: no Gemma4 QAT JANG_4M release clearance. E2B media/video, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, and larger QAT JANG_4M bundles remain open.
+
+## CODEX - 2026-06-09 Gemma4 E4B QAT JANG_4M source smoke
+- blocker reduced: Gemma4 QAT JANG_4M source-live text/tool/cache/L2 coverage for E4B.
+- proof: `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E4B-it-qat-JANG_4M/result.json`, `status=pass`; summary at `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-tools-nomedia-l2-20260609/summary.json`.
+- proven surfaces: visible ACK repeat, multi-turn recall, reasoning separation, required `record_fact({"value":"blue-cat"})`, tool-result continuation, exact JSON/code probes, mixed-SWA cache hit `cached_tokens=56` with `cache_detail=paged+mixed_swa`, block-disk writes, and L2 restart with `disk_hits=2`.
+- updated artifacts: Gemma inventory/objective/checklist now consume E2B and E4B QAT JANG_4M source smokes; `source_live_smoke_open_rows` is now 12B, 26B, and 31B QAT JANG_4M.
+- boundary: no Gemma4 QAT JANG_4M release clearance. Media/video, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, and remaining larger QAT JANG_4M bundles remain open.
