@@ -7810,3 +7810,13 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Parallel handoff: wrote `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with current green Gemma QAT JANG_4M rows and the best next work for Responses, Gemma media/UI, MiMo, N2, DSV4, and MiniMax.
 - Validation passed: focused full-checklist tests `4/4`, `py_compile`, and regenerated checklist. No release, package, sign, notarize, tag, or download action.
 - Follow-up no-heavy source recheck: `build/current-noheavy-api-cache-contract-after-qwen35-output-index-recheck-20260609.json`, `status=pass`; `responses_streaming_tool_call_arguments_and_indexes=true`, `gateway_responses_function_call_arguments_streaming=true`, `gateway_responses_reasoning_empty_final_arguments_streaming=true`, and `gateway_stale_responses_port_rejection=true`. Current source is not showing the output-index bug in synthetic/source contracts; next work is live same-model direct/gateway/tunnel capture or deployed route freshness.
+
+# 2026-06-09 - Apple signing/notary runbook correction
+
+- Corrected the release lane against `/Users/eric/wiki/infra/apple-notarization.md` instead of treating the keychain state as permanently blocked.
+- Ran the documented `vmlx-build.keychain-db` unlock, `security set-keychain-settings`, and `security set-key-partition-list -S apple-tool:,apple:,codesign:` sequence, repeated once per the runbook caveat for first-sign failures.
+- Fresh Developer ID signing probe now passes with `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, `TeamIdentifier=55KGF2S5AY`, hardened runtime, and secure timestamp.
+- Notary profile access now passes with `xcrun notarytool history --keychain ~/Library/Keychains/vmlx-build.keychain-db --keychain-profile vmlx-notary --output-format json`; current history includes accepted vMLX submissions.
+- Source fix: `tests/cross_matrix/run_signed_checkpoint_dmg_audit.py` now emits conditional `required_next_steps`, so green signing/notary access no longer tells the next agent to redo keychain repair.
+- Regenerated `build/current-signed-checkpoint-dmg-readiness-20260609.json`: `status=open`, `existing_dmgs_signed_and_stapled=true`, `fresh_signing_probe=pass`, `notarization=pass`, required next steps `rebuild_current_source_dmg_flavors` and `notarize_staple_and_verify_current_dmgs`.
+- Boundary: no current-source DMG was rebuilt in this entry, and no tag/upload/appcast/public release was performed. The next release action is current-source DMG build, notarize, staple, and verify after the checkpoint scope is explicit.

@@ -18,15 +18,17 @@ that path in the current turn.
   `panel/scripts/build-and-install.sh`. The installed-app runtime parity audit
   now passes at
   `build/current-installed-app-runtime-parity-audit-after-installed-app-rebuild-20260606.json`.
-- Packaged integrity now has green source/unit and bundled verifier checks, but
-  remains blocked only by Developer ID signing/keychain access in this
-  non-interactive session:
+- Packaged integrity has green source/unit and bundled verifier checks in
   `build/current-packaged-integrity-contract-after-installed-app-rebuild-20260606.json`.
+  Its older keychain-blocked wording is superseded by the signed-checkpoint audit below.
 - Signed-checkpoint DMG readiness is now captured in
   `build/current-signed-checkpoint-dmg-readiness-20260609.json`. Existing local
   June 5 Sequoia/Tahoe DMGs are signed, stapled, and Gatekeeper-accepted, but
-  they are not current-source proof for HEAD `8324bf11`. Fresh signing and
-  notary profile access are blocked because `vmlx-build.keychain-db` is locked.
+  they are not current-source proof for HEAD `d1054f41`. After following
+  `/Users/eric/wiki/infra/apple-notarization.md`, fresh Developer ID signing is
+  `pass`, notary history access is `pass` with
+  `--keychain ~/Library/Keychains/vmlx-build.keychain-db --keychain-profile vmlx-notary`,
+  and the keychain reports `no-timeout`.
 - `panel/scripts/bundle-python.sh` now restores the Python standalone launcher
   immediately after extraction and again after MLX wheel installation, avoiding
   the intermittent missing `python3` / bootstrap `cp437` failure during app
@@ -56,10 +58,12 @@ that path in the current turn.
   runtime/model/UI/cache blockers are green or Eric explicitly overrides.
 - The locally installed app is ad-hoc signed and valid on disk; do not call it a
   Developer ID signed or notarized checkpoint DMG.
-- To unblock a real current-source signed checkpoint DMG, restore the documented
-  `vmlx-build.keychain-db` unlock plus `codesign` partition-list sequence, then
-  rebuild Sequoia/Tahoe DMGs and run notarization with
-  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db`.
+- To produce a real current-source signed checkpoint DMG from this state,
+  rebuild Sequoia/Tahoe DMGs, then run notarization with
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db` and
+  verify with `panel/scripts/verify-release-dmgs.sh`. Only redo the documented
+  unlock plus `codesign` partition-list sequence if a fresh signing/notary probe
+  regresses.
 
 ## Best Parallel Work Items
 
