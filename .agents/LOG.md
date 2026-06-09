@@ -1,3 +1,27 @@
+# 2026-06-09 - Single-active cache max_kv_size hybrid guard
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
+- Reduced blocker class: cache policy safety for Gemma4, MiMo V2, N2/Qwen3.6, and future mixed sliding/full or hybrid cache families.
+- Upstream intake checked: `ml-explore/mlx-lm` PR #1343 (`Apply max_kv_size to KVCache layers returned by make_cache()`, opened 2026-06-03). The PR makes explicit `max_kv_size` affect plain `KVCache` entries returned by `model.make_cache()`, but its own notes call out early-context recall loss on interleaved attention because global/full layers become bounded rotating windows.
+- Source fix: `vmlx_engine/utils/single_batch_generator.py` now preserves architecture-owned mixed/hybrid `make_cache()` semantics when `max_kv_size` is present. Known Gemma4/Gemma4 Unified, MiMo V2, Qwen3.6/N2 model types, explicit `cache_type=hybrid`, hybrid/mixed/SWA/SSM/Mamba subtypes, or mixed `sliding` plus `full/global` layer types suppress the generic cap and log a warning. Ordinary KV models still pass `max_kv_size` through.
+- Regression: `tests/test_single_active_batch_generator.py` now proves plain KV keeps `max_kv_size=128`, while `gemma4`, `mimo_v2`, `qwen3_5_moe`, and future mixed sliding/full layer-type configs pass `max_kv_size=None` into `mlx_cache.make_prompt_cache`.
+- Proof-map fix: current regression-suite source hashes and focused pytest command now include `vmlx_engine/utils/single_batch_generator.py` and `tests/test_single_active_batch_generator.py`.
+- Validation passed:
+  - `.venv/bin/python -m pytest -q tests/test_single_active_batch_generator.py tests/test_current_regression_suite.py::test_current_regression_suite_hashes_focused_pytest_gate_sources tests/test_current_regression_suite.py::test_current_regression_suite_runs_single_active_cache_policy_guard tests/test_current_regression_suite.py::test_current_regression_suite_source_hash_list_matches_release_manifest` -> `20 passed`.
+  - `py_compile` and `git diff --check` passed for changed files.
+- Boundary: this is a no-heavy guard against unsafe generic cache bounding. It does not clear live N2 JANG_1L, MiMo exactness/media, Gemma installed-app/UI/tunnel, DSV4, package, signing, notarization, tag, or download rows.
+
+# 2026-06-09 - Release blocker ledger refresh
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; did not touch deprecated `/Users/eric/vmlx`, ADLab, Max2 transport lanes, or old Swift paths.
+- Added `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` as the current coordination handoff for a second agent.
+- Wrote the active blocker ledger into `.agents/STATUS.md` so continuations do not lose the release boundary.
+- Explicitly recorded that N2/JANG_1L should fit with careful RAM handling; current blocker is live-proof scheduling and headroom discipline, not permanent infeasibility.
+- Explicitly recorded the Responses tool-argument streaming sub-issue: trace empty `tc_args` at the `if tc_args:` streaming branch, `_parse_tool_calls_with_parser`, and delta accumulation when reasoning is enabled. No disabling reasoning as a fix.
+- Explicitly recorded gateway/tunnel/port/wake/sleep/session-routing checks so engine parser bugs are not conflated with deployed tunnel/model availability.
+- Explicitly recorded `ModuleNotFoundError: No module named 'mlx_vlm.models.gemma4_unified'` as an installed/bundled runtime parity blocker for Gemma4.
+- Hard release boundary remains: no fake guards, no forced generation defaults, no package/sign/notarize/tag/download until runtime/model/UI/cache/installed-app rows are actually green or Eric explicitly overrides.
+
 # 2026-06-09 - Gemma4 shared-KV mlx-format load fix
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
