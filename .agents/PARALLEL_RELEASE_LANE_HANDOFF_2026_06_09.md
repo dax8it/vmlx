@@ -70,6 +70,30 @@ that path in the current turn.
   `status=fail`, `prepackage_ready=false`, `release_ready=false`, while
   `packaged_app_developer_id_signing=true`. Treat the next blocker as release
   proof scope/model/API/UI rows, not signing access.
+- Proper release mechanics are the documented path in
+  `/Users/eric/wiki/infra/apple-notarization.md`; do not invent a GUI-only,
+  ad-hoc-signing, cert-reimport, or verifier-weakening workaround. If signing
+  returns `errSecInternalComponent`, rerun:
+
+```sh
+security unlock-keychain -p vmlx-release ~/Library/Keychains/vmlx-build.keychain-db
+security set-keychain-settings ~/Library/Keychains/vmlx-build.keychain-db
+security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k vmlx-release ~/Library/Keychains/vmlx-build.keychain-db
+```
+
+- The canonical current-source checkpoint sequence, once the prepackage ledger
+  is green or Eric explicitly overrides it with listed open rows, is:
+
+```sh
+VMLINUX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-pre-dmg-release-build-<scope>.json panel/scripts/build-release-dmgs.sh all
+VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh
+panel/scripts/verify-release-dmgs.sh
+```
+
+- `build-release-dmgs.sh` creates both Sequoia and Tahoe flavors from the
+  current checkout and stops up front on `--require-prepackage-ready`;
+  `notarize-release-dmgs.sh` submits and staples both final DMGs and regenerates
+  blockmaps; `verify-release-dmgs.sh` is the final post-staple verification.
 
 ## Best Parallel Work Items
 

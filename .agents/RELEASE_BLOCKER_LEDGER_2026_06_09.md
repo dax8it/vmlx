@@ -82,6 +82,25 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 - Current release packaging is still blocked on rebuilding current-source DMGs, notarizing/stapling/verifying those current artifacts, and clearing or explicitly scoping the remaining runtime/model/UI/cache rows.
 - No signing, notarization, tag, public download update, or release announcement until runtime/model/UI/cache blockers are green or Eric explicitly overrides.
 - If a release is forced with known open rows, the release notes must list exact open rows and not imply full clearance.
+- Proper release mechanics are documented in `/Users/eric/wiki/infra/apple-notarization.md`; do not invent an alternate path. The canonical keychain is `~/Library/Keychains/vmlx-build.keychain-db`, the Developer ID identity is `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, and notarization uses the `vmlx-notary` keychain profile.
+- If signing returns `errSecInternalComponent`, fix key access with the documented sequence and retry once after the partition-list grant settles:
+
+```sh
+security unlock-keychain -p vmlx-release ~/Library/Keychains/vmlx-build.keychain-db
+security set-keychain-settings ~/Library/Keychains/vmlx-build.keychain-db
+security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k vmlx-release ~/Library/Keychains/vmlx-build.keychain-db
+```
+
+- Current Python/Electron DMG flow is the repo script path, not a manual ad-hoc app signing path:
+
+```sh
+VMLINUX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-pre-dmg-release-build-<scope>.json panel/scripts/build-release-dmgs.sh all
+VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh
+panel/scripts/verify-release-dmgs.sh
+```
+
+- `panel/scripts/build-release-dmgs.sh` first runs `tests/cross_matrix/run_release_regression_manifest.py --require-prepackage-ready`; if that ledger fails, the script must stop before DMG build. Do not bypass this stop except under an explicit checkpoint-release override that records the open rows in the release notes.
+- `panel/scripts/notarize-release-dmgs.sh` submits the final signed Sequoia and Tahoe DMG containers, staples both, regenerates blockmaps, runs `spctl`, and prints final SHA-256 values. `panel/scripts/verify-release-dmgs.sh` is the post-staple verification pass.
 
 ## Other-agent integration requirements
 

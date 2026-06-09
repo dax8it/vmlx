@@ -7846,3 +7846,8 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Positive evidence: authoritative args are preserved as `{"value": "blue-cat"}` in argument deltas, done event, and final function item; reasoning events are present; model matches; parse errors are `0`.
 - Remaining failure: tunnel still emits `message` and `function_call` at `output_index=0`, so `all_present_surfaces_have_valid_output_item_indices=false`.
 - Checklist pointer now consumes the recapture artifact, and focused raw-SSE/checklist validation passed `16/16`. Boundary: no package/sign/notarize/tag/download/release action.
+# 2026-06-09 16:59 PDT - documented signing/notarization path correction
+
+- Read the actual runbook `/Users/eric/wiki/infra/apple-notarization.md` and active scripts `panel/scripts/build-release-dmgs.sh`, `panel/scripts/notarize-release-dmgs.sh`, and `panel/scripts/verify-release-dmgs.sh`.
+- Updated `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the concrete keychain unlock/partition-list sequence, Developer ID/notary profile boundary, and canonical Sequoia/Tahoe build -> notarize/staple/blockmap -> verify flow.
+- Boundary: no build, package, sign, notarize, tag, appcast, or download mutation was run. The known blocker is `prepackage_ready=false`, not missing knowledge of how to sign/notarize.
