@@ -43,6 +43,14 @@ signing, notarization, tags, downloads, or release actions.
      accepted Gemma4 video settings.
    - Proof: `tests/test_mlx_lm_runtime_patches.py::test_gemma4_video_processor_accepts_hf_config_kwargs`.
 
+6. `mlx-lm` issue #1326 / PR #1327, short-prompt think-token search clamp.
+   - Local pinned `mlx_lm.tokenizer_utils.TokenizerWrapper._find()` still used
+     `start = start or 0`, so a caller using `start=len(prompt)-11` can pass a
+     negative reverse-search start for one-token or short thinking prompts.
+   - vMLX fix: runtime patch clamps `_find()` start/end bounds and returns
+     `-1` for empty sequences or windows shorter than the searched sequence.
+   - Proof: `tests/test_mlx_lm_runtime_patches.py::test_tokenizer_wrapper_find_clamps_negative_reverse_start`.
+
 ## Upstream items checked but not blindly ported
 
 - `mlx-lm` PR #1336 (`<tool_call` marker without closing `>`): vMLX streaming
@@ -65,10 +73,6 @@ signing, notarization, tags, downloads, or release actions.
   `utils/mlx_vlm_compat.py` and current Qwen VLM language source before port.
 - `mlx-lm` PR #1377 (top-k interval wording): documentation/error-message-only
   upstream fix. No runtime behavior to port.
-- `mlx-lm` PR #1327 (short-prompt think-token search clamp): relevant to
-  one-token/short-prompt server failures. Needs a local repro against the
-  vMLX tokenizer/server path before adding a patch because vMLX already has
-  separate reasoning/template finalization logic.
 - `mlx-vlm` PR #1332 (Qwen3-VL deepstack visual embeds alignment during chunked
   prefill): likely relevant to Qwen3.5/3.6 VL long-image/OCR recall and mRoPE
   rows. Do not port blindly; map against the vendored/patches Qwen VLM language
