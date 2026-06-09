@@ -6795,6 +6795,13 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Refreshed proof: `build/current-noheavy-api-cache-contract-after-xml-docs-boundary-20260609.json`, `status=pass`, `missing_markers=[]`, `responses_streaming_tool_contracts rc=0 passed=5`.
 - Boundary: do not implement a fallback that invents `cmd` from the preamble; missing required args must fail closed. Do not close #192 publicly until rebuilt/installed app proof exists; #190 remains open for live DSV4/default-cache/tool-loop and broader cross-family rows.
 
+# 2026-06-09 04:20 PDT - Responses gateway reasoning empty-final-args boundary
+
+- Blocker reduced: #190/#192 local MLXStudio gateway/panel Responses SSE argument preservation when reasoning is present and final `response.output_item.done.item.arguments` is empty.
+- Source/proof-map fix: added panel regression `passes Responses argument SSE with reasoning and empty final item arguments`; no-heavy API/cache contract now requires `gateway_responses_reasoning_empty_final_arguments_streaming`, and release manifest expects that check.
+- Proof artifact: `build/current-noheavy-api-cache-contract-after-responses-reasoning-empty-final-args-gateway-20260609.json`, `status=pass`, `missing_markers=[]`, `panel_gateway_contracts rc=0 passed=5`, `responses_streaming_tool_contracts rc=0 passed=5`.
+- Other-agent reminder: keep the server fail-closed rule for missing required XML args; do not synthesize tool args from preamble text. This gateway row proves local pass-through/recovery only, not public tunnel parity, rebuilt installed-app behavior, or release readiness.
+
 # 2026-06-09 03:42 PDT - Gemma QAT downloads and inventory row correction
 
 - Blocker reduced: Gemma QAT/native MXFP4 model availability and release-gate accuracy for later live multiturn/tool/cache/media proof.
