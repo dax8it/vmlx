@@ -7506,3 +7506,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Fix: objective digest default, current regression suite pointer, full checklist objective pointer, and release manifest rows now use `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; N2 row consumes both JANGTQ2 live artifacts and remains `OPEN`.
 - Validation: focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; generated objective artifact shows N2 `status=open`; `py_compile` and `git diff --check` passed.
 - Boundary: current-source N2 JANGTQ2 only. No JANG_1L runtime/cache/API/UI, media, installed-app/UI, same-model tunnel parity, package, signing, notarization, tag, download, or release clearance.
+
+# 2026-06-09 - MiMo current-evidence objective cleanup
+
+- Reduced blocker: MiMo release-board accuracy after the current audit/classifier/cache proof refreshes.
+- Fix: MiMo objective evidence now excludes absent stale 2026-06-06 diagnostic artifacts and uses current present evidence only: `build/current-mimo-jang2l-local-structural-verify-20260606.json`, `build/current-mimo-v2-jang2l-current-audit-after-cache-vs-nocache-logprobs-20260609.json`, `build/current-mimo-v2-no-source-exactness-classifier-after-lossless-token-trace-20260609.json`, and `build/current-mimo-v2-jangtq2-cache-vs-nocache-next-token-logprobs-after-unit-label-20260609.json`.
+- Result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; MiMo `missing_evidence=[]`, `current_evidence_missing=[]`, `cache_vs_nocache_status=pass`, and row remains `OPEN`.
+- Validation: focused MiMo/N2 objective tests passed `5/5`; broader focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; `py_compile` and `git diff --check` passed.
+- Boundary: no MiMo runtime/release clearance. JANGTQ2 artifact exactness, decode speed, VL/audio/video wiring/E2E proof, JANGTQ2/JANG_2L media/L2, UI, installed app, package, signing, notarization, tag, download, and release remain open.

@@ -527,3 +527,9 @@
 - restart evidence: `l2_restart_probe_pass=true`, visible `ACK`, `restart_cached_tokens=8`, `restart_cache_detail=paged+ssm+disk`, `block_disk_hits=1`, and `ssm_disk_hits=1`.
 - proof-map fix: objective digest, current regression suite, full checklist, and release manifest now point at `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; N2 still reports `status=open`.
 - boundary: current-source N2 JANGTQ2 only. No JANG_1L, installed-app/UI, media, same-model tunnel, package, signing, notarization, tag, download, or release clearance.
+
+## CODEX - 2026-06-09 MiMo current-evidence objective cleanup
+- blocker reduced: MiMo release-board accuracy and stale proof noise.
+- proof-map fix: MiMo objective evidence now uses current present artifacts only: structural verify, `build/current-mimo-v2-jang2l-current-audit-after-cache-vs-nocache-logprobs-20260609.json`, `build/current-mimo-v2-no-source-exactness-classifier-after-lossless-token-trace-20260609.json`, and `build/current-mimo-v2-jangtq2-cache-vs-nocache-next-token-logprobs-after-unit-label-20260609.json`.
+- result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; MiMo `missing_evidence=[]`, `current_evidence_missing=[]`, cache-vs-no-cache `status=pass`, row remains `OPEN`.
+- boundary: no MiMo release clearance. Exactness, decode speed, VL/audio/video wiring/E2E proof, JANGTQ2/JANG_2L media/L2, UI, installed app, package, signing, notarization, tag, download, and release remain open.
