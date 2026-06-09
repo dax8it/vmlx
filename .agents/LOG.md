@@ -1,3 +1,21 @@
+# 2026-06-09 - MiniMax #179 language/planning isolation matrix
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
+- Reduced blocker class: `parser/template` + `cache/storage` classification for MiniMax #179 wrong-language / visible-planning / numeric reasoning screenshot.
+- Source/proof gate fix: `tests/cross_matrix/run_issue179_minimax_k_root_cause_audit.py` now emits `language_planning_leak_isolation` with six single-axis rows:
+  1. `reporter_exact_prompt_reproduction`
+  2. `generation_config_and_sampling`
+  3. `parser_template_reasoning`
+  4. `paged_prefix_cache`
+  5. `block_disk_l2`
+  6. `turboquant_kv`
+- Refreshed artifact: `build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json`, `status=open`. Current classification: parser/template, paged prefix cache, block-disk L2, and TurboQuant KV are only `partial`; reporter exact prompt reproduction and generation-config/hash parity remain `open`.
+- Required next evidence is explicit now: reporter-machine raw SSE/session/cancel lifecycle capture; generation config hash + resolved sampling parity; rendered chat template hash and thinking-template flag parity; cache on/off same-prompt A/B; fresh-process L2 restore same-prompt A/B; TQ KV on/off same-prompt A/B.
+- Validation:
+  - New regression failed before the field existed, then `.venv/bin/python -m pytest -q tests/test_issue179_minimax_k_root_cause_audit.py::test_issue179_audit_tracks_language_planning_leak_isolation_axes` passed.
+  - Full `.venv/bin/python -m pytest -q tests/test_issue179_minimax_k_root_cause_audit.py` passed (`19 passed`).
+- Boundary: this is not #179 clearance. Do not “fix” MiniMax by disabling cache, L2, TQ KV, reasoning, or changing sampling unless the matching same-prompt single-axis A/B proof identifies that axis.
+
 # 2026-06-09 - Gemma QAT media-backed inventory gate
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, release packaging, signing, notarization, tag, or download work.
@@ -7,7 +25,7 @@
   - Gemma4 E2B/E4B QAT/native MXFP4 have `audio_tower.*` and vision weights; source smokes remain narrower than installed-app/UI/tunnel proof.
   - Gemma4 12B QAT/native MXFP4 has image weights (`vision_embedder`/`embed_vision`) but only `embed_audio.embedding_projection.weight`, so audio metadata is not native audio proof.
   - Gemma4 12B/26B/31B have video token metadata but no video-specific weight family; checklist now records that live frame-through-vision runtime proof is still required.
-- Full objective checklist regenerated at `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=125`, with explicit Gemma rows for 12B audio backing and 12B/26B/31B video runtime proof.
+- Full objective checklist regenerated at `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=122` after the follow-up honest 12B audio gate and current artifact refresh, with explicit Gemma rows for 12B audio gating/backing and 12B/26B/31B video runtime proof.
 - Validation passed:
   - `.venv/bin/python -m pytest -q tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_blocks_open_gemma_qat_inventory tests/test_current_regression_suite.py::test_current_regression_suite_hashes_gemma_qat_inventory_gate_sources tests/test_current_regression_suite.py::test_current_regression_suite_runs_gemma_qat_inventory_gate tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_gemma_qat_native_mxfp4_release_blocker` -> `10 passed`.
   - `py_compile` passed for changed Gemma inventory/checklist source and tests.
