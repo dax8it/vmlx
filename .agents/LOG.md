@@ -5,7 +5,7 @@
 - Source/proof gate fix: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now accepts per-surface server logs and separates `no_reasoning_disable_workaround` from `all_present_surfaces_have_required_reasoning`.
 - Current direct/gateway Gemma4 E2B captures now prove the request path did not disable reasoning: both server logs contain `Reasoning: ENABLED` and resolved `/v1/responses` sampling kwargs with `enable_thinking=True`.
 - Refreshed artifact: `build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json`, `status=fail`. Direct and gateway preserve authoritative `record_fact` args `{"value": "blue-cat"}`, parse cleanly, use valid output indices, match model `gemma4-e2b-sse`, and have `no_reasoning_disable_workaround=true`; the tunnel capture is present but returns `model_not_found` for `gemma4-e2b-sse`, and direct/gateway still have `reasoning_events=0`.
-- Full objective checklist regenerated at `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=121`.
+- Full objective checklist regenerated at `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=124` after the tunnel capture was included and classified as same-model `model_not_found`.
 - Boundary: this is not Responses parity clearance. Remaining proof is same-model tunnel raw SSE plus actual reasoning events, without changing the request to hide reasoning.
 
 # 2026-06-09 - MiniMax #179 language/planning isolation matrix
