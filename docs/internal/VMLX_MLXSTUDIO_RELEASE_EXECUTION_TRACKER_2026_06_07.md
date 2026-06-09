@@ -475,3 +475,11 @@ Classification:
 - Current audit proof: `build/current-mimo-v2-jang2l-current-audit-after-lossless-token-trace-classifier-20260609.json`, `status=open`.
 - Key failures: completions `blue-cat -> blue cat`, completions/chat `B7-CAT-09 -> B7 CAT-09`, JSON `B7-CAT-09 -> B7CAT-09`, tool args `B7-CAT-09 -> B7CAT-09`.
 - Boundary: tool parser/protocol works in this run, but exact argument literals are wrong. This is not JSON repair, not raw XML fallback, not cache quantization, and not prefix/paged/L2 reuse. Source-vs-quant remains skipped by user RAM policy, so the remaining action is either runtime/logit-path root cause with no-source diagnostics or a model rebuild contract if artifact quality is confirmed as the cause.
+
+### 2026-06-09 N2 no-heavy runtime/cache/parser status refresh
+- API/cache proof: `build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json`, `status=pass`.
+- Cache architecture proof: `build/current-cache-architecture-contract-after-mimo-n2-runtime-refresh-20260609.json`, `status=pass`.
+- Family detection proof: `build/current-model-family-detection-contract-after-mimo-n2-runtime-refresh-20260609.json`, `status=pass`.
+- N2 JANG_1L memory preflight: `build/current-n2-pro-jang1l-local-memory-preflight-20260609.json`, decision `do_not_launch`.
+- Covered by no-heavy contracts: Chat/Responses sampling kwargs, max-output/max-context separation, JSON schema preservation, streaming cache-detail usage, Responses `previous_response_id`, cache stats/reuse endpoints, TurboQuant KV runtime contract, TurboQuant disk roundtrip, hybrid/native cache matrix, parser registration, CLI parser choices, panel launch policy, and JANG/JANGTQ/MXFP row distinctions.
+- JANG_1L live boundary: payload is `118.73GB`; preflight host is `128GB`; free+speculative memory was `94.26GiB`; required extra headroom is `20GiB`. No live load was attempted, and this row remains release-open until tested with sufficient headroom or a smaller runtime strategy.
