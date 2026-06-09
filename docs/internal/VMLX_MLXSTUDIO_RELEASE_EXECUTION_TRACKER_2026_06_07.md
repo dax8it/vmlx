@@ -515,3 +515,14 @@ Classification:
 - Structural proof now checks both `MiMo-V2.5-JANGTQ_2` and `MiMo-V2.5-JANG_2L` for config/index/sidecar/layout metadata: model-owned `generation_config.json`, `xml_function` tool parser, `think_xml` reasoning parser, hybrid full/SWA cache topology, prefix cache, L2 disk cache, TurboQuant-KV boundary, affine bookend sidecars, stacked `switch_mlp` layout, and absence of legacy `.mlp.experts.*` layout.
 - Current audit: `build/current-mimo-v2-jang2l-current-audit-after-local-structural-proof-20260609.json`, `status=open`, `manifest_integrity=true`, `structural_verify=true`.
 - Objective digest remains open. This does not clear live text/tool/exactness/speed/media/L2/UI rows.
+
+## 2026-06-09 no-heavy objective gate refresh
+
+- Regenerated no-heavy contract artifacts after the MiMo structural proof change.
+- Newly PASS objective rows:
+  - Server default max output and max context are distinct and map to correct CLI flags.
+  - Cross-family cache architecture is classified per family.
+  - High-risk model family parser, artifact, and launch policy gates are current.
+  - Generation defaults, Native MTP, and VL media gates are current.
+- Current objective digest remains `build/current-objective-proof-after-mimo-n2-gateway-pointer-refresh-20260609.json` and remains `open` because live-heavy quality/speed/UI/model rows remain open.
+- Release lock remains active: no signing, notarization, tagging, or public download update from no-heavy contract pass alone.
