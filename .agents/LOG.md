@@ -6740,3 +6740,10 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Required proof now explicitly includes: model-owned generation defaults, visual/audio/video where advertised, Gemma3/Gemma4 parser selection, required/auto/no-tool/tool-result continuation, multi-turn recall, raw parser/reasoning leak checks, JSON/XML/code exactness, content-delta and Responses function-call-argument streaming, prefix/paged/mixed-SWA/native cache telemetry, TurboQuant KV encode/decode boundaries where valid, block-disk L2 write, fresh-process L2 restore, CLI/UI parser/cache/max-output/max-context parity, and installed-app startup parity.
 - Added registry regression for Gemma3n E2B/E4B QAT/native rows so they cannot drift to `unknown` or lose the `gemma3` tool parser.
 - Boundary: this is matrix/proof-scope plus registry coverage only. It does not live-clear any Gemma QAT/native MXFP4 media/cache/UI row and does not release/sign/notarize.
+
+# 2026-06-09 03:19 PDT - Gemma local QAT/native MXFP4 inventory
+
+- Wrote shallow inventory artifact `build/current-gemma-qat-native-mxfp4-local-inventory-20260609.json` from `/Users/eric/models` and `/Users/eric/.mlxstudio/models`.
+- Found 11 Gemma config rows: local Gemma4 12B JANG/MXFP variants, Gemma4 26B JANG_4M CRACK, and Gemma4 31B JANG_4M-MTP. All present Gemma4 rows advertise vision/audio/video at config level, so release proof must either pass media or capability-gate honestly per bundle.
+- Did not find Gemma 3n E2B/E4B QAT/native 4-bit bundles locally. Keep rows open until models are downloaded/provided and live tested.
+- Boundary: inventory is not live runtime proof; no signing/release/package work.

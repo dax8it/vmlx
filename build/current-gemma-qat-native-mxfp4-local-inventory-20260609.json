@@ -1,0 +1,138 @@
+{
+  "status": "pass",
+  "count": 11,
+  "rows": [
+    {
+      "path": "/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "jang_affine",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/JANGQ/Gemma-4-31B-it-JANG_4M-MTP",
+      "model_type": "gemma4",
+      "text_model_type": "gemma4_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "jang",
+      "format": "jang",
+      "jang_has_vision": true,
+      "jang_has_audio": null
+    },
+    {
+      "path": "/Users/eric/models/JANGQ/Gemma-4-31B-it-JANG_4M-MTP/mtp_assistant",
+      "model_type": "gemma4_assistant",
+      "text_model_type": "gemma4_text",
+      "vision": true,
+      "audio": true,
+      "video": false,
+      "weight_format": null,
+      "format": null,
+      "jang_has_vision": null,
+      "jang_has_audio": null
+    },
+    {
+      "path": "/Users/eric/models/OsaurusAI/gemma-4-12B-it-MXFP4",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "mxfp4",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/OsaurusAI/gemma-4-12B-it-MXFP8",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "mxfp8",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/OsaurusAI/gemma-4-12B-it-MXFP8-ATTNFP16-CANDIDATE",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "mxfp8",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/OsaurusAI/gemma-4-12B-it-MXFP8-ATTNFP16-L0-24-FP16-CANDIDATE",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "mxfp8",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/dealign.ai/Gemma-4-26B-A4B-it-JANG_4M-CRACK",
+      "model_type": "gemma4",
+      "text_model_type": "gemma4_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": null,
+      "format": "jang",
+      "jang_has_vision": true,
+      "jang_has_audio": null
+    },
+    {
+      "path": "/Users/eric/models/dealignai/Gemma-4-12B-it-JANG_4M-CRACK",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "jang_affine",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/dealignai/Gemma-4-12B-it-MXFP4-CRACK",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "mxfp4",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    },
+    {
+      "path": "/Users/eric/models/dealignai/Gemma-4-12B-it-MXFP8-CRACK",
+      "model_type": "gemma4_unified",
+      "text_model_type": "gemma4_unified_text",
+      "vision": true,
+      "audio": true,
+      "video": true,
+      "weight_format": "mxfp8",
+      "format": null,
+      "jang_has_vision": true,
+      "jang_has_audio": true
+    }
+  ]
+}
