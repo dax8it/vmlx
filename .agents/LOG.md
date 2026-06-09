@@ -7108,3 +7108,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Unit proof: `.venv/bin/python -m pytest -q tests/test_n2_chat_cache_gate.py tests/test_ssm_companion_cache.py` -> `61 passed`.
 - Live proof: `build/current-all-local-model-smoke-qwen36-27b-mxfp4-mtp-tools-l2-after-ssm-disk-budget-fix-20260609`, status `pass`, failures `0`; restart usage has `cached_tokens=56`, `cache_detail=paged+ssm+disk`, block disk `disk_hits=1`, SSM disk `hits=1`, `misses=0`, and no `hybrid_kv_without_ssm` fallback.
 - Boundary: clears current-source Qwen3.6-27B MXFP4 MTP smoke/L2 row only. Installed-app UI parity, Qwen35 tunnel/deployed parity, and full release packaging remain open.
+
+# 2026-06-09 - Issue #185 empty image LoRA scales source fix
+
+- Source fix: `ImageGenEngine.load()` now treats empty `lora_paths=[]` and `lora_scales=[]` as the default no-LoRA path instead of requested LoRA, matching the CLI/server globals when no `--lora-*` flags are supplied.
+- Preserved validation: non-empty `lora_scales` without paths still raises `--lora-scales requires --lora-paths`, length mismatch remains rejected, and requested LoRA is still refused for constructors that cannot accept LoRA args.
+- Regression tests: `tests/test_image_gen.py::TestLoadMethod::test_load_treats_empty_lora_lists_as_no_lora_request` and `tests/test_image_gen.py::TestLoadMethod::test_load_rejects_nonempty_lora_scales_without_paths`.
+- Proof artifact: `build/current-issue175-179-release-boundary-audit-after-issue185-empty-lora-fix-20260609.json`, `status=open`; issue 178 LoRA source checks pass with `empty_lora_lists_noop_regression_test_present=true` and `lora_scale_without_path_still_rejected=true`. The artifact stays open for unrelated installed/live rows.
+- Validation: full `tests/test_image_gen.py` passed `75/75`; focused image API LoRA slice passed `3/3`; panel CLI LoRA contract passed `1/1`; full objective checklist passed `5/5`; focused current-suite/release-manifest slices passed; `py_compile` and `git diff --check` passed.
+- Boundary: current-source/no-heavy fix only. No image model was launched, no app was rebuilt/installed, and no package/sign/notarize/tag/download/release action was taken.
