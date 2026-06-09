@@ -501,6 +501,7 @@ Classification:
 - N2 JANG_1L memory preflight: `build/current-n2-pro-jang1l-local-memory-preflight-20260609.json`, decision `do_not_launch` with `8.0 GiB` Metal/runtime headroom.
 - Covered by no-heavy contracts: Chat/Responses sampling kwargs, max-output/max-context separation, JSON schema preservation, streaming cache-detail usage, Responses `previous_response_id`, cache stats/reuse endpoints, TurboQuant KV runtime contract, TurboQuant disk roundtrip, hybrid/native cache matrix, parser registration, CLI parser choices, panel launch policy, and JANG/JANGTQ/MXFP row distinctions.
 - JANG_1L live boundary: payload is `118.73GB` decimal / `110.57GiB`; preflight host is `128GiB`; current available memory is `114.64GiB`; required available memory is `118.57GiB` with `8.0GiB` Metal/runtime headroom. A conservative live attempt reached startup and then aborted with Metal OOM, so the row remains release-open until tested with sufficient headroom or a smaller runtime strategy. This is careful-RAM scheduling, not permanent infeasibility.
+- 2026-06-09 one-at-a-time retry boundary: user allowed N2 JANG_1L on this 128 GiB host, but current available headroom is still below the post-OOM threshold. `build/current-n2-jang1l-chat-cache-proof-20260609.json` is `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`, `available_gib=111.61`, `required_available_gib=118.57`, `memory_gap_gib=6.96`. The chat/cache gate now enforces this JANG_1L indexed-payload guard before server launch even if generic `--min-available-gb` is low.
 
 ### 2026-06-09 N2 explicit autodetect/startup policy row
 - Source coverage added: Python model registry, MLXStudio panel detector, and no-heavy family detection contract now include `n2_pro_qwen35_moe_hybrid_vl_policy`.
@@ -619,6 +620,7 @@ Classification:
 - Restart evidence: `l2_restart_probe_pass=true`; restart row returned visible `ACK`, `cached_tokens=8`, and `cache_detail=paged+ssm+disk`; restart health recorded `block_disk_cache.disk_hits=1` and `ssm_companion_disk.hits=1`.
 - Objective proof: `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json` records both the existing JANGTQ2 chat/cache/Responses artifact and the new L2 restart artifact while keeping the N2 row `OPEN`.
 - Boundary: this is current-source N2 JANGTQ2 only. It does not clear N2 JANG_1L, installed-app/UI, media/VL/audio/video, same-model tunnel parity, package, signing, notarization, tag, download, or release readiness.
+- Current N2 objective/checklist also records the skipped JANG_1L live-gate artifact `build/current-n2-jang1l-chat-cache-proof-20260609.json`; N2 remains `OPEN` until memory-safe JANG_1L runtime/cache/API/UI proof exists.
 
 ## 2026-06-09 MiMo current-evidence objective cleanup
 

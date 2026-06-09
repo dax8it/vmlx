@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-09T14:01:31-0700",
+  "created_at": "2026-06-09T14:11:15-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
@@ -3451,6 +3451,7 @@
         "build/current-release-regression-manifest-after-pr-intake-matrix-refresh-20260609.json",
         "build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json",
         "build/current-n2-pro-jang1l-local-memory-preflight-20260609.json",
+        "build/current-n2-jang1l-chat-cache-proof-20260609.json",
         "build/current-n2-jangtq2-chat-cache-responses-proof-after-responses-parser-20260609.json",
         "build/current-n2-jangtq2-chat-cache-responses-l2-proof-20260609.json",
         "build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json",
@@ -3466,8 +3467,8 @@
           "indexed_payload_gb_decimal": 118.73,
           "indexed_payload_gib": 110.57,
           "required_available_gib": 118.57,
-          "available_gib": 111.33,
-          "memory_gap_gib": 7.24,
+          "available_gib": 111.54,
+          "memory_gap_gib": 7.03,
           "memory_preflight_decision": "do_not_launch",
           "launch_safe": false,
           "classification": "careful_ram_live_proof_pending",
@@ -3487,6 +3488,24 @@
           "vm_free_plus_speculative_gib": null,
           "required_extra_headroom_gib": 8.0,
           "boundary": "The local N2 JANG_1L artifact/index is registered, but the current memory preflight is only a launch-safety warning. JANG_1L should be treated as careful-RAM live-proof work, not permanent infeasibility; this is not live runtime proof."
+        },
+        "jang1l_live_gate": {
+          "artifact": "build/current-n2-jang1l-chat-cache-proof-20260609.json",
+          "status": "skipped",
+          "reason": "n2_jang1l_insufficient_available_memory",
+          "model": "/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L",
+          "available_gib": 111.61,
+          "required_available_gib": 118.57,
+          "memory_gap_gib": 6.96,
+          "indexed_payload_gib": 110.57,
+          "required_extra_headroom_gib": 8.0,
+          "requested_probes": {
+            "tool": false,
+            "responses": false,
+            "responses_stream": false,
+            "l2_restart": false
+          },
+          "release_boundary": "N2 JANG_1L live proof was not launched because the indexed payload plus Metal/runtime headroom exceeds current available memory. 128 GiB total RAM is not sufficient evidence without current available headroom."
         },
         "noheavy_contracts": {
           "api_cache": "pass",
@@ -3541,6 +3560,7 @@
           "build/current-release-regression-manifest-after-pr-intake-matrix-refresh-20260609.json": true,
           "build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json": true,
           "build/current-n2-pro-jang1l-local-memory-preflight-20260609.json": true,
+          "build/current-n2-jang1l-chat-cache-proof-20260609.json": true,
           "build/current-n2-jangtq2-chat-cache-responses-proof-after-responses-parser-20260609.json": true,
           "build/current-n2-jangtq2-chat-cache-responses-l2-proof-20260609.json": true,
           "build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json": true,

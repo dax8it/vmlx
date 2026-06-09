@@ -7544,3 +7544,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Current source already tries parser candidates from content, reasoning, stripped full text, and full text, then chooses a tool call with non-empty arguments when one is available. This is the intended non-fake behavior: no reasoning-disable workaround and no argument synthesis.
 - Validation passed: `tests/test_server.py -k "streaming_responses_tool_call_arguments_survive_buffering or streaming_responses_reasoning_tool_call_keeps_arguments"` passed `2/2`; `py_compile` passed for `vmlx_engine/server.py`, `tests/test_server.py`, and `tests/test_responses_raw_sse_parity_contract.py`.
 - Boundary: this does not close the deployed/tunnel report. The next required proof is same-model direct/gateway/tunnel raw SSE using the reported request/model to separate engine parser behavior from gateway/model availability/wake/session routing.
+
+# 2026-06-09 - N2 JANG_1L live-gate headroom guard
+
+- Reduced blocker: `runtime/kernel` proof safety for N2 JANG_1L one-at-a-time launch attempts.
+- User allowed N2 JANG_1L on the 128 GiB machine one at a time, so I reran the current preflight and then the real chat/cache gate against `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L`.
+- Current preflight: `build/current-n2-pro-jang1l-local-memory-preflight-20260609.json`, `decision=do_not_launch`, `indexed_payload_gib=110.57`, `required_available_gib=118.57`, current `available_gib=111.54`.
+- Live-gate artifact: `build/current-n2-jang1l-chat-cache-proof-20260609.json`, `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`, `available_gib=111.61`, `memory_gap_gib=6.96`; no server launch happened.
+- Source fix: `tests/cross_matrix/run_n2_chat_cache_gate.py` now applies a JANG_1L-specific indexed-payload plus `8.0 GiB` Metal/runtime headroom guard before `Popen`, even when generic `--min-available-gb` is low.
+- Proof-map fix: `tests/cross_matrix/summarize_objective_proof.py` and `tests/cross_matrix/run_full_release_objective_checklist.py` now surface `build/current-n2-jang1l-chat-cache-proof-20260609.json` and its skipped reason in the N2 objective/checklist row.
+- Validation: `tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_tracks_open_n2_pro_objective_row`, `tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_n2_pro_397b_release_blocker`, and `tests/test_n2_chat_cache_gate.py` passed `16/16`. Full checklist regenerated as `status=open`, `failed_count=122`.
+- Boundary: not N2 JANG_1L runtime/cache/API/UI clearance. The next live attempt needs actual available headroom at or above `118.57 GiB` or a smaller-runtime strategy; lowering the gate would recreate the Metal OOM failure mode.
