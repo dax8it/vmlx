@@ -6756,3 +6756,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Updated tracked release execution tracker with the gate status and exact missing/open row names.
 - Validation: `.venv/bin/python -m pytest -q tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_model_config_registry.py -k "gemma_qat_native_mxfp4_inventory_gate or gemma3n_e2b_e4b_qat_configs"` -> 3 passed; runner completed; `py_compile` and `git diff --check` passed.
 - Boundary: no downloads, no live heavy model load, no package/sign/notarize/release. This reduces proof tracking only and keeps release locked.
+
+# 2026-06-09 03:27 PDT - Gemma QAT inventory gate current-suite wiring
+
+- Added TDD regression coverage in `tests/test_current_regression_suite.py` to require the Gemma QAT/native MXFP4 inventory gate sources in `CURRENT_SUITE_SOURCE_HASH_FILES` and require a `gemma_qat_native_mxfp4_inventory_gate` command table entry.
+- Verified the new tests failed before wiring: source hashes missing and command key absent.
+- Wired `tests/cross_matrix/run_current_regression_suite.py` to hash and execute `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py`, include `tests/test_gemma_qat_native_mxfp4_inventory_gate.py`, and select `gemma_qat_inventory_gate` in focused pytest.
+- Validation: `.venv/bin/python -m pytest -q tests/test_current_regression_suite.py -k "gemma_qat_inventory_gate or source_hash_list_matches_release_manifest"` -> 3 passed; `.venv/bin/python -m pytest -q tests/test_release_regression_manifest.py -k "source_hash_list_matches_current_suite_runner or source_hashes_all_referenced_code_files"` -> 2 passed; `py_compile` and `git diff --check` passed.
+- Boundary: no live heavy model load and no release action. This only prevents proof-map drift for the already-open Gemma QAT/native MXFP4 rows.
