@@ -1,6 +1,6 @@
 {
   "boundary": "No-heavy checklist only. A pass here would mean current evidence claims every listed gate is green; it still must be backed by the live artifacts referenced by each row. Open rows are release blockers.",
-  "created_at": "2026-06-09T14:33:38-0700",
+  "created_at": "2026-06-09T14:40:49-0700",
   "failed": [
     {
       "detail": false,
@@ -4004,6 +4004,30 @@
         "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
         "name": "responses_raw_sse_parity_tunnel_expected_model_advertised",
         "ok": false
+      },
+      {
+        "detail": true,
+        "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
+        "name": "responses_raw_sse_parity_local_responses_streaming_guards_pass",
+        "ok": true
+      },
+      {
+        "detail": true,
+        "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
+        "name": "responses_raw_sse_parity_local_empty_xml_arguments_fail_closed",
+        "ok": true
+      },
+      {
+        "detail": true,
+        "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
+        "name": "responses_raw_sse_parity_local_output_index_ordering_guard",
+        "ok": true
+      },
+      {
+        "detail": true,
+        "evidence": "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json",
+        "name": "responses_raw_sse_parity_gateway_argument_stream_passthrough_guard",
+        "ok": true
       },
       {
         "detail": false,

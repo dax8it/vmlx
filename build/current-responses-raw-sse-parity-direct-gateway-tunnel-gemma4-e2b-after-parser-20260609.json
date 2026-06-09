@@ -145,7 +145,11 @@
     "all_required_surfaces_present": true,
     "authoritative_arguments_match_across_present_surfaces": false,
     "direct_capture_present": true,
+    "gateway_argument_stream_passthrough_guard": true,
     "gateway_capture_present": true,
+    "local_empty_xml_arguments_fail_closed": true,
+    "local_output_index_ordering_guard": true,
+    "local_responses_streaming_guards_pass": true,
     "no_reasoning_disable_workaround": true,
     "reasoning_not_disabled_by_surface": {
       "direct": true,
@@ -160,6 +164,23 @@
     "model": "gemma4-e2b-sse",
     "require_reasoning_events": true,
     "require_same_model": true
+  },
+  "local_source_contract": {
+    "checks": {
+      "gateway_responses_function_call_arguments_streaming": true,
+      "gateway_responses_reasoning_empty_final_arguments_streaming": true,
+      "gateway_stale_responses_port_rejection": true,
+      "responses_streaming_tool_call_arguments_and_indexes": true
+    },
+    "gateway_argument_stream_passthrough_guard": true,
+    "gateway_stale_responses_port_rejection_guard": true,
+    "local_empty_xml_arguments_fail_closed": true,
+    "local_output_index_ordering_guard": true,
+    "local_responses_streaming_guards_pass": true,
+    "missing_markers": [],
+    "path": "build/current-noheavy-api-cache-contract-after-responses-reasoning-empty-final-args-gateway-20260609.json",
+    "present": true,
+    "status": "pass"
   },
   "missing_captures": [],
   "status": "fail"
