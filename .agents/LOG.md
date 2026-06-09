@@ -1,3 +1,13 @@
+# 2026-06-09 - TQ-native disk cache package parity coverage
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
+- Reduced blocker class: N2/Qwen/MiMo-family TurboQuant L2 disk-cache encode/decode and cache-restore safety package parity.
+- Root cause found: `vmlx_engine/tq_disk_store.py` is the TQ-native disk serialization path used by `disk_cache.py` for compressed `TurboQuantKVCache` records, and `vmlx_engine/cache_record_validator.py` guards TQ-native metadata plus live/prefix/block/SSM/JANGTQ cache restores before unsafe allocations. Both files were covered by focused runtime tests, but missing from bundled-python, release-gate, packaged-integrity, and installed-app parity hash lists. A stale package could therefore drift on TQ disk encode/decode or cache validation while source tests stayed green.
+- Source/proof fix: added `cache_record_validator.py` and `tq_disk_store.py` to `panel/scripts/verify-bundled-python.sh`, `panel/scripts/release-gate-python-app.py`, `tests/cross_matrix/run_packaged_integrity_contract.py`, and `tests/cross_matrix/run_installed_app_runtime_parity_audit.py`.
+- Regression: package/parity tests now assert both files are covered in the release gate, bundled verifier, staged app integrity gate, and installed-app runtime parity audit.
+- Red/green proof: the focused package/parity test set failed before the manifest fix on missing `cache_record_validator.py` / `tq_disk_store.py`, then passed after the fix (`4 passed`).
+- Boundary: package/parity coverage only. This does not run or clear live N2 cache/tool/UI, MiMo exactness/media/L2, Gemma installed-app/UI/tunnel, signing, notarization, tag, or download rows.
+
 # 2026-06-09 - Qwen/N2 hybrid TurboQuant package parity coverage
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
