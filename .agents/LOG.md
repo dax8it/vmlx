@@ -7372,6 +7372,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation: `tests/test_mimo_v2_cache_vs_nocache_next_token.py` passed `5/5`; `py_compile` passed; `git diff --check` passed.
 - Boundary: this is proof-harness correctness only. It does not clear MiMo exactness, media, JANG_2L/JANGTQ2 runtime quality, installed-app parity, package/sign/notarize, or release readiness.
 
+# 2026-06-09 - Gemma4 vision runtime-bootstrap guard
+
+- Blocker reduced: Gemma4 mlxstudio#88 mixed `pixel_values` list coercion proof now follows the actual vMLX source bootstrap path.
+- Root cause: `tests/test_vl_video_regression.py::TestIssueGuards::test_mlxstudio_88_gemma4_vision_pixel_values_list_coercion` inspected raw upstream `mlx_vlm.models.gemma4.vision` before importing `vmlx_engine`. Current source installs `runtime_patches.gemma4_vision` on `import vmlx_engine`, so the old guard reported a false packaged-source failure instead of proving the engine runtime path.
+- Source/test fix: the guard now imports `vmlx_engine`, then asserts the patched `VisionModel.__call__` contains the `mlxstudio#88` per-item `mx.array` coercion and carries `_vmlx_gemma4_pixel_values_patch`.
+- Red/green proof: the focused test failed before the edit on missing `mlxstudio#88`, then passed `1/1`; `py_compile tests/test_vl_video_regression.py` passed.
+- Boundary: source bootstrap guard only. Gemma QAT/native media, Responses/tool/tunnel, UI, installed-app parity, package/sign/notarize, and release rows remain open.
+
 # 2026-06-09 - Current-suite Gemma QAT inventory pointer sync
 
 - Pushed `8c1d9222` (`Use Gemma QAT source smoke inventory`) to `origin/main` and `origin/codex/pr-intake-manifest`.
