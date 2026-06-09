@@ -377,7 +377,7 @@ Focused validation passed:
 | MiMo mixed-SWA explicit cap regression | `tests/test_mllm_scheduler_cache.py::TestMLLMMixedSWACleanStorePolicy::test_tight_memory_mixed_swa_skips_clean_prompt_above_configured_cap` | PASS after scheduler fix; explicit cap wins over safe-headroom unless force env is set. |
 | Focused scheduler proof | `.venv/bin/python -m pytest -q tests/test_mllm_scheduler_cache.py -k 'tight_memory_mixed_swa_skips_clean_prompt_above_configured_cap or mixed_swa_tight_memory_store_uses_clean_prefill_when_headroom_is_safe or tight_memory_mixed_swa_force_env_overrides_cap'` | PASS; 3 passed. |
 | Cache architecture contract | `build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json` | PASS; `cache_family_pytest` 426 passed, no failed/missing markers. |
-| API/cache contract | `build/current-noheavy-api-cache-contract-after-dsv4-preflight-refresh-20260608.json` | PASS with current scheduler/test hashes. |
+| API/cache contract | `build/current-noheavy-api-cache-contract-after-gateway-stale-port-20260609.json` | PASS with current scheduler/test hashes. |
 | VL/media cache contract | `build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json` | PASS with current scheduler/test hashes. |
 | Objective proof digest | `build/current-objective-proof-after-mimo-safe-headroom-contract-refresh-20260608.json` | Cache architecture, generation defaults/Native MTP/VL media, current-source API/cache, and real UI unblocked non-MiMo rows are now PASS. Release remains OPEN on live/model-quality rows. |
 
@@ -497,3 +497,10 @@ Classification:
 - Release gate updated: `tests/cross_matrix/run_noheavy_api_cache_contract.py` now runs `panel_gateway_contracts` and records `gateway_stale_port_startup` plus `gateway_standby_wake_routing`.
 - Proof: `build/current-noheavy-api-cache-contract-after-gateway-stale-port-20260609.json`, `status=pass`, `missing_markers=[]`, `gateway_stale_port_startup=true`, `gateway_standby_wake_routing=true`, `panel_gateway_contracts rc=0 passed=2`.
 - Boundary: source/panel no-heavy proof only. Installed-app parity, live model routing, model cache/media rows, notarization, and public release remain blocked by the broader objective gates.
+
+## 2026-06-09 current release pointer refresh
+
+- Updated current API/cache release pointers to `build/current-noheavy-api-cache-contract-after-gateway-stale-port-20260609.json`; this is the authoritative no-heavy contract for prefix/cache/responses plus gateway stale-port startup and standby wake routing.
+- Updated current model-family release pointers to `build/current-model-family-detection-contract-after-n2-policy-row-20260609.json`; this is the authoritative no-heavy contract for MiMo/N2 autodetect, parser/cache metadata, and the explicit N2 text-only-until-VL-proven policy row.
+- Historical `docs/internal/release-gates/*/release-ready-manifest.json` snapshots were intentionally left unchanged.
+- Release remains blocked until live MiMo/N2 installed-app and media E2E rows are green; this pointer refresh prevents stale no-heavy proof from being treated as current.
