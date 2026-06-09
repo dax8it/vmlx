@@ -1067,9 +1067,9 @@
       ],
       "live_proof_status": "missing",
       "source_live_smoke": {
-        "status": "open",
-        "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json",
-        "summary_status": "probe_failed",
+        "status": "pass",
+        "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json",
+        "summary_status": "pass",
         "failed": null,
         "completed": null,
         "row_count": null,
@@ -1808,7 +1808,7 @@
     "gemma4_12b_native_mxfp4_present": true,
     "gemma4_26b_present": true,
     "gemma4_31v_or_31b_present": true,
-    "all_required_source_live_smokes_present": false,
+    "all_required_source_live_smokes_present": true,
     "all_required_live_proofs_present": false,
     "gemma4_12b_audio_weight_backed": false,
     "gemma4_12b_audio_honestly_gated": true,
@@ -1833,8 +1833,6 @@
     "gemma4_26b_vl",
     "gemma4_31v_or_31b_vl"
   ],
-  "source_live_smoke_open_rows": [
-    "gemma4_12b_qat_jang4m"
-  ],
+  "source_live_smoke_open_rows": [],
   "boundary": "No-heavy inventory only. A present row remains open until live media/cache/tool/Responses/UI/installed-app proof artifacts cover the row's advertised modalities and parser/cache requirements. source_live_smoke records narrower current-source all_local_model_smoke evidence and is not installed-app or release clearance."
 }

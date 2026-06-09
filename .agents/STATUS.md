@@ -698,3 +698,17 @@
 - proven surfaces: visible ACK repeat, multi-turn recall, reasoning separation, required tool call, tool-result continuation, exact JSON/code probes, mixed-SWA cache hit `cached_tokens=56` with `cache_detail=paged+mixed_swa`, block-disk writes, and L2 restart with `disk_hits=2`.
 - updated artifacts: Gemma inventory/objective/checklist now consume E2B, E4B, 26B, and 31B QAT JANG_4M source smokes; the only QAT JANG_4M source-smoke open row is 12B due visible `<audio|>` leak in required-tool output.
 - boundary: no release clearance; media/video, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, and the 12B unified leak remain open.
+
+## CODEX - 2026-06-09 Gemma4 12B QAT JANG_4M tool sentinel source fix
+- blocker reduced: Gemma4 12B QAT JANG_4M required-tool visible `<audio|>` sentinel leak.
+- source fix: `vmlx_engine/server.py` now drops exact singleton Gemma modality sentinels (`<audio|>`, `<|audio|>`, image/video variants) from the final visible assistant content only when a structured tool call is present. This extends the existing `thought`/`analysis` channel-marker guard and does not suppress real prose around a tool call or any no-tool response.
+- root-cause boundary: `Gemma4ToolParser` already strips the same sentinel family during structural extraction; the server guard covers response-assembly/parser-selection bypass residue without accepting arbitrary visible text as normal.
+- validation: `tests/test_gemma4_tool_parser.py` passed `11/11`; `tests/test_engine_audit.py -k 'tool_visible_channel_marker or xml_function_tool_fallback_accepts_native_mimo_schema'` passed `2/2`; `tests/test_all_local_model_smoke.py -k tool_visible_text_leak` passed `1/1`; `py_compile` passed for the touched Python files.
+- next proof: rerun the 12B QAT JANG_4M no-media tool/cache/L2 smoke and refresh Gemma inventory/objective/checklist only if the live artifact turns green. No package, sign, notarize, tag, download, or release action was run.
+
+## CODEX - 2026-06-09 Gemma4 modality sentinel tool-leak fix
+- runtime/parser fix: `vmlx_engine/tool_parsers/gemma4_tool_parser.py` now strips exact Gemma4 modality sentinels `<|image|>`, `<image|>`, `<|audio|>`, `<audio|>`, `<|video|>`, and `<video|>` from parser residual content after tool-call extraction.
+- regression: `tests/test_gemma4_tool_parser.py::TestGemma4ToolParser::test_native_tool_call_strips_bare_modality_sentinel_leak` failed before the fix with `content='<audio|>'` and passes after.
+- live proof: reran 12B QAT JANG_4M after the fix at `build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json`, `status=pass`.
+- result: all five QAT JANG_4M source no-media tool/cache/L2 smokes now pass: E2B, E4B, 12B, 26B, 31B. Inventory has `source_live_smoke_open_rows=[]` and `all_required_source_live_smokes_present=true`.
+- boundary: this is not full Gemma release clearance. Media/video/audio E2E, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, package/signing/notarization remain open.

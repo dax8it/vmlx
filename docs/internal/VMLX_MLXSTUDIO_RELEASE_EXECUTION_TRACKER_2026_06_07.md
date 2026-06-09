@@ -879,3 +879,10 @@ Classification:
 - Proof: `build/current-all-local-model-smoke-gemma4-31b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-31B-it-qat-JANG_4M/result.json`, `status=pass`.
 - Covered source surfaces: Gemma4 parser/runtime autodetect, visible text, reasoning separation, required tool call, tool-result continuation, JSON/code exactness, mixed-SWA cache hit telemetry, block-disk writes, and fresh-process L2 restart for 31B QAT JANG_4M.
 - Release boundary: source no-media 31B proof only. The remaining QAT JANG_4M source-smoke blocker is 12B visible `<audio|>` leak; media/video, Responses raw SSE args/content deltas, UI/CLI parity, installed-app parity, packaging/signing/notarization remain open.
+
+## 2026-06-09 Gemma4 modality sentinel tool-leak fix
+
+- Fix: `Gemma4ToolParser._clean_special_tokens` now removes exact Gemma4 modality sentinel residue (`<|image|>`, `<image|>`, `<|audio|>`, `<audio|>`, `<|video|>`, `<video|>`) after native tool-call extraction.
+- Regression: `tests/test_gemma4_tool_parser.py::TestGemma4ToolParser::test_native_tool_call_strips_bare_modality_sentinel_leak` failed before the fix and passes after.
+- Live proof: 12B QAT JANG_4M rerun at `build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json`, `status=pass`.
+- Current QAT JANG_4M source-smoke status: E2B, E4B, 12B, 26B, and 31B no-media tool/cache/L2 smokes pass; `source_live_smoke_open_rows=[]`. Release remains open for media/video/audio, Responses raw SSE, UI/CLI, installed app, and packaging/signing/notarization.
