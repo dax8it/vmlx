@@ -781,3 +781,10 @@ Classification:
 - Proof artifact: `build/current-all-local-model-smoke-qwen36-27b-mxfp4-mtp-tools-l2-after-ssm-disk-budget-fix-20260609`.
 - Result: `status=pass`, `failures=0`; fresh restart response `ACK`; `prompt_tokens_details.cached_tokens=56`, `cache_detail=paged+ssm+disk`; block disk `disk_hits=1`; SSM disk `hits=1`, `misses=0`; no KV-without-SSM fallback.
 - Boundary: current-source Qwen27 MTP smoke/L2 row only. This does not clear installed app/UI parity, Qwen35 deployed parity, MiMo exactness/media, Gemma full matrix, DSV4 memory-gated proof, or release signing/notarization.
+
+## 2026-06-09 Reasoning parser package/hash parity
+
+- Reduced blocker: package/runtime drift for registered reasoning parsers across Qwen3/N2, Gemma4, MiniMax M2, GPT-OSS, Mistral, DeepSeek R1, and think/XML thinking paths.
+- Fix: all top-level `vmlx_engine/reasoning/*.py` files are now in bundled-python, release-gate, packaged-integrity, installed-app parity, and current-suite source hash lists.
+- Proof: focused guard tests failed before wiring on missing reasoning files, then passed `5/5`; engine audit assertion passed `1/1`; `bash -n`, `py_compile`, and `git diff --check` passed.
+- Boundary: parity guard only. It does not prove live Gemma/N2/MiMo behavior, installed-app/UI/tunnel parity, or release readiness.

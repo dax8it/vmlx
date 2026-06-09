@@ -507,3 +507,11 @@
 - blocker reduced: Gemma4 QAT/native MXFP4 advertised `media` honesty for 12B/26B/31B-style bundles.
 - proof: focused runtime modality tests passed `3/3`; `py_compile` and `git diff --check` passed.
 - boundary: capability gate only. No live audio semantic clearance, installed-app/UI proof, package, signing, notarization, tag, download, or release readiness.
+
+## CODEX - 2026-06-09 reasoning parser package/hash parity
+- blocker reduced: `parser/template` package/runtime drift for registered reasoning parsers used by Qwen3/N2, Gemma4, MiniMax M2, GPT-OSS, Mistral, DeepSeek R1, and think/XML thinking paths.
+- root cause: package/install/current-suite hash surfaces protected only `vmlx_engine/reasoning/__init__.py` and `think_xml_parser.py` while `reasoning/__init__.py` registers the wider parser matrix.
+- source fix: added every top-level `vmlx_engine/reasoning/*.py` file to bundled-python verifier, release-gate, staged packaged integrity, installed-app runtime parity, and current-suite source hash lists.
+- regression coverage: installed-app parity, packaged integrity, release-gate, engine audit, current-suite, and release-manifest tests now assert every top-level reasoning parser file is covered.
+- red/green proof: five focused guard tests failed before manifest wiring on missing reasoning parser files, then passed `5/5`; the engine audit script assertion passed `1/1`; `bash -n panel/scripts/verify-bundled-python.sh`, `py_compile`, and `git diff --check` passed.
+- boundary: package/source-hash parity only. This does not clear live Gemma QAT/native rows, N2 JANG_1L runtime/cache/API/UI proof, MiMo exactness/media/tool rows, raw direct/gateway/tunnel SSE parity, installed-app behavior, or any release/signing step.

@@ -7480,3 +7480,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - The N2 objective digest test now accepts either `do_not_launch` or `schedule_live_proof` while still requiring `status=open`, `classification=careful_ram_live_proof_pending`, `no_load=true`, and live runtime/cache/API/UI proof as next evidence.
 - Validation: `tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_n2_pro_397b_release_blocker`, `tests/test_n2_jang1l_memory_preflight.py`, and `tests/test_current_regression_suite.py::test_current_regression_suite_hashes_focused_pytest_gate_sources` passed `4/4`; `py_compile` and `git diff --check` passed.
 - Boundary: this does not launch N2 JANG_1L or clear N2 release support. It only keeps the no-heavy objective gate correct across changing available RAM.
+
+# 2026-06-09 - Reasoning parser package/hash parity
+
+- Blocker reduced: `parser/template` package/runtime drift for registered reasoning parsers on Qwen3/N2, Gemma4, MiniMax M2, GPT-OSS, Mistral, DeepSeek R1, and think/XML thinking paths.
+- Root cause: release/package hash gates covered only `reasoning/__init__.py` and `reasoning/think_xml_parser.py`, while the runtime registry imports the full top-level `vmlx_engine/reasoning/*.py` parser set.
+- Source fix: added every top-level reasoning parser file to `panel/scripts/verify-bundled-python.sh`, `panel/scripts/release-gate-python-app.py`, `tests/cross_matrix/run_packaged_integrity_contract.py`, `tests/cross_matrix/run_installed_app_runtime_parity_audit.py`, and `tests/cross_matrix/run_current_regression_suite.py`.
+- Regressions: installed-app parity, packaged integrity, release-gate, engine audit, current-suite, and release-manifest tests now dynamically assert every top-level `vmlx_engine/reasoning/*.py` file is hash-covered.
+- Verification: red proof failed on missing reasoning parser files; green proof passed focused guards `5/5` plus engine audit `1/1`; `bash -n`, `py_compile`, and `git diff --check` passed.
+- Boundary: source/package parity only. Live Gemma, N2, MiMo, installed-app/UI/tunnel, and release rows remain open.
