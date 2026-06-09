@@ -6828,3 +6828,10 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Regression added: `test_native_mxfp_uint8_scales_select_mxfp_kernel`; model-artifact-format contract now requires this marker.
 - Proof artifact: `build/current-model-artifact-format-contract-after-native-mxfp-scale-preserve-20260609.json`, `status=pass`, `missing_markers=[]`, `model_artifact_format_pytest rc=0 passed=176 deselected=192`.
 - Boundary: source/no-heavy guard only. No new Gemma live row was cleared beyond the E2B partial smoke above; no release/sign/notarize/package action.
+
+## CODEX - 2026-06-09 Gemma4 E4B QAT partial live proof
+- Ran narrow current-source smoke for `/Users/eric/models/JANGQ-AI/gemma-4-E4B-it-qat-MXFP4` after the native MXFP loader fixes.
+- Artifact: `build/current-all-local-model-smoke-gemma4-e4b-qat-mxfp4-tools-image-after-native-mxfp-scale-preserve-20260609/JANGQ_gemma-4-E4B-it-qat-MXFP4/result.json`, `status=probe_failed`, one failure.
+- Result: E4B loads and serves; server log preserves quantized Gemma4 PLE for `embed_tokens_per_layer` and `per_layer_model_projection` with `mode=mxfp4`, `bits=4`, `gs=32`. No `quantized_matmul` runtime crash reproduced.
+- Remaining failure matches E2B: `tool_result_continuation` returned `STORED blue-cat` while the harness expected `STORED blue-cat.`.
+- Boundary: E4B remains not release-cleared; this is partial live proof only. No release/sign/notarize/package action.

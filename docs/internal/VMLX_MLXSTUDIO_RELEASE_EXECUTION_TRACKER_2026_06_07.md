@@ -616,3 +616,10 @@ Classification:
 - Source fix: `_fix_quantized_bits()` now detects `uint8` MXFP scales on quantized modules, sets `mode=mxfp4` or `mode=mxfp8` from the packed/scales shape relationship, forces `group_size=32`, and removes affine biases before continuing.
 - No-heavy proof: `build/current-model-artifact-format-contract-after-native-mxfp-scale-preserve-20260609.json`, `status=pass`, `missing_markers=[]`, `model_artifact_format_pytest rc=0 passed=176 deselected=192`.
 - Boundary: this is source/proof-map hardening only. Gemma QAT/native live rows remain open as listed above; no release/signing/notarization/download action was taken.
+
+## 2026-06-09 Gemma4 E4B QAT/native partial live proof
+
+- Ran current-source E4B QAT/native MXFP4 smoke after the loader fixes.
+- Artifact: `build/current-all-local-model-smoke-gemma4-e4b-qat-mxfp4-tools-image-after-native-mxfp-scale-preserve-20260609/JANGQ_gemma-4-E4B-it-qat-MXFP4/result.json`, `status=probe_failed`, one failure.
+- Positive boundary: E4B loads and serves; no PLE dequant load failure and no runtime `quantized_matmul` failure. Server log records packed Gemma4 PLE preservation for `embed_tokens_per_layer` and `per_layer_model_projection` with `mode=mxfp4`, `bits=4`, `gs=32`.
+- Remaining boundary: same exact tool-result punctuation failure as E2B (`STORED blue-cat` vs expected `STORED blue-cat.`). This is not release clearance, and E4B still needs full API/UI/cache/media/installed-app proof.
