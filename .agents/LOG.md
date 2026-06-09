@@ -30,6 +30,15 @@
 - Red/green proof: the focused package/current-suite test set failed before the manifest fix on missing runtime patch files, then passed after the fix (`6 passed`).
 - Boundary: package/parity/source-hash coverage only. This protects rebuild drift but does not clear live Gemma full media/UI/tunnel, Kimi live quality, DSV4 memory-gated tool-loop, N2/MiMo rows, signing, notarization, tag, or download rows.
 
+# 2026-06-09 - Installed app rebuild and package parity checkpoint
+
+- Rebuilt bundled Python and installed `/Applications/vMLX.app` from current source with `panel/scripts/build-and-install.sh`.
+- Fixed a real bundle bootstrap issue in `panel/scripts/bundle-python.sh`: after extracting the Python standalone tarball, the script now restores launcher/runtime files before the first pip invocation and uses the concrete `python3.12` launcher during bootstrap. It also restores the launcher again after MLX wheel installation before dependency installation. This addresses the observed missing `python3` / `unknown encoding: cp437` rebuild failure without changing model/runtime behavior.
+- Installed app proof: `build/current-installed-app-runtime-parity-audit-after-installed-app-rebuild-20260606.json` is `status=pass`. The installed bundled Python imports `vmlx_engine 1.5.56`, `mlx 0.31.2`, `mlx-lm 0.31.3`, `mlx-vlm 0.5.0`, TurboQuant disk/cache modules, SSM companion cache/disk store, Gemma4 Unified registration, native MTP, and Qwen35 MTP patches.
+- Packaged integrity proof: `build/current-packaged-integrity-contract-after-installed-app-rebuild-20260606.json` is still `status=fail`, but only for `packaged_app_developer_id_signing_blocked`. The release-gate unit contracts pass `47/47` and bundled verifier passes. Developer ID private-key access is blocked from this non-interactive keychain state (`developer_id_keychain_user_interaction_not_allowed`).
+- Full checklist proof: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=73`.
+- Boundary: the local `/Applications/vMLX.app` is ad-hoc signed and codesign-valid, not a Developer ID signed/notarized checkpoint DMG. No tag, upload, appcast, notarization, or release action was performed.
+
 # 2026-06-09 - Qwen/N2 native-MTP package parity coverage
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
