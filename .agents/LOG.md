@@ -6938,6 +6938,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Cleared source surfaces: text coherency, reasoning-on visible final, multi-turn recall, required tool call, tool-result continuation, structured JSON, exact code whitespace, image, video, post-media text recovery, and block-disk L2 restart path.
 - Boundary: no installed-app/UI/tunnel/package/sign/notarize/release claim. Responses raw SSE parity, MiniMax language/cache isolation, MiMo/N2/DSV4 rows, and UI/CLI parity remain open.
 
+## CODEX - 2026-06-09 Responses direct Gemma4 SSE tool args parser fix
+- Blocker reduced: #190/#192 direct local Responses SSE argument streaming for Gemma4 native tool syntax.
+- Root cause: Gemma4 E2B QAT emitted a complete native call at end of output without the closing `<tool_call|>` marker: `<|tool_call>call:record_fact{value:<|"|>blue-cat<|"|>}`. The parser required the end marker, so the stream produced reasoning/heartbeat events but no parsed `function_call` or `response.function_call_arguments.*`.
+- Source fix: `Gemma4ToolParser` now accepts complete no-end-marker calls only at end-of-output with a closed argument brace. Partial native calls still fail closed.
+- Regression: `tests/test_gemma4_tool_parser.py::TestGemma4ToolParser::test_native_format_complete_call_at_end_without_end_marker`.
+- Direct proof: `build/current-responses-raw-sse-parity-direct-gemma4-e2b-after-parser-20260609.json` has direct capture present, parse errors `0`, `argument_delta_count=2`, `argument_done_count=1`, `function_name=record_fact`, authoritative args `{"value": "blue-cat"}`.
+- Boundary: artifact remains `status=open` because gateway and tunnel captures are missing. Do not close #190/#192 or release from direct proof only.
+
 ## CODEX - 2026-06-09 Responses raw SSE parity strict expected-args gate
 - Blocker reduced: #190/#192 Responses direct/gateway/tunnel raw SSE proof quality.
 - Source fix: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now supports expected function name, expected authoritative arguments, parse-clean checks, and `--require-reasoning-events`.
