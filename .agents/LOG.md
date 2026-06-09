@@ -1,3 +1,13 @@
+# 2026-06-09 - Responses raw-SSE reasoning-disable boundary split
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
+- Reduced blocker class: `api/ui` proof classification for Responses streaming tool arguments across direct local server, panel gateway, and tunnel.
+- Source/proof gate fix: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now accepts per-surface server logs and separates `no_reasoning_disable_workaround` from `all_present_surfaces_have_required_reasoning`.
+- Current direct/gateway Gemma4 E2B captures now prove the request path did not disable reasoning: both server logs contain `Reasoning: ENABLED` and resolved `/v1/responses` sampling kwargs with `enable_thinking=True`.
+- Refreshed artifact: `build/current-responses-raw-sse-parity-direct-gateway-gemma4-e2b-after-parser-20260609.json`, `status=fail`. Direct and gateway preserve authoritative `record_fact` args `{"value": "blue-cat"}`, parse cleanly, use valid output indices, match model `gemma4-e2b-sse`, and have `no_reasoning_disable_workaround=true`; they still have `reasoning_events=0`, and tunnel capture remains missing.
+- Full objective checklist regenerated at `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=121`.
+- Boundary: this is not Responses parity clearance. Remaining proof is same-model tunnel raw SSE plus actual reasoning events, without changing the request to hide reasoning.
+
 # 2026-06-09 - MiniMax #179 language/planning isolation matrix
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
@@ -36,7 +46,7 @@
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no Max2/adlab/transport lane.
 - Reduced blocker class: `runtime/kernel` + `cache/storage` proof scheduling for N2 Pro JANG_1L.
-- User boundary recorded: JANG_1L should fit with careful RAM discipline; treat this as a careful live-proof scheduling problem, not permanent infeasibility. Do not run source-vs-quant or extra-heavy comparisons unless Eric explicitly allows.
+- User boundary recorded: JANG_1L should fit just fine as long as RAM is handled carefully; treat this as a careful live-proof scheduling problem, not permanent infeasibility. Do not run source-vs-quant or extra-heavy comparisons unless Eric explicitly allows.
 - Observed runtime fact from current status: conservative N2 JANG_1L launch on port `8899` reached server startup and then aborted with Metal OOM after `Wired limit set to 115 GB (model 119 GB)`.
 - Source/proof-harness fixes landed in current tip `8caefd24` (`Tighten N2 JANG1L memory proof gate`):
   - `tests/cross_matrix/run_n2_jang1l_memory_preflight.py` now uses `DEFAULT_REQUIRED_EXTRA_HEADROOM_GIB = 8.0` and labels the threshold as Metal/runtime headroom.
