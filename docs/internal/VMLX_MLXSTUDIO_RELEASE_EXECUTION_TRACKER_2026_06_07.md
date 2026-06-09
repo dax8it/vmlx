@@ -638,3 +638,10 @@ Classification:
 - Artifact: `build/current-all-local-model-smoke-gemma4-12b-qat-mxfp4-tools-image-after-native-mxfp-fixes-20260609/JANGQ_gemma-4-12B-it-qat-MXFP4/result.json`, `status=probe_failed`, one failure.
 - Positive boundary: 12B loads and serves as `gemma4_unified`; no direct-import startup failure, no PLE dequant crash, and no runtime `quantized_matmul` crash. Text/cache/tool/image probes all reached HTTP 200.
 - Remaining boundary: same exact tool-result punctuation failure as E2B/E4B (`STORED blue-cat` vs expected `STORED blue-cat.`). This is not release clearance, and 12B still needs full API/UI/cache/media/installed-app proof.
+
+## 2026-06-09 Gemma4 31B QAT/native partial live proof
+
+- Ran current-source 31B QAT/native MXFP4 smoke after the loader fixes.
+- Artifact: `build/current-all-local-model-smoke-gemma4-31b-qat-mxfp4-tools-image-after-native-mxfp-fixes-20260609/JANGQ_gemma-4-31B-it-qat-MXFP4/result.json`, `status=probe_failed`, one failure.
+- Positive boundary: 31B loads and serves; no loader crash, no Metal OOM, and no runtime `quantized_matmul` crash in the narrow row. Text/cache/tool/image probes all reached HTTP 200.
+- Remaining boundary: same exact tool-result punctuation failure as E2B/E4B/12B (`STORED blue-cat` vs expected `STORED blue-cat.`). This is not release clearance, and 31B still needs full API/UI/cache/media/installed-app proof.

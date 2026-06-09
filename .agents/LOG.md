@@ -6851,3 +6851,10 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Result: 12B loads and serves as `gemma4_unified`; text/cache/tool/image probes run HTTP 200. No direct-import startup failure, PLE crash, or `quantized_matmul` runtime crash reproduced.
 - Remaining failure matches E2B/E4B: `tool_result_continuation` returned `STORED blue-cat` while the harness expected `STORED blue-cat.`.
 - Boundary: 12B remains not release-cleared; this is partial live proof only. No release/sign/notarize/package action.
+
+## CODEX - 2026-06-09 Gemma4 31B QAT partial live proof
+- Ran narrow current-source smoke for `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-MXFP4` after native MXFP loader fixes.
+- Artifact: `build/current-all-local-model-smoke-gemma4-31b-qat-mxfp4-tools-image-after-native-mxfp-fixes-20260609/JANGQ_gemma-4-31B-it-qat-MXFP4/result.json`, `status=probe_failed`, one failure.
+- Result: 31B loads and serves; text/cache/tool/image probes run HTTP 200. No loader crash, Metal OOM, or `quantized_matmul` runtime crash reproduced in this narrow row.
+- Remaining failure matches E2B/E4B/12B: `tool_result_continuation` returned `STORED blue-cat` while the harness expected `STORED blue-cat.`.
+- Boundary: 31B remains not release-cleared; this is partial live proof only. No release/sign/notarize/package action.
