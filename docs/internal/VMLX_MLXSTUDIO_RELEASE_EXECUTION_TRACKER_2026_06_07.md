@@ -526,3 +526,12 @@ Classification:
   - Generation defaults, Native MTP, and VL media gates are current.
 - Current objective digest remains `build/current-objective-proof-after-mimo-n2-gateway-pointer-refresh-20260609.json` and remains `open` because live-heavy quality/speed/UI/model rows remain open.
 - Release lock remains active: no signing, notarization, tagging, or public download update from no-heavy contract pass alone.
+
+## 2026-06-09 LFM25 MXFP4 live smoke refresh
+
+- Ran current bundled-engine live smoke for `LFM2.5-8B-A1B-MXFP4` with tools enabled and media/video disabled.
+- Current artifact: `build/current-all-local-model-smoke-lfm25-mxfp4-tools-nomedia-20260609/JANGQ_LFM2.5-8B-A1B-MXFP4/result.json`.
+- Passed surfaces: visible cache repeat, multi-turn recall, required tool call, tool-result continuation, structured JSON exactness, parser metadata (`tool_parser=lfm2`, `reasoning_parser=qwen3`), typed `hybrid_ssm_v1` cache, prefix/paged telemetry, `paged+ssm`/`paged+ssm+disk` cache details, and SSM L2 evidence.
+- Remaining LFM blockers: exact-code whitespace failed by missing final `)`, block-L2 write/hit checklist remains open, and MXFP8 no-media tools artifact is still missing.
+- Fixed a harness false negative: `tool_result_continuation` now expects the exact prompt sentence `STORED blue-cat.`.
+- Focused validation: `tests/test_all_local_model_smoke.py` and `tests/test_full_release_objective_checklist.py` passed `75/75`.
