@@ -1,0 +1,415 @@
+{
+  "artifact": "build/current-signed-checkpoint-dmg-readiness-20260609.json",
+  "current_installed_app": {
+    "codesign_valid": true,
+    "codesign_verify": {
+      "cmd": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "--verbose=2",
+        "/Applications/vMLX.app"
+      ],
+      "returncode": 0,
+      "tail": [
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper.app",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper (Plugin).app",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper (GPU).app",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper (Renderer).app",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper.app",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper (Plugin).app",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/Mantle.framework/Versions/Current/.",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper (GPU).app",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/vMLX Helper (Renderer).app",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/Mantle.framework/Versions/Current/.",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.",
+        "--prepared:/Applications/vMLX.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler",
+        "--validated:/Applications/vMLX.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.",
+        "/Applications/vMLX.app: valid on disk",
+        "/Applications/vMLX.app: satisfies its Designated Requirement"
+      ]
+    },
+    "developer_id_signed": false,
+    "exists": true,
+    "path": "/Applications/vMLX.app",
+    "signature": {
+      "authority_developer_id": false,
+      "returncode": 0,
+      "signature_is_adhoc": true,
+      "tail": [
+        "Executable=/Applications/vMLX.app/Contents/MacOS/vMLX",
+        "Identifier=net.vmlx.app",
+        "Format=app bundle with Mach-O thin (arm64)",
+        "CodeDirectory v=20400 size=325 flags=0x2(adhoc) hashes=4+3 location=embedded",
+        "VersionPlatform=1",
+        "VersionMin=720896",
+        "VersionSDK=917504",
+        "Hash type=sha256 size=32",
+        "CandidateCDHash sha256=dae1bee92adfc538aedee9a286a6029b86b1b4a7",
+        "CandidateCDHashFull sha256=dae1bee92adfc538aedee9a286a6029b86b1b4a74f33be1c7acaba168fe97e36",
+        "Hash choices=sha256",
+        "CMSDigest=dae1bee92adfc538aedee9a286a6029b86b1b4a74f33be1c7acaba168fe97e36",
+        "CMSDigestType=2",
+        "Executable Segment base=0",
+        "Executable Segment limit=16384",
+        "Executable Segment flags=0x1",
+        "Page size=16384",
+        "CDHash=dae1bee92adfc538aedee9a286a6029b86b1b4a7",
+        "Signature=adhoc",
+        "Info.plist entries=30",
+        "TeamIdentifier=not set",
+        "Sealed Resources version=2 rules=13 files=29266",
+        "Internal requirements count=0 size=12"
+      ],
+      "team_identifier": null
+    },
+    "signature_is_adhoc": true,
+    "team_identifier": null
+  },
+  "existing_dmgs": [
+    {
+      "codesign_verify": {
+        "cmd": [
+          "codesign",
+          "--verify",
+          "--verbose=2",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg: valid on disk",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg: satisfies its Designated Requirement"
+        ]
+      },
+      "exists": true,
+      "hdiutil_verify": {
+        "cmd": [
+          "hdiutil",
+          "verify",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "Checksumming Protective Master Boot Record (MBR : 0)\u2026",
+          "Protective Master Boot Record (MBR :: verified   CRC32 $A0FEE3D3",
+          "Checksumming GPT Header (Primary GPT Header : 1)\u2026",
+          " GPT Header (Primary GPT Header : 1): verified   CRC32 $60CE3FA5",
+          "Checksumming GPT Partition Data (Primary GPT Table : 2)\u2026",
+          "GPT Partition Data (Primary GPT Tabl: verified   CRC32 $DB208A0B",
+          "Checksumming  (Apple_Free : 3)\u2026",
+          "                    (Apple_Free : 3): verified   CRC32 $00000000",
+          "Checksumming EFI System Partition (C12A7328-F81F-11D2-BA4B-00A0C93EC93B : 4)\u2026",
+          "EFI System Partition (C12A7328-F81F-: verified   CRC32 $B54B659C",
+          "Checksumming disk image (Apple_APFS : 5)\u2026",
+          "         disk image (Apple_APFS : 5): verified   CRC32 $097005B8",
+          "Checksumming  (Apple_Free : 6)\u2026",
+          "                    (Apple_Free : 6): verified   CRC32 $00000000",
+          "Checksumming GPT Partition Data (Backup GPT Table : 7)\u2026",
+          "GPT Partition Data (Backup GPT Table: verified   CRC32 $DB208A0B",
+          "Checksumming GPT Header (Backup GPT Header : 8)\u2026",
+          "  GPT Header (Backup GPT Header : 8): verified   CRC32 $1F7C2923",
+          "verified   CRC32 $7A81D76D",
+          "hdiutil: verify: checksum of \"/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg\" is VALID"
+        ]
+      },
+      "mtime": 1780688184.3586047,
+      "path": "panel/release/vMLX-1.5.56-sequoia-arm64.dmg",
+      "sha256": "a7148d42e27ee8eccb428a460bc4aa643b227a25ef394aed7dbebe3f3763fd5c",
+      "signature": {
+        "authority_developer_id": true,
+        "returncode": 0,
+        "signature_is_adhoc": false,
+        "tail": [
+          "Executable=/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg",
+          "Identifier=vMLX-1.5.56-sequoia-arm64",
+          "Format=disk image",
+          "CodeDirectory v=20200 size=313 flags=0x0(none) hashes=1+6 location=embedded",
+          "Hash type=sha256 size=32",
+          "CandidateCDHash sha256=38d5afaa44204b354d1d19750029aa9bddcf46be",
+          "CandidateCDHashFull sha256=38d5afaa44204b354d1d19750029aa9bddcf46be192ce4254cb5c2124e96346f",
+          "Hash choices=sha256",
+          "CMSDigest=38d5afaa44204b354d1d19750029aa9bddcf46be192ce4254cb5c2124e96346f",
+          "CMSDigestType=2",
+          "Page size=none",
+          "CDHash=38d5afaa44204b354d1d19750029aa9bddcf46be",
+          "Signature size=9049",
+          "Authority=Developer ID Application: ShieldStack LLC (55KGF2S5AY)",
+          "Authority=Developer ID Certification Authority",
+          "Authority=Apple Root CA",
+          "Timestamp=Jun 5, 2026 at 12:23:14\u202fPM",
+          "Notarization Ticket=stapled",
+          "Info.plist=not bound",
+          "TeamIdentifier=55KGF2S5AY",
+          "Sealed Resources=none",
+          "Internal requirements count=1 size=188"
+        ],
+        "team_identifier": "55KGF2S5AY"
+      },
+      "signed_and_stapled": true,
+      "spctl_assess": {
+        "cmd": [
+          "spctl",
+          "--assess",
+          "--type",
+          "open",
+          "--context",
+          "context:primary-signature",
+          "--verbose=4",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg: accepted",
+          "source=Notarized Developer ID"
+        ]
+      },
+      "stapler_validate": {
+        "cmd": [
+          "xcrun",
+          "stapler",
+          "validate",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "Processing: /Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-sequoia-arm64.dmg",
+          "The validate action worked!"
+        ]
+      }
+    },
+    {
+      "codesign_verify": {
+        "cmd": [
+          "codesign",
+          "--verify",
+          "--verbose=2",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg: valid on disk",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg: satisfies its Designated Requirement"
+        ]
+      },
+      "exists": true,
+      "hdiutil_verify": {
+        "cmd": [
+          "hdiutil",
+          "verify",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "Checksumming Protective Master Boot Record (MBR : 0)\u2026",
+          "Protective Master Boot Record (MBR :: verified   CRC32 $D60E37FA",
+          "Checksumming GPT Header (Primary GPT Header : 1)\u2026",
+          " GPT Header (Primary GPT Header : 1): verified   CRC32 $7D91483E",
+          "Checksumming GPT Partition Data (Primary GPT Table : 2)\u2026",
+          "GPT Partition Data (Primary GPT Tabl: verified   CRC32 $AA8840CF",
+          "Checksumming  (Apple_Free : 3)\u2026",
+          "                    (Apple_Free : 3): verified   CRC32 $00000000",
+          "Checksumming EFI System Partition (C12A7328-F81F-11D2-BA4B-00A0C93EC93B : 4)\u2026",
+          "EFI System Partition (C12A7328-F81F-: verified   CRC32 $B54B659C",
+          "Checksumming disk image (Apple_APFS : 5)\u2026",
+          "         disk image (Apple_APFS : 5): verified   CRC32 $ACA36E53",
+          "Checksumming  (Apple_Free : 6)\u2026",
+          "                    (Apple_Free : 6): verified   CRC32 $00000000",
+          "Checksumming GPT Partition Data (Backup GPT Table : 7)\u2026",
+          "GPT Partition Data (Backup GPT Table: verified   CRC32 $AA8840CF",
+          "Checksumming GPT Header (Backup GPT Header : 8)\u2026",
+          "  GPT Header (Backup GPT Header : 8): verified   CRC32 $6212534C",
+          "verified   CRC32 $BCAA837F",
+          "hdiutil: verify: checksum of \"/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg\" is VALID"
+        ]
+      },
+      "mtime": 1780688626.0451252,
+      "path": "panel/release/vMLX-1.5.56-tahoe-arm64.dmg",
+      "sha256": "faa049368ce7c3f67dbf20b24e250bbc901493d81d382e924d30789d2b067c56",
+      "signature": {
+        "authority_developer_id": true,
+        "returncode": 0,
+        "signature_is_adhoc": false,
+        "tail": [
+          "Executable=/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg",
+          "Identifier=vMLX-1.5.56-tahoe-arm64",
+          "Format=disk image",
+          "CodeDirectory v=20200 size=311 flags=0x0(none) hashes=1+6 location=embedded",
+          "Hash type=sha256 size=32",
+          "CandidateCDHash sha256=408c87c06bb99dff04aefe2bb1aba75ca7595d00",
+          "CandidateCDHashFull sha256=408c87c06bb99dff04aefe2bb1aba75ca7595d00f01d5bff39a6a5b4fc89219e",
+          "Hash choices=sha256",
+          "CMSDigest=408c87c06bb99dff04aefe2bb1aba75ca7595d00f01d5bff39a6a5b4fc89219e",
+          "CMSDigestType=2",
+          "Page size=none",
+          "CDHash=408c87c06bb99dff04aefe2bb1aba75ca7595d00",
+          "Signature size=9050",
+          "Authority=Developer ID Application: ShieldStack LLC (55KGF2S5AY)",
+          "Authority=Developer ID Certification Authority",
+          "Authority=Apple Root CA",
+          "Timestamp=Jun 5, 2026 at 12:28:23\u202fPM",
+          "Notarization Ticket=stapled",
+          "Info.plist=not bound",
+          "TeamIdentifier=55KGF2S5AY",
+          "Sealed Resources=none",
+          "Internal requirements count=1 size=184"
+        ],
+        "team_identifier": "55KGF2S5AY"
+      },
+      "signed_and_stapled": true,
+      "spctl_assess": {
+        "cmd": [
+          "spctl",
+          "--assess",
+          "--type",
+          "open",
+          "--context",
+          "context:primary-signature",
+          "--verbose=4",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg: accepted",
+          "source=Notarized Developer ID"
+        ]
+      },
+      "stapler_validate": {
+        "cmd": [
+          "xcrun",
+          "stapler",
+          "validate",
+          "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg"
+        ],
+        "returncode": 0,
+        "tail": [
+          "Processing: /Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/vMLX-1.5.56-tahoe-arm64.dmg",
+          "The validate action worked!"
+        ]
+      }
+    }
+  ],
+  "existing_dmgs_current_for_head": false,
+  "existing_dmgs_signed_and_stapled": true,
+  "fresh_signing_probe": {
+    "identity": "Developer ID Application: ShieldStack LLC (55KGF2S5AY)",
+    "sign": {
+      "cmd": [
+        "codesign",
+        "--force",
+        "--timestamp",
+        "--options",
+        "runtime",
+        "--sign",
+        "Developer ID Application: ShieldStack LLC (55KGF2S5AY)",
+        "/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/vmlx-current-signing-probe.zz7vnii9/codesign-probe"
+      ],
+      "returncode": 1,
+      "tail": [
+        "/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/vmlx-current-signing-probe.zz7vnii9/codesign-probe: replacing existing signature",
+        "/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/vmlx-current-signing-probe.zz7vnii9/codesign-probe: errSecInternalComponent"
+      ]
+    },
+    "signature": {
+      "authority_developer_id": false,
+      "returncode": 0,
+      "signature_is_adhoc": false,
+      "tail": [
+        "Executable=/private/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/vmlx-current-signing-probe.zz7vnii9/codesign-probe",
+        "Identifier=com.apple.echo",
+        "Format=Mach-O universal (x86_64 arm64e)",
+        "CodeDirectory v=20400 size=455 flags=0x0(none) hashes=9+2 location=embedded",
+        "Platform identifier=26",
+        "VersionPlatform=1",
+        "VersionMin=1704704",
+        "VersionSDK=1704704",
+        "Hash type=sha256 size=32",
+        "CandidateCDHash sha256=0f655d07b31a414b17baa0887d090c6f394822b8",
+        "CandidateCDHashFull sha256=0f655d07b31a414b17baa0887d090c6f394822b8873ff1e68020f1f41ef9219d",
+        "Hash choices=sha256",
+        "CMSDigest=0f655d07b31a414b17baa0887d090c6f394822b8873ff1e68020f1f41ef9219d",
+        "CMSDigestType=2",
+        "Executable Segment base=0",
+        "Executable Segment limit=16384",
+        "Executable Segment flags=0x1",
+        "Page size=4096",
+        "CDHash=0f655d07b31a414b17baa0887d090c6f394822b8",
+        "Signature size=4442",
+        "Authority=Software Signing",
+        "Authority=Apple Code Signing Certification Authority",
+        "Authority=Apple Root CA",
+        "Signed Time=Jan 16, 2026 at 5:45:32\u202fAM",
+        "Info.plist=not bound",
+        "TeamIdentifier=not set",
+        "Sealed Resources=none",
+        "Internal requirements count=1 size=64"
+      ],
+      "team_identifier": null
+    },
+    "status": "blocked"
+  },
+  "head": "50d5de56a6e5043c46ecbbb6f2dc976b374b2639",
+  "head_time": "2026-06-09T16:39:42-07:00",
+  "keychains": [
+    {
+      "locked_or_interactive_blocked": true,
+      "path": "/Users/eric/Library/Keychains/vmlx-build.keychain-db",
+      "returncode": 36,
+      "tail": [
+        "security: SecKeychainCopySettings /Users/eric/Library/Keychains/vmlx-build.keychain-db: User interaction is not allowed."
+      ]
+    },
+    {
+      "locked_or_interactive_blocked": true,
+      "path": "/Users/eric/Library/Keychains/build.keychain-db",
+      "returncode": 36,
+      "tail": [
+        "security: SecKeychainCopySettings /Users/eric/Library/Keychains/build.keychain-db: User interaction is not allowed."
+      ]
+    },
+    {
+      "locked_or_interactive_blocked": true,
+      "path": "/Users/eric/Library/Keychains/login.keychain-db",
+      "returncode": 36,
+      "tail": [
+        "security: SecKeychainCopySettings /Users/eric/Library/Keychains/login.keychain-db: User interaction is not allowed."
+      ]
+    }
+  ],
+  "notarization": {
+    "history": {
+      "cmd": [
+        "xcrun",
+        "notarytool",
+        "history",
+        "--keychain",
+        "/Users/eric/Library/Keychains/vmlx-build.keychain-db",
+        "--keychain-profile",
+        "vmlx-notary",
+        "--output-format",
+        "json"
+      ],
+      "returncode": 1,
+      "tail": [
+        "Error: The vmlx-build.keychain-db is locked. Use Keychain Access or the `security unlock-keychain /Users/eric/Library/Keychains/vmlx-build.keychain-db` command line tool to unlock the vmlx-build.keychain-db keychain."
+      ]
+    },
+    "required_keychain": "/Users/eric/Library/Keychains/vmlx-build.keychain-db",
+    "required_profile": "vmlx-notary",
+    "status": "blocked"
+  },
+  "release_boundary": "Existing local DMGs may be signed/stapled, but they are not current-source checkpoint proof unless rebuilt after this HEAD and verified again.",
+  "required_next_steps": [
+    "unlock_vmlx_build_keychain",
+    "restore_codesign_partition_list",
+    "rerun_fresh_developer_id_signing_probe",
+    "rebuild_current_source_dmg_flavors",
+    "notarize_staple_and_verify_current_dmgs"
+  ],
+  "status": "open"
+}

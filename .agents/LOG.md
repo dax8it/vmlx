@@ -39,6 +39,15 @@
 - Full checklist proof: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=73`.
 - Boundary: the local `/Applications/vMLX.app` is ad-hoc signed and codesign-valid, not a Developer ID signed/notarized checkpoint DMG. No tag, upload, appcast, notarization, or release action was performed.
 
+# 2026-06-09 - Signed checkpoint DMG readiness audit
+
+- Added `tests/cross_matrix/run_signed_checkpoint_dmg_audit.py` to capture the current signing/notary state without building, signing, notarizing, uploading, tagging, or mutating updater feeds.
+- Fresh artifact `build/current-signed-checkpoint-dmg-readiness-20260609.json` is `status=open`.
+- Existing local `panel/release/vMLX-1.5.56-sequoia-arm64.dmg` and `panel/release/vMLX-1.5.56-tahoe-arm64.dmg` are Developer ID signed, stapled, and Gatekeeper accepted, with hashes `a7148d42e27ee8eccb428a460bc4aa643b227a25ef394aed7dbebe3f3763fd5c` and `faa049368ce7c3f67dbf20b24e250bbc901493d81d382e924d30789d2b067c56`.
+- Those DMGs are June 5 artifacts and are not current-source checkpoint proof for HEAD `8324bf11`.
+- Current `/Applications/vMLX.app` is codesign-valid but ad-hoc signed. Fresh Developer ID signing is blocked with `errSecInternalComponent`; `xcrun notarytool history --keychain ~/Library/Keychains/vmlx-build.keychain-db --keychain-profile vmlx-notary` is blocked because `vmlx-build.keychain-db` is locked.
+- Required next sequence: unlock `vmlx-build.keychain-db`, restore `codesign` partition-list access, rerun the fresh signing probe, rebuild current-source Sequoia/Tahoe DMGs, notarize with `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db`, staple, verify, and only then consider upload/tag/appcast release steps.
+
 # 2026-06-09 - Qwen/N2 native-MTP package parity coverage
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.

@@ -22,6 +22,11 @@ that path in the current turn.
   remains blocked only by Developer ID signing/keychain access in this
   non-interactive session:
   `build/current-packaged-integrity-contract-after-installed-app-rebuild-20260606.json`.
+- Signed-checkpoint DMG readiness is now captured in
+  `build/current-signed-checkpoint-dmg-readiness-20260609.json`. Existing local
+  June 5 Sequoia/Tahoe DMGs are signed, stapled, and Gatekeeper-accepted, but
+  they are not current-source proof for HEAD `8324bf11`. Fresh signing and
+  notary profile access are blocked because `vmlx-build.keychain-db` is locked.
 - `panel/scripts/bundle-python.sh` now restores the Python standalone launcher
   immediately after extraction and again after MLX wheel installation, avoiding
   the intermittent missing `python3` / bootstrap `cp437` failure during app
@@ -51,6 +56,10 @@ that path in the current turn.
   runtime/model/UI/cache blockers are green or Eric explicitly overrides.
 - The locally installed app is ad-hoc signed and valid on disk; do not call it a
   Developer ID signed or notarized checkpoint DMG.
+- To unblock a real current-source signed checkpoint DMG, restore the documented
+  `vmlx-build.keychain-db` unlock plus `codesign` partition-list sequence, then
+  rebuild Sequoia/Tahoe DMGs and run notarization with
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db`.
 
 ## Best Parallel Work Items
 
