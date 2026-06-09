@@ -534,6 +534,12 @@
 - result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; MiMo `missing_evidence=[]`, `current_evidence_missing=[]`, cache-vs-no-cache `status=pass`, row remains `OPEN`.
 - boundary: no MiMo release clearance. Exactness, decode speed, VL/audio/video wiring/E2E proof, JANGTQ2/JANG_2L media/L2, UI, installed app, package, signing, notarization, tag, download, and release remain open.
 
+## CODEX - 2026-06-09 Gemma QAT source-smoke objective detail
+- blocker reduced: Gemma QAT/native MXFP4 release-board traceability for other-agent source-smoke proofs.
+- proof-map fix: Gemma objective details now list the five exact source-smoke summary artifacts and media-backing facts from `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json`.
+- result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; Gemma QAT row remains `OPEN`, with `all_required_source_live_smokes_present=true` and `all_required_live_proofs_present=false`.
+- boundary: source-smoke traceability only. Full live Responses/tool/media/cache/UI/installed-app/tunnel proof, package, signing, notarization, tag, download, and release remain open.
+
 ## CODEX - 2026-06-09 Gemma QAT objective detail guard
 - blocker reduced: Gemma QAT/native MXFP4 release-board evidence drift.
 - integrated in-flight objective digest coverage for the five Gemma4 QAT/native MXFP4 rows: E2B, E4B, 12B, 26B, and 31B.

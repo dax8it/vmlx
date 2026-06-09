@@ -7515,6 +7515,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation: focused MiMo/N2 objective tests passed `5/5`; broader focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; `py_compile` and `git diff --check` passed.
 - Boundary: no MiMo runtime/release clearance. JANGTQ2 artifact exactness, decode speed, VL/audio/video wiring/E2E proof, JANGTQ2/JANG_2L media/L2, UI, installed app, package, signing, notarization, tag, download, and release remain open.
 
+# 2026-06-09 - Gemma QAT source-smoke objective detail
+
+- Reduced blocker: Gemma QAT/native MXFP4 release-board traceability after the source-smoke map refresh.
+- Fix: objective digest details now expose `source_live_smoke_artifacts` for E2B, E4B, 12B, 26B, and 31B/31V QAT/native MXFP4 rows, plus `media_backing` for audio/vision/video runtime proof boundaries.
+- Result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; Gemma QAT row remains `OPEN`, with source smokes green and full live proof still red.
+- Validation: Gemma objective/full-checklist/inventory tests passed `8/8`; `py_compile` and `git diff --check` passed.
+- Boundary: this is proof-map detail only. It does not clear installed-app/UI/tunnel/full live media/cache/Responses/tool proof, package, signing, notarization, tag, download, or release.
+
 # 2026-06-09 - Gemma QAT objective detail guard
 
 - Continued from current active worktree after N2/MiMo objective commits; did not touch deprecated `/Users/eric/vmlx` or release/package/signing paths.
