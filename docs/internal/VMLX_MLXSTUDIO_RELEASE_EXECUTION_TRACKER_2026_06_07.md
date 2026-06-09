@@ -556,3 +556,17 @@ Classification:
 - N2 no-heavy contracts remain green through `build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json`, `build/current-cache-architecture-contract-after-mimo-n2-runtime-refresh-20260609.json`, and `build/current-model-family-detection-contract-after-n2-policy-row-20260609.json`.
 - N2 JANG_1L live load remains blocked by memory preflight: `build/current-n2-pro-jang1l-local-memory-preflight-20260609.json`, decision `do_not_launch`. Current local free+speculative memory during this refresh was about 50.5 GiB, below the safe threshold for the indexed 118.73 GB payload plus headroom.
 - Updated release checklist, objective digest, and release regression manifest pointers to the current MiMo audit/classifier artifacts. This prevents stale proof from being treated as current, but does not clear any live MiMo/N2 release row.
+
+## 2026-06-09 N2 objective/checklist evidence correction
+
+- Reduced blocker: N2 release board accuracy for runtime/cache/parser/UI-startup evidence.
+- Root cause: `summarize_objective_proof.py` still hard-coded the N2 row as "no current local artifact or live proof" and pointed the checklist at `build/current-objective-proof-after-mimo-n2-gateway-pointer-refresh-20260609.json`.
+- Updated objective digest default to `build/current-objective-proof-after-mimo-n2-runtime-refresh-20260609.json` and wired the N2 row to current evidence:
+  - `build/current-n2-pro-jang1l-local-memory-preflight-20260609.json`.
+  - `build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json`.
+  - `build/current-cache-architecture-contract-after-mimo-n2-runtime-refresh-20260609.json`.
+  - `build/current-model-family-detection-contract-after-n2-policy-row-20260609.json`.
+- Current N2 truth: local JANG_1L artifact/index is present at `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L`; indexed payload is 118.73 GB; memory preflight decision is `do_not_launch`; no model load was attempted.
+- Current no-heavy truth: API/cache contract, cache architecture contract, model-family detection, N2 family policy, TurboQuant runtime contract, TurboQuant disk roundtrip, and hybrid cache policy are all represented as pass in the N2 row.
+- Release boundary: N2 remains open until memory-safe live runtime/API/UI/cache/media proof exists for the relevant JANG_1L/JANGTQ profiles. This is not release clearance.
+- Focused verification: objective N2 row test and full checklist N2 row test passed `2/2`; py_compile passed for the edited runners.
