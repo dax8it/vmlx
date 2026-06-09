@@ -7372,6 +7372,16 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation: `tests/test_mimo_v2_cache_vs_nocache_next_token.py` passed `5/5`; `py_compile` passed; `git diff --check` passed.
 - Boundary: this is proof-harness correctness only. It does not clear MiMo exactness, media, JANG_2L/JANGTQ2 runtime quality, installed-app parity, package/sign/notarize, or release readiness.
 
+# 2026-06-09 - Cross-model tool parser package parity coverage
+
+- Blocker reduced: cross-model raw tool dialect leaks / Qwen empty-arg tool calls / Gemma4 and MiniMax parser drift can no longer be silently omitted from bundled-package hash parity.
+- Root cause: package/install hash surfaces pinned only `tool_parsers/dsml_tool_parser.py`. Current release blockers depend on the full registered parser matrix, including Qwen, XML-function, Gemma4, MiniMax, Step, Hunyuan, LFM2, auto, and related parser modules.
+- Source/package fix: added every top-level `vmlx_engine/tool_parsers/*.py` file to `panel/scripts/verify-bundled-python.sh`, `panel/scripts/release-gate-python-app.py`, `tests/cross_matrix/run_packaged_integrity_contract.py`, and `tests/cross_matrix/run_installed_app_runtime_parity_audit.py`.
+- Red/green proof: package/hash tests for installed-app parity, staged package integrity, release-gate verifier, and engine-audit bundled verifier first failed on missing parser files, then passed after the list update.
+- Behavior sanity: focused Responses/Qwen source slice passed `3/3`, covering output-index separation, streamed preamble plus empty XML fail-closed/no `{}` argument emission, and Qwen plain tool-line schema repair.
+- Validation: current-suite/release-manifest hash mirror tests passed `4/4`; `bash -n panel/scripts/verify-bundled-python.sh`, `py_compile`, and `git diff --check` passed.
+- Boundary: package/parity guard only. This does not clear same-model tunnel raw-SSE, live MiMo/Gemma/N2/UI proof, installed-app parity, package/sign/notarize, or release rows.
+
 # 2026-06-09 - MiMo proof-pointer refresh to cache/logprob classifier set
 
 - Blocker reduced: MiMo release/objective/checklist gates no longer consume the older structured-schema audit by default.
