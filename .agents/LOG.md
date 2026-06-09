@@ -6946,6 +6946,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Direct proof: `build/current-responses-raw-sse-parity-direct-gemma4-e2b-after-parser-20260609.json` has direct capture present, parse errors `0`, `argument_delta_count=2`, `argument_done_count=1`, `function_name=record_fact`, authoritative args `{"value": "blue-cat"}`.
 - Boundary: artifact remains `status=open` because gateway and tunnel captures are missing. Do not close #190/#192 or release from direct proof only.
 
+## CODEX - 2026-06-09 Responses panel gateway Gemma4 SSE tool args proof
+- Blocker reduced: #190/#192 local panel gateway raw SSE parity for Gemma4 Responses function-call args.
+- Method: temporary Vitest gateway instance with mocked sessions routed to a real current-source vMLX backend serving Gemma4 E2B QAT. The temp test file was removed after capture; no permanent harness was added.
+- Proof: `build/current-responses-raw-sse-parity-direct-gateway-gemma4-e2b-after-parser-20260609.json` has direct and gateway captures present, parse errors `0`, `argument_delta_count=2`, `argument_done_count=1`, expected args match, and authoritative args `{"value": "blue-cat"}` on both surfaces.
+- Boundary: artifact remains `status=open` because public tunnel capture is missing. Local direct server and local panel gateway are proven for this request shape; do not claim tunnel/download/release parity yet.
+
 ## CODEX - 2026-06-09 Responses raw SSE parity strict expected-args gate
 - Blocker reduced: #190/#192 Responses direct/gateway/tunnel raw SSE proof quality.
 - Source fix: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now supports expected function name, expected authoritative arguments, parse-clean checks, and `--require-reasoning-events`.
