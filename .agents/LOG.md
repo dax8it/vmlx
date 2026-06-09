@@ -6810,7 +6810,8 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Source fix: Gemma4/Gemma4 Unified audio requests now decode temp WAV paths into float32 waveform arrays before calling processors that expect raw waveform arrays.
 - Source fix: `_run_vision_encoding_inner` now uses a fallback request id for request-like internal test/probe objects that do not expose `request_id`, preserving MiMo/media prefill guard telemetry without crashing unit fixtures.
 - Regressions/proof: `test_gemma4_moe_mxfp_expert_cross_shard_sidecars_are_hydrated`, `test_gemma4_moe_mxfp_vlm_loader_initializes_sidecar_weight_map`, `test_gemma4_audio_waveforms_from_paths_decodes_wav_to_float32`; model-artifact-format proof `build/current-model-artifact-format-contract-after-gemma4-cross-shard-sidecars-audio-waveform-20260609.json`, `status=pass`, `missing_markers=[]`, `model_artifact_format_pytest rc=0 passed=179 deselected=192`.
-- Boundary: source/no-heavy and unit decode only. No Gemma4 26B live memory-safe proof, no audio semantic live proof, no installed-app proof, and no release/sign/package action.
+- Live 26B QAT proof after sidecar fix: `build/current-all-local-model-smoke-gemma4-26b-qat-mxfp4-tools-l2-nomedia-after-cross-shard-expert-sidecars-20260609b/summary.json`, `status=fail` only for two narrow rows. Cleared incoherence: exact `ACK`, mixed-SWA cache hit `cached_tokens=56` / `cache_detail=paged+mixed_swa`, multi-turn `blue cat`, required tool `record_fact({"value":"blue-cat"})`, JSON exact, code exact whitespace, image `Blue`/`Red`, video fallback `Blue`, and block-disk L2 restart `disk_hits=2`.
+- Remaining boundary: tool-result continuation omits final period (`STORED blue-cat` vs `STORED blue-cat.`), and Gemma4 QAT audio still fails honestly because the processor returns no supported audio feature payload. No installed-app proof and no release/sign/package action.
 
 # 2026-06-09 03:42 PDT - Gemma QAT downloads and inventory row correction
 
