@@ -1,3 +1,12 @@
+# 2026-06-09 - Step3.7 VLM audit proof refresh
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
+- Reduced blocker class: `media` + `runtime/kernel` proof classification for Step3.7 VLM routing.
+- Regenerated `build/current-step37-vlm-runtime-audit-after-source-live-media-proof-20260607.json`; `status=pass`, `release_clearance=audit_does_not_block_release`, `mlx_vlm_step3p7_runtime_available=true`.
+- The audit is no-heavy and honest: `source_owned_runtime_progress.release_clearance=source_runtime_surface_present_needs_live_proof`; `live_media_proof.exists=false` and `live_media_proof.pass=false`, so live image/video media proof remains required before release clearance.
+- Refreshed full checklist `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`; `status=open`, `failed_count=121`. The stale Step3.7 missing-audit rows are gone; release remains blocked by Responses tunnel/reasoning, N2, MiMo, Gemma full matrix, Qwen proof gaps, DSV4, and packaging/UI rows.
+- Boundary: this is not a fake `has_vision=false` claim and not Step3.7 media release clearance. It only restores the current source-runtime audit artifact and keeps live media proof separate.
+
 # 2026-06-09 - MiniMax #179 local generation config fallback
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no release package/sign/notarize/tag/download work.
