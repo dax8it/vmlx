@@ -540,6 +540,11 @@
 - result: regenerated `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; Gemma QAT row remains `OPEN`, with `all_required_source_live_smokes_present=true` and `all_required_live_proofs_present=false`.
 - boundary: source-smoke traceability only. Full live Responses/tool/media/cache/UI/installed-app/tunnel proof, package, signing, notarization, tag, download, and release remain open.
 
+## CODEX - 2026-06-09 full checklist refresh after objective details
+- refreshed `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` from current source.
+- result: `status=open`, `failed_count=122`; stale N2/MiMo details are gone from the regenerated artifact, and Gemma QAT source-smoke/media-backing objective detail is now visible downstream.
+- boundary: no release action. Responses tunnel/reasoning, N2 JANG_1L, MiMo exactness/media, Gemma full live/UI/tunnel, Qwen proof gaps, DSV4, package, signing, notarization, tag, and download rows remain open.
+
 ## CODEX - 2026-06-09 Gemma QAT objective detail guard
 - blocker reduced: Gemma QAT/native MXFP4 release-board evidence drift.
 - integrated in-flight objective digest coverage for the five Gemma4 QAT/native MXFP4 rows: E2B, E4B, 12B, 26B, and 31B.

@@ -7523,6 +7523,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation: Gemma objective/full-checklist/inventory tests passed `8/8`; `py_compile` and `git diff --check` passed.
 - Boundary: this is proof-map detail only. It does not clear installed-app/UI/tunnel/full live media/cache/Responses/tool proof, package, signing, notarization, tag, download, or release.
 
+# 2026-06-09 - full checklist refresh after N2/MiMo/Gemma objective details
+
+- Refreshed `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` using the current runner and current objective digest.
+- Result: `status=open`, `failed_count=122`; the regenerated artifact now references current N2 JANGTQ2 L2 objective evidence, current MiMo audit/classifier evidence, and Gemma QAT source-smoke/media-backing objective details.
+- Boundary: no release action. The checklist remains release-red for Responses tunnel/reasoning, N2 JANG_1L, MiMo exactness/media, Gemma full live/UI/tunnel, Qwen proof gaps, DSV4, package, signing, notarization, tag, and download rows.
+
 # 2026-06-09 - Gemma QAT objective detail guard
 
 - Continued from current active worktree after N2/MiMo objective commits; did not touch deprecated `/Users/eric/vmlx` or release/package/signing paths.
