@@ -6959,3 +6959,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Source fix: `_bundle_declares_native_audio()` now requires `model_type=gemma4` bundles to have both `audio_config` and actual `audio_tower.*` entries in `model.safetensors.index.json` before advertising audio. Token-only `audio_token_id` metadata no longer exposes audio capability for this family.
 - Proof: focused runtime modality tests passed `3/3`; `py_compile` and `git diff --check` passed.
 - Boundary: capability honesty only. This does not claim live Gemma4 audio semantic quality, installed-app parity, package, signing, notarization, tag, download, or release readiness.
+
+## CODEX - 2026-06-09 mlx-lm short-prompt tokenizer bounds patch
+- Blocker reduced: upstream MLX runtime intake / thinking-template short-prompt crash class relevant to MiniMax/Qwen/DSV4-style thinking prompts.
+- Upstream mapped: `mlx-lm` issue #1326 / PR #1327. Pinned local `TokenizerWrapper._find()` still accepted negative `start` and could walk wrapped Python indexes when callers search from `len(prompt)-11` on very short prompts.
+- Source fix: `vmlx_engine/runtime_patches/mlx_lm_compat.py` now clamps `_find()` start/end bounds and returns `-1` for empty sequences or search windows shorter than the target sequence. Runtime patch is installed through existing `vmlx_engine.runtime_patches` bootstrap.
+- Proof: `tests/test_mlx_lm_runtime_patches.py` passed `6/6`; direct probe reports `short_negative_reverse=-1`, `short_negative_found=0`, and patched marker true; current-suite source hash checks passed `2/2`; `py_compile` and `git diff --check` passed.
+- Commit: `b2f05a4e` pushed to `origin/main` and `origin/codex/pr-intake-manifest`.
+- Boundary: source/runtime compatibility fix only. No model-family release clearance, no installed-app proof, no package/sign/notarize/tag/download action.
