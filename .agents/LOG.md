@@ -7564,3 +7564,13 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof facts: model `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`, output `GEMMA4-OK`, finish reason `stop`, and checks `import_alias_ok`, `startup_health_ok`, `visible_generation_ok`, and `post_chat_health_ok` all true.
 - Validation: `tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_uses_current_gemma4_12b_issue191_startup_proof` and `tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_keeps_open_rows_visible` passed `2/2`.
 - Boundary: this does not clear Gemma4 12B tools/cache/media/UI/installed-app/tunnel release rows. The older JANG_4M nomedia tools/cache artifact and media smoke remain missing/red in the checklist, and Gemma QAT/native MXFP4 full live proof remains open.
+
+# 2026-06-09 - Responses tunnel model availability classifier
+
+- Reduced blocker: #190/#192 same-model direct/gateway/tunnel raw SSE classification.
+- Source fix: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now extracts advertised models from raw JSON `model_not_found` captures and sets `expected_model_advertised` per capture; the artifact-level check records `tunnel_expected_model_advertised`.
+- Release-board fix: `tests/cross_matrix/run_full_release_objective_checklist.py` now surfaces `responses_raw_sse_parity_tunnel_expected_model_advertised` as its own row.
+- Refreshed proof: `build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json` remains `status=fail`, with `missing_captures=[]`, `tunnel.expected_model_advertised=false`, and parsed tunnel available models that do not include `gemma4-e2b-sse`.
+- Refreshed checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=123`.
+- Validation: focused Responses parity/checklist tests passed `6/6`; `py_compile` and `git diff --check` passed.
+- Boundary: this does not clear #190/#192 or any release gate. Other agent should not treat the tunnel failure as an engine parser/argument leak until the same model is advertised/served through tunnel and recaptured with reasoning events, matching args, valid output indices, and no reasoning-disable workaround.
