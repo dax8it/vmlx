@@ -78,7 +78,12 @@ that path in the current turn.
    `response.function_call_arguments.delta`, `.done`, final object consistency,
    valid output indices, and tool-result continuation.
 2. Fix or recapture the Qwen35 tunnel output-index path. Current failing proof:
-   `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-20260609.json`.
+   `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-recapture-20260609.json`.
+   Fresh tunnel raw capture:
+   `build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse`.
+   It preserves `record_fact` args `{"value": "blue-cat"}`, has reasoning
+   events, and matches model `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, but
+   still emits both `message` and `function_call` at `output_index=0`.
    Follow-up source recheck `build/current-noheavy-api-cache-contract-after-qwen35-output-index-recheck-20260609.json`
    is `status=pass`, including source Responses streaming tool args/indexes and
    gateway argument passthrough. Treat the next Qwen35 action as live recapture

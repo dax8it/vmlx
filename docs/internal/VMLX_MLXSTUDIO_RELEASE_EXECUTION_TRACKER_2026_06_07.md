@@ -915,3 +915,22 @@ Classification:
   `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`,
   `available_gib=112.35`, `memory_gap_gib=6.22`.
 - Boundary: no N2 model weights were loaded and no release clearance changed. This remains a careful RAM/headroom scheduling blocker; do not lower the guard or infer failure from total 128 GiB alone.
+
+## 2026-06-09 Qwen35 tunnel raw SSE recapture
+
+- Recaptured public tunnel raw Responses SSE against advertised model
+  `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP` with reasoning enabled, required
+  `record_fact`, and `max_output_tokens=512`:
+  `build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse`.
+- Refreshed parity artifact:
+  `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-recapture-20260609.json`,
+  `status=fail`.
+- Finding: tunnel preserves authoritative args `{"value": "blue-cat"}` through
+  `response.function_call_arguments.delta`, `.done`, and final function item;
+  `reasoning_events=10`, parse errors `0`, model matches expected. The remaining
+  failure is duplicate `output_index=0` for both `message` and `function_call`.
+- Checklist pointer now consumes the recapture artifact. `qwen35_raw_sse_status_pass`
+  and `qwen35_raw_sse_valid_output_item_indices` remain red; local/source guards
+  remain green via `build/current-noheavy-api-cache-contract-after-qwen35-output-index-recheck-20260609.json`.
+- Boundary: this is not the #192 empty-args failure; it is deployed/tunnel output-index
+  freshness plus missing same-model direct/gateway recaptures. No package/sign/release action.

@@ -614,6 +614,11 @@
 - required coverage for QAT `JANG_4M`: runtime autodetect, loader/sidecar handling, model-owned generation defaults, Gemma4 tool/reasoning parser selection, mixed-SWA cache, prefix cache, TurboQuant KV boundary where valid, block-disk L2 restore, Responses streaming/content delta/tool args, chat multi-turn, image/video/audio capability honesty, UI/CLI settings parity, and installed-app parity.
 - boundary: MXFP4 QAT source smokes do not clear QAT `JANG_4M`; QAT `JANG_4M` source/load proof does not clear MXFP4. Both need explicit live proof before release.
 
+## CODEX - 2026-06-09 Qwen35 tunnel raw SSE recapture
+- now: Qwen35 public tunnel raw Responses SSE was recaptured against advertised model `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP` with reasoning enabled and required `record_fact`. New raw capture `build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse` preserves args via `response.function_call_arguments.delta/done` and final item args `{"value": "blue-cat"}`, has `reasoning_events=10`, reports same model, and parse errors are `0`, but still reuses `output_index=0` for both `message` and `function_call`.
+- proof: `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-recapture-20260609.json`, `status=fail`; `all_present_surfaces_have_authoritative_args=true`, `all_present_surfaces_have_required_reasoning=true`, `all_present_surfaces_have_valid_output_item_indices=false`, conflict `[0]`. The checklist now points at this recapture artifact; `qwen35_raw_sse_valid_output_item_indices` remains red. This is deployed/tunnel output-index freshness, not the empty-args parser failure.
+- validation: raw-SSE/checklist focused tests passed `16/16`; `py_compile` and `git diff --check` passed. Boundary: same-model direct/gateway captures are still missing for complete parity; no release/package/sign/notarize action.
+
 ## CODEX - 2026-06-09 N2 JANG_1L memory proof refresh
 - blocker kept honest: N2 JANG_1L live runtime/cache/API/UI is still `OPEN`, but it now has current preflight and live-gate skip artifacts instead of stale or missing proof.
 - current preflight: `build/current-n2-pro-jang1l-local-memory-preflight-20260609.json`, `decision=do_not_launch`, `indexed_payload_gib=110.57`, `required_available_gib=118.57`, `available_gib=111.12`, `memory_gap_gib=7.45`.

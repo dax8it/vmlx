@@ -7837,3 +7837,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Refreshed the live chat/cache gate preflight path at `build/current-n2-jang1l-chat-cache-proof-after-release-gate-20260609.json`.
 - Result: `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`, observed available `112.35 GiB`, gap `6.22 GiB`.
 - Boundary: no N2 weights were loaded. This does not clear N2 runtime/cache/API/UI; it keeps the one-at-a-time live proof queued until actual available headroom meets the gate.
+
+# 2026-06-09 - Qwen35 tunnel raw SSE output-index recapture
+
+- Recaptured public tunnel raw Responses SSE for `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP` with reasoning enabled and required `record_fact`.
+- Raw capture: `build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse`.
+- Refreshed classifier artifact: `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-recapture-20260609.json`, `status=fail`.
+- Positive evidence: authoritative args are preserved as `{"value": "blue-cat"}` in argument deltas, done event, and final function item; reasoning events are present; model matches; parse errors are `0`.
+- Remaining failure: tunnel still emits `message` and `function_call` at `output_index=0`, so `all_present_surfaces_have_valid_output_item_indices=false`.
+- Checklist pointer now consumes the recapture artifact, and focused raw-SSE/checklist validation passed `16/16`. Boundary: no package/sign/notarize/tag/download/release action.
