@@ -32,7 +32,8 @@
     "mimo_image_video_live_e2e_missing",
     "mimo_audio_waveform_live_e2e_missing",
     "mimo_jangtq2_live_media_l2_missing",
-    "mimo_jang2l_live_media_l2_missing"
+    "mimo_jang2l_live_media_l2_missing",
+    "mimo_media_runtime_implementation_missing"
   ],
   "component_ok": {
     "api_cache_responses_contract": true,
@@ -50,7 +51,7 @@
     "manual_sink_does_not_clear_length_generation": false,
     "media_model_metadata_text_only_contract": true,
     "media_runtime_capabilities_safe": true,
-    "media_runtime_implementation": true,
+    "media_runtime_implementation": false,
     "media_weights_preserved": true,
     "mimo_audio_waveform_live_e2e": false,
     "mimo_image_video_live_e2e": false,
@@ -628,7 +629,7 @@
         }
       ],
       "audio_waveform_live_e2e_status": "missing_or_failed",
-      "classification": "media_runtime_and_metadata_clear",
+      "classification": "media_components_present_runtime_capabilities_text_only",
       "config_error": null,
       "config_modalities": [
         "text"
@@ -693,7 +694,7 @@
       "missing_runtime_components": [],
       "mixed_inputs_embeds_splice": true,
       "model_vision_bridge": true,
-      "raw_audio_request_ingestion": false,
+      "raw_audio_request_ingestion": true,
       "required_model_metadata_if_runtime_unwired": {
         "capabilities.modalities": [
           "text"
@@ -778,7 +779,7 @@
       "runtime_capabilities_safe": true,
       "runtime_capabilities_text_only_safe": true,
       "runtime_explicitly_unwired": false,
-      "runtime_media_wired": true,
+      "runtime_media_wired": false,
       "runtime_media_wired_superseded_by_live_e2e": false,
       "runtime_multimodal_mode": "weights_preserved_text_runtime",
       "smoke_runtime_capabilities": {
@@ -847,7 +848,8 @@
           "audio"
         ]
       },
-      "status": "pass",
+      "source_media_components_present": true,
+      "status": "open",
       "text_route_media_unwired_superseded_by_source": false,
       "vision_attention_block_modules": true,
       "vision_grid_forward": true,
