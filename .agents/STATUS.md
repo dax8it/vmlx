@@ -521,3 +521,9 @@
 - source/proof-map fix: `summarize_objective_proof.py`, current regression suite, full checklist, and release manifest now point at `build/current-objective-proof-after-n2-jangtq2-live-proof-20260609.json`; the N2 objective row includes `build/current-n2-jangtq2-chat-cache-responses-proof-after-responses-parser-20260609.json`.
 - proof fields recorded: `status=pass`, `stable_text=true`, tool/Responses/stream probes pass, `cache_hit_cache_detail=paged+ssm`, `cache_hit_cached_tokens=8`, block-disk writes/hits present, and SSM disk stores present.
 - boundary: N2 remains `OPEN`. This does not clear JANG_1L runtime/cache/API/UI, media, installed-app/UI, same-model tunnel parity, fresh-process L2 restart, package, signing, notarization, tag, download, or release readiness.
+
+## CODEX - 2026-06-09 N2 JANGTQ2 fresh-process L2 objective consumption
+- live proof: `build/current-n2-jangtq2-chat-cache-responses-l2-proof-20260609.json`, `status=pass`; ran one bounded current-source N2 JANGTQ2 gate with `--include-l2-restart-probe` and `--min-available-gb 96`.
+- restart evidence: `l2_restart_probe_pass=true`, visible `ACK`, `restart_cached_tokens=8`, `restart_cache_detail=paged+ssm+disk`, `block_disk_hits=1`, and `ssm_disk_hits=1`.
+- proof-map fix: objective digest, current regression suite, full checklist, and release manifest now point at `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; N2 still reports `status=open`.
+- boundary: current-source N2 JANGTQ2 only. No JANG_1L, installed-app/UI, media, same-model tunnel, package, signing, notarization, tag, download, or release clearance.

@@ -7497,3 +7497,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Objective row evidence now includes `build/current-n2-jangtq2-chat-cache-responses-proof-after-responses-parser-20260609.json`; recorded fields include `status=pass`, `stable_text=true`, `tool_probe_pass=true`, `responses_probe_pass=true`, `responses_stream_probe_pass=true`, `cache_hit_cache_detail=paged+ssm`, `cache_hit_cached_tokens=8`, block-disk writes/hits, and SSM disk stores.
 - Validation: focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; `py_compile` passed; `git diff --check` passed.
 - Boundary: N2 row remains `OPEN`. This consumes current-source JANGTQ2 proof only and does not clear JANG_1L runtime/cache/API/UI, media, installed-app/UI, same-model tunnel parity, fresh-process L2 restart, package, signing, notarization, tag, download, or release readiness.
+
+# 2026-06-09 - N2 JANGTQ2 fresh-process L2 objective consumption
+
+- Live proof: `.venv/bin/python tests/cross_matrix/run_n2_chat_cache_gate.py --port 8897 --include-tool-probe --include-responses-probe --include-responses-stream-probe --include-l2-restart-probe --out build/current-n2-jangtq2-chat-cache-responses-l2-proof-20260609.json --cache-dir build/current-n2-jangtq2-chat-cache-responses-l2-proof-block-cache-20260609 --min-available-gb 96`.
+- Result: `status=pass`, `stable_text=true`, tool/Responses/stream probes pass, same-process `cache_hit_cached_tokens=8`, same-process `cache_hit_cache_detail=paged+ssm`, and `l2_restart_probe_pass=true`.
+- Restart evidence: fresh-process restart returned visible `ACK`, `cached_tokens=8`, `cache_detail=paged+ssm+disk`; restart health recorded `block_disk_cache.disk_hits=1` and `ssm_companion_disk.hits=1`.
+- Fix: objective digest default, current regression suite pointer, full checklist objective pointer, and release manifest rows now use `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json`; N2 row consumes both JANGTQ2 live artifacts and remains `OPEN`.
+- Validation: focused objective/current-suite/full-checklist/release-manifest tests passed `7/7`; generated objective artifact shows N2 `status=open`; `py_compile` and `git diff --check` passed.
+- Boundary: current-source N2 JANGTQ2 only. No JANG_1L runtime/cache/API/UI, media, installed-app/UI, same-model tunnel parity, package, signing, notarization, tag, download, or release clearance.
