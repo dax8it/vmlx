@@ -904,3 +904,14 @@ Classification:
 - Regenerated checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=73`, with `qwen35_raw_sse_status_pass` and `qwen35_raw_sse_valid_output_item_indices` red.
 - Parallel handoff: `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md`.
 - Boundary: no release, package, signing, notarization, tag, or download action. Next proof must fix/recapture same-model direct/gateway/tunnel raw SSE with valid output indices and no reasoning-disable workaround.
+
+## 2026-06-09 N2 JANG_1L memory refresh after DMG gate
+
+- Refreshed current Nex/N2 Pro 397B JANG_1L no-load preflight without loading weights:
+  `build/current-n2-pro-jang1l-local-memory-preflight-after-release-gate-20260609.json`.
+- Result: `decision=do_not_launch`, `indexed_payload_gib=110.57`, `required_available_gib=118.57`, `available_gib=112.56`, `memory_gap_gib=6.01`.
+- Refreshed the same condition through the chat/cache gate:
+  `build/current-n2-jang1l-chat-cache-proof-after-release-gate-20260609.json`,
+  `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`,
+  `available_gib=112.35`, `memory_gap_gib=6.22`.
+- Boundary: no N2 model weights were loaded and no release clearance changed. This remains a careful RAM/headroom scheduling blocker; do not lower the guard or infer failure from total 128 GiB alone.

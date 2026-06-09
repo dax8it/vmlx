@@ -7829,3 +7829,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Important narrowing: `current_proof_sweep.component_ok.packaged_app_developer_id_signing=true`, so the current DMG build stop is not Apple signing/keychain/notary access.
 - Current prepackage blockers include MiMo JANG_2L runtime quality, MiniMax #179 reporter parity/root cause, Gemma26 installed-app memory stress, real UI matrix rows, N2 JANG_1L runtime/cache/API/UI, Responses raw-SSE parity, and DSV4 memory-safe live proof.
 - Boundary: no DMG was produced, no notarization/stapling was run, and no tag/upload/appcast/public release happened.
+
+# 2026-06-09 - N2 JANG_1L memory refresh after DMG gate
+
+- Refreshed the no-load Nex/N2 Pro 397B JANG_1L preflight at `build/current-n2-pro-jang1l-local-memory-preflight-after-release-gate-20260609.json`.
+- Result: `decision=do_not_launch`, model/index present, payload `110.57 GiB`, required available `118.57 GiB`, observed available `112.56 GiB`, gap `6.01 GiB`.
+- Refreshed the live chat/cache gate preflight path at `build/current-n2-jang1l-chat-cache-proof-after-release-gate-20260609.json`.
+- Result: `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`, observed available `112.35 GiB`, gap `6.22 GiB`.
+- Boundary: no N2 weights were loaded. This does not clear N2 runtime/cache/API/UI; it keeps the one-at-a-time live proof queued until actual available headroom meets the gate.

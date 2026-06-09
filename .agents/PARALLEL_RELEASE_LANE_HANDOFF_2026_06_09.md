@@ -91,6 +91,12 @@ that path in the current turn.
    runtime truth separate from preserved-but-unwired media weights.
 5. Recheck N2 `JANG_1L` memory preflight before any launch. If still below the
    guard, update status with the skip artifact rather than forcing a load.
+   Latest refresh after the DMG gate:
+   `build/current-n2-pro-jang1l-local-memory-preflight-after-release-gate-20260609.json`
+   is `do_not_launch` with payload `110.57 GiB`, required available `118.57 GiB`,
+   available `112.56 GiB`, gap `6.01 GiB`.
+   `build/current-n2-jang1l-chat-cache-proof-after-release-gate-20260609.json`
+   is `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`.
 6. For MiniMax #179, do not rerun the already-green MiniMax Small source smoke
    unless source changes. Best help is reporter-machine K parity: model file
    manifest/hash, rendered prompt/template flags, resolved sampling kwargs, raw
