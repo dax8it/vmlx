@@ -7555,3 +7555,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof-map fix: `tests/cross_matrix/summarize_objective_proof.py` and `tests/cross_matrix/run_full_release_objective_checklist.py` now surface `build/current-n2-jang1l-chat-cache-proof-20260609.json` and its skipped reason in the N2 objective/checklist row.
 - Validation: `tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_tracks_open_n2_pro_objective_row`, `tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_n2_pro_397b_release_blocker`, and `tests/test_n2_chat_cache_gate.py` passed `16/16`. Full checklist regenerated as `status=open`, `failed_count=122`.
 - Boundary: not N2 JANG_1L runtime/cache/API/UI clearance. The next live attempt needs actual available headroom at or above `118.57 GiB` or a smaller-runtime strategy; lowering the gate would recreate the Metal OOM failure mode.
+
+# 2026-06-09 - Gemma4 12B #191 checklist proof consumption
+
+- Reduced blocker: Gemma4 12B proof-map accuracy for issue #191 startup/visible-generation evidence.
+- Source/proof-map fix: `tests/cross_matrix/run_full_release_objective_checklist.py` now loads `build/current-gemma4-12b-issue191-source-startup-visible-proof-20260609.json` as a separate `gemma4_12b_issue191_startup_*` checklist surface.
+- Regenerated checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=122`, but now records `gemma4_12b_issue191_startup_artifact_exists=true`, `gemma4_12b_issue191_startup_status_pass=true`, and `gemma4_12b_issue191_startup_visible_generation=true`.
+- Proof facts: model `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`, output `GEMMA4-OK`, finish reason `stop`, and checks `import_alias_ok`, `startup_health_ok`, `visible_generation_ok`, and `post_chat_health_ok` all true.
+- Validation: `tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_uses_current_gemma4_12b_issue191_startup_proof` and `tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_keeps_open_rows_visible` passed `2/2`.
+- Boundary: this does not clear Gemma4 12B tools/cache/media/UI/installed-app/tunnel release rows. The older JANG_4M nomedia tools/cache artifact and media smoke remain missing/red in the checklist, and Gemma QAT/native MXFP4 full live proof remains open.

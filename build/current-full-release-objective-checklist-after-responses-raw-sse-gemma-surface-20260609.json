@@ -1,6 +1,6 @@
 {
   "boundary": "No-heavy checklist only. A pass here would mean current evidence claims every listed gate is green; it still must be backed by the live artifacts referenced by each row. Open rows are release blockers.",
-  "created_at": "2026-06-09T14:12:05-0700",
+  "created_at": "2026-06-09T14:17:01-0700",
   "failed": [
     {
       "detail": false,
@@ -1727,6 +1727,34 @@
         "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_block_l2_written",
         "ok": false
+      },
+      {
+        "evidence": "build/current-gemma4-12b-issue191-source-startup-visible-proof-20260609.json",
+        "name": "gemma4_12b_issue191_startup_artifact_exists",
+        "ok": true
+      },
+      {
+        "detail": "pass",
+        "evidence": "build/current-gemma4-12b-issue191-source-startup-visible-proof-20260609.json",
+        "name": "gemma4_12b_issue191_startup_status_pass",
+        "ok": true
+      },
+      {
+        "detail": {
+          "checks": {
+            "import_alias_ok": true,
+            "post_chat_health_ok": true,
+            "startup_health_ok": true,
+            "visible_generation_ok": true
+          },
+          "content": "GEMMA4-OK",
+          "finish_reason": "stop",
+          "model": "/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M",
+          "status": "pass"
+        },
+        "evidence": "build/current-gemma4-12b-issue191-source-startup-visible-proof-20260609.json",
+        "name": "gemma4_12b_issue191_startup_visible_generation",
+        "ok": true
       },
       {
         "evidence": "build/current-gemma4-12b-jang4m-media-smoke-after-vlm-prefill-guard-20260607.json",
