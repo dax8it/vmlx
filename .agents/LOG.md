@@ -7736,3 +7736,10 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Cache/L2 boundary: same run proved mixed-SWA cache and L2 restart were not the failing surface; L2 had `disk_hits=2`, `cache_hit_tokens=56`.
 - Config boundary: both E2B and 12B have `generation_config.json`; 12B is `gemma4_unified`, which is the suspect parser/template/special-token lane. Do not patch by forced sampling or by silently tolerating visible modality tokens.
 - Proof-map update: 12B QAT JANG_4M now points at this current failure artifact, so the blocker is explicit and current.
+
+# 2026-06-09 - Gemma4 26B QAT JANG_4M source smoke
+
+- Live proof run: `VMLINUX_BENCH_ISOLATED=1 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models/JANGQ-AI --only gemma-4-26B-A4B-it-qat-JANG_4M --max-models 1 --include-tools --include-l2-restart --no-media --port 8924 --load-timeout-s 540 --request-timeout-s 300 --out build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-tools-nomedia-l2-20260609`.
+- Result: `status=pass`; required tool, tool-result continuation, JSON/code exactness, mixed-SWA prefix hit, block-disk writes, and L2 restart passed. Cache repeat hit showed `cached_tokens=56`, `cache_detail=paged+mixed_swa`; L2 restart summary showed `disk_hits=2`.
+- Proof-map update: `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json`, `build/current-objective-proof-after-n2-jang1l-memory-refresh-20260609.json`, and `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` now consume E2B, E4B, and 26B QAT JANG_4M source smokes.
+- Boundary: source no-media 26B proof only. 12B remains blocked by visible `<audio|>` leak, 31B remains unproven, and media/Responses/UI/installed-app/release remain open.

@@ -1170,8 +1170,14 @@
       ],
       "live_proof_status": "missing",
       "source_live_smoke": {
-        "status": "missing",
-        "artifact": null
+        "status": "pass",
+        "artifact": "build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-26B-A4B-it-qat-JANG_4M/result.json",
+        "summary_status": "pass",
+        "failed": null,
+        "completed": null,
+        "row_count": null,
+        "video_runtime_proven": false,
+        "post_video_text_recovery_proven": false
       }
     },
     "gemma4_31b_qat_jang4m": {
@@ -1823,7 +1829,6 @@
   ],
   "source_live_smoke_open_rows": [
     "gemma4_12b_qat_jang4m",
-    "gemma4_26b_qat_jang4m",
     "gemma4_31b_qat_jang4m"
   ],
   "boundary": "No-heavy inventory only. A present row remains open until live media/cache/tool/Responses/UI/installed-app proof artifacts cover the row's advertised modalities and parser/cache requirements. source_live_smoke records narrower current-source all_local_model_smoke evidence and is not installed-app or release clearance."

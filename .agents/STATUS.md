@@ -676,3 +676,10 @@
 - non-failing surfaces in same run: mixed-SWA cache hit and L2 restart passed; L2 summary had `disk_hits=2`, `cache_hit_tokens=56`.
 - initial classification: parser/template/special-token leak on `gemma4_unified`; not a cache/L2 failure and not missing generation config. Do not hide by accepting visible `<audio|>` as normal text.
 - updated artifacts: Gemma inventory/objective/checklist now point 12B QAT JANG_4M at this current failure artifact instead of the older non-QAT 12B JANG_4M proof.
+
+## CODEX - 2026-06-09 Gemma4 26B QAT JANG_4M source smoke
+- blocker reduced: Gemma4 QAT JANG_4M source-live text/tool/cache/L2 coverage for 26B.
+- proof: `build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-26B-A4B-it-qat-JANG_4M/result.json`, `status=pass`; summary at `build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-tools-nomedia-l2-20260609/summary.json`.
+- proven surfaces: visible ACK repeat, multi-turn recall, reasoning separation, required tool call, tool-result continuation, exact JSON/code probes, mixed-SWA cache hit `cached_tokens=56` with `cache_detail=paged+mixed_swa`, block-disk writes, and L2 restart with `disk_hits=2`.
+- updated artifacts: Gemma inventory/objective/checklist now consume E2B, E4B, and 26B QAT JANG_4M source smokes; source-smoke open rows are 12B and 31B.
+- boundary: no release clearance; 12B has current `<audio|>` tool-visible leak, 31B still needs source smoke, and all media/UI/installed-app/Responses raw SSE release rows remain open.
