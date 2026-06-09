@@ -7574,3 +7574,13 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Refreshed checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=123`.
 - Validation: focused Responses parity/checklist tests passed `6/6`; `py_compile` and `git diff --check` passed.
 - Boundary: this does not clear #190/#192 or any release gate. Other agent should not treat the tunnel failure as an engine parser/argument leak until the same model is advertised/served through tunnel and recaptured with reasoning events, matching args, valid output indices, and no reasoning-disable workaround.
+
+# 2026-06-09 - Gemma QAT source-video proof consumption
+
+- Reduced blocker: Gemma QAT/native MXFP4 release-board accuracy for 12B/26B/31B video runtime proof.
+- Source/proof-map fix: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` now parses source-smoke request rows and records `video_runtime_proven` from `vl_blue_video=Blue` plus `post_video_text_recovery_proven` from `text_no_media_after_video=NONE`.
+- Checklist/objective fix: `tests/cross_matrix/run_full_release_objective_checklist.py` and `tests/cross_matrix/summarize_objective_proof.py` consume those source-smoke video fields. The three Gemma video-runtime subrows no longer fail when current-source video proof is present.
+- Refreshed proof: `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json`, `status=open`; 12B, 26B, and 31B/31V all record `video_runtime_source_proven=true`.
+- Refreshed objective/checklist: `build/current-objective-proof-after-n2-jangtq2-l2-live-proof-20260609.json` remains open; `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=120`.
+- Validation: Gemma inventory/checklist/objective focused tests passed `11/11`; `py_compile` passed.
+- Boundary: this is current-source proof consumption only. Gemma QAT/native still needs installed-app/UI/tunnel parity, full Responses stream/tool args, broader API/cache release proof, and package parity before release clearance.

@@ -566,3 +566,10 @@
 - refreshed proof: `build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json`, `status=fail`, `missing_captures=[]`, `checks.tunnel_expected_model_advertised=false`; tunnel returned `model_not_found` for `gemma4-e2b-sse` and the parsed available-model list does not include it.
 - checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=123`; new failed row is `responses_raw_sse_parity_tunnel_expected_model_advertised`.
 - boundary: direct/gateway Gemma4 E2B argument streaming remains separately proven, but direct/gateway still have `reasoning_events=0` and tunnel is not same-model. Next agent should serve/target the same model through tunnel, recapture direct/gateway/tunnel with reasoning events enabled, and keep missing required XML args fail-closed rather than inventing params from preamble text.
+
+## CODEX - 2026-06-09 Gemma QAT source-video proof consumption
+- blocker reduced: Gemma QAT/native MXFP4 source-proof tracking for 12B/26B/31B video runtime.
+- source/proof-map fix: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` now extracts `vl_blue_video` and `text_no_media_after_video` from each source-smoke summary and records `video_runtime_proven` plus `post_video_text_recovery_proven`; objective/checklist details consume these fields.
+- refreshed proof: `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json`, `status=open`, `missing_required_rows=[]`, `source_live_smoke_open_rows=[]`, and `gemma4_{12b,26b,31v_or_31b}_video_runtime_source_proven=true`.
+- checklist: `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`, `status=open`, `failed_count=120`; the three Gemma video-runtime subrows moved green, but `gemma_qat_native_mxfp4_all_live_proofs_present` remains red.
+- boundary: current-source video smoke proof only. This does not clear installed-app/UI/tunnel parity, full Responses stream/tool-argument proof, broader API/cache release proof, package, signing, notarization, tag, or downloads.

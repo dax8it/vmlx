@@ -1,6 +1,6 @@
 {
   "boundary": "No-heavy checklist only. A pass here would mean current evidence claims every listed gate is green; it still must be backed by the live artifacts referenced by each row. Open rows are release blockers.",
-  "created_at": "2026-06-09T14:22:21-0700",
+  "created_at": "2026-06-09T14:28:17-0700",
   "failed": [
     {
       "detail": false,
@@ -690,317 +690,6 @@
     },
     {
       "detail": {
-        "gemma4_12b_video_runtime_proof_required": true,
-        "row": {
-          "display": "Gemma 4 12B native MXFP4/QAT-style",
-          "expected_model_type": "gemma4_unified",
-          "live_proof_required": [
-            "model_owned_generation_config_defaults",
-            "chat_completions_nonstream_visible",
-            "chat_completions_stream_content_delta",
-            "responses_nonstream_visible",
-            "responses_stream_content_delta",
-            "responses_function_call_arguments_delta_done_output_item",
-            "required_tool_call",
-            "auto_tool_call",
-            "tool_result_continuation",
-            "no_tool_plain_answer",
-            "multi_turn_recall",
-            "raw_tool_markup_leak_check",
-            "hidden_reasoning_leak_check",
-            "json_xml_code_whitespace_exactness",
-            "vision_if_advertised",
-            "audio_if_advertised_or_honestly_gated",
-            "video_if_advertised_or_honestly_gated",
-            "post_media_text_recovery",
-            "media_salted_cache_no_cross_reuse",
-            "prefix_cache_first_miss_second_hit",
-            "paged_or_native_cache_telemetry",
-            "mixed_swa_component_state",
-            "turboquant_kv_encode_decode_boundary_where_valid",
-            "block_disk_l2_write",
-            "fresh_process_l2_restore",
-            "async_rederive_or_clean_partial_hit_policy",
-            "cli_ui_parser_reasoning_cache_max_token_parity",
-            "installed_app_startup_and_settings_parity"
-          ],
-          "live_proof_status": "missing",
-          "matching_paths": [
-            "/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4"
-          ],
-          "matching_rows": [
-            {
-              "audio": true,
-              "format": null,
-              "has_generation_config": true,
-              "has_jang_config": true,
-              "has_processor_config": true,
-              "has_tokenizer_config": true,
-              "jang_has_audio": true,
-              "jang_has_vision": true,
-              "modality_backing": {
-                "audio_advertised_by_config": true,
-                "audio_embed_only": true,
-                "audio_embed_weight_count": 1,
-                "audio_tower_weight_count": 0,
-                "audio_weight_backed": false,
-                "video_advertised_by_config": true,
-                "video_runtime_proof_required": true,
-                "video_weight_backed": false,
-                "video_weight_count": 0,
-                "vision_advertised_by_config": true,
-                "vision_weight_backed": true,
-                "vision_weight_count": 10,
-                "weight_map_present": true
-              },
-              "model_type": "gemma4_unified",
-              "name": "gemma-4-12B-it-qat-MXFP4",
-              "path": "/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4",
-              "quantization_bits": 4,
-              "quantization_group_size": 32,
-              "quantization_method": null,
-              "quantization_mode": "mxfp4",
-              "text_model_type": "gemma4_unified_text",
-              "video": true,
-              "vision": true,
-              "weight_format": "mxfp4"
-            }
-          ],
-          "notes": [
-            "gemma-4-12B-it-qat-MXFP4: audio metadata present without audio_tower weights",
-            "gemma-4-12B-it-qat-MXFP4: video metadata requires live frame-through-vision proof"
-          ],
-          "reasoning_parser": "gemma4",
-          "required_modalities": [
-            "text",
-            "vision",
-            "audio",
-            "video"
-          ],
-          "source_live_smoke": {
-            "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json",
-            "completed": 1,
-            "failed": 0,
-            "row_count": 1,
-            "status": "pass",
-            "summary_status": "pass"
-          },
-          "status": "open",
-          "tool_parser": "gemma4"
-        }
-      },
-      "evidence": "build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json",
-      "name": "gemma_qat_native_mxfp4_gemma4_12b_video_runtime_proven",
-      "ok": false
-    },
-    {
-      "detail": {
-        "gemma4_26b_video_runtime_proof_required": true,
-        "row": {
-          "display": "Gemma 4 26B QAT/native MXFP4 VL/video",
-          "expected_model_type": "gemma4",
-          "live_proof_required": [
-            "model_owned_generation_config_defaults",
-            "chat_completions_nonstream_visible",
-            "chat_completions_stream_content_delta",
-            "responses_nonstream_visible",
-            "responses_stream_content_delta",
-            "responses_function_call_arguments_delta_done_output_item",
-            "required_tool_call",
-            "auto_tool_call",
-            "tool_result_continuation",
-            "no_tool_plain_answer",
-            "multi_turn_recall",
-            "raw_tool_markup_leak_check",
-            "hidden_reasoning_leak_check",
-            "json_xml_code_whitespace_exactness",
-            "vision_if_advertised",
-            "audio_if_advertised_or_honestly_gated",
-            "video_if_advertised_or_honestly_gated",
-            "post_media_text_recovery",
-            "media_salted_cache_no_cross_reuse",
-            "prefix_cache_first_miss_second_hit",
-            "paged_or_native_cache_telemetry",
-            "mixed_swa_component_state",
-            "turboquant_kv_encode_decode_boundary_where_valid",
-            "block_disk_l2_write",
-            "fresh_process_l2_restore",
-            "async_rederive_or_clean_partial_hit_policy",
-            "cli_ui_parser_reasoning_cache_max_token_parity",
-            "installed_app_startup_and_settings_parity"
-          ],
-          "live_proof_status": "missing",
-          "matching_paths": [
-            "/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-MXFP4"
-          ],
-          "matching_rows": [
-            {
-              "audio": true,
-              "format": null,
-              "has_generation_config": true,
-              "has_jang_config": true,
-              "has_processor_config": true,
-              "has_tokenizer_config": true,
-              "jang_has_audio": false,
-              "jang_has_vision": true,
-              "modality_backing": {
-                "audio_advertised_by_config": true,
-                "audio_embed_only": false,
-                "audio_embed_weight_count": 0,
-                "audio_tower_weight_count": 0,
-                "audio_weight_backed": false,
-                "video_advertised_by_config": true,
-                "video_runtime_proof_required": true,
-                "video_weight_backed": false,
-                "video_weight_count": 0,
-                "vision_advertised_by_config": true,
-                "vision_weight_backed": true,
-                "vision_weight_count": 356,
-                "weight_map_present": true
-              },
-              "model_type": "gemma4",
-              "name": "gemma-4-26B-A4B-it-qat-MXFP4",
-              "path": "/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-MXFP4",
-              "quantization_bits": 4,
-              "quantization_group_size": 32,
-              "quantization_method": null,
-              "quantization_mode": "mxfp4",
-              "text_model_type": "gemma4_text",
-              "video": true,
-              "vision": true,
-              "weight_format": "mxfp4"
-            }
-          ],
-          "notes": [
-            "gemma-4-26B-A4B-it-qat-MXFP4: video metadata requires live frame-through-vision proof"
-          ],
-          "reasoning_parser": "gemma4",
-          "required_modalities": [
-            "text",
-            "vision",
-            "video"
-          ],
-          "source_live_smoke": {
-            "artifact": "build/current-all-local-model-smoke-gemma4-26b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/summary.json",
-            "completed": 1,
-            "failed": 0,
-            "row_count": 1,
-            "status": "pass",
-            "summary_status": "pass"
-          },
-          "status": "open",
-          "tool_parser": "gemma4"
-        }
-      },
-      "evidence": "build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json",
-      "name": "gemma_qat_native_mxfp4_gemma4_26b_video_runtime_proven",
-      "ok": false
-    },
-    {
-      "detail": {
-        "gemma4_31v_or_31b_video_runtime_proof_required": true,
-        "row": {
-          "display": "Gemma 4 31V/31B QAT/native MXFP4 VL/video",
-          "expected_model_type": "gemma4",
-          "live_proof_required": [
-            "model_owned_generation_config_defaults",
-            "chat_completions_nonstream_visible",
-            "chat_completions_stream_content_delta",
-            "responses_nonstream_visible",
-            "responses_stream_content_delta",
-            "responses_function_call_arguments_delta_done_output_item",
-            "required_tool_call",
-            "auto_tool_call",
-            "tool_result_continuation",
-            "no_tool_plain_answer",
-            "multi_turn_recall",
-            "raw_tool_markup_leak_check",
-            "hidden_reasoning_leak_check",
-            "json_xml_code_whitespace_exactness",
-            "vision_if_advertised",
-            "audio_if_advertised_or_honestly_gated",
-            "video_if_advertised_or_honestly_gated",
-            "post_media_text_recovery",
-            "media_salted_cache_no_cross_reuse",
-            "prefix_cache_first_miss_second_hit",
-            "paged_or_native_cache_telemetry",
-            "mixed_swa_component_state",
-            "turboquant_kv_encode_decode_boundary_where_valid",
-            "block_disk_l2_write",
-            "fresh_process_l2_restore",
-            "async_rederive_or_clean_partial_hit_policy",
-            "cli_ui_parser_reasoning_cache_max_token_parity",
-            "installed_app_startup_and_settings_parity"
-          ],
-          "live_proof_status": "missing",
-          "matching_paths": [
-            "/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-MXFP4"
-          ],
-          "matching_rows": [
-            {
-              "audio": true,
-              "format": null,
-              "has_generation_config": true,
-              "has_jang_config": true,
-              "has_processor_config": true,
-              "has_tokenizer_config": true,
-              "jang_has_audio": false,
-              "jang_has_vision": true,
-              "modality_backing": {
-                "audio_advertised_by_config": true,
-                "audio_embed_only": false,
-                "audio_embed_weight_count": 0,
-                "audio_tower_weight_count": 0,
-                "audio_weight_backed": false,
-                "video_advertised_by_config": true,
-                "video_runtime_proof_required": true,
-                "video_weight_backed": false,
-                "video_weight_count": 0,
-                "vision_advertised_by_config": true,
-                "vision_weight_backed": true,
-                "vision_weight_count": 356,
-                "weight_map_present": true
-              },
-              "model_type": "gemma4",
-              "name": "gemma-4-31B-it-qat-MXFP4",
-              "path": "/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-MXFP4",
-              "quantization_bits": 4,
-              "quantization_group_size": 32,
-              "quantization_method": null,
-              "quantization_mode": "mxfp4",
-              "text_model_type": "gemma4_text",
-              "video": true,
-              "vision": true,
-              "weight_format": "mxfp4"
-            }
-          ],
-          "notes": [
-            "gemma-4-31B-it-qat-MXFP4: video metadata requires live frame-through-vision proof"
-          ],
-          "reasoning_parser": "gemma4",
-          "required_modalities": [
-            "text",
-            "vision",
-            "video"
-          ],
-          "source_live_smoke": {
-            "artifact": "build/current-all-local-model-smoke-gemma4-31b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/summary.json",
-            "completed": 1,
-            "failed": 0,
-            "row_count": 1,
-            "status": "pass",
-            "summary_status": "pass"
-          },
-          "status": "open",
-          "tool_parser": "gemma4"
-        }
-      },
-      "evidence": "build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json",
-      "name": "gemma_qat_native_mxfp4_gemma4_31v_or_31b_video_runtime_proven",
-      "ok": false
-    },
-    {
-      "detail": {
         "missing_required_rows": [],
         "open_required_rows": [
           "gemma4_e2b_qat_native_mxfp4",
@@ -1360,7 +1049,7 @@
       "ok": false
     }
   ],
-  "failed_count": 123,
+  "failed_count": 120,
   "groups": {
     "api_cache_responses_contract": [
       {
@@ -1885,9 +1574,11 @@
             "artifact": "build/current-all-local-model-smoke-gemma4-e2b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json",
             "completed": 1,
             "failed": 0,
+            "post_video_text_recovery_proven": true,
             "row_count": 1,
             "status": "pass",
-            "summary_status": "pass"
+            "summary_status": "pass",
+            "video_runtime_proven": true
           },
           "status": "open",
           "tool_parser": "gemma4"
@@ -1983,9 +1674,11 @@
             "artifact": "build/current-all-local-model-smoke-gemma4-e4b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json",
             "completed": 1,
             "failed": 0,
+            "post_video_text_recovery_proven": true,
             "row_count": 1,
             "status": "pass",
-            "summary_status": "pass"
+            "summary_status": "pass",
+            "video_runtime_proven": true
           },
           "status": "open",
           "tool_parser": "gemma4"
@@ -2103,9 +1796,11 @@
               "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json",
               "completed": 1,
               "failed": 0,
+              "post_video_text_recovery_proven": true,
               "row_count": 1,
               "status": "pass",
-              "summary_status": "pass"
+              "summary_status": "pass",
+              "video_runtime_proven": true
             },
             "status": "open",
             "tool_parser": "gemma4"
@@ -2118,6 +1813,7 @@
       {
         "detail": {
           "gemma4_12b_video_runtime_proof_required": true,
+          "gemma4_12b_video_runtime_source_proven": true,
           "row": {
             "display": "Gemma 4 12B native MXFP4/QAT-style",
             "expected_model_type": "gemma4_unified",
@@ -2208,9 +1904,11 @@
               "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json",
               "completed": 1,
               "failed": 0,
+              "post_video_text_recovery_proven": true,
               "row_count": 1,
               "status": "pass",
-              "summary_status": "pass"
+              "summary_status": "pass",
+              "video_runtime_proven": true
             },
             "status": "open",
             "tool_parser": "gemma4"
@@ -2218,11 +1916,12 @@
         },
         "evidence": "build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json",
         "name": "gemma_qat_native_mxfp4_gemma4_12b_video_runtime_proven",
-        "ok": false
+        "ok": true
       },
       {
         "detail": {
           "gemma4_26b_video_runtime_proof_required": true,
+          "gemma4_26b_video_runtime_source_proven": true,
           "row": {
             "display": "Gemma 4 26B QAT/native MXFP4 VL/video",
             "expected_model_type": "gemma4",
@@ -2311,9 +2010,11 @@
               "artifact": "build/current-all-local-model-smoke-gemma4-26b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/summary.json",
               "completed": 1,
               "failed": 0,
+              "post_video_text_recovery_proven": true,
               "row_count": 1,
               "status": "pass",
-              "summary_status": "pass"
+              "summary_status": "pass",
+              "video_runtime_proven": true
             },
             "status": "open",
             "tool_parser": "gemma4"
@@ -2321,11 +2022,12 @@
         },
         "evidence": "build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json",
         "name": "gemma_qat_native_mxfp4_gemma4_26b_video_runtime_proven",
-        "ok": false
+        "ok": true
       },
       {
         "detail": {
           "gemma4_31v_or_31b_video_runtime_proof_required": true,
+          "gemma4_31v_or_31b_video_runtime_source_proven": true,
           "row": {
             "display": "Gemma 4 31V/31B QAT/native MXFP4 VL/video",
             "expected_model_type": "gemma4",
@@ -2414,9 +2116,11 @@
               "artifact": "build/current-all-local-model-smoke-gemma4-31b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/summary.json",
               "completed": 1,
               "failed": 0,
+              "post_video_text_recovery_proven": true,
               "row_count": 1,
               "status": "pass",
-              "summary_status": "pass"
+              "summary_status": "pass",
+              "video_runtime_proven": true
             },
             "status": "open",
             "tool_parser": "gemma4"
@@ -2424,7 +2128,7 @@
         },
         "evidence": "build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json",
         "name": "gemma_qat_native_mxfp4_gemma4_31v_or_31b_video_runtime_proven",
-        "ok": false
+        "ok": true
       },
       {
         "detail": {

@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-09T14:11:15-0700",
+  "created_at": "2026-06-09T14:28:13-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
@@ -3299,31 +3299,41 @@
             "audio_weight_backed": true,
             "audio_embed_only": false,
             "vision_weight_backed": true,
-            "video_runtime_proof_required": true
+            "video_runtime_proof_required": true,
+            "video_runtime_source_proven": true,
+            "post_video_text_recovery_source_proven": true
           },
           "gemma4_e4b_qat_native_mxfp4": {
             "audio_weight_backed": true,
             "audio_embed_only": false,
             "vision_weight_backed": true,
-            "video_runtime_proof_required": true
+            "video_runtime_proof_required": true,
+            "video_runtime_source_proven": true,
+            "post_video_text_recovery_source_proven": true
           },
           "gemma4_12b_native_mxfp4": {
             "audio_weight_backed": false,
             "audio_embed_only": true,
             "vision_weight_backed": true,
-            "video_runtime_proof_required": true
+            "video_runtime_proof_required": true,
+            "video_runtime_source_proven": true,
+            "post_video_text_recovery_source_proven": true
           },
           "gemma4_26b_vl": {
             "audio_weight_backed": false,
             "audio_embed_only": false,
             "vision_weight_backed": true,
-            "video_runtime_proof_required": true
+            "video_runtime_proof_required": true,
+            "video_runtime_source_proven": true,
+            "post_video_text_recovery_source_proven": true
           },
           "gemma4_31v_or_31b_vl": {
             "audio_weight_backed": false,
             "audio_embed_only": false,
             "vision_weight_backed": true,
-            "video_runtime_proof_required": true
+            "video_runtime_proof_required": true,
+            "video_runtime_source_proven": true,
+            "post_video_text_recovery_source_proven": true
           }
         },
         "checks": {
