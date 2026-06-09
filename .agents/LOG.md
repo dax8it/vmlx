@@ -6927,3 +6927,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   - `build/current-all-local-model-smoke-gemma4-e4b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json` => `status=pass`, `failures=0`.
   - `build/current-all-local-model-smoke-gemma4-12b-qat-mxfp4-fullmedia-tools-l2-after-tool-result-quoted-target-20260609/summary.json` => `status=pass`, `failures=0`.
 - Boundary: no installed-app/UI/tunnel/package/sign/notarize/release claim. 26B/31B, Responses raw SSE parity, MiniMax language/cache issue, MiMo/N2/DSV4 rows, and UI/CLI parity remain open.
+
+## CODEX - 2026-06-09 Responses raw SSE parity strict expected-args gate
+- Blocker reduced: #190/#192 Responses direct/gateway/tunnel raw SSE proof quality.
+- Source fix: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now supports expected function name, expected authoritative arguments, parse-clean checks, and `--require-reasoning-events`.
+- Current-suite default: raw SSE parity now requires function `lookup`, authoritative arguments `{"query":"alpha"}`, and reasoning summary events so a no-reasoning-disable workaround cannot satisfy the row.
+- Regenerated artifact: `build/current-responses-raw-sse-parity-20260609.json`, still `status=open`, `missing_captures=[direct,gateway,tunnel]`, with the stricter expected block recorded.
+- Validation: parity classifier tests plus current-suite marker guard passed `7/7`; no live vMLX model/gateway/tunnel listeners were available in this slice.
+- Boundary: not issue closure. Need real raw SSE captures across direct local server, panel gateway, and tunnel with matching expected args and reasoning events.
