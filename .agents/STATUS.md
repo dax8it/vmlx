@@ -628,3 +628,19 @@
 - checklist: `build/current-full-release-objective-checklist-after-qwen35-long-tool-cache-20260609.json`, `status=open`, `failed_count=73`; every `qwen35_long_tool_cache_*` row is green, while Qwen35 restart/installed-video rows and wider release rows remain open.
 - validation: focused required-tool/tool-cache tests passed, tool-format required tests passed, `py_compile` passed, and the live Qwen35 gate passed against a fresh server with native MTP/hybrid SSM/TurboQuant/block-L2 enabled.
 - boundary: no package, signing, notarization, tag, download, or release step was run. Same-model direct/gateway/tunnel raw SSE for #190/#192, N2 JANG_1L live clearance, MiMo exactness/media, Gemma full live/UI, installed-app parity, and release packaging remain open.
+
+## CODEX - 2026-06-09 Qwen35 fresh-process L2 restore proof
+- blocker reduced: Qwen3.6 35B MXFP8-MTP restart/L2 restore row.
+- source/proof harness: added `tests/cross_matrix/run_qwen35_mxfp8_mtp_restart_l2_restore.py`, a two-process live gate that writes the checklist's `phases.phase1/phase2` schema. Phase 1 writes block+SSM L2; phase 2 starts a fresh server on the same cache dir and verifies disk-backed hybrid SSM restore with native MTP still active.
+- live proof: `build/current-qwen35-mxfp8-mtp-restart-l2-restore-20260607/summary.json`, `status=pass`; phase 1 HTTP 200, `block_disk_cache.disk_writes=1`, `ssm_companion_disk.stores=1`; phase 2 HTTP 200, `cached_tokens=8`, `cache_detail=paged+ssm+disk`, `block_disk_cache.disk_hits=1`, `ssm_companion_disk.hits=1`, native cache `hybrid_ssm_v1/hybrid_ssm_typed`, MTP `native_runtime_active`, depth 3.
+- checklist: `build/current-full-release-objective-checklist-after-qwen35-restart-l2-20260609.json`, `status=open`, `failed_count=67`; all `qwen35_restart_*` rows are green.
+- validation: new Qwen35 restart runner tests passed `3/3`, `py_compile` passed, live two-process gate passed, and the full checklist consumed the proof.
+- boundary: Qwen35 source rows now have startup, long-tool/cache, and restart/L2 proof. Qwen35 installed-app/video/UI rows remain open, as do Responses tunnel parity, N2 JANG_1L live clearance, MiMo exactness/media, Gemma full live/UI, package parity, signing, notarization, tag, downloads, and release.
+
+## CODEX - 2026-06-09 Gemma4 QAT JANG_4M proof-map lane
+- blocker reduced: `Gemma4 QAT JANG_4M` release proof-map/inventory tracking, no heavy model launch.
+- source change: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` now tracks `gemma4_12b_qat_jang4m` as a separate open row from native MXFP4 QAT rows.
+- regenerated no-heavy artifacts: `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json`, `build/current-objective-proof-after-n2-jang1l-memory-refresh-20260609.json`, and `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json`.
+- inventory result: `status=open`, `missing_required_rows=[]`, `open_required_rows` includes `gemma4_12b_qat_jang4m`, E2B/E4B/12B native MXFP4, 26B VL, and 31V/31B VL.
+- boundary: Gemma4 QAT JANG_4M remains open. The existing no-media source smoke is `probe_failed`; release proof still requires autodetect, model-owned `generation_config`, Gemma4 tool/reasoning parser, mixed-SWA/prefix cache, TurboQuant KV boundary where valid, block-disk L2, Responses streaming args/content deltas, media honesty, UI/CLI parity, and installed-app parity.
+- focused validation: `uv run pytest tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_gemma_qat_native_mxfp4_release_blocker tests/test_full_release_objective_checklist.py::test_full_release_objective_checklist_blocks_open_gemma_qat_jang4m_row -q` passed `10/10`.

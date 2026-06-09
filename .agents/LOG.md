@@ -7687,3 +7687,17 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Checklist refreshed: `build/current-full-release-objective-checklist-after-qwen35-long-tool-cache-20260609.json`, `status=open`, `failed_count=73`; all `qwen35_long_tool_cache_*` checks are green.
 - Validation passed: `tests/test_engine_audit.py -k "required_tool or responses_long_context_tool_cache_gate"` passed `21/21`; `tests/test_tool_format.py -k required` passed `5/5`; `py_compile` passed for `vmlx_engine/server.py`, the Qwen35 gate, and audit tests; live gate passed.
 - Boundary: no release, no package/sign/notarize/tag/download. Still open: same-model direct/gateway/tunnel raw SSE for #190/#192, Qwen35 restart/installed-video rows, N2 JANG_1L live clearance, MiMo exactness/media, Gemma full live/UI/installed-app, and package parity.
+
+# 2026-06-09 - Qwen35 fresh-process L2 restore proof
+
+- Reduced blocker: Qwen3.6 35B MXFP8-MTP restart/L2 restore proof.
+- Source/proof harness: added `tests/cross_matrix/run_qwen35_mxfp8_mtp_restart_l2_restore.py`, which starts Qwen35 twice against the same block cache dir and emits the checklist's `phases.phase1/phase2` schema.
+- Live proof: `build/current-qwen35-mxfp8-mtp-restart-l2-restore-20260607/summary.json`, `status=pass`; phase 1 wrote `block_disk_cache.disk_writes=1` and `ssm_companion_disk.stores=1`; phase 2 restored with `cached_tokens=8`, `cache_detail=paged+ssm+disk`, `block_disk_cache.disk_hits=1`, `ssm_companion_disk.hits=1`, native cache `hybrid_ssm_v1/hybrid_ssm_typed`, and MTP `native_runtime_active` depth 3.
+- Checklist refreshed: `build/current-full-release-objective-checklist-after-qwen35-restart-l2-20260609.json`, `status=open`, `failed_count=67`; all `qwen35_restart_*` checks are green.
+- Validation passed: Qwen35 restart runner tests `3/3`, `py_compile`, live two-process gate, and checklist consumption.
+- Boundary: this closes the Qwen35 source restart row only. It does not clear N2 Pro 397B JANG_1L, MiMo V2.5 exactness/media/UI, Gemma full live/UI, Responses tunnel parity, installed-app/video rows, package parity, signing, notarization, tag, downloads, or release.
+
+## 2026-06-09 Gemma4 QAT JANG_4M proof-map lane
+- Added explicit no-heavy inventory/objective/checklist tracking for `gemma4_12b_qat_jang4m`, separate from native MXFP4 QAT rows.
+- Regenerated current Gemma inventory, objective digest, and full checklist artifacts. Full checklist remains `status=open`; no release/sign/notarize/download action.
+- Validation: focused Gemma inventory/objective/checklist pytest passed `10/10` via `uv run pytest ... -q`.
