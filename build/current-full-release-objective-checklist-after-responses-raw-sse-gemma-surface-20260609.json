@@ -1,6 +1,6 @@
 {
   "boundary": "No-heavy checklist only. A pass here would mean current evidence claims every listed gate is green; it still must be backed by the live artifacts referenced by each row. Open rows are release blockers.",
-  "created_at": "2026-06-09T14:40:49-0700",
+  "created_at": "2026-06-09T14:45:20-0700",
   "failed": [
     {
       "detail": false,
@@ -587,57 +587,55 @@
       "ok": false
     },
     {
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_artifact_exists",
-      "ok": false
-    },
-    {
-      "detail": "missing",
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+      "detail": "probe_failed",
+      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
       "name": "gemma4_12b_jang4m_nomedia_status_pass",
       "ok": false
     },
     {
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+      "detail": [
+        {
+          "actual_head": "def add(a, b):\n    return a + b\n print(add(2, 3))",
+          "content_head": "def add(a, b):\n    return a + b\n print(add(2, 3))",
+          "expected": "def add(a, b):\n    return a + b\nprint(add(2, 3))",
+          "label": "exact_code_whitespace",
+          "reason": "exact_code_whitespace_mismatch",
+          "reasoning_chars": 0
+        }
+      ],
+      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
       "name": "gemma4_12b_jang4m_nomedia_request_validations_clean",
       "ok": false
     },
     {
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_mllm_classification",
-      "ok": false
-    },
-    {
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_tool_parser",
-      "ok": false
-    },
-    {
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_reasoning_parser",
-      "ok": false
-    },
-    {
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_tool_call_record_fact",
-      "ok": false
-    },
-    {
-      "detail": "paged+mixed_swa",
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_cache_reuse_detail",
-      "ok": false
-    },
-    {
-      "detail": {},
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+      "detail": {
+        "block_disk_l2": true,
+        "cache_subtype": "mixed_swa_kv",
+        "cache_type": "mixed_swa_kv",
+        "components": [
+          "full_attention_kv",
+          "sliding_window_kv",
+          "rotating_window_metadata"
+        ],
+        "family": "gemma4",
+        "generic_turboquant_kv": {
+          "enabled": false,
+          "reason": "not_active"
+        },
+        "paged": true,
+        "prefix": true,
+        "schema": "mixed_swa_kv_v1",
+        "storage_quantization": {
+          "applies_to": "full_and_sliding_attention_kv",
+          "bits": null,
+          "enabled": false,
+          "group_size": null,
+          "metadata_policy": "preserve_rotating_window_metadata",
+          "mode": "storage_boundary"
+        }
+      },
+      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
       "name": "gemma4_12b_jang4m_nomedia_native_mixed_swa_cache",
-      "ok": false
-    },
-    {
-      "detail": {},
-      "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
-      "name": "gemma4_12b_jang4m_nomedia_block_l2_written",
       "ok": false
     },
     {
@@ -1030,7 +1028,7 @@
       "ok": false
     }
   ],
-  "failed_count": 119,
+  "failed_count": 112,
   "groups": {
     "api_cache_responses_contract": [
       {
@@ -1351,58 +1349,107 @@
     ],
     "gemma4_12b": [
       {
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_artifact_exists",
-        "ok": false
+        "ok": true
       },
       {
-        "detail": "missing",
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": "probe_failed",
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_status_pass",
         "ok": false
       },
       {
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": [
+          {
+            "actual_head": "def add(a, b):\n    return a + b\n print(add(2, 3))",
+            "content_head": "def add(a, b):\n    return a + b\n print(add(2, 3))",
+            "expected": "def add(a, b):\n    return a + b\nprint(add(2, 3))",
+            "label": "exact_code_whitespace",
+            "reason": "exact_code_whitespace_mismatch",
+            "reasoning_chars": 0
+          }
+        ],
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_request_validations_clean",
         "ok": false
       },
       {
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": true,
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_mllm_classification",
-        "ok": false
+        "ok": true
       },
       {
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": "gemma4",
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_tool_parser",
-        "ok": false
+        "ok": true
       },
       {
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": "gemma4",
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_reasoning_parser",
-        "ok": false
+        "ok": true
       },
       {
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_tool_call_record_fact",
-        "ok": false
+        "ok": true
       },
       {
         "detail": "paged+mixed_swa",
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_cache_reuse_detail",
-        "ok": false
+        "ok": true
       },
       {
-        "detail": {},
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": {
+          "block_disk_l2": true,
+          "cache_subtype": "mixed_swa_kv",
+          "cache_type": "mixed_swa_kv",
+          "components": [
+            "full_attention_kv",
+            "sliding_window_kv",
+            "rotating_window_metadata"
+          ],
+          "family": "gemma4",
+          "generic_turboquant_kv": {
+            "enabled": false,
+            "reason": "not_active"
+          },
+          "paged": true,
+          "prefix": true,
+          "schema": "mixed_swa_kv_v1",
+          "storage_quantization": {
+            "applies_to": "full_and_sliding_attention_kv",
+            "bits": null,
+            "enabled": false,
+            "group_size": null,
+            "metadata_policy": "preserve_rotating_window_metadata",
+            "mode": "storage_boundary"
+          }
+        },
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_native_mixed_swa_cache",
         "ok": false
       },
       {
-        "detail": {},
-        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-after-cache-family-fix-20260606/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
+        "detail": {
+          "blocks_on_disk": 13,
+          "disk_evictions": 0,
+          "disk_hits": 0,
+          "disk_misses": 25,
+          "disk_size_bytes": 228770251,
+          "disk_size_gb": 0.213,
+          "disk_writes": 13,
+          "total_accesses": 0,
+          "total_cached_tokens": 664,
+          "total_tokens_on_disk": 664
+        },
+        "evidence": "build/current-all-local-model-smoke-gemma4-12b-jang4m-tools-nomedia-current-20260609/JANGQ_gemma-4-12B-it-JANG_4M/result.json",
         "name": "gemma4_12b_jang4m_nomedia_block_l2_written",
-        "ok": false
+        "ok": true
       },
       {
         "evidence": "build/current-gemma4-12b-issue191-source-startup-visible-proof-20260609.json",
