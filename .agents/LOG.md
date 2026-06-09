@@ -6794,3 +6794,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof-map update: no-heavy API/cache contract now includes that marker in `responses_streaming_tool_contracts`.
 - Refreshed proof: `build/current-noheavy-api-cache-contract-after-xml-docs-boundary-20260609.json`, `status=pass`, `missing_markers=[]`, `responses_streaming_tool_contracts rc=0 passed=5`.
 - Boundary: do not implement a fallback that invents `cmd` from the preamble; missing required args must fail closed. Do not close #192 publicly until rebuilt/installed app proof exists; #190 remains open for live DSV4/default-cache/tool-loop and broader cross-family rows.
+
+# 2026-06-09 03:42 PDT - Gemma QAT downloads and inventory row correction
+
+- Blocker reduced: Gemma QAT/native MXFP4 model availability and release-gate accuracy for later live multiturn/tool/cache/media proof.
+- Downloaded from JANGQ-AI to `/Users/eric/models/JANGQ-AI`: `gemma-4-E2B-it-qat-MXFP4` (3.8G), `gemma-4-E4B-it-qat-MXFP4` (5.6G), `gemma-4-12B-it-qat-MXFP4` (7.4G), `gemma-4-26B-A4B-it-qat-MXFP4` (15G), and `gemma-4-31B-it-qat-MXFP4` (18G).
+- Root-cause/proof-gate correction: the inventory gate had stale Gemma3n E2B/E4B row assumptions. Actual JANGQ-AI QAT repos are Gemma4 configs with Gemma4 tool/reasoning parsers, so the row IDs/checks now use `gemma4_e2b_qat_native_mxfp4` and `gemma4_e4b_qat_native_mxfp4`.
+- Tightened 12B/26B/31B QAT matching to require `qat` + `mxfp4`, so older JANG/MTP or non-QAT MXFP rows cannot satisfy the new QAT release rows.
+- Refreshed inventory artifact: `build/current-gemma-qat-native-mxfp4-local-inventory-20260609.json`, `status=open`, `missing_required_rows=[]`, open rows are exactly the five downloaded QAT rows.
+- Boundary: no model load and no release claim in this slice. Next proof must live-test coherency, multiturn recall, required/auto tools, parser leaks, Responses streaming/content/tool-arg events, generation defaults, mixed-SWA cache telemetry, block L2/fresh restore, vision/audio/video as advertised, UI/CLI parity, and installed-app startup.
