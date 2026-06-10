@@ -1,4 +1,49 @@
 ## CODEX
+- now: second 26B VL bundled installed-app proof also failed only on
+  `reasoning_display`. The row remains open; no gate registration was made.
+- failed proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-vl-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-explicit-20260610-proof.json`.
+- classification: even with explicit "think briefly" prompts,
+  `eventCounts.reasoningDone=0` and `persistedReasoningCount=0`. The artifact
+  still proves installed app, bundled Python, visible two-turn assistant output,
+  built-in `run_command` long tool loop, Responses delta streaming, Gemma4
+  mixed-SWA native cache, cache hit tokens `3530`, and block L2 tokens on disk
+  `3413`.
+- current state: `gemma4_26b_vl` is tool/cache/UI positive but
+  reasoning-display negative; keep row open until reasoning parser/template/
+  request behavior is fixed or the gate policy is intentionally changed with
+  evidence. Do not register either 26B artifact as pass.
+
+## CODEX
+- now: first 26B VL bundled installed-app strict-final proof failed only on
+  `reasoning_display`. It produced correct visible assistant content, executed
+  the long built-in tool loop, and proved cache/L2/app/runtime surfaces, but
+  emitted no reasoning events despite `enable_thinking=true`.
+- failed proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-vl-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-strictfinal-20260610-proof.json`.
+- evidence: final visible text `REAL_UI_LIVE_TOOL_TWO second UI turn.`;
+  `eventCounts.reasoningDone=0`; `persistedReasoningCount=0`; `cache_hit_tokens=3522`;
+  native cache `mixed_swa_kv_v1`; block L2 active. This is a missing reasoning
+  display proof, not a tool/cache/runtime failure.
+- next movement: rerun once with prompt wording that explicitly asks for a
+  brief reasoning step before the tool while preserving strict visible final
+  output. Do not register until `reasoning_display` is honestly present.
+
+## CODEX
+- now: selected `gemma4_26b_vl` bundled installed-app proof. Model path exists
+  at `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-MXFP4`; no proof/app
+  process is currently running; memory headroom is acceptable for launch.
+- planned proof shape: `/Applications/vMLX.app` with bundled Python, Responses
+  API, built-in `run_command`, reasoning enabled, server cache controls,
+  deterministic strict-final prompts, max tokens 512, max prompt tokens 12000,
+  max tool iterations 4.
+- pass criteria before registration: existing installed-app gate accepts it
+  with real model path match, installed app path, bundled Python, visible chat
+  screenshot, Responses/tool/cache/parser/`reasoning_display` surfaces,
+  Gemma4 mixed-SWA native cache, cache-hit telemetry, and block L2 tokens on
+  disk.
+
+## CODEX
 - now: commit `b0e7b0182` (`Prove Gemma4 E4B native MXFP4 installed app`) pushed
   to both `origin/codex/pr-intake-manifest` and `origin/main`.
 - current branch state after push: only pre-existing/unrelated

@@ -12913,6 +12913,47 @@ Next action:
   not overwrite the registered narrow-prompt proof unless a stricter 31B
   installed-app proof is rerun and passes.
 
+# 2026-06-10 14:33 PDT - 26B VL reasoning gap classified
+
+- Reran 26B VL bundled installed-app proof with explicit "think briefly"
+  prompts.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-vl-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-explicit-20260610-proof.json`,
+  `status=fail`.
+- Classification: second run also has no reasoning events
+  (`eventCounts.reasoningDone=0`, `persistedReasoningCount=0`), while visible
+  content, installed app, bundled Python, Responses API, built-in `run_command`
+  long tool loop, cache hit telemetry, and block L2 all work. The final visible
+  answer is `REAL_UI_LIVE_TOOL_TWO second UI turn.`
+- Boundary: `gemma4_26b_vl` remains open for reasoning-display proof. Do not
+  register either 26B artifact as pass or weaken the installed-app gate.
+
+# 2026-06-10 14:32 PDT - 26B VL strict-final proof missing reasoning
+
+- Ran 26B VL bundled installed-app proof with deterministic strict-final prompt.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-vl-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-strictfinal-20260610-proof.json`,
+  `status=fail`.
+- Classification: visible assistant content, built-in tool loop, installed app,
+  bundled Python, Gemma4 mixed-SWA cache, cache hits, and block L2 all worked.
+  The only gate miss was `reasoning_display`: `eventCounts.reasoningDone=0`
+  and `persistedReasoningCount=0` despite `enable_thinking=true`.
+- Next: one rerun with prompt wording that explicitly requests a brief
+  reasoning step before the tool. Do not register unless reasoning is actually
+  present.
+
+# 2026-06-10 14:31 PDT - 26B VL installed-app proof selected
+
+- Selected `gemma4_26b_vl` as the next Gemma row.
+- Model exists at `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-MXFP4`.
+- No proof/app/server process is currently running; memory headroom is
+  acceptable.
+- Planned proof: `/Applications/vMLX.app` plus bundled Python, Responses API,
+  built-in `run_command`, reasoning enabled, server cache controls,
+  deterministic strict-final prompts, max tokens 512, max prompt tokens 12000,
+  max tool iterations 4.
+- Register only if the existing installed-app gate accepts the artifact.
+
 # 2026-06-10 14:30 PDT - E4B native MXFP4 proof pushed
 
 - Commit `b0e7b0182` (`Prove Gemma4 E4B native MXFP4 installed app`) was pushed
