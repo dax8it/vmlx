@@ -3454,3 +3454,64 @@
 - Boundary: this restores local generated runtime parity only. It is not a
   signed/notarized package, release, PyPI publish, updater, or website action;
   same-model direct/gateway/tunnel raw SSE remains separate; no N2 JANG_1L.
+
+# 2026-06-10 09:00 PDT - Model-family blocker scan active
+
+- Current movement: continue from pushed `1a6c73dfc` and move back to concrete
+  model-family blockers instead of release work or broad suite churn.
+- Constraints rechecked: no release/sign/notarize/package/PyPI/updater/website
+  action; no N2 JANG_1L; no subagents; no fake parser/cache/sampling repairs;
+  do not claim unsupported audio/video as working.
+- Priority scan: Nex/N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, and Gemma JANG/MXFP
+  runtime/API/UI/cache/media/tool/reasoning proof rows. Pick one red row,
+  trace root cause, then patch or record an honest capability gate.
+
+# 2026-06-10 09:06 PDT - MiMo preserved-media capability gate fix in progress
+
+- Current allowed lane: MiMo V2.5 JANG/JANGTQ media gates and honest runtime
+  capability detection. No release/sign/notarize/package/PyPI/updater/website
+  action; no N2 JANG_1L; no subagents; no fake parser/cache/sampling repairs.
+- Root cause found: real MiMo V2.5 JANGTQ_2 and JANG_2L bundles are stamped
+  `weights_preserved_text_runtime` / `text_runtime` but also preserve vision
+  and audio sidecars/tokens. `_mimo_v2_media_runtime_auto_enabled()` was
+  willing to auto-enable image/video/audio from importable runtime classes and
+  sidecars, which can falsely advertise media on explicitly text-runtime
+  bundles.
+- Source fix under verification: MiMo media auto-enable now fails closed when
+  `capabilities.multimodal_status` or `runtime.multimodal_mode` explicitly
+  says `weights_preserved_text_runtime`, `text_runtime`, `text_only`,
+  `unwired`, or `preserved_disabled`.
+- Proof being produced: focused MiMo media-gate tests, real local
+  JANGTQ_2/JANG_2L capability check, generated bundled-runtime sync/parity,
+  and bundled Python real-bundle capability check.
+- No-claims: this does not fix MiMo JANGTQ_2 literal/exactness red rows and
+  does not claim MiMo media works; it prevents a false media advertisement until
+  a bundle explicitly opts into the runtime and is live-proven.
+
+# 2026-06-10 09:10 PDT - MiMo preserved-media capability gate fixed and proven
+
+- Source fix complete: `_mimo_v2_media_runtime_auto_enabled()` now respects
+  explicit preserved/text-runtime MiMo metadata before any runtime-class or
+  sidecar auto-enable checks.
+- Proof artifact:
+  `build/current-mimo-v25-preserved-media-runtime-gate-fix-20260610.json`.
+- Verification passed:
+  - `py_compile` for `vmlx_engine/server.py` and
+    `tests/test_mimo_v2_media_capability_gate.py`.
+  - Focused MiMo media-gate pytest selected `5/5`.
+  - Real source probe against
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` and
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+  - Generated bundled runtime sync and `./panel/scripts/verify-bundled-python.sh`.
+  - Bundled Python real-bundle probe against the same two MiMo bundles.
+- Proven result: both real MiMo bundles now report `runtime_modalities=["text"]`
+  in source and bundled Python; `vision`, `image`, `video`, and `audio` are
+  classified `preserved_unwired`, with media memory gate reason
+  `no_runtime_media_modalities`.
+- Boundary: this is an honest capability gate, not a MiMo media success proof
+  and not a MiMo JANGTQ_2 exactness/logit fix. No release/sign/notarize/package/
+  PyPI/updater/website action and no N2 JANG_1L.
+- Other-agent action: if these exact MiMo bundles should support media, produce
+  or restamp an explicit `mimo_v2_multimodal_runtime` artifact and live-prove
+  image/video/audio through API/app. Do not override preserved/text-runtime
+  metadata in the server.

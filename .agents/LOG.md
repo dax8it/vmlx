@@ -10988,3 +10988,103 @@ Boundary:
   release/sign/notarize/package/PyPI/updater/download/website action.
 - Same-model direct/gateway/tunnel live raw SSE remains separate.
 - No N2 JANG_1L work was performed.
+
+## 2026-06-10 09:00 PDT - Model-family blocker scan
+
+Request/action: continue after bundled Responses parity and return to concrete
+model-family blockers.
+
+Scope:
+
+- Nex/N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP.
+- Prioritize runtime/API/UI/cache/media/tool/reasoning proof rows over release
+  mechanics and broad test churn.
+- Do not touch N2 JANG_1L, do not use subagents, and do not fake media/tool
+  success through metadata or parser repairs.
+
+Next action: inspect current proof artifacts and pick one red row with a clear
+source or capability-gating path.
+
+## 2026-06-10 09:06 PDT - MiMo preserved-media capability gate fix in progress
+
+Request/action: stay on one concrete model-family blocker and fix/prove the
+MiMo V2.5 JANG/JANGTQ media capability gate without release work.
+
+Finding:
+
+- Real MiMo V2.5 JANGTQ_2 and JANG_2L local bundles carry preserved vision/audio
+  sidecars and token metadata while explicitly stamping text-runtime status.
+- The server-side auto-enable path could still advertise image/video/audio from
+  runtime-class and sidecar presence alone.
+- That is a false capability claim for bundles marked
+  `weights_preserved_text_runtime`.
+
+Source change under verification:
+
+- `_mimo_v2_media_runtime_auto_enabled()` now treats explicit
+  `weights_preserved_text_runtime`, `text_runtime`, `text_only`, `unwired`, and
+  `preserved_disabled` modes as fail-closed before checking runtime classes or
+  sidecars.
+- Focused test fixture now includes the same kind of preserved visual/audio
+  index entries as the real bundles, proving those sidecars do not override the
+  explicit text-runtime stamp.
+
+Planned proof:
+
+- Focused MiMo media-gate pytest.
+- Real local JANGTQ_2 and JANG_2L capability check from source.
+- Generated bundled runtime sync and `verify-bundled-python.sh`.
+- Bundled Python real-bundle capability check.
+
+Boundary:
+
+- No media success claim, no MiMo exactness claim, no parser/JSON repair, no
+  release/sign/notarize/package/PyPI/updater/download work, and no N2 JANG_1L.
+
+## 2026-06-10 09:10 PDT - MiMo preserved-media capability gate fixed and proven
+
+Action:
+
+- Patched `_mimo_v2_media_runtime_auto_enabled()` to fail closed when explicit
+  MiMo metadata says `weights_preserved_text_runtime`, `text_runtime`,
+  `text_only`, `unwired`, or `preserved_disabled`.
+- Strengthened the focused regression fixture to include preserved visual/audio
+  weight-map entries.
+- Synced generated bundled Python and staged app runtime/source copies after
+  the source edit.
+
+Verification:
+
+- `py_compile` passed for `vmlx_engine/server.py` and
+  `tests/test_mimo_v2_media_capability_gate.py`.
+- Focused MiMo media-gate pytest passed `5/5`.
+- `./panel/scripts/verify-bundled-python.sh` passed after runtime sync.
+- Source real-bundle probe and bundled-Python real-bundle probe both returned
+  `runtime_modalities_static=["text"]` and `loaded_runtime_modalities=["text"]`
+  for:
+  - `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`
+  - `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`
+
+Proof artifact:
+
+- `build/current-mimo-v25-preserved-media-runtime-gate-fix-20260610.json`
+
+Proven:
+
+- Preserved MiMo JANG/JANGTQ bundles no longer falsely advertise image, video,
+  or audio runtime support just because sidecars/classes/tokens exist.
+- Media modalities are reported as `preserved_unwired` until the artifact opts
+  into the runtime and is live-proven.
+
+Not proven:
+
+- MiMo JANGTQ_2 exact literal generation remains red.
+- MiMo image/video/audio semantic success is not claimed.
+- N2 JANG_1L, release/sign/notarize/package/PyPI/updater/download/website work
+  were not touched.
+
+Other-agent next action:
+
+- For MiMo media support, build or restamp an explicit multimodal-runtime MiMo
+  artifact and run real API/app image/video/audio proof. Do not bypass the
+  text-runtime metadata in server detection.
