@@ -11088,3 +11088,109 @@ Other-agent next action:
 - For MiMo media support, build or restamp an explicit multimodal-runtime MiMo
   artifact and run real API/app image/video/audio proof. Do not bypass the
   text-runtime metadata in server detection.
+
+## 2026-06-10 09:18 PDT - N2 JANGTQ2 audio/capability honesty lane active
+
+Request/action: continue the checkpoint runtime blocker work by selecting one
+current red/open row with source-fix potential.
+
+Selected blocker:
+
+- Nex/N2 JANGTQ2 audio/capability honesty. Existing records show strong N2
+  JANGTQ2 chat/tools/cache/image/video evidence, but audio is still not cleared.
+
+Constraints:
+
+- No N2 JANG_1L.
+- No release/sign/notarize/package/PyPI/updater/download/website action.
+- No subagents.
+- No fake audio claim from config/token metadata alone.
+- No parser/tool argument synthesis or reasoning-disable workaround.
+
+Next action:
+
+- Inspect the real N2 JANGTQ2 bundle metadata and current server modality
+  detection/API guard. If audio is not weight-backed and wired, make the server
+  fail closed; if audio is actually wired, prove it through focused source and
+  bundled API behavior.
+
+## 2026-06-10 09:23 PDT - N2 audio checked; pivot to stricter Responses tool loop
+
+Finding:
+
+- Real bundle:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`.
+- `config.json` has `vision_config`, `image_token_id`, and `video_token_id`.
+- `config.json` does not have `audio_config` or audio token metadata.
+- `jang_config.json` says `capabilities.modality=vision`.
+- Existing dev-app and installed-app audio proofs are red through the explicit
+  unsupported-modality guard with supported modalities `text, vision, video`.
+
+Classification:
+
+- No source fix is needed for N2 audio in this pass. It is already honestly
+  gated; advertising audio would violate the no-fake-media constraint.
+
+Pivot:
+
+- Continue within N2 JANGTQ2 but switch to the still-red stricter Responses
+  long-delta/tool-loop proof. That failure is directly in the requested
+  auto-tool/content-delta/reasoning-tool/API harness lane.
+
+## 2026-06-10 09:36 PDT - N2 loopback required-tool error reduced, strict row still red
+
+Action:
+
+- Patched panel request construction so loopback remote vMLX sessions do not
+  pin explicit built-in `tool_choice`. The request still sends the tool list;
+  it only avoids converting a local loopback model into a generic remote
+  required-tool call.
+
+Root cause/evidence:
+
+- Before patch, the strict N2 proof logged:
+  `tool_choice='required' was set but the model did not produce any tool calls`.
+- The same run persisted a 128-character `!` output after the server error.
+- This happened in a loopback vMLX proof session reported as `isRemote=true`.
+
+Verification:
+
+- `cd panel && npm run typecheck` passed.
+- `cd panel && npm test -- tests/request-builder.test.ts tests/tool-auto-continue.test.ts`
+  passed `79/79`.
+- `cd panel && npm test -- tests/settings-flow.test.ts -t 'uses --is-mllm|forceTextOnly|video sampling controls'`
+  passed `3/3`.
+- Strict live N2 rerun was executed with the same APP_DELTA prompts against
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`.
+
+Proof artifact:
+
+- `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`
+
+Live result:
+
+- Raw proof:
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-after-loopback-toolchoice-20260610-proof.json`
+- Still `status=fail`.
+- Previous required-tool API error is gone.
+- Previous repeated `!` visible output is gone.
+- The run returned `Created`, created only `real_ui_tool_probe_1.txt`, and did
+  not create `real_ui_tool_probe_2.txt`.
+
+Classification:
+
+- Reduced, not cleared. The API hard-error path is fixed for loopback vMLX
+  remote sessions, but the strict long-delta/tool-adherence row remains red.
+
+Not proven:
+
+- Strict N2 JANGTQ2 long-delta row is not green.
+- Second tool call and APP_DELTA_STREAM markers are not proven.
+- N2 JANG_1L, release/sign/notarize/package/PyPI/updater/download/website work
+  were not touched.
+
+Other-agent next action:
+
+- Compare strict prompt behavior in true local session mode versus loopback
+  remote mode, and inspect prompt/template/tool-schema pressure for N2. Do not
+  call this strict row green from the loopback tool-choice reduction.

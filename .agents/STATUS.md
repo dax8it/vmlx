@@ -3515,3 +3515,51 @@
   or restamp an explicit `mimo_v2_multimodal_runtime` artifact and live-prove
   image/video/audio through API/app. Do not override preserved/text-runtime
   metadata in the server.
+
+# 2026-06-10 09:18 PDT - N2 JANGTQ2 audio/capability honesty lane active
+
+- Current allowed lane: Nex/N2 JANGTQ2 capability detection and API media
+  honesty, specifically audio because current proof rows show N2 JANGTQ2
+  chat/tools/cache/image/video are covered more strongly than audio.
+- Constraints rechecked: no N2 JANG_1L, no release/sign/notarize/package/PyPI/
+  updater/website action, no subagents, no synthetic parser/tool args, no fake
+  audio advertisement from token/config metadata alone.
+- Next action: trace current N2 JANGTQ2 model metadata, server modality
+  detection, and request guard behavior. If the artifact lacks weight-backed
+  audio runtime, fix/gate the detection honestly; if it is weight-backed, run a
+  focused source/bundled API proof instead of editing blindly.
+
+# 2026-06-10 09:23 PDT - N2 audio checked; pivot to stricter Responses tool loop
+
+- Finding: the real N2 JANGTQ2 bundle has `vision_config`, `image_token_id`,
+  `video_token_id`, and `capabilities.modality=vision`, but no `audio_config`
+  or audio token. Current server detection therefore reports support for
+  `text`, `vision`, and `video` only, and existing dev/installed app audio
+  proofs are red by the explicit unsupported-modality guard, not crash/cache.
+- Classification: no N2 audio source fix is appropriate in this pass; claiming
+  audio would be fake. The server/API boundary is already honest.
+- Pivot within N2 JANGTQ2: trace the still-red stricter Responses
+  long-delta/tool-loop proof where the second tool turn failed after a
+  tool-choice-required error and visible output degenerated into repeated `!`.
+  This is closer to Eric's priority on auto tool usage, content deltas,
+  reasoning/tool loops, and agent harness compatibility.
+
+# 2026-06-10 09:36 PDT - N2 loopback required-tool error reduced, strict row still red
+
+- Source change: panel loopback remote vMLX sessions no longer pin explicit
+  built-in `tool_choice`; tools are still sent, but a local vMLX loopback model
+  is not treated as a generic remote required-tool endpoint.
+- Proof artifact:
+  `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`.
+- Verification passed: panel typecheck; focused request-builder/tool-loop tests
+  `79/79`; settings-flow slice `3/3`.
+- Live strict N2 rerun:
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-after-loopback-toolchoice-20260610-proof.json`
+  is still `status=fail`, but the previous `tool_choice='required'` error and
+  128-exclamation output are gone. The run returned `Created` and only created
+  `real_ui_tool_probe_1.txt`.
+- Classification: reduced, not cleared. The strict row remains red because N2
+  did not emit the second tool call or the requested APP_DELTA markers. Default
+  N2 JANGTQ2 tool/cache/delta proof remains the green checkpoint row.
+- Boundary: no synthetic tool calls, no parser repair, no N2 JANG_1L, and no
+  release/sign/notarize/package/PyPI/updater/website action.
