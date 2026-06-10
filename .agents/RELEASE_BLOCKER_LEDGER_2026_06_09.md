@@ -57,7 +57,10 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 3. MiMo V2.5
 
 - JANGTQ_2 speed/cache is partially good, but release proof is not complete.
-- JANG_2L, tool/JSON/loop, media, L2 restore, UI parity, and installed-app proof remain open.
+- JANG_2L source fresh-process block-disk L2 restore is green in
+  `build/current-mimo-v25-jang2l-restart-l2-restore-20260610-rerun/summary.json`;
+  tool/JSON/loop, Responses semantics, media, UI parity, installed-app tool/media,
+  and release proof remain open.
 - 2026-06-10 update: MiMo JANG_2L installed-app text/cache is now green in
   `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json`.
   The local rebuilt `/Applications/vMLX.app` loaded the 105 GiB row, produced

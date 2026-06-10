@@ -8554,3 +8554,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven: dev app launched, real `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M` loaded, two visible text turns completed before media, the app persisted one image attachment, `MEDIA_DIAG` saw `image_url`, the Gemma media fallback ran with `1 image(s)`, and the assistant answered `Red`; `imageSemanticVerified=true`.
 - Runtime/cache evidence: active memory `25850.6 MB`, peak `26233.1 MB`, `weight_format=jang_affine`, `profile=JANG_4M`, Metal NA eligible, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`, `l2_block_tokens_on_disk=62`, `l2_tokens_on_disk=62`, block-disk writes `2`, and media-prefix cache stored `365` prompt tokens for the image turn.
 - Boundary: this clears Gemma 31B JANG4M current dev-build image/VL only. It does not clear 31B video/audio, installed-app parity, public tunnel SSE, package/sign/notarize/tag/upload, or release readiness. No release action was run.
+
+# 2026-06-10 - MiMo JANG_2L fresh-process L2 restore
+
+- Ran `bench/local_restart_l2_gate.py` with `VMLINUX_BENCH_PYTHON=/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python`, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, paged cache, block-disk L2, and two fresh server processes sharing one block-cache directory.
+- First attempt before the rerun was an environment/interpreter failure (`ModuleNotFoundError: No module named 'uvicorn'`) and was not treated as model evidence.
+- Live proof: `build/current-mimo-v25-jang2l-restart-l2-restore-20260610-rerun/summary.json` is `status=pass`; per-model result is `build/current-mimo-v25-jang2l-restart-l2-restore-20260610-rerun/MiMo-V2.5-JANG_2L/result.json`.
+- Proven cache surface: first process wrote one block / `48` tokens to block-disk L2; second process opened the existing store and served HTTP `200` with `48` cached tokens, `cache_detail=paged+disk`, block disk `disk_hits=1`, scheduler cache `disk_hits=1`, and `reconstruction_ok=true`.
+- Runtime evidence: JANG v2 mmap load, `103` safetensors shards, wired limit `115 GB`, active Metal baseline about `102.5 GB`, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, and generic TurboQuant KV intentionally inactive for MiMo.
+- Boundary: this clears MiMo JANG_2L source fresh-process block-disk L2 restore only. Visible exact `ACK` remains `output_status=review`; MiMo JANG_2L tool-loop, Responses semantics, media, installed-app parity, public tunnel SSE, package/sign/notarize/tag/upload, and release readiness remain open.

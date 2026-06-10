@@ -778,7 +778,9 @@ Red / not proven:
   `previous_response_id` follow-up, but the two-turn loop failed with
   `CDP timeout: Runtime.evaluate` while the second turn was still active; no
   final tool probe file semantics were verified.
-- Fresh-process L2 restore for JANG_2L.
+- Tool/Responses fresh-process L2 semantics beyond the source cache-restoration
+  probe. The source cache-restoration row is now green, but it did not clear
+  tool-loop or Responses semantics.
 - VL/audio/video runtime. Image/VL is now explicitly red by a text-only runtime
   guard even when forced MLLM is requested; do not claim MiMo JANG_2L media
   support from preserved media weights.
@@ -795,9 +797,23 @@ Next implementation target:
 - Next MiMo work is model/artifact/decode/tool-argument exactness. Cache/L2 is
   not the current blocker: post-fix app attempts have paged cache hits and
   block-disk L2 writes.
-- Continue JANG_2L into Responses and fresh-process L2 restore. Media honesty is
-  now classified for image/VL: the current artifact is text-only at runtime
-  despite preserved media weights.
+- Continue JANG_2L into Responses/tool exactness. Fresh-process block-disk L2
+  restore itself is now source-green; media honesty is now classified for
+  image/VL: the current artifact is text-only at runtime despite preserved media
+  weights.
+
+Fresh-process L2 restore proof:
+
+- Artifact:
+  `build/current-mimo-v25-jang2l-restart-l2-restore-20260610-rerun/summary.json`
+- Result: `status=pass`, `cache_status=pass`, `output_status=review`.
+- First fresh process wrote one block / `48` tokens to block-disk L2.
+- Second fresh process reopened the same block store and restored `48` cached
+  tokens with `cache_detail=paged+disk`; block disk `disk_hits=1`, scheduler
+  cache `disk_hits=1`, and `reconstruction_ok=true`.
+- Native cache was `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`; generic
+  TurboQuant KV stayed inactive because flat TQ-KV would violate MiMo's mixed
+  full/SWA rotating-cache contract.
 
 ### Nex/N2 Pro JANGTQ2
 
