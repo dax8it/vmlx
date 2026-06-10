@@ -3180,3 +3180,38 @@
   itself prove every Qwen/Qwen-coder size, public deployment freshness,
   installed app parity, or all auto/no-tool/tool-result cache reuse loops.
   Those stay on the board for live matrix continuation.
+
+# 2026-06-10 08:25 PDT - Continuation after Qwen proof push
+
+- Current movement: continue the active release-blocker objective from
+  `29935d83e`, now pushed to both `main` and `codex/pr-intake-manifest`.
+  Do not treat that as release readiness; the latest checklists still show
+  open status and failed rows.
+- Constraints rechecked: active worktree only; no release/sign/notarize/PyPI/
+  download action; no N2 JANG_1L; no subagents; no fake parser/cache/sampling
+  repairs; avoid broad test-suite churn unless a focused guard directly proves
+  the blocker.
+- Next action: audit current open rows from the latest objective/checklist
+  artifacts and choose one concrete source/live runtime blocker that can move:
+  MiMo JANGTQ2 exactness/media semantics if source-vs-quant or runtime logits
+  are available, otherwise cross-family parser/API/tool/reasoning contract,
+  Gemma honest media/cache/UI rows, or N2 JANGTQ2 API/cache/UI rows.
+
+# 2026-06-10 08:37 PDT - Streaming parser schema propagation fix
+
+- Selected blocker: cross-family auto-tool/Responses streaming parser contract
+  for Codex/opencode-style clients. The concrete failure class is a completed
+  tool marker with missing required args producing `arguments:{}` during
+  streaming.
+- Source fix: streaming wrappers now pass the active request schema into the
+  full-output parser when completion markers arrive for Auto, DeepSeek,
+  Functionary, Granite, Kimi, Llama, MiniMax, Nemotron, Qwen, and xLAM parsers.
+  Auto's MiniMax fallback delegation also preserves the request schema.
+- Regression proof: targeted Qwen streaming tests prove empty required
+  `exec_command` args fail closed while valid `{"cmd":"ls /tmp"}` args still
+  stream as a function call. `py_compile` passed for all touched parser files
+  and `tests/test_tool_parsers.py`.
+- Boundary: this is source/parser contract proof, not a new live same-model
+  direct/gateway/tunnel capture and not a release action. It does not claim
+  every family parser is semantically green; next live proof still needs
+  family/API surface recapture where rows are open.

@@ -10541,3 +10541,68 @@ Boundary: this closes the current source-side Qwen empty required args and
 duplicate output-index lane for the captured Qwen35 model. It does not prove
 every Qwen/Qwen-coder size, public deployment freshness, installed app parity,
 or all auto/no-tool/tool-result cache reuse loops.
+
+## 2026-06-10 08:25 PDT - Continuation after Qwen proof push
+
+Continuing from `29935d83e`, which is pushed to both `main` and
+`codex/pr-intake-manifest`. This checkpoint contains the active AGENTS
+constraint update, MiMo segmented vision media fix, and Qwen Responses parser
+proof boundary. It is not a release-ready state.
+
+Current constraints rechecked: active worktree only, no release/sign/notarize/
+PyPI/download action, no N2 JANG_1L, no subagents, no fake parser/cache/
+sampling repair, and avoid broad test-suite churn unless a focused guard
+directly proves the blocker.
+
+Next action is to audit the latest open objective/checklist rows and pick one
+concrete source/live runtime blocker that can move now: MiMo JANGTQ2
+exactness/media semantics if source-vs-quant or runtime logits are available;
+otherwise cross-family parser/API/tool/reasoning contract, Gemma honest
+media/cache/UI rows, or N2 JANGTQ2 API/cache/UI rows.
+
+## 2026-06-10 08:37 PDT - Streaming parser schema propagation fix
+
+Request/action: Eric asked to record every instruction/status movement, keep
+the Qwen/Qwen-coder empty-args issue active, and put the constraints into
+`AGENTS.md`. The current action reduced the cross-family streaming
+parser/API blocker without entering release/sign/notarize/PyPI/download work.
+
+Edits:
+
+- `AGENTS.md`: added the dated parser/API carry-forward so future agents know
+  streaming parser paths must propagate request schemas and must not fake tool
+  args from preambles or by disabling reasoning.
+- `vmlx_engine/tool_parsers/auto_tool_parser.py`: propagated `request` through
+  Auto streaming close-marker parsing and Auto-to-MiniMax fallback parsing.
+- `vmlx_engine/tool_parsers/deepseek_tool_parser.py`,
+  `functionary_tool_parser.py`, `granite_tool_parser.py`,
+  `kimi_tool_parser.py`, `llama_tool_parser.py`, `minimax_tool_parser.py`,
+  `nemotron_tool_parser.py`, `qwen_tool_parser.py`, and
+  `xlam_tool_parser.py`: propagated `request` into streaming close-marker
+  full-output parse calls.
+- `tests/test_tool_parsers.py`: added Qwen streaming regressions for missing
+  required `cmd` and preserved valid `cmd`.
+
+Verification:
+
+- `./.venv/bin/python -m pytest -q tests/test_tool_parsers.py::TestQwenToolParser::test_streaming_xml_empty_required_args_fail_closed tests/test_tool_parsers.py::TestQwenToolParser::test_streaming_xml_required_args_preserved`
+  passed `2/2`.
+- `./.venv/bin/python -m py_compile ...` passed for all touched parser files
+  and `tests/test_tool_parsers.py`.
+- `rg -n "extract_tool_calls\\(current_text\\)|minimax_parser\\.extract_tool_calls\\(" vmlx_engine/tool_parsers`
+  shows no remaining dropped `current_text` request propagation; the remaining
+  Auto MiniMax hit includes `request=request`.
+
+Proven: Qwen streaming parser no longer emits a tool call for empty required
+`exec_command` args when a schema is present, and still emits valid required
+args unchanged.
+
+Not proven: this is not a new same-model direct/gateway/tunnel raw SSE capture,
+not an installed-app proof, not a full cross-family live parser sweep, and not
+a release/sign/notarize step.
+
+Next other-agent action: continue live API proof on remaining open rows:
+direct/gateway/tunnel raw SSE where stale, family-specific auto/required/no-tool
+and tool-result loops, and cache reuse telemetry. Do not synthesize missing
+arguments, suppress reasoning, or call a family green from parser-unit proof
+alone.

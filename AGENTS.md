@@ -188,6 +188,16 @@ clearly unrelated smaller processes when needed, preserve the N2 JANG_1L
 off-limits boundary unless Eric reopens it, and never substitute metadata-only
 capability claims for live evidence.
 
+Current 2026-06-10 parser/API carry-forward: streaming tool parser paths must
+propagate the request schema into the final full-output parse. This is required
+so Qwen/Qwen-coder style completed tool markers with missing required args fail
+closed instead of emitting `arguments: {}` to Codex/opencode-style clients.
+The valid path must still preserve real arguments, content deltas, reasoning
+deltas, output indices, kwargs, cache telemetry, and final-object consistency.
+Do not repair missing arguments from visible preambles, disable reasoning, or
+claim all model-family parser/API loops green until direct/gateway/tunnel and
+family-specific auto/required/no-tool/tool-result rows are live-proven.
+
 If a turn is interrupted, resume by reading the current tracker/status and
 continuing the next blocker; do not restart from old memory, old `/Users/eric/vmlx`
 notes, old Swift notes, ADLab notes, transport notes, or model upload logs.
