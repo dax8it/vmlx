@@ -10606,3 +10606,70 @@ direct/gateway/tunnel raw SSE where stale, family-specific auto/required/no-tool
 and tool-result loops, and cache reuse telemetry. Do not synthesize missing
 arguments, suppress reasoning, or call a family green from parser-unit proof
 alone.
+
+## 2026-06-10 08:26 PDT - Goal continuation: open-row runtime/API blocker audit
+
+Request/action: continue the active goal toward production-quality runtime/API/
+model fixes for N2 JANGTQ2, MiMo JANG/JANGTQ, Gemma JANG/MXFP/QAT, Qwen/tool
+parser/reasoning/cache/media surfaces while avoiding recursive agent behavior
+and broad test-suite churn.
+
+Constraint check: stay in this active worktree; no release/sign/notarize/PyPI/
+download update; no N2 JANG_1L; no subagents; no fake parser/cache/sampling
+repair; do not claim completion from narrow tests or stale artifacts.
+
+Next action: inspect the latest current proof/checklist artifacts and select
+one source/runtime/API blocker that can actually move now. Candidate lanes are
+MiMo exactness/media semantics, Gemma honest media/cache/UI/API rows,
+Qwen/parser/API/gateway loop rows, or N2 JANGTQ/non-JANG_1L API/cache/UI rows.
+
+## 2026-06-10 08:31 PDT - MiMo JANGTQ2 dev-app video MLLM route proof
+
+Request/action: reduce the MiMo media/API blocker without broad suite churn or
+release actions. The stale dev-app video proof had failed with text-only
+runtime routing. The current proof reran the existing real UI harness with
+`VMLINUX_REAL_UI_IS_MLLM=1` against the real local MiMo JANGTQ2 artifact.
+
+Command:
+
+`VMLINUX_REAL_UI_MODEL_PATH=/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2 VMLINUX_REAL_UI_PROOF_BASENAME=current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610 VMLINUX_REAL_UI_IS_MLLM=1 VMLINUX_REAL_UI_CHECK_VIDEO=1 VMLINUX_REAL_UI_VIDEO_DATA_URL=data:video/mp4;base64,... VMLINUX_REAL_UI_VIDEO_EXPECT_REGEX='red|solid|video|frame|screen' VMLINUX_REAL_UI_SECOND_TURN=0 VMLINUX_REAL_UI_MAX_TOKENS=64 VMLINUX_REAL_UI_MAX_PROMPT_TOKENS=12000 VMLINUX_REAL_UI_TEMPERATURE=0 VMLINUX_REAL_UI_TOP_P=1 VMLINUX_REAL_UI_CHECK_SERVER_CACHE_CONTROLS=1 VMLINUX_REAL_UI_ALLOW_FAIL=1 node panel/scripts/live-real-ui-model-proof.mjs`
+
+Artifacts:
+
+- Raw proof:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610-proof.json`
+- Screenshot:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610-chat.png`
+- Summary:
+  `build/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610.json`
+
+Proven:
+
+- Real Electron dev build launched.
+- Real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` loaded as
+  `model_type=mllm`.
+- Server command included `--is-mllm`.
+- Loader auto-enabled MiMo media from preserved bundle contract and bound
+  `visual=364`, `audio_encoder=75`, `speech_embeddings=20`.
+- App persisted a video attachment and server `MEDIA_DIAG` recorded
+  `engine_is_mllm=true`, `registry_is_mllm=true`, and one `video_url`.
+- Server decoded the base64 MP4 and the numpy video reader saw frames.
+- Chat Completions returned HTTP 200 and visible assistant output.
+- Native MiMo mixed-SWA cache and block L2 remained active:
+  `schema=mixed_swa_kv_v1`, `cache_subtype=mimo_v2_asymmetric_swa`,
+  `ram_tokens_cached=34`, `l2_block_tokens_on_disk=34`, one block-disk write.
+- Live speed recorded about `44.5 tok/s` for the video turn.
+
+Not proven / still red:
+
+- Video semantic quality is not green. The fixture was solid red, but the
+  visible answer described a phone/dog scene. Do not claim MiMo JANGTQ2 video
+  understanding or color semantics green from this route proof.
+- MiMo JANGTQ2 literal/JSON/tool exactness, image color semantics, audio
+  semantics, installed-app parity, source-vs-quant first divergence, and
+  release readiness remain open.
+
+Next other-agent action: for MiMo media quality, compare source/dequant/
+reference visual embeddings/logits or rebuild the JANGTQ artifact. Do not
+mask the failure with prompt wording, parser repair, semantic post-processing,
+or color normalization.

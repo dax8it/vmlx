@@ -3215,3 +3215,47 @@
   direct/gateway/tunnel capture and not a release action. It does not claim
   every family parser is semantically green; next live proof still needs
   family/API surface recapture where rows are open.
+
+# 2026-06-10 08:26 PDT - Goal continuation: open-row runtime/API blocker audit
+
+- Current movement: continue the active objective from `16878f4fb`, pushed to
+  both `main` and `codex/pr-intake-manifest`, without entering release/sign/
+  notarize/PyPI/download-update work.
+- Constraints rechecked: active worktree only; no N2 JANG_1L; no subagents or
+  wrapper-managed agent delegation; no fake parser/cache/sampling repairs; no
+  broad test-suite churn unless it directly proves a fixed blocker.
+- Next action: audit the latest objective/checklist/proof rows and pick one
+  current real blocker in MiMo, Gemma, Qwen/parser/API, or N2 JANGTQ/non-
+  JANG_1L. Preference is source/runtime/API proof or a real source defect over
+  pointer churn.
+
+# 2026-06-10 08:31 PDT - MiMo JANGTQ2 dev-app video MLLM route proof
+
+- Selected blocker: MiMo V2.5 JANGTQ_2 current Electron dev-app media/API
+  parity after the source segmented-media fix.
+- Proof command: ran `panel/scripts/live-real-ui-model-proof.mjs` with real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`,
+  `VMLINUX_REAL_UI_IS_MLLM=1`, `VMLINUX_REAL_UI_CHECK_VIDEO=1`, a real
+  solid-red MP4 data URL, `max_prompt_tokens=12000`, block L2 enabled, and
+  current Electron dev mode.
+- Raw proof:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610-proof.json`;
+  summary:
+  `build/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610.json`.
+- Proven: the stale text-only rejection is cleared for current source when
+  MiMo is launched as MLLM. The run loaded real MiMo JANGTQ2 as `model_type=mllm`,
+  bound preserved media weights, persisted a video attachment, emitted
+  `MEDIA_DIAG` with `video_url`, decoded the base64 MP4 through the numpy video
+  reader, returned HTTP 200, streamed visible assistant output, recorded
+  no parser/reasoning leak, and wrote native MiMo mixed-SWA block L2.
+- Runtime/cache: active memory about `78360.9 MB`, peak about `79535.6 MB`,
+  `profile=JANGTQ_2`, `codec=turboquant_codebook`, native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, generic TurboQuant KV
+  correctly inactive, `ram_tokens_cached=34`, `l2_block_tokens_on_disk=34`,
+  `l2_tokens_on_disk=34`, one block-disk write, video turn live speed about
+  `44.5 tok/s`.
+- Boundary: semantic video quality remains red. The solid-red fixture was
+  answered as a phone/dog scene, so this must not be claimed as video
+  understanding green. It also does not clear MiMo JANGTQ2 literal/JSON/tool
+  exactness, image color semantics, audio semantics, installed-app parity, or
+  release readiness.
