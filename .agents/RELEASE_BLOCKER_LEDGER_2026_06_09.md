@@ -362,6 +362,18 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `audio_where_supported` surface, so JANG4M installed-app audio remains red.
   This does not invalidate installed-app text/tools/image/video green rows, and
   it does not clear public tunnel SSE or package/sign/notarize/release readiness.
+- 2026-06-10 Gemma JANG4M dev-app exactness update:
+  `build/current-real-ui-dev-app-gemma4-12b-jang4m-exact-output-proof-20260610.json`
+  is green for the current Electron dev build and
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`. The app returned exact
+  text `JANG4M-ACK-742` and exact JSON
+  `{"status":"ok","value":"jang4m-blue"}`, with no parser/reasoning leak, while
+  auto-detecting Gemma4 tool/reasoning parsers and recording
+  `weight_format=jang_affine`, Metal NA active, `mixed_swa_kv_v1`,
+  `cache_detail=paged+mixed_swa`, `cache_hit_tokens=24`,
+  `l2_block_tokens_on_disk=66`, and block-disk writes `2`. This does not clear
+  Gemma audio, larger Gemma QAT rows, public tunnel SSE parity, package/sign/
+  notarize/tag/upload, or release readiness.
 - Proper release mechanics are documented in `/Users/eric/wiki/infra/apple-notarization.md`; do not invent an alternate path. The canonical keychain is `~/Library/Keychains/vmlx-build.keychain-db`, the Developer ID identity is `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, and notarization uses the `vmlx-notary` keychain profile.
 - If signing returns `errSecInternalComponent`, fix key access with the documented sequence and retry once after the partition-list grant settles:
 

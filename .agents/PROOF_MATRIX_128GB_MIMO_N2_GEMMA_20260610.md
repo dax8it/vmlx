@@ -229,6 +229,7 @@ Artifact:
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-dev-app-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-video-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-audio-proof-20260610.json`
+- `build/current-real-ui-dev-app-gemma4-12b-jang4m-exact-output-proof-20260610.json`
 - `build/current-real-ui-installed-app-gemma4-12b-jang4m-responses-tools-cache-20260610.json`
 
 Raw ignored proof captures:
@@ -277,6 +278,18 @@ Proven:
   and launch surfaces green: `cache_detail=paged+mixed_swa`,
   `cacheHitTokens=67`, `l2_tokens_on_disk=67`, `disk_writes=2`, and server
   cache controls verified.
+- Current Electron dev-build exact-output proof is green for Gemma 12B JANG4M.
+  The app loaded `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`,
+  returned exact text `JANG4M-ACK-742`, returned exact JSON
+  `{"status":"ok","value":"jang4m-blue"}`, auto-detected Gemma4 tool and
+  reasoning parsers, and recorded no raw parser/reasoning leak and no persisted
+  tools/reasoning.
+- Dev-build JANG4M exact-output runtime/cache evidence: active memory
+  `9680.4 MB`, peak `9950.7 MB`, `weight_format=jang_affine`,
+  `profile=JANG_4M`, Metal NA active, native `mixed_swa_kv_v1`,
+  `cache_detail=paged+mixed_swa`, `cache_hit_tokens=24`,
+  `l2_block_tokens_on_disk=66`, `l2_tokens_on_disk=66`, and block-disk
+  `disk_writes=2`.
 - Local rebuilt installed app proof is now green for Gemma 12B JANG4M
   Responses/tool/cache. `/Applications/vMLX.app` launched as
   `uiLaunchMode=installed-app`, loaded

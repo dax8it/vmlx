@@ -8366,3 +8366,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven: dev app launched as `uiLaunchMode=electron-dev`, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4` loaded, exact text `GEMMA-ACK-742` returned, exact JSON `{"status":"ok","value":"gemma-blue"}` returned, server cache controls were visible, no parser/reasoning leak was recorded, no persisted tools/reasoning, mixed-SWA cache, paged prefix hit, and block L2 writes.
 - Runtime/cache evidence: active memory `7558.3 MB`, peak `7887 MB`, `weight_format=mxfp4`, `profile=MXFP4`, Metal NA active, `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=22`, `l2_block_tokens_on_disk=61`, and block-disk writes `2`.
 - Boundary: this clears Gemma 12B QAT MXFP4 dev-app exact text/JSON only. Gemma audio, larger Gemma QAT rows, public tunnel SSE parity, and release readiness remain open. No release action was run.
+
+# 2026-06-10 - Gemma 12B JANG4M dev-app exact output
+
+- Ran current Electron dev-build Gemma 12B JANG4M exact-output proof with `npm run dev`, Chat Completions, no tools, server cache controls, temperature `0`, top_p `1`, and max tokens `64`.
+- Proof summary `build/current-real-ui-dev-app-gemma4-12b-jang4m-exact-output-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-dev-app-gemma4-12b-jang4m-exact-output-20260610-proof.json`.
+- Proven: dev app launched as `uiLaunchMode=electron-dev`, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` loaded, exact text `JANG4M-ACK-742` returned, exact JSON `{"status":"ok","value":"jang4m-blue"}` returned, server cache controls were visible, no parser/reasoning leak was recorded, no persisted tools/reasoning, Gemma4 tool/reasoning parsers auto-detected, mixed-SWA cache, paged prefix hit, and block L2 writes.
+- Runtime/cache evidence: active memory `9680.4 MB`, peak `9950.7 MB`, `weight_format=jang_affine`, `profile=JANG_4M`, Metal NA active, `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=24`, `l2_block_tokens_on_disk=66`, and block-disk writes `2`.
+- Boundary: this clears Gemma 12B JANG4M dev-app exact text/JSON only. Gemma audio, larger Gemma QAT rows, public tunnel SSE parity, package/sign/notarize/tag/upload, and release readiness remain open. No release action was run.
