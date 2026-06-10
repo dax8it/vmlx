@@ -1004,3 +1004,12 @@
 - Proven: installed app UI launched, video attachment persisted, server `MEDIA_DIAG` saw one `video_url`, server decoded the base64 MP4, reported `25` frames at `25.0 fps`, extracted `4` frames, Gemma media fallback ran, and the assistant answered `The video shows a solid red background with no movement or changes.`
 - Cache/runtime proof: MXFP4 affine matmul with Metal NA active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and `block_disk_writes=2`.
 - Boundary: this clears Gemma 12B MXFP4 installed-app video only. It does not clear Gemma audio, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.
+
+# 2026-06-10 - N2 JANGTQ2 installed-app audio honestly gated
+
+- Reduced blocker: `media` plus `api/ui` for the N2 checkpoint candidate in the rebuilt local `/Applications/vMLX.app`.
+- Proof summary: `build/current-real-ui-installed-app-n2-jangtq2-audio-proof-20260610.json`, `status=fail`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-20260610-chat.png`.
+- Positive evidence: installed app UI launched, the real 101 GiB N2 JANGTQ2 row loaded as MLLM, two visible text turns completed before audio, the app forced multimodal for one attached audio file, and server `MEDIA_DIAG` saw one `input_audio`.
+- Runtime/cache evidence before the audio gate: `hybrid_ssm_v1`, attention-only TurboQuant KV, native SSM companion state, `cache_detail=paged+ssm`, `cached_tokens=18`, `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`, `block_disk_hits=3`, `block_disk_writes=2`, and SSM disk stores `2`.
+- Red boundary: the API returned `400 - /v1/chat/completions received unsupported media modality audio. Supported modalities: text, vision, video.` This is an honest capability gate, not a load/cache/L2 failure.
+- Boundary: this clears installed-app audio classification only. It does not clear N2 audio support, N2 JANG_1L, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.

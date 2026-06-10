@@ -463,6 +463,7 @@ Artifact:
 - `build/current-real-ui-installed-app-n2-jangtq2-responses-tools-cache-20260610.json`
 - `build/current-real-ui-installed-app-n2-jangtq2-image-proof-20260610.json`
 - `build/current-real-ui-installed-app-n2-jangtq2-video-proof-20260610.json`
+- `build/current-real-ui-installed-app-n2-jangtq2-audio-proof-20260610.json`
 
 Raw ignored proof captures:
 
@@ -470,6 +471,7 @@ Raw ignored proof captures:
 - `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-cache-longdelta-20260610-proof.json`
 - `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-default-20260610-proof.json`
 - `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-20260610-proof.json`
+- `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-20260610-proof.json`
 
 Proven:
 
@@ -597,6 +599,20 @@ Proven:
   `cached_tokens=18`, `l2_block_tokens_on_disk=50`,
   `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`, block-disk
   `disk_hits=3`, `disk_writes=2`, and SSM companion disk stores `2`.
+- Local rebuilt installed app audio proof is red by the same honest
+  unsupported-modality guard as the source dev app, not by crash or cache
+  failure. The installed app launched, completed two visible text turns, forced
+  multimodal for one attached audio file, server `MEDIA_DIAG` saw one
+  `input_audio`, and `/v1/chat/completions` returned `400`:
+  `/v1/chat/completions received unsupported media modality audio. Supported
+  modalities: text, vision, video.`
+- The installed-app audio boundary run still recorded the N2 runtime/cache
+  surfaces before the failing audio turn: active memory about `103805 MB`, peak
+  about `104453.9 MB`, `hybrid_ssm_v1`, attention-only TurboQuant KV,
+  `cache_detail=paged+ssm`, `cached_tokens=18`,
+  `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`,
+  `l2_tokens_on_disk=118`, block-disk `disk_hits=3`, `disk_writes=2`, and SSM
+  companion disk stores `2`.
 
 Red:
 

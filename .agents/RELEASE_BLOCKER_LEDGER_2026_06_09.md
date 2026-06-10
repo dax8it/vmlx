@@ -143,6 +143,18 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   attention-only TurboQuant KV, native SSM companion state, block L2, and SSM
   companion disk stores. They do not clear N2 audio, N2 JANG_1L, public tunnel
   SSE, or Developer ID DMG package/sign/notarize/release readiness.
+- 2026-06-10 N2 installed-app audio update:
+  `build/current-real-ui-installed-app-n2-jangtq2-audio-proof-20260610.json`
+  is `status=fail` for the same local rebuilt `/Applications/vMLX.app` and N2
+  JANGTQ2 row. It proves installed-app audio attachment plumbing reached the
+  server boundary: the app completed two text turns first, forced multimodal
+  for one attached audio file, server `MEDIA_DIAG` saw `input_audio`, and the
+  API returned the honest guard `400 - unsupported media modality audio;
+  supported modalities: text, vision, video`. Runtime/cache remained green
+  before the gate with `hybrid_ssm_v1`, attention-only TurboQuant KV,
+  `cache_detail=paged+ssm`, block L2, and SSM companion disk stores. This does
+  not clear N2 audio support, N2 JANG_1L, public tunnel SSE, or Developer ID DMG
+  package/sign/notarize/release readiness.
 - 2026-06-10 Gemma installed-app update:
   `build/current-real-ui-installed-app-gemma4-12b-mxfp4-responses-tools-cache-20260610.json`
   is `status=pass` for the local rebuilt `/Applications/vMLX.app` plus

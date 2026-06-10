@@ -8197,3 +8197,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven image: installed-app UI, persisted image attachment, `MEDIA_DIAG` image detection, `num_images_processed=1`, visible answer `Red`, server cache controls, parser/reasoning leak checks, `hybrid_ssm_v1`, attention-only TurboQuant KV, paged+SSM cache, block L2, and SSM companion disk stores.
 - Proven video: installed-app UI, persisted video attachment, `MEDIA_DIAG` video detection, base64 MP4 decode, `4` extracted frames, `num_images_processed=4`, visible answer describing a solid red screen, server cache controls, parser/reasoning leak checks, `hybrid_ssm_v1`, attention-only TurboQuant KV, paged+SSM cache, block L2, and SSM companion disk stores.
 - Boundary: no N2 audio clearance, no N2 JANG_1L clearance, no public tunnel proof, and no package/sign/notarize/tag/upload/release action.
+
+# 2026-06-10 - N2 JANGTQ2 installed-app audio gated
+
+- Ran real UI audio proof through `/Applications/vMLX.app` for `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` with Chat Completions, cache controls, `--is-mllm`, temperature `0`, top_p `1`, and max tokens `96`.
+- Proof summary `build/current-real-ui-installed-app-n2-jangtq2-audio-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-20260610-proof.json`.
+- Boundary proved: installed-app UI launched, text chat worked first, the app attached one audio file, server `MEDIA_DIAG` saw `input_audio`, and `/v1/chat/completions` rejected it with `400` unsupported media modality. Supported modalities reported by the server are `text, vision, video`.
+- Runtime/cache stayed live before the gate: `hybrid_ssm_v1`, attention-only TurboQuant KV, paged+SSM cache, block L2, and SSM companion disk stores.
+- This is not a load/cache/L2 failure. Do not claim N2 installed-app audio support. No package/sign/notarize/tag/upload/release action was run.
