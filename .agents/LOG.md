@@ -10501,3 +10501,43 @@ rows after this source commit is bundled. For semantic quality, compare
 source/dequant/reference visual logits or rebuild the JANGTQ artifact; do not
 mask with parser repair, string normalization, prompt hacks, or color
 post-processing.
+
+## 2026-06-10 08:13 PDT - Qwen Responses/tool streaming lane selected
+
+Switching to the release-critical Responses API/parser lane for Qwen/Qwen-coder
+style XML tool output. The immediate target is the reported `arguments:{}` /
+missing required argument failure and the adjacent streaming contract: content
+deltas, reasoning deltas, interleaved reasoning/tool calls, output indices,
+same-model direct/gateway/tunnel raw SSE parity, tool-result continuation,
+auto/required/no-tool modes, and request kwargs passthrough.
+
+Boundaries: no release/sign/notarize/PyPI/download in this lane, no N2
+JANG_1L, no subagents, and no fake fix that invents missing tool arguments,
+turns off reasoning to avoid the issue, silently treats malformed tool output
+as success, or masks raw model output with prompt/string regex repair.
+
+Next action is proof reconciliation first: inspect the newest Qwen35 raw SSE
+artifacts and focused parser/server coverage against current source. If current
+direct/gateway/tunnel proof is green, record exactly what is proven and move to
+the next live parser/API gap. If any active route still emits empty required
+args or duplicate output indices, patch that route and prove it.
+
+## 2026-06-10 08:17 PDT - Qwen empty-args/output-index proof reconciled
+
+Focused current-source guards passed with `8 passed`:
+
+`./.venv/bin/python -m pytest -q tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_tool_call_uses_next_output_index_without_text tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_required_empty_xml_tool_call_is_rejected tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments tests/test_server.py::TestOpenAILogprobsFormatting::test_tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments tests/test_responses_raw_sse_parity_contract.py::test_classifier_tracks_interleaved_reasoning_content_tool_and_final_output tests/test_responses_raw_sse_parity_contract.py::test_classifier_flags_function_call_reusing_message_output_index tests/test_responses_raw_sse_parity_contract.py::test_raw_sse_parity_fails_when_surface_reuses_message_output_index_for_tool`
+
+Latest combined Qwen35 artifact is green:
+`build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-20260610.json`.
+It proves same-model direct/gateway/tunnel raw SSE for
+`models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, expected function `record_fact`,
+authoritative arguments `{"value":"blue-cat"}`, valid output item indices,
+reasoning events/lifecycle, gateway request kwargs passthrough, local empty XML
+fail-closed behavior, previous-response history guard, and no
+reasoning-disable workaround.
+
+Boundary: this closes the current source-side Qwen empty required args and
+duplicate output-index lane for the captured Qwen35 model. It does not prove
+every Qwen/Qwen-coder size, public deployment freshness, installed app parity,
+or all auto/no-tool/tool-result cache reuse loops.

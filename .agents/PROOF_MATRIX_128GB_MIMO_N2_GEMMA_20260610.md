@@ -11,7 +11,7 @@ separates what was actually loaded and proven from what remains red.
 
 Artifact:
 
-- `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-refreshed-20260610.json`
+- `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-20260610.json`
 
 Proven:
 
@@ -28,12 +28,21 @@ Proven:
 - Runtime health in the direct capture proves native MTP active, hybrid SSM
   cache, live attention TurboQuant KV, block-disk L2, and Qwen tool/reasoning
   parser defaults.
+- Current-source focused guards passed on 2026-06-10 with `8 passed`, covering
+  streamed preamble plus empty XML fail-closed behavior, no emitted
+  `arguments: "{}"` executable tool calls, nonstream parser cleanup, Chat
+  Completions fail-closed parity, next output-index allocation for function
+  calls, duplicate-output-index classification, and interleaved
+  content/reasoning/tool SSE classification.
 
 Boundary:
 
 - This clears Qwen35 same-model direct/gateway/tunnel raw Responses SSE for
-  this required-tool request. It does not clear every model family, installed
-  app UI, tool-result continuation, Gemma/MiMo/N2, or release readiness row.
+  this required-tool request and closes the current source-side empty required
+  args / duplicate output-index lane for that captured model. It does not
+  clear every Qwen/Qwen-coder size, public deployment freshness, installed app
+  UI, tool-result continuation for every profile, Gemma/MiMo/N2, or release
+  readiness row.
 
 ### Qwen35 Tool-Result Continuation And Hybrid Cache
 
