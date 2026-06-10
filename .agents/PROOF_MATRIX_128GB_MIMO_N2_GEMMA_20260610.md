@@ -1637,6 +1637,13 @@ Next implementation target:
   weight-backed audio path exists.
 - Remaining N2 rows are audio, public tunnel parity, N2 JANG_1L memory
   strategy, and the stricter custom prompt quality red row.
+- 2026-06-10 13:23 PDT public tunnel availability check: current
+  `https://testapi.adlabus.dev/v1/models` does not advertise any
+  `Nex-N2-Pro-JANGTQ2` / N2 alias, and `/health` reports single-model gateway
+  mode with Qwen27 standby. Treat N2 JANGTQ2 public tunnel parity as a deployed
+  tunnel availability gap until the tunnel backend serves the N2 JANGTQ2 model;
+  do not relaunch the 101 GiB local N2 row just to chase a tunnel surface that
+  is not currently advertised.
 
 ## Red Live Attempts
 

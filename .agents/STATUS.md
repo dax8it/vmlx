@@ -4882,3 +4882,12 @@ Other-agent action:
 - Proven: installed-app MXFP4 audio reached the real app/server path and failed closed with HTTP 400: supported modalities are `text, vision, video`; this is an honest unsupported-modality gate, not a crash or cache failure.
 - No source patch was made because no current false audio advertisement was found in the runtime capability gate. The proof matrix and `AGENTS.md` were updated so future lanes do not treat stale red audio attempts as audio support evidence.
 - Still open: Gemma audio remains unsupported until a weight-backed `audio_tower.*` artifact exists and passes live audio E2E. Larger installed-app parity, public tunnel parity, package/sign/notarize, MiMo, N2 non-JANG_1L, and parser-family live matrices remain separate blockers.
+
+# 2026-06-10 13:23 PDT - N2 JANGTQ2 public tunnel availability checked
+
+- Current public tunnel endpoint checked directly:
+  - `curl -fsS --max-time 30 https://testapi.adlabus.dev/v1/models`
+  - `curl -fsS --max-time 30 https://testapi.adlabus.dev/health`
+- Result: no `Nex-N2-Pro-JANGTQ2`, `N2`, or equivalent N2 JANGTQ2 model alias is advertised by the tunnel. `/health` reports single-model gateway mode with Qwen27 standby and Qwen/Gemma/Step/Nemotron/LFM model set.
+- Classification: N2 JANGTQ2 public tunnel parity remains open because the deployed tunnel does not currently serve the N2 model. This is not a local source/runtime/cache blocker; local direct/gateway N2 JANGTQ2 SSE/tool/cache/media evidence is already green in the cited artifacts.
+- No local 101 GiB N2 relaunch was run for this row because it cannot prove a missing public tunnel model. Other agent should deploy/advertise N2 JANGTQ2 on the tunnel first, then recapture same-model raw SSE with required tool args, content deltas, final consistency, output indices, and cache telemetry.

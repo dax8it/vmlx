@@ -12644,3 +12644,12 @@ Next action:
 - Installed-app finding: `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-audio-20260610-proof.json` proves the real app/server path fails closed with HTTP 400 and supported modalities `text, vision, video` when an audio attachment is sent.
 - Edited `AGENTS.md`, `.agents/STATUS.md`, and `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` to record the current boundary and remove stale release-note caveats from older failed audio/visible-thought artifacts.
 - No source code patch was made: current behavior is already the desired honest unsupported-modality gate. Other agent should not advertise Gemma audio until a bundle has `audio_tower.*` weights and live audio E2E passes.
+
+# 2026-06-10 13:23 PDT - N2 JANGTQ2 tunnel parity classified as deployed availability
+
+- Checked current public tunnel model list and health:
+  - `curl -fsS --max-time 30 https://testapi.adlabus.dev/v1/models`
+  - `curl -fsS --max-time 30 https://testapi.adlabus.dev/health`
+- Finding: tunnel advertises Qwen27/Qwen35, Gemma 12B MXFP8, Step, Nemotron, and LFM aliases, but no `Nex-N2-Pro-JANGTQ2` / N2 JANGTQ2 alias. Health reports `single_model_mode=true` with Qwen27 standby.
+- Classification: N2 public tunnel parity is blocked on deployed tunnel model availability, not local N2 runtime proof. Local direct/gateway N2 JANGTQ2 raw SSE, tool-result continuation, cache/L2, image/video, and installed-app default checkpoint rows remain the current local proof base.
+- No N2 local relaunch was performed for this tunnel row because a local 101 GiB run cannot close a public tunnel endpoint that does not advertise the model. Other agent should add/serve N2 JANGTQ2 on `testapi.adlabus.dev`, then recapture same-model direct/gateway/tunnel raw SSE.
