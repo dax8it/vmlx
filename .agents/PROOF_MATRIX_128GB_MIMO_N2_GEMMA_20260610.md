@@ -183,6 +183,7 @@ Artifact:
 - `build/current-mimo-v25-jang2l-chat-tool-boundary-20260610.json`
 - `build/current-mimo-v25-jang2l-chat-tool-boundary-fulltools-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-after-toolchoice-proof-20260610.json`
+- `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-followup-proof-20260610.json`
 
 Proven:
 
@@ -207,11 +208,20 @@ Proven:
   user message explicitly names exactly one available built-in tool. This is
   covered for both Chat Completions and Responses request bodies, and multiple
   named tools/no explicit tool names remain unpinned.
+- Panel Chat Completions tool-result follow-ups now suppress the original
+  explicit single-tool `tool_choice` after a tool call has executed. The
+  follow-up proof no longer shows the earlier
+  `tool_choice='required' was set but the model did not produce any tool calls`
+  final-answer error.
 - Post-fix real Electron dev-app MiMo attempts executed `run_command` tool calls
   and streamed visible content with cache/L2 telemetry. The best post-fix app
   run recorded `eventCounts.tool=90`, `eventCounts.stream=144`,
   `eventCounts.complete=2`, `cached_tokens=2344`, `cache_detail=paged`,
   `l2_block_tokens_on_disk=1074`, and `disk_writes=18`.
+- The follow-up proof executed tool calls in the real dev app with
+  `persistedToolCount=135`, `eventCounts.stream=239`,
+  `eventCounts.complete=2`, `cacheHitTokens=8072`, verified server cache
+  controls, and `l2_block_tokens_on_disk=4580`.
 
 Red / not proven:
 
@@ -225,6 +235,10 @@ Red / not proven:
   `The user wants me to run run a specific command with the exact argument:`
   and the second assistant content was empty.
 - The `long_tool_loop` release surface remains red for MiMo JANG_2L.
+- The latest follow-up proof still fails `long_tool_loop`: MiMo mutated
+  `REAL_UI_LIVE_TOOL_ONE` / `REAL_UI_LIVE_TOOL_TWO` into
+  `REAL_UI_LAND_TOOL_ONE` / `REAL_UI_LAND_TOOL_TWO` and wrote `/tmp` files
+  instead of the configured working-directory probe files.
 - Responses stream/nonstream tool path for JANG_2L.
 - Fresh-process L2 restore for JANG_2L.
 - VL/audio/video runtime, even though media assets/weights are present.

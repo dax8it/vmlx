@@ -8069,3 +8069,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Raw proof logs the source fix path twice: `Responses tool follow-up using previous_response_id=... with 1 function_call_output item(s)`.
 - Cache evidence: `cache_detail=paged+ssm`, `l2_block_tokens_on_disk=3579`, `l2_ssm_tokens_on_disk=17083`, `l2_tokens_on_disk=20662`, `block_disk_hits=110`, `ssm_disk_hits=1`.
 - Boundary: stricter custom long-delta prompt remains red with repeated `!` output and missing second tool file; installed-app parity, N2 media, public tunnel parity, N2 JANG_1L, and release gates remain open.
+
+# 2026-06-10 - MiMo JANG_2L dev-app Chat tool follow-up narrowed
+
+- Fixed the panel Chat Completions follow-up path so the original explicit single-tool `tool_choice` is not forced again after an in-turn tool call has already executed.
+- Ran real Electron dev-app MiMo V2.5 JANG_2L Chat/tools/cache proof after the follow-up change.
+- Added tracked summary `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-followup-proof-20260610.json`, `status=fail`.
+- Positive: no `tool_choice='required'` follow-up error, `persistedToolCount=135`, `eventCounts.stream=239`, `eventCounts.complete=2`, `cacheHitTokens=8072`, verified server cache controls, and `l2_block_tokens_on_disk=4580`.
+- Red: MiMo still rewrote the requested `LIVE` sentinel/path into `LAND` and `/tmp`, so `long_tool_loop` remains red and expected probe files were not created.
+- No release action was run.

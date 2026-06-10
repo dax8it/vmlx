@@ -857,3 +857,13 @@
 - Red evidence: proof failed `UI turn ended with empty visible assistant content` and `requested real built-in tools but proof did not record long_tool_loop surface`; no tool probe files were created. First assistant output was low-quality prose, not a valid tool call; second assistant streamed 24 tokens with empty visible content.
 - Boundary: MiMo JANG_2L remains the stronger checkpoint candidate than MiMo JANGTQ2, but dev-app tool/visible output is not green. Do not chase cache/L2 for this red row; compare raw chat/tool output against panel app trace next.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - MiMo JANG_2L dev-app Chat follow-up narrowed but still red
+
+- Fixed the panel Chat Completions in-turn tool-result follow-up path to suppress the original explicit single-tool `tool_choice` after a tool call has executed.
+- Added tracked proof summary `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-followup-proof-20260610.json`, `status=fail`.
+- Positive evidence: real Electron dev app loaded `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, executed `run_command` through Chat Completions, completed two visible assistant turns, reported no send errors, verified server cache controls, observed `cacheHitTokens=8072`, and wrote block-disk L2 with `l2_block_tokens_on_disk=4580`.
+- Narrowed failure: the earlier Chat follow-up `tool_choice='required'` final-answer error is no longer observed.
+- Remaining red evidence: MiMo still mutates exact tool arguments and paths. `REAL_UI_LIVE_TOOL_ONE` / `REAL_UI_LIVE_TOOL_TWO` became `REAL_UI_LAND_TOOL_ONE` / `REAL_UI_LAND_TOOL_TWO`, and the model wrote `/tmp/real_ui_land_tool_one.txt` / `/tmp/real_ui_land_tool_two.txt` instead of the configured working-directory probe files.
+- Boundary: MiMo JANG_2L remains red for dev-app agentic tool-loop exactness. Cache/L2 is positive; next work is model/runtime/artifact decode or tool-argument exactness, not parser repair or fake argument rewriting.
+- No package/sign/notarize/tag/upload/release action was run.
