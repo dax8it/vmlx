@@ -8230,3 +8230,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Positive evidence: the installed app reached the real tool surface and executed one `run_command`, creating `real_ui_tool_probe_2.txt` with `REAL_UI_LIVE_TOOL_TWO`.
 - Red evidence: no `long_tool_loop` surface; first-turn marker mutated to `REAL_UI_LAND_TOOL_ONE`, expected first probe file was missing, and visible content became repetitive tool-planning prose.
 - Cache/L2 stayed strong: `cache_detail=paged`, `cache_hit_tokens=4552`, `l2_block_tokens_on_disk=4720`. No release action was run.
+
+# 2026-06-10 - MiMo JANG_2L installed-app image gated
+
+- Ran installed-app MiMo JANG_2L image proof through `/Applications/vMLX.app` with Chat Completions, forced MLLM requested, cache controls, temperature `0`, top_p `1`, and max tokens `96`.
+- Proof summary `build/current-real-ui-installed-app-mimo-v25-jang2l-image-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-image-20260610-proof.json`.
+- Boundary proved: installed app attached one image and server `MEDIA_DIAG` saw `image_url`, but `/v1/chat/completions` rejected image with `400` because the loaded runtime is text-only. Supported modalities reported by the server are `text`.
+- Runtime/cache stayed live before the gate: `mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cached_tokens=39`, and `l2_block_tokens_on_disk=110`.
+- This is not a load/cache/L2 failure and not a lost attachment. Do not claim MiMo installed-app media support. No release action was run.

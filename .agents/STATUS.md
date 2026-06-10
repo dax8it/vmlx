@@ -1042,3 +1042,12 @@
 - Red evidence: the release assertion failed because `long_tool_loop` was not recorded. The first requested marker mutated to `REAL_UI_LAND_TOOL_ONE`, the expected first probe file was not created, and first visible content degraded into repetitive tool-planning prose.
 - Runtime/cache evidence: active memory `105384.7 MB`, peak `109903.3 MB`, native `mixed_swa_kv_v1` with `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=4552`, last cached tokens `3481`, and `l2_block_tokens_on_disk=4720`.
 - Boundary: MiMo installed-app tools remain red. Cache/L2 is not the blocker. No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - MiMo JANG_2L installed-app image honestly gated
+
+- Reduced blocker: `media` plus `api/ui` for MiMo JANG_2L installed-app image/VL.
+- Proof summary: `build/current-real-ui-installed-app-mimo-v25-jang2l-image-proof-20260610.json`, `status=fail`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-image-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-image-20260610-chat.png`.
+- Positive evidence: local rebuilt `/Applications/vMLX.app` launched, real 105 GiB MiMo JANG_2L loaded, two visible text turns completed before media, the app attached one image, and server `MEDIA_DIAG` saw one `image_url`.
+- Red boundary: the server returned `400 - /v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.` Server log records that forced MLLM was overridden because MiMo media weights are preserved but `unwired weights_preserved_text_runtime`.
+- Runtime/cache evidence: active memory `105016.1 MB`, peak `105842.8 MB`, native `mixed_swa_kv_v1` with `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cached_tokens=39`, `l2_block_tokens_on_disk=110`, and block-disk writes `3`.
+- Boundary: MiMo installed-app media remains unsupported by honest guard. This does not clear tools, media, JANGTQ_2 exactness, package/sign/notarize/tag/upload, or release readiness.

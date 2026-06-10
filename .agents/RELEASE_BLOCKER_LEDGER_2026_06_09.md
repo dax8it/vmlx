@@ -72,6 +72,14 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   marker mutated to `REAL_UI_LAND_TOOL_ONE`, the first probe file was missing,
   and visible output degraded into repetitive tool-planning prose. Cache/L2 was
   positive, so do not chase prefix/L2/TurboQuant as the primary blocker.
+- 2026-06-10 update: MiMo JANG_2L installed-app image/media is now explicitly
+  red in `build/current-real-ui-installed-app-mimo-v25-jang2l-image-proof-20260610.json`.
+  The installed app attached an image and server `MEDIA_DIAG` saw `image_url`,
+  but the runtime returned the honest guard `400 - unsupported media modality
+  image because the loaded runtime is text-only; supported modalities: text`.
+  Forced MLLM is intentionally overridden because media weights are preserved
+  but unwired. Cache/L2 was positive, so do not claim media support or chase
+  cache as the blocker.
 - Do not run source-vs-quant comparisons if RAM-blocked unless Eric explicitly allows.
 - Exactness failures must not be papered over by parser repair, sampling clamps, cache disabling, or JSON repair.
 - Confirm runtime dynamically reads artifact config for bit size, grouped experts, stacked vs legacy layout, JANG/JANGTQ/MXFP metadata, and model-owned generation defaults.

@@ -323,6 +323,7 @@ Artifact:
 - `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-proof-20260610.json`
 - `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json`
 - `build/current-real-ui-installed-app-mimo-v25-jang2l-tools-proof-20260610.json`
+- `build/current-real-ui-installed-app-mimo-v25-jang2l-image-proof-20260610.json`
 
 Proven:
 
@@ -418,6 +419,20 @@ Proven:
   `105384.7 MB`, peak `109903.3 MB`, native `mixed_swa_kv_v1` /
   `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=4552`,
   last cached tokens `3481`, and `l2_block_tokens_on_disk=4720`.
+- Local rebuilt installed app image/VL proof is now classified red by the same
+  text-only runtime guard as the source/dev app. The run requested forced MLLM,
+  launched `/Applications/vMLX.app`, completed two visible text turns, attached
+  one image, and server `MEDIA_DIAG` saw one `image_url`; `/v1/chat/completions`
+  then returned `400`: `received unsupported media modality image because the
+  loaded runtime is text-only. Supported modalities: text.`
+- The installed-app image boundary run records why this is not a missing
+  attachment or cache failure: server log says MiMo V2 preserved media weights
+  override forced MLLM mode because bundle metadata marks vision/audio as
+  `unwired weights_preserved_text_runtime`; runtime/cache evidence stayed live
+  with active memory `105016.1 MB`, peak `105842.8 MB`,
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, `cache_detail=paged`,
+  `cached_tokens=39`, `l2_block_tokens_on_disk=110`, and block-disk
+  `disk_writes=3`.
 
 Red / not proven:
 
