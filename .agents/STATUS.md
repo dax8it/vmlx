@@ -5218,3 +5218,21 @@ Other-agent action:
 - Checklist status is intentionally correct: current-source route rows pass,
   `mimo_jangtq2_media_semantics_release_quality` remains open. No source patch
   or model relaunch was needed in this step.
+
+# 2026-06-10 14:07 PDT - MiMo JANGTQ2 media route classification committed
+
+- Commit `b0b29e541` (`Classify MiMo JANGTQ2 media routes`) was pushed to both
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Verification before commit:
+  - `jq -e` confirmed the current release checklist does not fail
+    `mimo_jangtq2_current_source_media_runtime` or
+    `mimo_jangtq2_current_source_video_audio_routes`, while it still fails
+    `mimo_jangtq2_media_semantics_release_quality`.
+  - `jq -e` confirmed source media runtime proof has image route and preserved
+    media binding green while installed-app/exactness remain unproven.
+  - `jq -e` confirmed video/audio proof has video/audio HTTP 200 green while
+    video semantic correctness and installed-app parity remain unproven.
+  - `git diff --check` and `git diff --cached --check` passed.
+- Unrelated dirty state still left unstaged:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  and `node_modules/`.

@@ -12982,3 +12982,11 @@ Next action:
   fresh-process L2 restore, and exactness drift.
 - No source edit, model relaunch, release action, or fake capability claim was
   made in this movement.
+
+# 2026-06-10 14:07 PDT - MiMo JANGTQ2 media route classification pushed
+
+- Commit `b0b29e541` (`Classify MiMo JANGTQ2 media routes`) pushed to
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Verification checked the current checklist route rows, source media runtime
+  artifact, video/audio artifact, and diff whitespace. Current-source transport
+  is green; semantic/release quality remains red.
