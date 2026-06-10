@@ -3835,3 +3835,48 @@
   parser loops, MiMo exactness/media, Gemma QAT full release matrix,
   installed-app parity, package/sign/notarize/PyPI/updater/website work, or
   N2 JANG_1L.
+# 2026-06-10 10:20 PDT - MiMo blocker lane selected
+
+- Request: continue the persistent objective toward release-quality runtime/API/
+  cache/media/tool parser proof without broad test-suite churn or recursive
+  subagent behavior.
+- Current allowed lane selected: MiMo V2.5 JANG/JANGTQ exactness/media/API/cache
+  because Qwen35 and generic Gemma same-model raw SSE parity are already green,
+  while MiMo exactness/media/runtime rows remain release blockers.
+- Constraints rechecked: no N2 JANG_1L; no release/sign/notarize/package/PyPI/
+  updater/download/website action; no subagents; no fake parser/JSON/string
+  repair, sampling clamp, prompt-only masking, or cache blame unless current
+  evidence proves cache is involved.
+- Next action: inspect current MiMo proof artifacts, manifests, and loader/
+  decode/media code to identify the next reproducible blocker. Patch source
+  only after root-cause evidence points to a source defect; otherwise record the
+  exact not-proven boundary and other-agent handoff.
+
+# 2026-06-10 10:28 PDT - MiMo media route proof consumed by audit
+
+- Fix/proof accounting: `tests/cross_matrix/run_mimo_v2_jang2l_current_audit.py`
+  now consumes the current MiMo JANGTQ2 source/dev-app media-route artifacts:
+  `build/current-mimo-v25-jangtq2-video-audio-source-proof-20260610.json`,
+  `build/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610.json`,
+  and `build/current-mimo-v25-jangtq2-video-cache-proof-after-video-tensor-cache-fix-20260610.json`.
+- New audit artifact:
+  `build/current-mimo-v2-jang2l-current-audit-after-media-route-proof-20260610.json`,
+  `status=open`.
+- Proven/recorded: MiMo JANGTQ2 media weights bind and video/audio requests
+  reach the MLLM runtime when launched as MLLM; video tensor cache route and
+  dev-app video transport are proven. The stale
+  `mimo_media_runtime_implementation_missing` blocker is removed.
+- Still not proven: default preserved-text-runtime media capability remains
+  gated/text-only; visual semantic quality is red; audio transcript semantics,
+  image/video live E2E release quality, media L2, installed-app parity,
+  exactness, speed, and release readiness remain open.
+- Full checklist regenerated at
+  `build/current-full-release-objective-checklist-after-mimo-media-route-proof-20260610.json`;
+  it remains `status=open`, `release_ready=false`, `failed_count=56`.
+- Verification: py_compile passed; `tests/test_mimo_v2_current_audit.py` passed
+  `21/21`; focused checklist/audit pytest passed `40/40`; `git diff --check`
+  passed.
+- Other-agent action: use the new audit artifact as the MiMo board source.
+  For MiMo media quality, compare source/dequant/reference visual embeddings or
+  logits, or rebuild the JANGTQ artifact; do not mask with prompt wording,
+  parser repair, sampling clamps, color post-processing, or cache/L2 changes.
