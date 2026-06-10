@@ -1,4 +1,18 @@
 ## CODEX
+- now: continuing after Qwen27 MXFP8 tunnel parity. Current selected blocker is
+  MiMo V2.5 JANG_2L/JANGTQ_2 local runtime/API/cache readiness, with focus on
+  a reducible local row rather than JANGTQ_2 semantic exactness. The exactness
+  row remains artifact/source-vs-quant blocked and must not be patched by
+  parser/JSON repair.
+- selected lane: inspect MiMo JANG_2L long-prompt first-request Metal OOM and
+  current Responses/L2 proofs, then run or classify the smallest live/runtime
+  proof that moves MiMo release readiness without broad suite churn.
+- constraints: no release/sign/notarize/PyPI/updater/download/site action, no
+  N2 JANG_1L, no subagents, no semantic value repair, no cache-chasing for the
+  JANGTQ_2 exactness mutation unless evidence identifies cache as root cause,
+  stop any server started here before final.
+
+## CODEX
 - now: Qwen27 MXFP8 same-model direct/gateway/public-tunnel raw Responses SSE
   required-tool parity is live-proven green. No source patch was needed.
 - proof artifact:
@@ -4451,6 +4465,59 @@ Other-agent action:
   - Do not claim MiMo JANGTQ_2 exactness is fixed or release-clear.
   - Do not patch parser/JSON/tool args/sampling/cache to hide literal mutations.
   - Next valid MiMo exactness movement is a real source/dequant first-divergent-logit comparison with the source endpoint running, or a corrected higher-fidelity JANGTQ artifact/profile rerun.
+# 2026-06-10 12:13 PDT - MiMo CLI media/L2 parity blocker resumed
+
+- Current user instruction recorded: keep the carry-forward constraints in
+  active `AGENTS.md` / `.agents`, avoid deprecated `/Users/eric/vmlx`, do not
+  use subagents, keep N2 JANG_1L off this lane, and write every movement down.
+- Current blocker being reduced: MiMo V2.5 JANGTQ_2 CLI/API media plus
+  block-disk L2 parity. The previous live CLI run with `serve --is-mllm`
+  loaded as text-only and rejected image input despite earlier source-server
+  `--mllm` proof reaching MiMo media runtime.
+- Investigation boundary: compare CLI `force_mllm` / `is_mllm_model` against
+  the server MiMo media-runtime auto-enable path, then patch only the confirmed
+  mismatch. Do not force unsupported preserved-media bundles to MLLM, do not
+  fake capability from metadata, and do not repair MiMo exactness in parser or
+  JSON layers.
+- Required proof if patched: CLI health must route MiMo as media-capable, image
+  request must reach runtime instead of 400 text-only gate, cache/L2 telemetry
+  must be captured, and every not-proven boundary must be listed.
+- No release/sign/notarize/PyPI/updater/download/site action is allowed in this
+  lane without a current-turn explicit override.
+
+# 2026-06-10 12:42 PDT - MiMo CLI media/L2 source proof green
+
+- Source fix: `vmlx_engine/server.py` now lets the MiMo media-runtime overlay
+  override stale `weights_preserved_text_runtime` metadata only for MiMo
+  JANG/JANGTQ/MXTQ runtime bundles with complete sidecars and local runtime
+  classes. Generic preserved-media MiMo bundles remain text-only.
+- Focused verification passed:
+  - `py_compile` for `vmlx_engine/server.py` and `tests/test_engine_audit.py`.
+  - `tests/test_mimo_v2_media_capability_gate.py` focused preserved/auto
+    gates passed `3/3`.
+  - `tests/test_engine_audit.py -k mimo_v2_text_runtime_metadata_auto_enables_complete_media_bundle`
+    passed `1/1`.
+- Live proof artifact:
+  `build/current-mimo-v25-jangtq2-cli-media-l2-after-overlay-fix-20260610.json`
+  has `status=pass`.
+- Live proof: CLI `serve --is-mllm` loaded
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` as `mllm=True`,
+  auto-enabled preserved media runtime, bound `459` media tensors, quantized
+  `101` runtime modules, and kept native `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa` with generic TurboQuant KV inactive.
+- Media proof: Chat Completions image request returned HTTP `200` and visible
+  `vMLX`; the previous CLI text-only 400 is fixed for current source.
+- Cache/L2 proof: first text prompt wrote one block / `55` tokens to block L2,
+  same-process repeat hit paged cache, and a fresh-process restart restored
+  from disk with `cache_detail=paged+disk`, `cached_tokens=55`, and
+  `disk_hits=1`.
+- Boundary: MiMo semantic exactness, video answer quality, audio hygiene,
+  Responses tool-result continuation, UI/installed-app parity, package/sign/
+  notarize, and release readiness remain open. Media-context KV was not stored
+  to L2 by design because media embeddings are path-dependent.
+- Other-agent next: rerun dev-app/installed-app MiMo image/video/audio rows
+  from this source; do not clear them from the CLI proof alone.
+
 - Next lane selected: Qwen/Qwen-coder Responses raw SSE/parser parity, because it remains release-critical for Codex/opencode-style harness usability and can be reduced locally without source endpoint availability.
 
 # 2026-06-10 11:48 PDT - Qwen/Qwen-coder Responses parser/API parity lane selected

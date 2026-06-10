@@ -7,6 +7,68 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo JANGTQ_2 CLI Media + Block-Disk L2 Overlay Fix
+
+Artifact:
+
+- `build/current-mimo-v25-jangtq2-cli-media-l2-after-overlay-fix-20260610.json`
+
+Raw/live files:
+
+- `build/mimo-jangtq2-cli-media-l2-after-overlay-fix-requests-20260610/image-request.json`
+- `build/mimo-jangtq2-cli-media-l2-after-overlay-fix-requests-20260610/image-response.json`
+- `build/mimo-jangtq2-cli-media-l2-after-overlay-fix-requests-20260610/cache-after-text-1.json`
+- `build/mimo-jangtq2-cli-media-l2-after-overlay-fix-requests-20260610/cache-after-text-2.json`
+- `build/mimo-jangtq2-cli-media-l2-after-overlay-fix-requests-20260610/cache-after-restart-text-request.json`
+
+Source update:
+
+- `vmlx_engine/server.py`
+- `tests/test_engine_audit.py`
+
+Proven:
+
+- Root cause reproduced and fixed for the CLI path: `cli serve --is-mllm`
+  previously loaded the promoted MiMo V2.5 JANGTQ_2 bundle text-only because
+  `_mimo_v2_media_runtime_auto_enabled()` refused explicit
+  `weights_preserved_text_runtime` metadata before checking complete local
+  runtime sidecars.
+- The fix allows the overlay only for MiMo JANG/JANGTQ/MXTQ runtime bundles
+  with complete sidecars and source runtime classes. Generic preserved-media
+  bundles still route text-only.
+- Live CLI launch loaded `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`
+  as `mllm=True`, auto-enabled preserved media runtime, bound `459` preserved
+  media tensors, quantized `101` runtime modules, and kept native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`.
+- Chat Completions image request reached the MLLM runtime and returned HTTP
+  `200` with visible `vMLX`.
+- MiMo generic TurboQuant KV stayed inactive; native MiMo asymmetric
+  full/SWA/rotating cache remained the cache contract.
+- Text cache proof wrote one block / `55` tokens to block-disk L2, repeated
+  same-process with `cache_detail=paged`, then fresh-process restarted from
+  the same L2 directory and restored with `cache_detail=paged+disk`,
+  `cached_tokens=55`, and `disk_hits=1`.
+
+Focused checks:
+
+- `.venv/bin/python -m py_compile vmlx_engine/server.py tests/test_engine_audit.py`
+- `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_capability_gate.py -k 'mimo_v2_runtime_modalities_auto_enable_when_runtime_and_sidecars_are_complete or preserved_text_runtime_routes_text_only or runtime_modalities_fail_closed_for_preserved_text_runtime'`
+  passed `3/3`.
+- `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'mimo_v2_text_runtime_metadata_auto_enables_complete_media_bundle'`
+  passed `1/1`.
+
+Boundary:
+
+- This proves current-source CLI media routing plus text cache/L2 write and
+  fresh-process restore. It does not clear MiMo semantic exactness, red video
+  answer quality, audio hygiene/exactness, Responses tool-result continuation,
+  UI/installed-app parity, package/sign/notarize, or release readiness.
+- Media-context KV was intentionally not stored to L2; the server skipped media
+  prompt cache storage because media embeddings are path-dependent.
+- Older dev-app/installed-app image/video/audio rows that returned text-only
+  `400` are stale relative to this source fix and must be rerun after the
+  app/gateway launches from this source.
+
 ### MiMo JANGTQ_2 Quant-Only First-Divergence Side
 
 Artifacts:
@@ -342,9 +404,11 @@ Still red:
 
 - `current_proof_sweep=fail`, `prepackage_ready=false`, `release_ready=false`.
 - MiMo remains blocked by long-prompt first-request Metal OOM, JANGTQ_2
-  artifact exactness, decode speed, media wiring, JANG_2L live media/L2,
-  JANG_2L Responses/tool semantic drift, and source-vs-quant/no-source
-  classification.
+  artifact exactness, decode speed, JANG_2L live media/L2, JANG_2L
+  Responses/tool semantic drift, UI/installed-app media parity after the CLI
+  source fix, and source-vs-quant/no-source classification. Current-source CLI
+  MiMo JANGTQ_2 media plus text L2 is now green in the artifact above, but that
+  does not clear app/installed rows.
 
 ### Dev-App Detector and Settings Launch Parity
 
@@ -829,6 +893,7 @@ Artifacts:
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-image-proof-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-video-proof-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-audio-proof-20260610.json`
+- `build/current-mimo-v25-jangtq2-cli-media-l2-after-overlay-fix-20260610.json`
 
 Proven:
 
@@ -893,6 +958,13 @@ Proven:
   `input_audio`. The proof is red for media because the runtime returned HTTP
   `400`: `received unsupported media modality audio because the loaded runtime
   is text-only. Supported modalities: text.`
+- Current-source CLI proof after the overlay fix loaded the same bundle as
+  `mllm=True` and proved image routing with HTTP `200` / visible `vMLX`.
+  It also proved block-disk L2 write and fresh-process restore for a text prompt
+  (`55` cached tokens, restart `cache_detail=paged+disk`, `disk_hits=1`).
+  Treat the earlier dev-app/installed-app media `400` rows as stale until the
+  app/gateway is rerun from this source; do not clear UI/installed-app parity
+  from the CLI proof alone.
 - The dev-app audio run also proved the runtime/cache boundary before the media
   guard: active memory `76491.8 MB`, peak `77127.3 MB`, TurboQuant codebook
   routed experts, prestacked layout, native `mixed_swa_kv_v1` /

@@ -1,3 +1,19 @@
+# 2026-06-10 - MiMo local runtime/cache lane selected
+
+- Request: continue toward production readiness for the named model families
+  without broad test-suite churn or fake fixes.
+- Current state: Qwen27/Qwen35 direct/gateway/tunnel raw SSE rows are now green
+  for the captured Qwen3.6 surfaces; Qwen-coder-next remains unavailable
+  locally.
+- Selected blocker: MiMo V2.5 local runtime/API/cache readiness, specifically
+  JANG_2L long-prompt first-request Metal OOM / Responses-L2 accounting versus
+  current green subproofs.
+- Boundary: MiMo JANGTQ_2 semantic exactness remains artifact/source-vs-quant
+  blocked. Do not fix it by parser repair, JSON repair, string postprocessing,
+  sampling clamps, or cache changes without new contrary evidence.
+- Constraints: no release/sign/notarize/PyPI/updater/download/site action, no
+  N2 JANG_1L, no subagents, stop any server started by this lane before final.
+
 # 2026-06-10 - Qwen27 MXFP8 direct/gateway/tunnel raw SSE green
 
 - Action: captured public tunnel raw SSE for
@@ -12247,6 +12263,71 @@ Next action:
 
 - Re-read active guards/status. The next useful blocker reduction is not another direct server curl; it is panel-side raw function-call identity capture for the Gemma 26B installed-app duplicate tool-loop proof.
 - Will use existing proof harness/dev-app route where possible; no broad test-suite churn, no release action, no subagents, no N2 JANG_1L.
+
+# 2026-06-10 12:13 PDT - MiMo CLI media/L2 parity blocker resumed
+
+- Eric asked to put the carry-forward instructions into `AGENTS.md`; the active
+  worktree `AGENTS.md` already carries the current routing guard, no-subagent
+  rule, no-N2-JANG_1L boundary, parser/API priority, release lock, and
+  write-every-movement discipline.
+- Current selected blocker: MiMo V2.5 JANGTQ_2 CLI/API parity for media plus
+  block-disk L2. The last live run reproduced that
+  `vmlx_engine.cli serve --is-mllm` loaded the MiMo bundle as text-only and
+  rejected image input, while earlier `vmlx_engine.server --mllm` source proof
+  routed media through the local MiMo runtime.
+- Root-cause investigation target: compare CLI `force_mllm` / `is_mllm_model`
+  behavior with the server media-runtime auto-enable path. Patch only if the
+  code proves the mismatch; do not force all preserved MiMo bundles to media,
+  do not fake media support from metadata, and do not touch MiMo exactness by
+  parser repair.
+- Constraints remain: no release/sign/notarize/PyPI/download/site action, no
+  N2 JANG_1L work, no subagents, stop any live server before final, and write
+  proof/not-proof boundaries after every movement.
+
+# 2026-06-10 12:24 PDT - MiMo CLI media auto-enable source fix ready for live proof
+
+- Root cause confirmed: `server._mimo_v2_media_runtime_auto_enabled()` refused
+  every explicit `weights_preserved_text_runtime` bundle before checking
+  complete local MiMo runtime sidecars, so `cli serve --is-mllm` routed the real
+  MiMo V2.5 JANGTQ_2 bundle text-only and the API rejected image input.
+- Patch: allow the media-runtime overlay only for MiMo bundles with JANG/
+  JANGTQ/MXTQ runtime metadata plus complete sidecars and source runtime
+  classes. Generic preserved-media MiMo fixtures still fail closed as
+  text-only.
+- Focused verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/server.py tests/test_engine_audit.py`
+  - `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_capability_gate.py -k 'mimo_v2_runtime_modalities_auto_enable_when_runtime_and_sidecars_are_complete or preserved_text_runtime_routes_text_only or runtime_modalities_fail_closed_for_preserved_text_runtime'` -> 3 passed
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'mimo_v2_text_runtime_metadata_auto_enables_complete_media_bundle'` -> 1 passed
+- Next proof: relaunch the same MiMo JANGTQ_2 CLI `serve --is-mllm` path with
+  block-disk L2 enabled, send an image request, capture health/cache artifacts,
+  and stop the server before final.
+
+# 2026-06-10 12:42 PDT - MiMo CLI media and fresh-process L2 proof passed
+
+- Live artifact written:
+  `build/current-mimo-v25-jangtq2-cli-media-l2-after-overlay-fix-20260610.json`
+  with `status=pass`.
+- First live CLI run loaded the real MiMo V2.5 JANGTQ_2 bundle as `mllm=True`,
+  auto-enabled the preserved media runtime, bound `459` preserved media tensors,
+  quantized `101` runtime modules, and reported native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa` with block L2 enabled.
+- Image request artifact:
+  `build/mimo-jangtq2-cli-media-l2-after-overlay-fix-requests-20260610/image-response.json`
+  returned HTTP `200` and visible `vMLX`.
+- Text cache artifacts showed first-request block-disk write of one block /
+  `55` tokens, same-process repeat `cached_tokens=55` with `cache_detail=paged`,
+  and fresh-process restart `cached_tokens=55` with
+  `cache_detail=paged+disk`, `disk_hits=1`.
+- Both live server processes were stopped cleanly; port `8877` was verified
+  clear before the proof artifact was written.
+- Updated
+  `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` with the new proof
+  and marked older dev-app media 400 rows as stale until rerun from this
+  source.
+- Boundary: this is not MiMo exactness, video/audio quality, Responses
+  tool-result continuation, installed-app parity, signing/notarization, or
+  release readiness. Media-context KV remains intentionally skipped for L2
+  storage.
 
 # 2026-06-10 11:11 PDT - Gemma 26B panel prompt-conflict root cause selected for narrow fix
 
