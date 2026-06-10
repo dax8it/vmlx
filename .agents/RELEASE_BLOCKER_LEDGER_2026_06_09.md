@@ -462,6 +462,20 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   and media-prefix cache storage for `367` prompt tokens. This does not clear
   26B video/audio, installed-app parity, public tunnel SSE parity, package/
   sign/notarize/tag/upload, or release readiness.
+- 2026-06-10 Gemma 26B JANG4M dev-app video/VL update:
+  `build/current-real-ui-dev-app-gemma4-26b-jang4m-video-proof-20260610.json`
+  is green for the current Electron dev build and the 26B A4B JANG4M row with
+  explicit `max_prompt_tokens=12000`. The app persisted one `video_url`
+  attachment, server `MEDIA_DIAG` saw `video_url`, the server decoded the
+  base64 MP4, extracted `4` frames, routed those frames through the Gemma media
+  fallback, and the assistant answered `The video is a solid, static red
+  square. REAL_UI_LIVE.` with `videoSemanticVerified=true`. Runtime evidence
+  recorded active memory `17779.1 MB`, peak `18557.2 MB`, native
+  `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`,
+  `l2_block_tokens_on_disk=64`, `l2_tokens_on_disk=64`, block-disk writes `2`,
+  and video-turn media-prefix cache storage for `357` prompt tokens. This does
+  not clear default-4k video behavior, 26B audio, installed-app parity, public
+  tunnel SSE parity, package/sign/notarize/tag/upload, or release readiness.
 - 2026-06-10 Gemma 31B JANG4M dev-app image/VL update:
   `build/current-real-ui-dev-app-gemma4-31b-jang4m-image-proof-20260610.json`
   is green for the current Electron dev build and the 31B JANG4M row. The app

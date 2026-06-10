@@ -8319,6 +8319,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Runtime/cache evidence: active memory `76763.1 MB`, peak `81328.7 MB`, TurboQuant codebook routed experts with prestacked layout, `cache_detail=paged`, `cache_hit_tokens=4548`, `l2_block_tokens_on_disk=4225`, block-disk hits `36`, and block-disk writes `68`.
 - Boundary: this clears the default installed-app Responses tool loop for MiMo JANGTQ_2 only. Broader literal/JSON/source-vs-quant exactness, media, JANG_2L tools, and release readiness remain open. No release action was run.
 
+# 2026-06-10 - Gemma 26B JANG4M dev-app video/VL
+
+- Ran current Electron dev-build Gemma 4 26B A4B QAT JANG4M video/VL proof with `npm run dev`, Chat Completions, one app video attachment, server cache controls, temperature `0`, top_p `1`, max tokens `128`, and max prompt tokens `12000`.
+- Proof summary `build/current-real-ui-dev-app-gemma4-26b-jang4m-video-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-dev-app-gemma4-26b-jang4m-video-20260610-proof.json`.
+- Proven: dev app launched, real `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M` loaded, two visible text turns completed before media, the app persisted one `video_url` attachment, server `MEDIA_DIAG` saw `video_url`, the server decoded the base64 MP4, extracted `4` frames, routed those frames through the Gemma media fallback, and the assistant answered `The video is a solid, static red square. REAL_UI_LIVE.`; `videoSemanticVerified=true`.
+- Runtime/cache evidence: active memory `17779.1 MB`, peak `18557.2 MB`, `weight_format=jang_affine`, `profile=JANG_4M`, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`, `l2_block_tokens_on_disk=64`, `l2_tokens_on_disk=64`, block-disk writes `2`, and video-turn media-prefix cache stored `357` prompt tokens.
+- Boundary: this clears Gemma 26B JANG4M current dev-build video/VL only with explicit `max_prompt_tokens=12000`. It does not clear default-4k video behavior, 26B audio, installed-app parity, public tunnel SSE, package/sign/notarize/tag/upload, or release readiness. No release action was run.
+
 # 2026-06-10 - MiMo JANGTQ_2 installed-app exact output
 
 - Ran installed-app MiMo V2.5 JANGTQ_2 exact-output proof through `/Applications/vMLX.app` with Chat Completions, no tools, no media, cache controls, temperature `0`, top_p `1`, and max tokens `64`.
