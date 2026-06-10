@@ -63,6 +63,9 @@
 - cleanup verification: removed two stray Chat Completions parser-seed
   references from the patch review; reran `py_compile`, `git diff --check`, and
   focused pytest `5/5` after cleanup.
+- commit/push: committed as `c468d9b17 Fix Qwen Responses tool-result
+  finalization` and pushed to `origin/codex/pr-intake-manifest` and
+  `origin/main`.
 
 ## CODEX
 - now: Eric asked to put the current carry-forward "into agents.md" after
