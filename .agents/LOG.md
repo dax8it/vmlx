@@ -11945,3 +11945,18 @@ Next action:
     replay, especially tool-result continuation and repeated execution of the
     same call_id/item, before touching parser logic.
   - Do not register Gemma 26B installed-app green yet.
+
+# 2026-06-10 10:55 PDT - Gemma 26B exact direct multi-turn thinking-on reproduction selected
+
+- The installed-app proof had `requestedEnableThinking=true` and panel logs showed second-turn `receivedToolCalls.length=6`; direct single-turn no-thinking proof emitted exactly one call.
+- Next action is direct two-turn Responses SSE with thinking enabled and tool-result continuation to decide whether the six-call behavior appears without panel replay.
+
+# 2026-06-10 10:59 PDT - Gemma 26B direct multi-turn thinking-on reproduction did not reproduce duplicate loop
+
+- Direct turn 1 thinking-on required tool: exactly one `run_command` call, one arguments-done event, then `max_output_tokens`.
+- Direct tool-result continuation with `previous_response_id`: completed final text, no extra calls.
+- Direct turn 2 with `previous_response_id`: exactly one `run_command` call.
+- Direct turn 2 with reconstructed Responses full-history input: exactly one `run_command` call.
+- Direct turn 2 with panel agentic instructions plus auto tool mode: exactly one `run_command` call.
+- Direct turn 2 with panel agentic instructions plus required tool mode: failed closed with `tool_calls_required` and no calls.
+- Classification: direct API/server parser is still not reproducing the installed-app six-plus-six duplicate loop. Need panel raw request/SSE capture before source fix; do not blind-dedupe parser/server.

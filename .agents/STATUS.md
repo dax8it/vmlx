@@ -4127,3 +4127,34 @@ Other-agent action:
     `enable_thinking=false` proof and trace tool execution replay around
     function-call output handling. Preserve final object consistency and raw SSE
     evidence while fixing.
+
+# 2026-06-10 10:55 PDT - Gemma 26B exact direct multi-turn thinking-on reproduction selected
+
+- Current blocker: installed-app Gemma 26B duplicate `run_command` loop after direct no-thinking SSE emitted exactly one function call.
+- New localization step: reproduce the panel's two-turn Responses flow directly against the server with `enable_thinking=true`, `tool_choice` inferred from explicit prompt, function_call_output follow-up, and `previous_response_id`.
+- Decision boundary: if direct multi-turn thinking-on emits six calls on the second user turn, the duplicate behavior is model/server raw output under thinking/tool interleaving; if direct multi-turn does not, compare panel request construction and replay.
+- Constraints retained: no release/sign/notarize/PyPI/update work; no N2 JANG_1L; no subagents; no blind dedupe/drop patch.
+
+# 2026-06-10 10:59 PDT - Gemma 26B direct multi-turn thinking-on reproduction did not reproduce duplicate loop
+
+- Direct server: bundled Python, port `55570`, same Gemma 26B QAT JANG_4M model and cache settings.
+- Raw local SSE artifacts created under `build/responses-sse-captures-20260610/`:
+  - `direct-gemma4-26b-jang4m-multiturn-thinking-turn1-20260610.sse`
+  - `direct-gemma4-26b-jang4m-multiturn-thinking-turn1-followup-20260610.sse`
+  - `direct-gemma4-26b-jang4m-multiturn-thinking-turn2-20260610.sse`
+  - `direct-gemma4-26b-jang4m-fullhistory-thinking-turn2-20260610.sse`
+  - `direct-gemma4-26b-jang4m-fullhistory-agentic-thinking-turn2-20260610.sse`
+  - `direct-gemma4-26b-jang4m-fullhistory-agentic-thinking-turn2-auto-20260610.sse`
+- Results:
+  - Turn 1 thinking-on required tool emitted exactly one `run_command` call and one arguments-done event, then hit `max_output_tokens`.
+  - Tool-result continuation with `previous_response_id` completed with no extra tool calls.
+  - Turn 2 using `previous_response_id` emitted exactly one `run_command` call.
+  - Turn 2 using reconstructed Responses full-history input emitted exactly one `run_command` call.
+  - Turn 2 using full-history plus the panel agentic instructions and auto tool mode emitted exactly one `run_command` call.
+  - Turn 2 using full-history plus panel agentic instructions and required tool mode failed closed with `tool_calls_required` and no calls.
+- Classification update:
+  - The direct API boundary still does not reproduce the installed-app six-plus-six duplicate tool loop.
+  - Do not patch parser/server with a blind dedupe based on the installed-app proof alone.
+  - Next required evidence is panel-captured outbound request body plus raw incoming SSE for the installed-app run, including call IDs and arguments for every function_call item, because current panel logs only summarize `receivedToolCalls.length`.
+- Other-agent action:
+  - Add or enable a debug capture around `panel/src/main/ipc/chat.ts` request body and Responses SSE data lines for the installed-app proof harness. Confirm whether the six calls have distinct call IDs/arguments and whether they arrive from server SSE or are introduced by client aggregation.
