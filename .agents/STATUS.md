@@ -47,6 +47,25 @@
   failed rows matching `qwen35_raw_sse` or generic `responses_raw_sse` remain.
   This clears the stale checklist blocker for current Qwen35 raw SSE evidence
   without a model relaunch or source patch.
+- next selected blocker: Gemma QAT JANG4M installed-app proof registration for
+  larger rows. Refreshed checklist still reports Gemma4 26B/31B QAT JANG4M
+  installed UI proof missing, while current artifact search shows installed-app
+  visible-chat proof files for those rows. Trace inventory/gate source and
+  patch proof registration only if current artifacts honestly cover required
+  surfaces.
+- Gemma 26B result: registered only the existing 26B QAT JANG4M installed-app
+  visible-chat proof in the Gemma inventory gate, regenerated
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-26b-installed-app-ui-proof-20260610.json`,
+  and pointed the full objective checklist at it. The 26B
+  `installed_app_ui_proof` now has `status=pass`, matching model path,
+  installed-app mode, bundled Python, visible chat screenshot, required
+  surfaces, Gemma mixed-SWA native cache, `cache_hit_tokens=7151`, and
+  `l2_block_tokens_on_disk=4884`. 31B remains honestly missing installed-app
+  proof because no 31B installed-app proof file exists.
+- Gemma verification: `py_compile` passed for the Gemma inventory/checklist
+  scripts and focused tests. Focused pytest passed `12/12`; `git diff --check`
+  passed. The refreshed checklist remains `status=open` with `failed_count=56`
+  because broader Gemma/MiMo/N2/release rows remain open.
 
 ## CODEX
 - now: continuing after Qwen27 MXFP8 tunnel parity. Current selected blocker is

@@ -12715,6 +12715,40 @@ Next action:
   readiness, N2 JANG_1L, MiMo exactness/media, Gemma remaining QAT installed UI
   rows, Step/LFM/Nemotron/DSV4 rows, package/sign/notarize, or public release.
 
+# 2026-06-10 13:49 PDT - Gemma QAT installed-app registration lane selected
+
+- Selected blocker: Gemma QAT JANG4M inventory/checklist still marks larger
+  26B/31B installed-app UI proof missing, but current artifact search shows
+  visible-chat installed-app proofs for those rows.
+- Next action: inspect the Gemma QAT inventory artifact and generator mapping.
+  If the artifacts are current and cover the required installed-app surfaces,
+  patch only the stale registration/pointer logic and regenerate the no-heavy
+  inventory/checklist. Do not relaunch models or claim audio/video beyond the
+  artifact evidence.
+
+# 2026-06-10 13:52 PDT - Gemma 26B QAT installed-app proof registered
+
+- Source trace: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py`
+  registered installed-app UI proofs for E2B/E4B/12B only. A valid 26B proof
+  existed at
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`.
+  No 31B installed-app proof file exists, so 31B was not registered.
+- Patch: added the 26B proof pointer to `INSTALLED_APP_UI_PROOFS` and moved the
+  full checklist Gemma inventory pointer to
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-26b-installed-app-ui-proof-20260610.json`.
+- Regenerated artifacts:
+  - `build/current-gemma-qat-native-mxfp4-local-inventory-after-26b-installed-app-ui-proof-20260610.json`
+  - `build/current-full-release-objective-checklist-after-gemma26-installed-ui-proof-20260610.json`
+- Proven by refreshed inventory: 26B installed-app UI proof is `status=pass`
+  with matching model path, installed-app mode, bundled Python, visible chat
+  screenshot, all required installed-app surfaces, Gemma mixed-SWA native cache,
+  `cache_hit_tokens=7151`, and `l2_block_tokens_on_disk=4884`.
+- Still open: Gemma 26B row remains `status=open`/`live_proof_status=partial`
+  at the larger release gate level; 31B installed-app proof remains missing; no
+  release/sign/notarize action.
+- Verification: `py_compile` passed for the two generator scripts and focused
+  tests; focused pytest passed `12/12`; `git diff --check` passed.
+
 # 2026-06-10 13:18 PDT - Gemma JANG/MXFP media/audio gating lane selected
 
 - Current objective continues: build/fix model runtime blockers, especially Gemma JANG/MXFP/QAT VL/video/audio/cache/API/UI, without release/sign/notarize actions.
