@@ -7,6 +7,40 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo Source Combined-Media Splice Fix
+
+Source update:
+
+- `vmlx_engine/models/mllm.py`
+- `tests/test_mimo_v2_media_runtime.py`
+
+Proven:
+
+- MiMo `Model.__call__` now splices all present image/video/audio modalities
+  in one `get_input_embeddings(...)` call before clearing `input_ids`.
+- The previous source flow handled `pixel_values` first, cleared `input_ids`,
+  and could then fail or skip later video/audio splices in combined-media
+  requests.
+- Focused regression proves a single forward with both an image token and an
+  audio token replaces both modal positions while text positions stay as text
+  embeddings.
+
+Verification:
+
+- `.venv/bin/python -m py_compile vmlx_engine/models/mllm.py tests/test_mimo_v2_media_runtime.py`
+- `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_runtime.py -k 'image_and_audio_in_one_forward or model_splices_image_pixels_through_vision_tower or audio_projection_bridge_splices_audio_token'`
+  passed `3/3`.
+
+Boundary:
+
+- This is a source contract fix for combined VL/audio/video requests. It does
+  not clear MiMo JANGTQ_2 red-square/color semantics, literal exactness,
+  required-tool argument exactness, live audio waveform semantics, live video
+  semantics, Responses continuation, installed-app parity, package/sign/
+  notarize, or release readiness.
+- Source-vs-quant color first-divergence could not be rerun because
+  `erics-m5-max2.local:8126` and `127.0.0.1:8897` endpoints were unavailable.
+
 ### MiMo JANGTQ_2 CLI Media + Block-Disk L2 Overlay Fix
 
 Artifact:

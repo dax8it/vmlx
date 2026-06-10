@@ -4713,3 +4713,27 @@ Other-agent action:
 - Verification run: `.venv/bin/python -m pytest -q tests/test_responses_history.py -k \"reasoning_only or chained_response_helper\"` selected 11 and passed; `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k \"terminal_tool_result_synthesis or visible_finalization\"` selected 2 and passed.
 - Classification: Qwen27 direct terminal no-new-tools post-tool synthesis is green. This is not a claim for gateway/tunnel, Qwen-coder-next, Qwen27 nonterminal/new-tool continuations, or all parser families.
 - No new runtime source edit, release/sign/notarize/PyPI/updater/download/site action was performed.
+
+# 2026-06-10 12:37 PDT - MiMo JANGTQ2 image semantics/source splice lane selected
+
+- Current blocker: MiMo V2.5 JANGTQ_2 media route/load/cache is green, but live patched-source color semantics remain red (`red -> Black`, `green -> White`, `blue -> Black`, etc.).
+- Goal: inspect the existing color/visual parity artifacts and the MiMo multimodal splice/runtime path to find a real source issue or classify artifact/source quant contract.
+- Constraints: do not re-chase stale text-only media gate, do not add prompt-only or parser-output fixes, do not claim `vl_image` release clearance from icon text alone, no N2 JANG_1L, no release/sign/notarize/PyPI/updater/download/site action.
+
+# 2026-06-10 12:41 PDT - MiMo combined-media splice bug selected for source fix
+
+- Source/quant first-divergence endpoints were unavailable: `erics-m5-max2.local:8126/health` timed out and `127.0.0.1:8897/health` was not listening. No fresh source-vs-quant color semantic proof can run from the current state.
+- Source trace found a real MiMo media wrapper bug: `Model.__call__` handles `pixel_values` first, converts to `inputs_embeds`, sets `input_ids=None`, then a later video/audio branch can call `get_input_embeddings(input_ids=None, ...)`. Image-only works, but combined image+video/audio media can fail or skip later splices.
+- Fix target: make MiMo `__call__` splice all present image/video/audio embeddings in one `get_input_embeddings(...)` call before clearing `input_ids`.
+- Boundary: this is not a fix for red-square color semantics or exactness; it is a real VL/audio/video combined-media runtime correctness fix. No parser/prompt/output rewrite, no release action, no N2 JANG_1L.
+
+# 2026-06-10 12:49 PDT - MiMo combined-media splice source fix proven
+
+- Source update: `vmlx_engine/models/mllm.py` now routes MiMo `pixel_values`, `image_embeds`, `video_pixel_values`, `video_embeds`, `audio_codes`, and `audio_embeds` through one `get_input_embeddings(...)` call before clearing `input_ids`.
+- Regression: `tests/test_mimo_v2_media_runtime.py::test_mimo_v2_model_splices_image_and_audio_in_one_forward` proves image and audio tokens are both replaced in the same forward pass while text positions remain untouched.
+- Verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/models/mllm.py tests/test_mimo_v2_media_runtime.py`
+  - `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_runtime.py -k 'image_and_audio_in_one_forward or model_splices_image_pixels_through_vision_tower or audio_projection_bridge_splices_audio_token'` -> `3 passed, 16 deselected`
+- Proven: source-level MiMo combined image+audio splice contract, plus image-only and audio-only regressions still pass.
+- Not proven: MiMo JANGTQ_2 red-square/color semantics, literal/tool-arg exactness, live audio waveform semantics, live video semantics, Responses tool-result continuation, installed-app parity, package/sign/notarize/release readiness, or source-vs-quant first divergence. Source/quant endpoints were unavailable for a live color rerun.
+- Other-agent handoff: this fix should be included in bundled runtime parity before any checkpoint DMG rebuild, but do not use it to clear MiMo semantic quality rows. Next best MiMo work remains source-vs-quant/logit/artifact diagnosis for JANGTQ_2 exactness and real live audio/video proofs.

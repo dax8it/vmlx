@@ -12512,3 +12512,22 @@ Next action:
 - Required-tool seed-fix SSE preserves reasoning-enabled function-call args `blue-cat`; terminal continuation seed-fix SSE emits visible output deltas and completed final object.
 - Focused guards passed: 11 Responses history tests and 2 terminal synthesis/visible finalization source guards.
 - Scope remains direct server only; gateway/tunnel and Qwen-coder-next remain open.
+
+# 2026-06-10 12:37 PDT - MiMo JANGTQ2 image semantics/source splice lane selected
+
+- Moving to MiMo JANGTQ2 image semantics because route/load/cache/icon text is green but color semantics remain red.
+- First action: inspect existing artifacts and source splice path; no source edit before root-cause evidence.
+
+# 2026-06-10 12:41 PDT - MiMo combined-media splice bug selected for source fix
+
+- Source-vs-quant endpoints are unavailable, so color first-divergence remains blocked by external state.
+- Found source bug in MiMo wrapper combined media flow; patching all-media single-pass splice.
+
+# 2026-06-10 12:49 PDT - MiMo combined-media splice source fix proven
+
+- Patched `vmlx_engine/models/mllm.py` so MiMo image/video/audio inputs are spliced together in a single `get_input_embeddings(...)` call before `input_ids` is cleared.
+- Added regression `test_mimo_v2_model_splices_image_and_audio_in_one_forward`.
+- Verified:
+  - `.venv/bin/python -m py_compile vmlx_engine/models/mllm.py tests/test_mimo_v2_media_runtime.py`
+  - `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_runtime.py -k 'image_and_audio_in_one_forward or model_splices_image_pixels_through_vision_tower or audio_projection_bridge_splices_audio_token'` -> `3 passed, 16 deselected`.
+- Boundary: this proves source combined-media splice correctness only. It does not clear MiMo color semantics, exactness, live audio/video semantics, installed-app parity, or release readiness.
