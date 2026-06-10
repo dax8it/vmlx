@@ -1412,3 +1412,13 @@
   `build/current-release-surface-contract-after-checkpoint-upload-20260610.json`.
   It remains `status=fail` only because `https://raw.githubusercontent.com/jjang-ai/mlxstudio/main/latest.json` is still serving the pre-replacement hashes from GitHub raw CDN cache even though GitHub Contents API, `github.com/.../raw/refs/heads/main/latest.json`, jsDelivr, and the live site updater all show the checkpoint hashes.
 - Boundary: this is a public signed/notarized checkpoint release surface, not production-clear runtime release readiness. The manifest still records `release_ready=false` elsewhere for N2 JANG_1L, MiMo exactness/media, DSV4, public tunnel SSE parity, audio support, and full matrix gaps.
+
+# 2026-06-10 - Gemma audio modality source boundary pinned
+
+- Reduced blocker: `model autodetect / capability detection` for Gemma JANG/MXFP/QAT audio honesty.
+- Source proof: `build/current-gemma-audio-modality-source-boundary-20260610.json`, plus inventory refresh `build/current-gemma-native-mxfp4-inventory-gate-refresh-20260610.json`.
+- Proven in current source: `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`, `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`, `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`, and `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M` all return `audio_declared=false` and runtime modalities `["text","vision","video"]`.
+- Artifact facts: the checked 12B JANG4M/MXFP4 bundles have `audio_config` plus `embed_audio.embedding_projection.weight` only, with `audio_tower_weight_count=0`; the checked 26B/31B JANG4M bundles have no audio tower weights. Current source therefore does not infer audio from config/token/projection-only metadata.
+- Test proof: `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'gemma4_runtime_modalities or gemma4_unified' tests/test_gemma_qat_native_mxfp4_inventory_gate.py` passed (`16 passed`). The Gemma Unified loader test now explicitly simulates missing source runtime before expecting text-loader fallback, keeping it consistent with source-runtime-available tests.
+- Boundary: installed-app audio rows that reached an empty answer remain red/stale until rebuilt from current source and reproven. This does not prove audio generation for 12B/26B/31B, and video still requires live frame-through-vision evidence.
+- Parallel-agent note: only advertise Gemma audio when `audio_tower.*` weights exist and live E2E audio proof passes. For E2B/E4B bundles that do have audio tower weights, run real audio E2E separately; do not transfer that claim to 12B/26B/31B projection-only/no-audio bundles.

@@ -8943,3 +8943,31 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary: public checkpoint release surface is now updated, but this does not
   change the broader runtime matrix state or production `release_ready=false`
   blockers.
+
+# 2026-06-10 - Gemma audio modality source boundary pinned
+
+- Read `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`; active lane stayed
+  Gemma honest modality gating and proof, no release/PyPI/signing action.
+- Checked current source helpers for:
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`,
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`,
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`, and
+  `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M`.
+  All returned `audio_declared=False` and runtime modalities
+  `["text", "vision", "video"]`.
+- Inventory refresh:
+  `.venv/bin/python tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py --out build/current-gemma-native-mxfp4-inventory-gate-refresh-20260610.json`.
+  Result: `status=open`, `missing_required_rows=[]`; the open rows are broader
+  smoke/media rows, not a missing local-model inventory row.
+- Focused contract test:
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'gemma4_runtime_modalities or gemma4_unified' tests/test_gemma_qat_native_mxfp4_inventory_gate.py`
+  passed with `16 passed`.
+- Small test-contract edit: `tests/test_engine_audit.py` now monkeypatches
+  `gemma4_unified_runtime_available()` to `False` in the test that expects
+  Gemma4 Unified VLM JANG loading to delegate to the text loader. This preserves
+  the intended missing-runtime fallback without adding any fake runtime guard.
+- Wrote proof artifact
+  `build/current-gemma-audio-modality-source-boundary-20260610.json`.
+- What not to claim: audio is not proven for checked 12B/26B/31B Gemma bundles;
+  older installed-app audio rows remain red/stale until rebuilt from current
+  source and reproven; video still needs live frame-through-vision proof.
