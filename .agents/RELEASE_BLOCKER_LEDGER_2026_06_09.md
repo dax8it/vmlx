@@ -111,6 +111,13 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `l2_block_tokens_on_disk=4225`, block-disk hits `36`, writes `68`). This
   does not clear broader JANGTQ_2 literal/JSON/source-vs-quant exactness or
   media support.
+- 2026-06-10 update: MiMo JANGTQ_2 current dev-build exact-output probe is
+  also red in `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`.
+  The dev app loaded the real bundle, kept parser/reasoning leak checks clean,
+  hit paged mixed-SWA cache with `cache_hit_tokens=41`, and wrote block L2;
+  however it returned `ACKCB-742` for expected `ACK-CB-742` and only `{"` for
+  expected `{"status":"ok","value":"blue-cat"}`. This matches installed app and
+  confirms the blocker is not dev-vs-installed UI drift.
 - 2026-06-10 update: MiMo JANGTQ_2 installed-app exact-output probe is still
   red in `build/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`.
   The same rebuilt app loaded the real 79 GiB bundle, kept parser/reasoning

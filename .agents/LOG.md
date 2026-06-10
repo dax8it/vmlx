@@ -8342,3 +8342,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven: dev app launched as `uiLaunchMode=electron-dev`, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` loaded, `/v1/responses` route used, built-in `run_command` executed, `previous_response_id` follow-ups sent `function_call_output`, Responses delta/cache-detail surfaces were recorded, and probe files contained `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO` exactly.
 - Runtime/cache evidence: active memory `76763.1 MB`, peak `81328.7 MB`, TurboQuant codebook routed experts with prestacked layout, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=4548`, `l2_block_tokens_on_disk=4225`, block-disk hits `36`, and block-disk writes `68`.
 - Boundary: this clears dev-app Responses/tool/cache parity for MiMo JANGTQ_2 only. It does not clear MiMo JANGTQ_2 exact literal/JSON/source-vs-quant rows or media support. No release action was run.
+
+# 2026-06-10 - MiMo JANGTQ_2 dev-app exact output
+
+- Ran current Electron dev-build MiMo V2.5 JANGTQ_2 exact-output proof with `npm run dev`, Chat Completions, no tools, server cache controls, temperature `0`, top_p `1`, and max tokens `64`.
+- Proof summary `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-20260610-proof.json`.
+- Positive evidence: dev app launched as `uiLaunchMode=electron-dev`, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` loaded, visible streamed Chat turns completed, server cache controls were visible, no parser/reasoning leak was recorded, no persisted tools/reasoning, native mixed-SWA cache, paged prefix hit, and block L2 writes.
+- Runtime/cache evidence: active memory `76483.5 MB`, peak `77024.8 MB`, TurboQuant codebook routed experts with prestacked layout, `cache_detail=paged`, `cache_hit_tokens=41`, `l2_block_tokens_on_disk=117`, and block-disk writes `3`.
+- Red evidence: expected `ACK-CB-742` but got `ACKCB-742`; expected `{"status":"ok","value":"blue-cat"}` but got `{"`. Boundary: the same exactness failure reproduces in dev app and installed app. No release action was run.
