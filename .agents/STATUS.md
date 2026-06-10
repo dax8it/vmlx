@@ -1,4 +1,47 @@
 ## CODEX
+- verification: `.venv/bin/python -m py_compile` passed for the two modified
+  generators and their focused tests; `.venv/bin/python -m pytest -q
+  tests/test_gemma_qat_native_mxfp4_inventory_gate.py
+  tests/test_full_release_objective_checklist.py -k 'gemma_qat_native_mxfp4 or
+  full_release_objective_checklist'` passed `28/28`; `git diff --check` passed.
+
+## CODEX
+- now: Gemma QAT/JANG4M inventory status closure is implemented and artifacts
+  regenerated. The gate now promotes only rows with both current-source
+  full-media proof and installed-app UI/API/cache proof to `status=pass` and
+  `live_proof_status=pass`.
+- proof artifacts:
+  - `build/current-gemma-qat-native-mxfp4-local-inventory-after-jang4m-status-closure-20260610.json`
+  - `build/current-full-release-objective-checklist-after-gemma-jang4m-status-closure-20260610.json`
+- proven: Gemma4 QAT JANG4M E2B, E4B, 12B, 26B, and 31B rows now close at the
+  row level because each has `source_fullmedia_smoke.status=pass` and
+  `installed_app_ui_proof.status=pass`.
+- not proven: overall Gemma QAT/native MXFP4 inventory remains `status=open`;
+  `all_required_live_proofs_present=false`; open rows remain
+  `gemma4_e2b_qat_native_mxfp4`, `gemma4_e4b_qat_native_mxfp4`,
+  `gemma4_12b_native_mxfp4`, `gemma4_26b_vl`, and
+  `gemma4_31v_or_31b_vl`.
+- checklist delta: full release checklist remains `status=open`, but
+  `failed_count` dropped from `56` to `51`. No release/sign/notarize/PyPI/
+  updater/download/site action was taken.
+
+## CODEX
+- now: selected a narrow Gemma QAT/JANG4M release-gate classification blocker.
+  The current inventory shows QAT JANG4M rows with both
+  `source_fullmedia_smoke.status=pass` and `installed_app_ui_proof.status=pass`,
+  but `classify_required_rows` still leaves every present row at `status=open`.
+  Patch only the status derivation so fully evidenced rows become `pass`; leave
+  native MXFP4/VL rows open where installed-app proof is missing.
+- constraints: no new model proof is being invented, no media/capability claim
+  is upgraded from metadata, no release/sign/notarize/PyPI/updater/download/site
+  action, no N2 JANG_1L, and no subagent delegation. Regenerate only the Gemma
+  inventory/checklist artifacts needed to reflect the source/proof state.
+- expected outcome: close the QAT JANG4M row-level `open` status for sizes that
+  already have both current-source full-media and installed-app UI/API/cache
+  proof, while keeping broader Gemma status open until remaining native MXFP/VL,
+  media, installed-app parity, and release rows are honestly green.
+
+## CODEX
 - now: continuing the persistent checkpoint-readiness goal after the current-turn
   goal reminder. Select the next blocker from current written proof state, not
   chat memory or stale release pressure.

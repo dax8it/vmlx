@@ -12913,6 +12913,44 @@ Next action:
   not overwrite the registered narrow-prompt proof unless a stricter 31B
   installed-app proof is rerun and passes.
 
+# 2026-06-10 14:10 PDT - Gemma QAT/JANG4M status closure generated
+
+- Patched `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` so
+  rows with both current-source full-media proof and installed-app UI/API/cache
+  proof become `status=pass` and `live_proof_status=pass`.
+- Generated
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-jang4m-status-closure-20260610.json`.
+  It remains `status=open`, with no missing required rows and these open rows:
+  `gemma4_e2b_qat_native_mxfp4`, `gemma4_e4b_qat_native_mxfp4`,
+  `gemma4_12b_native_mxfp4`, `gemma4_26b_vl`,
+  `gemma4_31v_or_31b_vl`.
+- Generated
+  `build/current-full-release-objective-checklist-after-gemma-jang4m-status-closure-20260610.json`.
+  The checklist remains `status=open`; `failed_count` dropped from `56` to
+  `51`. The five QAT JANG4M `_open` failures are gone.
+- No new runtime/model proof was invented. This only makes the no-heavy gate
+  reflect already-registered current-source and installed-app evidence.
+- Verification: `.venv/bin/python -m py_compile` passed for the modified
+  generator scripts and focused tests; `.venv/bin/python -m pytest -q
+  tests/test_gemma_qat_native_mxfp4_inventory_gate.py
+  tests/test_full_release_objective_checklist.py -k 'gemma_qat_native_mxfp4 or
+  full_release_objective_checklist'` passed `28/28`; `git diff --check` passed.
+
+# 2026-06-10 14:10 PDT - Gemma QAT/JANG4M gate classification selected
+
+- Selected a narrow release-gate classification bug in
+  `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py`.
+- Evidence: current QAT JANG4M rows can have both
+  `source_fullmedia_smoke.status=pass` and `installed_app_ui_proof.status=pass`,
+  but the classifier initializes present rows as `open` and never promotes them
+  to `pass`.
+- Intended patch: promote only rows with both source full-media proof and
+  installed-app UI/API/cache proof to `status=pass` and
+  `live_proof_status=pass`; keep rows without installed-app proof or source
+  proof open. This is a gate truth fix, not a new runtime/model claim.
+- Constraints remain active: no release/sign/notarize/PyPI/updater/download/site
+  action, no N2 JANG_1L, no subagents, and no metadata-only capability upgrades.
+
 # 2026-06-10 14:01 PDT - Gemma 31B proof commit pushed
 
 - Commit `362db8f38` (`Prove Gemma4 31B installed app UI`) was pushed to
