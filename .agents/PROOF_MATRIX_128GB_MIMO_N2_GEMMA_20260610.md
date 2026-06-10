@@ -156,6 +156,9 @@ Artifact:
 
 - `build/current-mimo-v25-jang2l-live-cb-cache-text-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-proof-20260610.json`
+- `build/current-mimo-v25-jang2l-chat-tool-boundary-20260610.json`
+- `build/current-mimo-v25-jang2l-chat-tool-boundary-fulltools-20260610.json`
+- `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-after-toolchoice-proof-20260610.json`
 
 Proven:
 
@@ -170,12 +173,34 @@ Proven:
 - L2 block writes observed: `l2_tokens_on_disk=62`.
 - Exact short output preserved: both repeats returned `ACK-CB-742`; first-token
   system probe returned `OK`.
+- Direct source Chat tool boundary with only `run_command` passed for both
+  `auto` and specific/required tool modes, with paged cache and L2 positive.
+- Direct source Chat boundary with the full panel tool surface proved the
+  failure shape: full auto mode is not green (`HTTP 413` nonstream and stream
+  `prompt_too_long`, `4754` tokenized prompt tokens against max `4096`), while
+  specific/required `run_command` still produced a tool call.
+- Panel request assembly now sends a specific `tool_choice` only when the latest
+  user message explicitly names exactly one available built-in tool. This is
+  covered for both Chat Completions and Responses request bodies, and multiple
+  named tools/no explicit tool names remain unpinned.
+- Post-fix real Electron dev-app MiMo attempts executed `run_command` tool calls
+  and streamed visible content with cache/L2 telemetry. The best post-fix app
+  run recorded `eventCounts.tool=90`, `eventCounts.stream=144`,
+  `eventCounts.complete=2`, `cached_tokens=2344`, `cache_detail=paged`,
+  `l2_block_tokens_on_disk=1074`, and `disk_writes=18`.
 
-Not proven:
+Red / not proven:
 
-- Required/auto tool call exactness in the dev-app row. The real app proof
-  loaded the model and proved cache/L2, but failed the tool loop: no probe files
-  were created and the second assistant turn had empty visible content.
+- Robust required/auto tool exactness in the dev-app row. The post-fix app run
+  did call `run_command`, but MiMo mutated requested semantics:
+  `REAL_UI_LIVE_TOOL_ONE` became `REAL_UI_LAND_TOOL_ONE`, and requested
+  working-directory files became `/tmp/real_ui_land_tool_one.txt` /
+  `/tmp/real_ui_land_tool_two.txt`; the expected probe files were not created.
+- A stricter prompt using explicit `printf` / `cat` shell commands and a fixed
+  working directory also failed: first assistant content was only
+  `The user wants me to run run a specific command with the exact argument:`
+  and the second assistant content was empty.
+- The `long_tool_loop` release surface remains red for MiMo JANG_2L.
 - Responses stream/nonstream tool path for JANG_2L.
 - Fresh-process L2 restore for JANG_2L.
 - VL/audio/video runtime, even though media assets/weights are present.
@@ -183,14 +208,14 @@ Not proven:
 
 Next implementation target:
 
-- Extend JANG_2L from the current passing short cache/text row into tool,
-  Responses, fresh-process L2 restore, and media honesty. This is the best
-  MiMo checkpoint candidate right now.
-- For the dev-app red row, do not chase cache/L2: the failed app proof still
-  showed `cached_tokens=3407`, `cache_detail=paged`,
-  `l2_block_tokens_on_disk=3544`, and `disk_writes=57`. Next compare raw
-  chat/tool output against panel dev-app chat trace to isolate parser/template
-  selection versus model output quality.
+- Keep the panel `tool_choice` fix; it reduces the app/full-tool-surface
+  failure without faking a tool call. Do not generalize it beyond explicit
+  single-tool user requests.
+- Next MiMo work is model/artifact/decode/tool-argument exactness. Cache/L2 is
+  not the current blocker: post-fix app attempts have paged cache hits and
+  block-disk L2 writes.
+- Continue JANG_2L into Responses, fresh-process L2 restore, and media honesty
+  only after tool argument/visible-final exactness is understood.
 
 ### Nex/N2 Pro JANGTQ2
 
@@ -336,8 +361,12 @@ Next implementation target:
   N2 use `hybrid_ssm_v1` with attention TQ KV plus native SSM companion.
 - MiMo JANGTQ2 is loaded/cached but exactness-red; do artifact/logit/decode
   diagnosis, not parser repair.
-- MiMo JANG_2L is the stronger MiMo checkpoint candidate; extend it to tools,
-  Responses, fresh-process L2 restore, and honest media.
+- MiMo JANG_2L is the stronger MiMo checkpoint candidate for load/cache/text,
+  but post-fix app tool exactness is still red. The panel now pins
+  `tool_choice` only for explicit single-tool user requests, and the app can
+  execute MiMo-generated `run_command` calls, but MiMo still mutates filenames
+  and sentinel text. Other agent should work artifact/logit/decode/tool-arg
+  exactness before claiming app tool support.
 - N2 JANGTQ2 is the stronger N2 checkpoint candidate; it has live hybrid
   SSM/TQ/L2/tool/Responses proof.
 - N2 JANG_1L needs a real memory-strategy fix. The current failure is a Metal

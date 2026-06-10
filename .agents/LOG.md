@@ -7944,6 +7944,16 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Updated `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the concrete keychain unlock/partition-list sequence, Developer ID/notary profile boundary, and canonical Sequoia/Tahoe build -> notarize/staple/blockmap -> verify flow.
 - Boundary: no build, package, sign, notarize, tag, appcast, or download mutation was run. The known blocker is `prepackage_ready=false`, not missing knowledge of how to sign/notarize.
 
+# 2026-06-10 - MiMo JANG_2L app tool-choice boundary remains exactness-red
+
+- Added scoped panel request behavior: when built-in tools are enabled and the latest user message explicitly names exactly one available tool, the panel sends a specific `tool_choice` for Chat Completions and Responses. It does not pin if no explicit tool name is present or if multiple tools are named.
+- Added direct boundary probe `tests/cross_matrix/run_mimo_jang2l_chat_tool_boundary_probe.py`.
+- Direct MiMo JANG_2L single-tool boundary passed: `build/current-mimo-v25-jang2l-chat-tool-boundary-20260610.json` shows auto and required `run_command` tool calls plus paged cache/L2 positive.
+- Direct MiMo JANG_2L full-panel-tool boundary reproduced the app pressure: `build/current-mimo-v25-jang2l-chat-tool-boundary-fulltools-20260610.json` is red for auto (`HTTP 413` nonstream and stream `prompt_too_long`, 4754 tokenized prompt tokens vs max 4096) but green for specific/required `run_command`.
+- Post-fix real Electron dev-app proof remains red: `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-after-toolchoice-proof-20260610.json`. The app loaded MiMo, executed `run_command`, streamed visible text, and proved paged cache/L2, but MiMo mutated requested semantics (`REAL_UI_LIVE_TOOL_ONE` to `REAL_UI_LAND_TOOL_ONE`, working-directory probe files to `/tmp/real_ui_land_tool_*.txt`). A stricter exact-command prompt also failed with partial/empty visible assistant content.
+- Validation: `panel/tests/request-builder.test.ts` passed 68/68; focused request/model registry tests passed 8/8; `npx tsc --noEmit --pretty false` passed; `python3 -m py_compile tests/cross_matrix/run_mimo_jang2l_chat_tool_boundary_probe.py` passed.
+- Boundary: do not call MiMo JANG_2L app tool support green yet. Next work is tool-argument/exactness diagnosis, not cache/L2 or fake parser/tool-call synthesis. No package/sign/notarize/tag/download action.
+
 # 2026-06-09 17:01 PDT - Gemma 4 12B MXFP4 source image proof
 
 - Ran one live source media row: `.venv/bin/python tests/cross_matrix/run_gemma4_12b_media_smoke.py --rows mxfp4 --port 8892 --load-timeout 420 --out build/current-gemma4-12b-mxfp4-media-smoke-after-release-doc-correction-20260609.json`.
