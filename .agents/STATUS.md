@@ -942,3 +942,12 @@
 - Red evidence: server `MEDIA_DIAG` saw one `image_url`, but the API returned `400 - /v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.`
 - Boundary: the bundle has preserved media weights, but runtime metadata marks them `unwired weights_preserved_text_runtime`; do not claim MiMo JANG_2L image/VL support in the checkpoint release.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - MiMo JANG_2L dev-app Responses tools classified red
+
+- Ran real Electron dev-app MiMo V2.5 JANG_2L Responses built-in tool proof with `max_tokens=384`, `max_prompt_tokens=12000`, `max_tool_iterations=8`, and thinking off.
+- Added tracked proof summary `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-proof-20260610.json`, `status=fail`.
+- Positive evidence: first turn used `/v1/responses`, emitted one `run_command` tool call, sent a scoped tool-result follow-up with `previous_response_id`, and completed one tool loop. Runtime/cache was live: peak memory `109374.2 MB`, `cache_hit_tokens=1071`, `cache_detail=paged`, `l2_block_tokens_on_disk=3784`, block-disk `disk_hits=18`, and `disk_writes=60`.
+- Red evidence: full two-turn loop did not finish; harness failed with `CDP timeout: Runtime.evaluate` while the second Responses request was still active. No final probe-file semantics were verified.
+- Boundary: do not claim MiMo JANG_2L Responses/long-tool-loop support in the checkpoint release. Cache/L2 is not the blocker for this row.
+- No package/sign/notarize/tag/upload/release action was run.

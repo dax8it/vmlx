@@ -8143,3 +8143,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary proved: the 105 GiB artifact loaded and text/cache/L2 worked, but server `MEDIA_DIAG` saw `image_url` and then rejected image with `400` because the loaded runtime is text-only; supported modalities reported by the server are `text`.
 - This is not a load/cache/L2 failure. Do not claim MiMo JANG_2L media support from preserved media weights.
 - No release action was run.
+
+# 2026-06-10 - MiMo JANG_2L dev-app Responses tools red
+
+- Ran real Electron dev-app MiMo V2.5 JANG_2L Responses built-in tool proof.
+- Added tracked summary `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-proof-20260610.json`, `status=fail`.
+- Positive evidence: first Responses turn emitted `run_command`, app used `previous_response_id` for the tool-result follow-up, and one tool loop completed.
+- Red boundary: full two-turn loop failed with `CDP timeout: Runtime.evaluate` while the second request was still active; no final tool probe file semantics were verified.
+- Cache/L2 remained real and positive: `cache_hit_tokens=1071`, `l2_block_tokens_on_disk=3784`, `disk_hits=18`, `disk_writes=60`.
+- No release action was run.

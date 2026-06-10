@@ -234,6 +234,7 @@ Artifact:
 - `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-after-toolchoice-proof-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-followup-proof-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-image-proof-20260610.json`
+- `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-proof-20260610.json`
 
 Proven:
 
@@ -287,6 +288,16 @@ Proven:
   override forced MLLM mode because bundle metadata marks vision/audio as
   `unwired weights_preserved_text_runtime`; the runtime routes this artifact
   text-only.
+- Real Electron dev-app MiMo JANG_2L Responses tool proof is now classified.
+  The app used `/v1/responses`, the first turn emitted a built-in
+  `run_command` tool call, the app sent a scoped tool-result follow-up with
+  `previous_response_id=resp_7aed9d6ca76f`, and the first tool loop completed.
+- The same Responses run showed real MiMo runtime/cache pressure rather than a
+  shallow API check: first response took `424` tokens in `289.0s`, live decode
+  was about `1.2 t/s`, peak memory was `109374.2 MB`, paged cache hit tokens
+  reached `1071`, last cache execution used `cached_tokens=687`,
+  `l2_block_tokens_on_disk=3784`, block-disk `disk_hits=18`, and
+  `disk_writes=60`.
 
 Red / not proven:
 
@@ -304,7 +315,11 @@ Red / not proven:
   `REAL_UI_LIVE_TOOL_ONE` / `REAL_UI_LIVE_TOOL_TWO` into
   `REAL_UI_LAND_TOOL_ONE` / `REAL_UI_LAND_TOOL_TWO` and wrote `/tmp` files
   instead of the configured working-directory probe files.
-- Responses stream/nonstream tool path for JANG_2L.
+- Responses stream/nonstream tool path for JANG_2L remains red for release. A
+  real dev-app Responses run proved first-turn tool call plus
+  `previous_response_id` follow-up, but the two-turn loop failed with
+  `CDP timeout: Runtime.evaluate` while the second turn was still active; no
+  final tool probe file semantics were verified.
 - Fresh-process L2 restore for JANG_2L.
 - VL/audio/video runtime. Image/VL is now explicitly red by a text-only runtime
   guard even when forced MLLM is requested; do not claim MiMo JANG_2L media
