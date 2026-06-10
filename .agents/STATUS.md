@@ -1462,3 +1462,28 @@
 - Verification: `.venv/bin/python -m pytest -q tests/test_responses_raw_sse_parity_contract.py tests/test_full_release_objective_checklist.py -k 'raw_sse or qwen35_raw_sse or responses_raw_sse_parity'` passed (`24 passed`).
 - Boundary: no runtime workaround, parser argument synthesis, reasoning-disable workaround, release step, PyPI publish, or N2 JANG_1L action was taken. The remaining Gemma4 E2B raw SSE blocker is public tunnel/model availability (`gemma4-e2b-sse` not advertised/served by tunnel), not local source history/tool-result coverage.
 - Parallel-agent note: for the generic Gemma raw SSE row, redeploy/route the tunnel to the same `gemma4-e2b-sse` model or recapture against an actually advertised same Gemma model, then require content deltas, reasoning events, function-call args delta/done, final object consistency, valid output indices, and `responses_previous_response_history_guard=true`.
+
+# 2026-06-10 - Qwen empty tool-call Chat/Responses harness fixed
+
+- Reduced blocker: Qwen35/Qwen27 empty XML tool-call risk for OpenCode-style
+  Chat Completions and Responses API harnesses.
+- Source fix: `vmlx_engine/server.py::_parse_tool_calls_with_parser()` now
+  keeps parser-init fallback behind the same request-schema filter and strips
+  native tool markup residue when a parsed call is rejected for missing required
+  args.
+- Proof artifact:
+  `build/current-noheavy-api-cache-contract-qwen-empty-tool-chat-responses-20260610.json`,
+  `status=pass`, `missing_markers=[]`.
+- Verification:
+  focused server command passed with `7 passed`, and the full no-heavy
+  API/cache contract passed. The `responses_streaming_tool_contracts` row now
+  includes Responses streaming, Chat streaming, and shared nonstream parser
+  coverage for the preamble plus empty XML `exec_command` shape.
+- Proven: current source emits no executable `"arguments":"{}"` payload, no
+  structured tool delta/item, and no raw invalid tool markup for the empty
+  required-arg XML function shape. Valid XML parameter form still preserves
+  `{"cmd":"ls /tmp"}`.
+- Boundary: no live model load or tunnel redeploy was performed in this step.
+  Keep Qwen35/Qwen27 live same-model harness recapture on the list for direct,
+  gateway, and public tunnel if the backend changes. No release, PyPI, signing,
+  notarization, media, MiMo, Gemma, or N2 JANG_1L action was taken.

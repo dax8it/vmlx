@@ -9077,3 +9077,54 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - What not to claim: this is not a runtime model-family proof for MiMo/N2/Gemma
   media, not installed-app parity, not full release readiness, and not a release
   action.
+
+# 2026-06-10 - Qwen 35B/27B empty tool-call API harness item added
+
+- User added a new suspect issue: Qwen 35B may share the Qwen 27B empty
+  tool-call failure mode because both use the same XML tool-call dialect. The
+  specific reported shape is visible text preamble followed by
+  `<tool_call><function=exec_command></function></tool_call>`, which a parser
+  can collapse into executable `{}` arguments.
+- Active debugging target: verify and, if needed, fix vMLX-engine behavior
+  across Chat Completions streaming/nonstreaming, Responses streaming/
+  nonstreaming, gateway passthrough, reasoning-enabled requests, tool-result
+  continuation, and cache-reuse harnesses used by OpenCode and agent loops.
+- Required behavior: no executable tool call may be emitted with missing
+  schema-required args or serialized `"arguments":"{}"` for required-arg tools.
+  Do not synthesize `cmd`, do not disable reasoning, do not drop kwargs, and do
+  not hide raw XML/tool markup as a substitute for parser correctness.
+- Current movement: inspecting source paths before patching. Previously proven
+  streaming Responses source guard is not enough to claim this broader harness
+  item fixed.
+
+# 2026-06-10 - Qwen empty tool-call Chat/Responses harness guard fixed
+
+- Source fix: `_parse_tool_calls_with_parser()` now routes parser-initialization
+  fallback through the same request-schema filter as the normal path instead
+  of returning raw `parse_tool_calls(output_text)`.
+- Source fix: when a native tool marker parses to a tool call but all calls are
+  dropped because required schema args are missing/empty, the returned visible
+  text strips the raw tool markup residue. This prevents invalid
+  `<tool_call><function=...></function></tool_call>` markup from entering
+  nonstream Chat/Responses content or follow-up history after fail-closed
+  filtering.
+- Focused reproductions added:
+  `test_tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths`
+  and
+  `test_streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments`.
+  The existing Responses streaming empty-XML tests remain active.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_server.py -k 'tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths or streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_tool_call_arguments_survive_buffering or streaming_responses_reasoning_tool_call_keeps_arguments or streaming_responses_tool_call_uses_next_output_index_without_text'`
+  passed with `7 passed`.
+- No-heavy API/cache contract was regenerated at
+  `build/current-noheavy-api-cache-contract-qwen-empty-tool-chat-responses-20260610.json`
+  with `status=pass`, `missing_markers=[]`, and
+  `responses_streaming_tool_contracts: passed=7`.
+- Proven in current source: for Qwen-family XML tool output shaped as a visible
+  preamble plus empty `<function=exec_command></function>`, Chat streaming,
+  Responses streaming, and the shared nonstream parser path emit no executable
+  `{}` arguments, no tool-call delta/item, and required mode fails closed. A
+  valid `<parameter=cmd>ls /tmp</parameter>` tool call still preserves `cmd`.
+- Still not claimed: no live Qwen35/Qwen27 model recapture was run in this
+  step, no deployed public tunnel was rebuilt here, no release/PyPI/signing
+  action was taken, and this does not prove every parser family or media row.
