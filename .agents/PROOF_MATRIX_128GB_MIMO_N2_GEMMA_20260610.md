@@ -35,6 +35,39 @@ Boundary:
   this required-tool request. It does not clear every model family, installed
   app UI, tool-result continuation, Gemma/MiMo/N2, or release readiness row.
 
+### Qwen35 Tool-Result Continuation And Hybrid Cache
+
+Artifact:
+
+- `build/current-qwen35-mxfp8-mtp-responses-tool-result-auto-no-tool-after-ssm-size-scale-20260610/SUMMARY.json`
+
+Fix:
+
+- `vmlx_engine/cli.py` now scales hybrid SSM companion entry capacity from the
+  MB budget when a caller reserves more than the default SSM memory. Default
+  remains conservative at `512 MB -> 8` entries; the 128GB-lane launch budget
+  `8192 MB` now yields `64` entries.
+
+Proven:
+
+- Live health reported `ssm_companion.max_entries=64`, Qwen3.5 MoE native MTP,
+  hybrid SSM cache, live attention TurboQuant KV, paged cache, block L2, and
+  SSM companion L2.
+- Responses gate passed with `overall_pass=true`: `tool_choice=auto`, two
+  structured tool calls, two in-turn `function_call_output` continuations,
+  `previous_response_id`, final no-tools visible answer, tool-result evidence,
+  no raw tool markup leak, block L2 writes, SSM companion L2, and strict
+  post-first cache hits (`cached_tokens=128`, then `256`).
+
+Boundary:
+
+- This green row uses final-turn `enable_thinking=false` as a compatibility
+  control after reasoning-enabled tool turns. It does not clear full
+  reasoning-enabled final no-tool synthesis; the earlier
+  `build/current-qwen35-mxfp8-mtp-responses-tool-result-auto-no-tool-max1536-20260610/SUMMARY.json`
+  stayed red because the final no-tool answer was reasoning-only before visible
+  output.
+
 ### MiMo JANGTQ_2 Loader Contract
 
 Artifact:

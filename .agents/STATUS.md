@@ -2962,3 +2962,110 @@
 - Result: created commit this commit (`Prove Qwen35 Responses raw SSE parity`).
   The commit is proof-only and does not include release actions, N2 JANG_1L
   work, unrelated panel settings drift, or `node_modules/`.
+- Push result: final commit `52fffd51` was pushed to
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+
+# 2026-06-10 07:45 PDT - Next Qwen API gap selected
+
+- Next blocker selected: Qwen/Qwen-coder Responses API tool-result
+  continuation plus auto/no-tool behavior and cache/API event consistency.
+- Constraint check: continue in the active worktree; do not enter release,
+  signing, notarization, PyPI, website/download, or N2 JANG_1L lanes; do not
+  spawn subagents; do not synthesize tool args, disable reasoning, or patch over
+  raw XML leaks.
+- Planned live proof: launch current-source Qwen35 MXFP8-MTP on a local port,
+  then run `tests/cross_matrix/run_responses_long_tool_cache_gate.py` with
+  `tool_choice=auto`, in-turn `function_call_output`, final no-tools turn,
+  `previous_response_id`, cache reuse, block L2, and SSM companion telemetry.
+
+# 2026-06-10 07:50 PDT - Qwen35 auto-tool gate first run red
+
+- Live server is healthy on `127.0.0.1:8906` for
+  `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`; health shows Qwen3.5 MoE native
+  MTP active, hybrid SSM cache, live attention TurboQuant KV, paged cache,
+  block L2, and SSM companion L2.
+- First gate artifact:
+  `build/current-qwen35-mxfp8-mtp-responses-tool-result-auto-no-tool-20260610/SUMMARY.json`
+  is `overall_pass=false`.
+- What is proven red: with `max_output_tokens=512`, turn 1 and the tool-result
+  follow-up/final turns spent the whole budget in reasoning-only output; turn 2
+  did produce one structured `inspect_symbol` function call, but no visible
+  tool-result-grounded final answer was produced.
+- What is not the observed failure: no HTTP error, no raw tool markup leak, no
+  parser `{}` args emission, no gateway issue, and no L2 write failure. Cache
+  totals reached `l2_block_tokens_on_disk=7080`,
+  `l2_ssm_tokens_on_disk=15144`, `l2_tokens_on_disk=22224`; one paged+SSM hit
+  was observed.
+- Next action: rerun the same live server with the gate's larger output budget
+  before considering a source change, so budget-bound hidden reasoning is
+  separated from parser/API/cache failure.
+
+# 2026-06-10 07:54 PDT - Qwen35 auto-tool larger budget still red
+
+- Larger-budget artifact:
+  `build/current-qwen35-mxfp8-mtp-responses-tool-result-auto-no-tool-max1536-20260610/SUMMARY.json`
+  is still `overall_pass=false`.
+- Green surfaces in this run: turn 1 and turn 2 both produced function calls
+  under `tool_choice=auto`; both in-turn `function_call_output` follow-ups
+  returned HTTP 200; `previous_response_id` was used; every post-first turn had
+  `cached_tokens=256`; cache detail was paged+SSM; no tool markup leaked.
+- Red surfaces in this run: turn 2 visible answer stopped before
+  `TOOL_EVIDENCE`; final no-tool turn with `enable_thinking=true` again spent
+  the output budget in reasoning and produced no visible answer.
+- Classification: parser/API/cache are not the observed failure here. The open
+  issue is Qwen35 long reasoning budget/visible-final behavior under
+  reasoning-enabled no-tool synthesis. Next control run will use a smaller
+  prompt and final-turn thinking-off to prove whether the continuation path can
+  pass without parser repair or synthesized args; that compatibility proof must
+  not be claimed as full reasoning-enabled clearance.
+
+# 2026-06-10 08:02 PDT - Qwen35 SSM companion entry-cap fix
+
+- Control artifact:
+  `build/current-qwen35-mxfp8-mtp-responses-tool-result-auto-no-tool-final-thinking-off-20260610/SUMMARY.json`
+  remained `overall_pass=false`, but for a different reason: visible final text,
+  two auto tool calls, tool-result evidence, no raw markup leak, and final
+  no-tool behavior passed; strict cache reuse failed because `cached_tokens=0`
+  on all rows.
+- Trace: the server log showed paged KV blocks present but repeated SSM
+  companion misses during the multi-round tool flow. The launch reserved
+  `--ssm-state-cache-mb 8192`, but the entry cap stayed at the conservative
+  default `8`.
+- Fix: `vmlx_engine/cli.py` now scales the effective SSM companion entry count
+  from the MB budget when callers reserve more than the default budget. Default
+  `512 MB` still keeps `8` entries; `8192 MB` now yields `64` entries unless
+  the caller explicitly sets an even larger `--ssm-state-cache-size`.
+- Validation: `tests/test_cli_ssm_state_cache_size.py`,
+  `tests/test_engine_audit.py::TestHybridSSMCompanionCacheGating`, and
+  `tests/test_engine_audit.py::TestHybridSSMEnvNames` passed `9/9`;
+  `py_compile vmlx_engine/cli.py tests/test_cli_ssm_state_cache_size.py` passed.
+- Next action: relaunch Qwen35 and verify the live health/cache stats report the
+  scaled SSM entry cap, then rerun the final-thinking-off cache/tool control.
+
+# 2026-06-10 08:08 PDT - Qwen35 auto-tool/cache control green after SSM cap fix
+
+- Live post-fix health on `127.0.0.1:8906` reported
+  `ssm_companion.max_entries=64`, `max_bytes_mb=8192`, Qwen3.5 MoE native MTP
+  active, hybrid SSM cache, live attention TurboQuant KV, paged cache, block L2,
+  and SSM companion L2.
+- Final pass artifact:
+  `build/current-qwen35-mxfp8-mtp-responses-tool-result-auto-no-tool-after-ssm-size-scale-20260610/SUMMARY.json`
+  has `overall_pass=true`.
+- Proven by that artifact: `tool_choice=auto`, two structured function calls,
+  two in-turn `function_call_output` continuations, `previous_response_id`,
+  final no-tools visible answer, no raw tool markup leak, tool-result evidence
+  on both tool turns, block L2 writes, SSM companion L2, and strict post-first
+  cache reuse (`cached_tokens=128` then `256`).
+- Boundary: the pass uses final-turn `enable_thinking=false`; it is a valid
+  compatibility/control proof for tool-result continuation and cache reuse, but
+  it is not full reasoning-enabled final synthesis clearance. The earlier
+  `max1536` reasoning-enabled no-tool synthesis artifact remains red because
+  the final answer stayed reasoning-only before visible output.
+- Server stopped and port `8906` was cleared after proof.
+- Generated block-cache directories from this Qwen proof were removed after the
+  JSON/log artifacts captured cache totals and hit evidence, reducing proof
+  storage from multi-GB to compact commit artifacts.
+- Commit movement: prepared this commit (`Scale Qwen hybrid SSM cache entries`)
+  with the CLI SSM entry-cap fix, focused tests, compact red/green Qwen proof
+  artifacts, and `.agents` updates only. No release, N2 JANG_1L, unrelated
+  panel proof drift, or `node_modules/` were staged.
