@@ -2575,6 +2575,42 @@ Current active lane:
   link, or public release work unless Eric explicitly asks for that action in
   the current turn.
 
+### 2026-06-10 explicit current-turn correction
+
+Eric explicitly corrected this lane to stop recursive/agent-delegation behavior
+and to force every active instruction into checked-in working guidance. This is
+not optional process advice; future continuations must check this before acting.
+
+- No Python subagents: do not use Python to spawn, prompt, supervise, summarize,
+  or coordinate agents for this lane. The same ban applies to shell wrappers,
+  MCP wrappers, browser automation, local orchestration scripts, or any hidden
+  helper that delegates the work. Python and shell remain allowed only for
+  direct local inspection, tests, proof scripts, source edits, artifact reads,
+  and app/runtime verification.
+- Current focus is live fixes/proofs, not release actions: continue reducing
+  MiMo, Gemma, Qwen/Qwen-coder, and N2 JANGTQ/non-JANG_1L runtime/API/UI/cache/
+  parser/media blockers. Do not start signing, notarization, tagging, PyPI,
+  updater JSON, website/download, or public release publication unless Eric
+  explicitly asks for that exact action in the current turn.
+- N2 JANG_1L remains off this lane unless Eric explicitly reopens it in the
+  current turn. Do not infer permission from available RAM, prior attempts, or
+  release pressure.
+- Parser/API correctness is a first-class release blocker: auto tools,
+  required tools, no-tool mode, tool-result continuation, content deltas,
+  reasoning deltas, interleaved reasoning/tool streaming, function-call
+  argument delta/done, output indices, request kwargs passthrough, gateway and
+  tunnel raw SSE parity, cache reuse telemetry, and final response objects must
+  be fixed and proven for opencode/Codex-style harnesses.
+- Qwen3.6/Qwen-coder empty `arguments: {}` behavior must stay on the active
+  reproduce/fix/prove list for 27B and 35B XML tool-call dialects. Do not trust
+  the proposed root cause without same-model raw output, and do not fake-fix it
+  by synthesizing missing args from visible preambles, disabling reasoning,
+  silently dropping calls, hiding raw XML, or rewriting parsed values.
+- Every movement must be written into `.agents/STATUS.md` and `.agents/LOG.md`
+  before the next substantive action: the user request, chosen blocker, command
+  or proof artifact, what is proven, what remains unproven, no-claim boundary,
+  commit/push status, and what the other agent should do next.
+
 ## Current release blocker guard - 2026-06-07 local
 
 This section is local working guidance for the active release-hardening lane. Do not treat it as public release notes and do not commit it unless Eric explicitly asks.

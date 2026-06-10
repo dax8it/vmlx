@@ -5592,3 +5592,130 @@ Other-agent action:
 - Unrelated dirty state still left unstaged:
   `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
   and `node_modules/`.
+
+# 2026-06-10 14:36 PDT - Current-turn directive recorded in AGENTS.md
+
+- Eric explicitly asked to put the current lane constraints into AGENTS.md.
+- Updated AGENTS.md with the current-turn correction: no Python/subagent delegation, no shell/MCP/browser/orchestration subagents, N2 JANG_1L remains off-limits unless reopened in the current turn, parser/API streaming/tool-call correctness is release-critical, Qwen3.6/Qwen-coder empty arguments remains active for 27B/35B XML dialects, and every movement must be written into .agents state.
+- This was a written-state update only. No release/sign/notarize/PyPI/updater/download/site action was started.
+- Next blocker work should continue with direct live fixes/proofs for MiMo, Gemma, Qwen/Qwen-coder, and N2 JANGTQ/non-JANG_1L parser/API/runtime/cache/media/UI rows, one blocker at a time.
+
+# 2026-06-10 14:39 PDT - Qwen Responses empty-args blocker selected
+
+- Current blocker class: `parser/template` + `api/ui`.
+- Reducing the Qwen3.6/Qwen-coder Responses streaming tool-call empty
+  `arguments: {}` failure path for opencode/Codex-style harness usability.
+- Scope for this movement: inspect direct server parser/finalizer data flow,
+  especially XML tool-call extraction, request tool schema propagation, required
+  argument validation, content/reasoning delta separation, and final object
+  consistency.
+- No release/sign/notarize/PyPI/updater/download/site action. No N2 JANG_1L.
+  No subagents.
+
+# 2026-06-10 14:45 PDT - Qwen empty-args focused source regressions pass
+
+- Ran focused direct-server parser/Responses/Chat regressions:
+  `.venv/bin/python -m pytest -q tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_required_empty_xml_tool_call_is_rejected tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_auto_empty_xml_tool_call_strips_final_markup tests/test_server.py::TestOpenAILogprobsFormatting::test_tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_reasoning_tool_call_keeps_arguments`
+- Result: `6 passed`.
+- Proven: current source fails closed for the reported preamble plus empty XML
+  `<function=exec_command></function>` shape when `cmd` is required, strips raw
+  invalid XML in auto mode, does not emit `"arguments": "{}"`, preserves valid
+  reasoning-channel function-call args, and keeps the direct-server synthetic
+  final object failed when required tool calls are missing.
+- Not proven by this step: same-model live direct/gateway/tunnel raw SSE parity,
+  reported deployed model output, panel execution, installed-app parity, and
+  cache/L2 contamination boundaries.
+
+# 2026-06-10 14:47 PDT - Qwen35 raw-SSE artifact currently green
+
+- Inspected
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`.
+- Current artifact status: `pass`.
+- Current artifact checks are green for direct/gateway/tunnel capture presence,
+  same-model parity, expected model, authoritative function-call arguments,
+  expected function name/arguments, required reasoning events, no reasoning
+  disable workaround, valid output item indices, gateway passthrough, tunnel
+  model advertisement, local streaming guards, local output-index guard,
+  previous-response history guard, and local empty-XML fail-closed guard.
+- Boundary: this records current evidence only. It does not prove every Qwen
+  variant, Qwen-coder 35B live behavior, installed-app UI execution, or future
+  gateway/tunnel recapture after packaging.
+
+# 2026-06-10 14:52 PDT - Gemma4 31B native MXFP4 installed-app proof launched
+
+- Current blocker class: `api/ui` + `cache/storage` for Gemma QAT/native MXFP4
+  installed-app parity.
+- Selected row: `gemma4_31v_or_31b_vl`, model
+  `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-MXFP4`.
+- Reason: source full-media/cache proof is green, but installed-app UI proof is
+  missing in
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-e4b-native-mxfp4-installed-app-bundled-reasoning-proof-20260610.json`.
+- Preconditions checked: model path exists, `/Applications/vMLX.app` exists,
+  bundled Python exists, and no active heavy vMLX/model proof process was found.
+- Launch shape: installed app, bundled Python, Responses API, built-in
+  `run_command`, reasoning enabled, deterministic sampling, strict final visible
+  prompts, server cache controls. No release/sign/notarize/PyPI/download action.
+
+# 2026-06-10 14:58 PDT - Gemma4 31B native MXFP4 first proof failed closed
+
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-strictfinal-20260610-proof.json`.
+- Result: `status=fail`.
+- Proven despite failure: installed app launched, bundled Python server loaded
+  `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-MXFP4`, Responses API used,
+  built-in `run_command` executed on both turns, probe files contain
+  `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`, raw parser leak checks
+  are false, persisted tool events `416`, persisted reasoning count `5`,
+  Gemma4 native cache is `mixed_swa_kv_v1`, cache hit tokens `3350`, and block
+  disk L2 wrote `2196` tokens.
+- Release blocker remains: first assistant visible content was empty, so
+  `visibleAssistantTurnsComplete=false`; harness did not mark
+  `reasoning_display` as a proven surface even though reasoning events were
+  persisted. Do not register this artifact as a passing installed-app UI proof.
+- Next action in this lane: one rerun with higher output budget and stricter
+  post-tool final instructions; if it still fails, classify 31B native MXFP4 as
+  the same visible-finalization/reasoning-budget gap instead of weakening the
+  gate.
+
+# 2026-06-10 15:03 PDT - Gemma4 31B max1024 rerun narrowed failure
+
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-strictfinal-max1024-20260610-proof.json`.
+- Result: `status=fail`, only assertion failure is missing
+  `reasoning_display`.
+- Proven by max1024 rerun: visible assistant turns are complete, first final
+  text is `REAL_UI_LIVE_TOOL_ONE`, second final text is
+  `REAL_UI_LIVE_TOOL_TWO second UI turn.`, installed app UI and bundled Python
+  loaded 31B native MXFP4, Responses API and tool loop worked, probe files are
+  exact, raw parser leaks are false, Gemma4 mixed-SWA cache is active, cache hit
+  tokens `3383`, block L2 tokens on disk `2226`, server cache controls verified.
+- Remaining blocker: no reasoning events were recorded with the strict
+  no-further-reasoning prompt. Launching one explicit-brief-reasoning rerun to
+  test whether this row can satisfy both reasoning display and visible final
+  content without weakening the gate.
+
+# 2026-06-10 15:09 PDT - Gemma4 31B native MXFP4 reasoning gap classified
+
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-mxfp4-responses-tools-cachecontrols-bundled-python-reasoning-explicitbrief-max1024-20260610-proof.json`.
+- Result: `status=fail`, only assertion failure is missing
+  `reasoning_display`.
+- Proven: installed app UI, bundled Python, real 31B native MXFP4 load,
+  Responses API, delta streaming, two-turn visible assistant content,
+  `run_command` tool execution, exact probe files, server cache controls,
+  Gemma4 `mixed_swa_kv_v1`, cache hit tokens `3403`, block L2 tokens on disk
+  `2242`, raw parser leak checks false.
+- Not proven: installed-app reasoning display for this row. The server logs
+  show `enable_thinking=True`, but no reasoning events were persisted.
+- Code change: Gemma QAT/native MXFP4 inventory now records rejected
+  installed-app proof artifacts for `gemma4_26b_vl` and `gemma4_31v_or_31b_vl`
+  as `status=fail` with missing surface details, instead of leaving them as
+  generic `missing`.
+- Regenerated artifacts:
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-native-mxfp4-installed-app-reasoning-gap-20260610.json`
+  and
+  `build/current-full-release-objective-checklist-after-gemma31-native-mxfp4-installed-app-reasoning-gap-20260610.json`.
+- Verification: focused Gemma/full-checklist tests passed (`28 passed`).
+- Release boundary: 26B and 31B native MXFP4 installed-app rows remain open;
+  do not register these failed artifacts as passing proof and do not sign or
+  release from this state.
