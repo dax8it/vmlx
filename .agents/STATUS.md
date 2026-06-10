@@ -1,4 +1,30 @@
 ## CODEX
+- now: Eric asked to put the current carry-forward "into agents.md" after
+  reinforcing the no Python/subagent constraint and parser/API/tool-loop
+  priority. Updated the deprecated wrapper checkout guard at
+  `/Users/eric/vmlx/AGENTS.md` so a continuation that starts there is routed
+  back to the active Python/Electron worktree with the correct current
+  constraints.
+- action: added routing-only instructions covering no subagent delegation,
+  parser/API/tool streaming as release-critical, Qwen3.6/Qwen-coder empty
+  `arguments: {}` fail-closed handling for 27B/35B XML dialects, N2 JANG_1L
+  off-limits unless reopened, no release/sign/notarize/PyPI/updater/download/
+  site actions without current-turn override, and required proven/not-proven
+  `.agents` handoff notes.
+- boundary: this was an instruction/control-plane edit only. No runtime code,
+  model load, parser fix, release action, or proof claim was made.
+
+## CODEX
+- now: Qwen35 raw-SSE parser/API proof accounting is committed and pushed as
+  `2b6a524ca`. Moving to select the next current checklist blocker from
+  `build/current-full-release-objective-checklist-after-qwen35-public-sse-pointer-20260610.json`.
+- constraints: no release/sign/notarize/PyPI/updater/download/site action; no
+  N2 JANG_1L; no subagents; no broad suite churn; prefer one concrete
+  runtime/proof blocker at a time.
+- next action: list current failed rows and choose the next highest-impact
+  Gemma/MiMo/N2-JANGTQ/parser/cache/UI blocker with an actual evidence gap.
+
+## CODEX
 - now: active lane is Qwen/Qwen-coder Responses/tool parser correctness for
   empty or missing required tool arguments, output deltas, and final object
   consistency. This is selected because it directly affects opencode/Codex-style

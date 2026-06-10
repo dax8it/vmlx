@@ -1,3 +1,36 @@
+# 2026-06-10 - Deprecated wrapper AGENTS.md carry-forward
+
+- Request: Eric said "into agents.md" after reinforcing that the no
+  Python/subagent constraint, parser/API/tool-loop priority, N2 JANG_1L
+  boundary, and every status movement must be written down.
+- Current lane: instruction/control-plane update only.
+- Action: updated `/Users/eric/vmlx/AGENTS.md`, the deprecated wrapper
+  checkout guard, with routing-only carry-forward instructions that send future
+  active vMLX work back to the active Python/Electron worktree and preserve the
+  current constraints.
+- Added boundaries: no subagent delegation; parser/API/tool streaming is
+  release-critical; Qwen3.6/Qwen-coder empty `arguments: {}` must fail closed
+  for 27B/35B XML dialects without synthetic args or reasoning-disable
+  workarounds; N2 JANG_1L is Eric-owned/off-limits unless explicitly reopened;
+  no release/sign/notarize/PyPI/updater/download/site actions without a
+  current-turn override; write proven/not-proven status and other-agent handoff
+  notes into active `.agents` files.
+- Boundary: no runtime code was changed, no model was launched, no release
+  action was taken, and no proof/readiness claim is made from this doc edit.
+
+# 2026-06-10 - Next blocker selection after Qwen35 raw-SSE consumption
+
+- Request: keep moving toward production-quality blockers without broad
+  test-suite churn or release action.
+- Current state: Qwen35 raw-SSE proof-accounting commit `2b6a524ca` is pushed
+  to `origin/main` and `origin/codex/pr-intake-manifest`.
+- Current lane: inspect latest checklist
+  `build/current-full-release-objective-checklist-after-qwen35-public-sse-pointer-20260610.json`
+  and select the next concrete Gemma/MiMo/N2-JANGTQ/parser/cache/UI blocker.
+- Constraints: no release/sign/notarize/PyPI/updater/download/site action, no
+  N2 JANG_1L, no subagents, no broad suite churn, and no fake parser/cache/media
+  claims.
+
 # 2026-06-10 - Qwen parser/API missing-args lane
 
 - Request: continue fixing blockers efficiently, with emphasis on auto tool
