@@ -10184,3 +10184,60 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   gap. MiMo JANGTQ_2 exactness remains red and should move to
   source/dequant/logit comparison or corrected artifact profile, not parser,
   cache, sampling, or native gather shape chasing.
+
+# 2026-06-10 07:39 PDT - N2 JANGTQ2 dev-app tool-loop blocker selected
+
+- Current lane: Nex/N2 JANGTQ2 dev-app Responses/tool-loop behavior.
+- Constraints: no N2 JANG_1L, no subagents, no release/sign/notarize/PyPI/
+  download action, no fake tool-argument synthesis, no reasoning-disablement
+  workaround.
+- Next movement: inspect the red stricter N2 JANGTQ2 app proof and panel
+  request path to identify whether the blocker is app request shape,
+  `tool_choice` continuation handling, or model-output quality.
+
+# 2026-06-10 07:50 PDT - Latest AGENTS.md instruction checked
+
+- User asked to put the routing/status/no-subagent constraint into AGENTS.md.
+- `/Users/eric/vmlx/AGENTS.md` already contains that routing guard and
+  no-subagent-spawn language; it is untracked in a dirty deprecated wrapper
+  checkout, so this active runtime lane will not stage that wrapper state.
+- Continue in `/Users/eric/mlx/vllm-mlx-finite-launch-guard` on N2 JANGTQ2
+  dev-app Responses/tool-loop root-cause work.
+
+# 2026-06-10 08:05 PDT - Responses required-tool stream fail-closed source fix
+
+- Inspected the red N2 JANGTQ2 long-delta proof. The first `run_command` tool
+  call executed, but the second required-tool request streamed `128` visible
+  `!` deltas before `tool_calls_required`. This was a source Responses stream
+  contract bug, not a reason to synthesize arguments or disable reasoning.
+- Patched `vmlx_engine/server.py`: Responses streaming now buffers visible
+  content while `tool_choice=required` is active and fails closed with
+  `status=failed`, empty `output_text`, and empty `output` when no tool call is
+  parsed. Missing required args remain dropped; no executable `{}` call is
+  emitted.
+- Proof:
+  `build/current-responses-required-tool-stream-fail-closed-after-n2-longdelta-20260610.json`
+  is `status=pass` for preamble plus empty XML function missing `cmd`.
+- Verification passed: focused `test_server.py` required/empty XML stream tests
+  `2/2`; focused `test_engine_audit.py` required-tool guards `6/6`;
+  `py_compile` and `git diff --check`.
+- Boundary: live N2 JANGTQ2 dev-app rerun, same-model live Qwen 27B/35B route
+  recapture for this stricter behavior, installed-app parity, and release
+  clearance remain open.
+
+# 2026-06-10 08:28 PDT - N2 JANGTQ2 live fail-closed UI proof
+
+- Reran targeted current Electron dev-app N2 JANGTQ2 stricter Responses tool
+  proof after the server and panel patches.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-after-required-failclosed-no-placeholder-20260610-proof.json`.
+- Current behavior: first tool turn succeeds; second required-tool turn fails
+  with `tool_calls_required`; no `!` content is streamed/persisted; no fake
+  `[Generation interrupted]` assistant placeholder remains; persisted state is
+  `assistantCount=1`, `messageCount=3`.
+- Runtime/cache evidence: real N2 JANGTQ2 dev-app load, typed `hybrid_ssm_v1`,
+  live attention TurboQuant KV, paged+SSM hit `384`, block L2 `3405` tokens,
+  SSM companion disk `9421` tokens.
+- Boundary: stricter second required-tool loop remains model/tool-quality red
+  because `real_ui_tool_probe_2.txt` is not created. This is fail-closed proof,
+  not release clearance.

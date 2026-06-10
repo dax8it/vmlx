@@ -2718,3 +2718,85 @@
 - Other-agent action: next useful work is source/dequant first-divergent logit
   for the literal probes, or build/try a corrected MiMo artifact profile such
   as `gate=3/up=2/down=3` or `gate=3/up=3/down=3`.
+
+# 2026-06-10 07:39 PDT - Switching to allowed N2 JANGTQ2 tool-loop blocker
+
+- Request: continue concrete fixes/proofs for N2 JANGTQ2, MiMo, Gemma, cache
+  reuse, reasoning/tool parser, and live content/tool delta behavior without
+  broad suite churn or subagent behavior.
+- Directive check: active lane is now Nex/N2 JANGTQ2 dev-app Responses/tool-loop
+  behavior. N2 JANG_1L remains off-limits; no release/sign/notarize/PyPI/
+  download step; no subagents; no fake tool-argument synthesis; no reasoning
+  disablement workaround.
+- Immediate blocker being reduced: the stricter N2 JANGTQ2 dev-app
+  Responses/tool proof that stayed red after the default previous-response
+  follow-up fix, reportedly with repeated `!` output and missing second tool
+  file after a tool-choice-required error.
+- Action next: inspect the raw proof and panel request path to separate
+  app/request-shape bugs from model-output quality before editing.
+
+# 2026-06-10 07:50 PDT - Latest AGENTS.md instruction checked
+
+- Request: put the routing/status/no-subagent constraint into AGENTS.md.
+- Check: `/Users/eric/vmlx/AGENTS.md` already contains the deprecated-wrapper
+  routing guard, the active-worktree handoff, the requirement to write current
+  user instructions/corrections into `.agents/STATUS.md` / `.agents/LOG.md`,
+  and the no-subagent-spawn rule. It is untracked inside the deprecated
+  wrapper checkout, which also has many unrelated dirty files.
+- Boundary: do not stage or commit the deprecated wrapper checkout from this
+  runtime lane. Continue active source/proof work only in
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`.
+
+# 2026-06-10 08:05 PDT - Responses required-tool stream fail-closed source fix
+
+- Root-cause split from the red N2 JANGTQ2 stricter proof:
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-20260610-proof.json`
+  showed the first tool executed, then the second request streamed `128`
+  visible `!` content deltas before the server emitted
+  `tool_calls_required`. That is a Responses streaming contract bug for
+  `tool_choice=required`: generated prose must not be committed as assistant
+  output when no required tool call exists.
+- Source fix: `vmlx_engine/server.py` now buffers visible text deltas while
+  Responses streaming `tool_choice=required` is active, emits no visible
+  content if no tool call is parsed, returns `tool_calls_required`, marks the
+  final Responses object `status=failed`, keeps `output_text=""` and
+  `output=[]`, and stores no failed assistant text in previous-response
+  history. Valid tool calls still emit normal function-call argument
+  delta/done events; no tool args are synthesized.
+- Proof artifact:
+  `build/current-responses-required-tool-stream-fail-closed-after-n2-longdelta-20260610.json`
+  is `status=pass` for the reported Qwen/XML empty-function shape:
+  preamble plus `<function=exec_command></function>` missing required `cmd`.
+- Verification passed:
+  `.venv/bin/python -m pytest tests/test_server.py -k "streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments"`;
+  `.venv/bin/python -m pytest tests/test_engine_audit.py -k "ToolChoiceRequired or StreamingToolChoiceRequired"`;
+  `py_compile vmlx_engine/server.py tests/test_server.py`; `git diff --check`.
+- Still not proven: live N2 JANGTQ2 dev-app long-delta rerun from this source,
+  same-model live Qwen/Qwen-coder 27B/35B direct/gateway/tunnel recapture for
+  this stricter no-visible-content behavior, installed-app packaged parity, and
+  release clearance.
+- Other-agent action: after rebuilding/relaunching from this commit, rerun the
+  N2 JANGTQ2 stricter Responses tool proof and confirm the failed second turn
+  surfaces as an error/no assistant prose rather than persisted `!` output.
+
+# 2026-06-10 08:28 PDT - N2 JANGTQ2 live fail-closed UI proof
+
+- Live rerun artifact:
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-after-required-failclosed-no-placeholder-20260610-proof.json`.
+- Result: `status=fail` by release assertions, but the bad persisted-output
+  behavior is fixed. First required `run_command` turn created
+  `real_ui_tool_probe_1.txt=REAL_UI_LIVE_TOOL_ONE`. The stricter second
+  required-tool turn still did not produce a tool call, but it now surfaces as
+  renderer send error with `tool_calls_required`; no `!` output is persisted,
+  no fake second assistant placeholder is saved, and the DB ends with
+  `assistantCount=1`, `messageCount=3`.
+- Panel fix: `panel/src/main/ipc/chat.ts` now rethrows server SSE error events
+  from the line parser and does not treat token-count-only failed output as
+  visible activity. Malformed JSON lines remain ignored as before.
+- Runtime/cache proof from the same live artifact: real N2 JANGTQ2 dev app,
+  typed `hybrid_ssm_v1`, live attention TurboQuant KV, paged+SSM cache hit
+  `384`, block L2 `3405` tokens, and SSM companion disk `9421` tokens.
+- Still not proven: the stricter second N2 tool loop is not green; no
+  `real_ui_tool_probe_2.txt` was created. This is fail-closed/error-surface
+  proof, not N2 long-tool-loop release clearance. Installed-app parity and
+  release clearance remain open.
