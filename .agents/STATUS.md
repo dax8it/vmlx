@@ -4070,3 +4070,60 @@ Other-agent action:
     output, server Responses assembly, or panel tool-loop replay before
     patching. Do not deduplicate or drop tool calls blindly without preserving
     final object consistency and raw event evidence.
+
+# 2026-06-10 10:48 PDT - Gemma 26B raw SSE duplicate-tool root-cause lane selected
+
+- Request: continue fixing real runtime/API/tool-loop blockers rather than
+  treating top-level harness `status=pass` as release evidence.
+- Current allowed lane selected: Gemma 26B QAT JANG_4M duplicate tool-call
+  origin tracing.
+- Hypothesis to test first: if direct server Responses SSE already emits
+  duplicate `function_call` items for the same prompt, the issue is model/server
+  output handling; if direct SSE emits one call while the UI executes many, the
+  issue is panel/gateway replay.
+- Constraints: no release/sign/notarize/package/PyPI/updater/download/website;
+  no N2 JANG_1L; no subagents; do not blindly deduplicate or drop tool calls
+  without preserving final object consistency and raw event evidence.
+- Next action: launch the 26B server directly with bundled Python and capture a
+  raw `/v1/responses` SSE request for the second-turn-style `run_command`
+  prompt.
+
+# 2026-06-10 10:50 PDT - Gemma 26B direct SSE duplicate-tool boundary classified
+
+- Direct server launched with bundled Python on port `55570` for
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`.
+- Health/runtime evidence:
+  - `status=healthy`, `model_type=mllm`.
+  - Gemma4 parser auto-selected for tools and reasoning.
+  - Native cache schema `mixed_swa_kv_v1` with full-attention KV,
+    sliding-window KV, rotating-window metadata, paged cache, block-disk L2,
+    and storage-boundary q4 full-attention KV.
+  - Generic TurboQuant KV correctly disabled for mixed sliding/full attention.
+- Raw SSE artifacts:
+  - `build/responses-sse-captures-20260610/direct-gemma4-26b-jang4m-duplicate-run-command-20260610.sse`
+  - `build/responses-sse-captures-20260610/direct-gemma4-26b-jang4m-duplicate-run-command-no-thinking-20260610.sse`
+- Capture 1, `enable_thinking=true`:
+  - `function_call_done_count=0`, `arguments_done_count=0`,
+    `completed_count=1`.
+  - Server emitted `tool_calls_required` because the model spent the full
+    384-token budget in reasoning and produced no tool call.
+  - This is a reasoning/tool interleaving blocker for required-tool mode, not a
+    duplicate-call proof.
+- Capture 2, `enable_thinking=false`:
+  - `function_call_done_count=1`, `arguments_done_count=1`,
+    `completed_count=1`.
+  - Function call:
+    `run_command {"command": "printf REAL_UI_LIVE_TOOL_TWO > real_ui_tool_probe_2.txt && cat real_ui_tool_probe_2.txt"}`.
+  - Output indexes were correct: message at `0`, function_call at `1`.
+  - Server logs show block-disk write-through for three paged prefix blocks.
+- Classification:
+  - Direct Responses SSE did not reproduce the installed-app duplicate
+    `run_command` loop under the server default/no-thinking path.
+  - The installed-app 26B red proof remains real, but the next localization step
+    is panel/gateway tool-loop replay and request-default comparison, not a
+    blind parser dedupe/drop patch.
+- Other-agent action:
+  - Compare the installed-app/panel request body against the direct
+    `enable_thinking=false` proof and trace tool execution replay around
+    function-call output handling. Preserve final object consistency and raw SSE
+    evidence while fixing.

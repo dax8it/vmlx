@@ -11908,3 +11908,40 @@ Next action:
 - Next useful work: raw Responses SSE + panel event trace for 26B duplicate
   tool calls to locate whether duplication starts in model output, server
   Responses assembly, or panel tool-loop replay.
+
+# 2026-06-10 10:48 PDT - Gemma 26B raw SSE duplicate-tool root-cause lane selected
+
+- Selected lane: direct server raw SSE capture for the Gemma 26B duplicate
+  `run_command` tool-loop blocker.
+- First question: does direct `/v1/responses` SSE already contain duplicate
+  function calls, or is duplication introduced later by gateway/panel replay?
+- Constraints: no release/sign/notarize/package/PyPI/updater/download/website,
+  no N2 JANG_1L, no subagents, no fake dedupe/drop fix before raw event
+  evidence.
+
+# 2026-06-10 10:50 PDT - Gemma 26B direct Responses SSE captured
+
+- Launched direct bundled-Python server on `127.0.0.1:55570`:
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3 -B -s -m vmlx_engine.cli serve /Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M ... --enable-auto-tool-choice --tool-call-parser auto`.
+- Health proof confirmed:
+  - model loaded as MLLM, Gemma4 tool/reasoning parsers auto-selected.
+  - native cache schema `mixed_swa_kv_v1`.
+  - `generic_turboquant_kv.enabled=false` for mixed sliding/full attention.
+  - storage-boundary q4 full-attention KV, paged cache, block-disk L2 enabled.
+- Raw SSE capture with `enable_thinking=true`:
+  `build/responses-sse-captures-20260610/direct-gemma4-26b-jang4m-duplicate-run-command-20260610.sse`.
+  Result: no function call, no arguments-done, final `tool_calls_required`
+  error because the 384-token budget was consumed by reasoning. This proves a
+  required-tool/reasoning interleaving failure mode, not a duplicate-call origin.
+- Raw SSE capture with `enable_thinking=false`:
+  `build/responses-sse-captures-20260610/direct-gemma4-26b-jang4m-duplicate-run-command-no-thinking-20260610.sse`.
+  Result: exactly one `response.output_item.done` function_call, exactly one
+  `response.function_call_arguments.done`, correct output indexes, and command:
+  `printf REAL_UI_LIVE_TOOL_TWO > real_ui_tool_probe_2.txt && cat real_ui_tool_probe_2.txt`.
+- Classification:
+  - Direct server/default no-thinking path does not reproduce the installed-app
+    six-plus-six duplicate `run_command` loop.
+  - The next fix lane should trace panel/gateway request defaults and tool-loop
+    replay, especially tool-result continuation and repeated execution of the
+    same call_id/item, before touching parser logic.
+  - Do not register Gemma 26B installed-app green yet.
