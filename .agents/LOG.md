@@ -10120,3 +10120,27 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary: no release/sign/notarize/PyPI/download action; no N2 JANG_1L action;
   Gemma full release rows remain open for live/API/UI/tunnel/installed-app
   parity and 26B/31B native MXFP4 full-media evidence.
+
+# 2026-06-10 06:36 PDT - Continuation before Gemma 26B/31B native MXFP4 evidence check
+
+- Current lane: check whether Gemma 26B/31B native MXFP4 full-media result
+  artifacts already exist and can be consumed honestly by the inventory gate.
+- Constraints: no subagents, no N2 JANG_1L, no release/sign/notarize/PyPI/
+  download action, no fake audio advertisement, no metadata-only media claims.
+
+# 2026-06-10 06:41 PDT - Gemma 26B/31B native MXFP4 full-media proof pointer sync
+
+- Added 26B/31B native MXFP4 audio-capability-gated per-row result artifacts to
+  the Gemma QAT/native MXFP4 inventory gate.
+- Wrote
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-26b31b-fullmedia-pointer-20260610.json`:
+  `status=open`, `missing_required_rows=[]`, `source_live_smoke_open_rows=[]`,
+  and native MXFP4 full-media source smoke `pass` for E2B/E4B/12B/26B/31B.
+- Wrote
+  `build/current-full-release-objective-checklist-after-gemma-native-mxfp4-all-fullmedia-pointer-20260610.json`:
+  `status=open`, `failed_count=56`.
+- Verification passed: inventory gate `py_compile`; focused inventory test
+  `9/9`.
+- Boundary: no release/sign/notarize/PyPI/download action; no N2 JANG_1L action;
+  Gemma full release rows remain open for live/API/UI/tunnel/installed-app
+  parity.

@@ -2589,3 +2589,49 @@
   Next useful Gemma work is installed-app/UI/tunnel parity or 26B/31B native
   MXFP4 full-media proof, not rerunning the already passing E2B/E4B/12B source
   smokes.
+
+# 2026-06-10 06:36 PDT - Continuation before Gemma 26B/31B native MXFP4 evidence check
+
+- Request: continue the active goal in concrete build/fix/proof blocks and avoid
+  recursive agent behavior or broad test-suite churn.
+- Directive check: active worktree remains
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; N2 JANG_1L remains
+  off-limits; no release/sign/notarize/PyPI/download action is allowed in this
+  step; no subagents are allowed.
+- Immediate blocker being reduced: Gemma 26B/31B native MXFP4 full-media proof
+  gap in the current inventory gate, after E2B/E4B/12B native MXFP4 full-media
+  pointers were synced.
+- Must not claim: no Gemma full release clearance, UI/tunnel/installed-app
+  parity, checkpoint release readiness, or audio support for 26B/31B unless
+  current evidence proves it.
+
+# 2026-06-10 06:41 PDT - Gemma 26B/31B native MXFP4 full-media proof pointer sync
+
+- Done: inspected existing 26B/31B native MXFP4 current-source result artifacts
+  under the audio-capability-gate runs and confirmed they satisfy the inventory
+  full-media gate shape without advertising audio.
+- Source change: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py`
+  now maps `gemma4_26b_vl` and `gemma4_31v_or_31b_vl` to their per-row result
+  artifacts:
+  `build/current-all-local-model-smoke-gemma4-26b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/JANGQ_gemma-4-26B-A4B-it-qat-MXFP4/result.json`
+  and
+  `build/current-all-local-model-smoke-gemma4-31b-qat-mxfp4-tools-l2-after-audio-capability-gate-20260609/JANGQ_gemma-4-31B-it-qat-MXFP4/result.json`.
+- Proof artifact:
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-26b31b-fullmedia-pointer-20260610.json`.
+- Result: all five native MXFP4 rows now report
+  `source_fullmedia_smoke.status=pass`; 26B/31B have all required text/tool/
+  image/video labels present, no validation failures, Gemma4 parser/reasoning
+  capability, exact `record_fact` args, mixed-SWA native cache, block-disk L2
+  write, and fresh-process L2 restore with `cached_tokens=56`,
+  `cache_detail=paged+mixed_swa+disk`, `disk_hits=1`.
+- Full checklist artifact:
+  `build/current-full-release-objective-checklist-after-gemma-native-mxfp4-all-fullmedia-pointer-20260610.json`,
+  `status=open`, `failed_count=56`.
+- Verification: inventory gate `py_compile` passed; focused
+  `tests/test_gemma_qat_native_mxfp4_inventory_gate.py` passed `9/9`.
+- Boundary: this closes the native MXFP4 source-fullmedia missing-pointer gap
+  only. Gemma rows remain open for full live/API/UI/tunnel/installed-app proof;
+  no package, signing, notarization, PyPI, download, or N2 JANG_1L action.
+- Other-agent action: do not re-run Gemma native MXFP4 source-fullmedia smokes
+  just to fill inventory rows. Move to installed-app/UI/tunnel parity or a
+  higher-value live release blocker.
