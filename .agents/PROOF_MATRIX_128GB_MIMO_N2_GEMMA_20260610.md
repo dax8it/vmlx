@@ -461,6 +461,8 @@ Artifact:
 - `build/current-real-ui-live-model-n2-jangtq2-video-proof-20260610.json`
 - `build/current-real-ui-live-model-n2-jangtq2-audio-proof-20260610.json`
 - `build/current-real-ui-installed-app-n2-jangtq2-responses-tools-cache-20260610.json`
+- `build/current-real-ui-installed-app-n2-jangtq2-image-proof-20260610.json`
+- `build/current-real-ui-installed-app-n2-jangtq2-video-proof-20260610.json`
 
 Raw ignored proof captures:
 
@@ -574,6 +576,27 @@ Proven:
 - The installed-app proof also records the honest N2 MTP boundary:
   `mtp_status=metadata_inconsistent`, `runtime_active=false`, because
   `jang_config.drop_mtp=true` while config declares one MTP layer.
+- Local rebuilt installed app image/VL proof is green for N2 JANGTQ2. The app
+  persisted the image attachment, server `MEDIA_DIAG` saw one `image_url`, the
+  runtime processed `num_images_processed=1`, and the assistant answered `Red`.
+- The installed-app image run recorded `vl_image`, `installed_app_ui`,
+  `server_cache_controls`, no raw parser/reasoning leak, `hybrid_ssm_v1`,
+  attention-only TurboQuant KV, `cache_detail=paged+ssm`, `cached_tokens=18`,
+  `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`,
+  `l2_tokens_on_disk=118`, block-disk `disk_hits=3`, `disk_writes=2`, and SSM
+  companion disk stores `2`.
+- Local rebuilt installed app video/VL proof is also green for N2 JANGTQ2. The
+  app persisted the video attachment, server `MEDIA_DIAG` saw one `video_url`,
+  the server decoded the base64 MP4, extracted `4` frames from a 25 fps
+  one-second clip, processed `num_images_processed=4`, and the assistant
+  answered `The video shows a solid red screen with no visible movement or
+  change.`
+- The installed-app video run recorded `video_where_supported`,
+  `installed_app_ui`, `server_cache_controls`, no raw parser/reasoning leak,
+  `hybrid_ssm_v1`, attention-only TurboQuant KV, `cache_detail=paged+ssm`,
+  `cached_tokens=18`, `l2_block_tokens_on_disk=50`,
+  `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`, block-disk
+  `disk_hits=3`, `disk_writes=2`, and SSM companion disk stores `2`.
 
 Red:
 
@@ -583,10 +606,11 @@ Red:
   visible output degenerated into repeated `!` after a tool-choice-required
   error. Do not generalize the default checkpoint pass to that stricter prompt.
 - Audio, public tunnel SSE parity, N2 JANG_1L, stricter custom long-delta prompt
-  quality, and release readiness remain open. Image and video are green in the
-  source dev app; audio is honestly gated as unsupported. Installed-app
-  Responses/tool/cache parity is green for the default checkpoint N2 JANGTQ2
-  path only; it is not a Developer ID notarized public DMG release claim.
+  quality, and release readiness remain open. Image and video are green in both
+  the source dev app and rebuilt installed app; audio is honestly gated as
+  unsupported. Installed-app Responses/tool/cache and image/video media parity
+  are green for the default checkpoint N2 JANGTQ2 path only; this is not a
+  Developer ID notarized public DMG release claim.
 
 Next implementation target:
 

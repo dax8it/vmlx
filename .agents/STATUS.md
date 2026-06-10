@@ -971,6 +971,16 @@
 - Cache/runtime proof: `hybrid_ssm_v1`, attention-only TurboQuant KV storage boundary, native SSM companion state, async rederive component, `cache_detail=paged+ssm`, `cached_tokens=384`, `l2_block_tokens_on_disk=3582`, `l2_ssm_tokens_on_disk=17086`, `l2_tokens_on_disk=20668`, `block_disk_hits=110`, `block_disk_writes=59`, and `ssm_disk_hits=1`.
 - Boundary: this clears N2 JANGTQ2 installed-app default Responses/tool/cache parity only. It does not clear public tunnel SSE parity, N2 audio, N2 JANG_1L Metal OOM, stricter custom prompt quality, package/sign/notarize/tag/upload, or full `release_ready`.
 
+# 2026-06-10 - N2 JANGTQ2 installed-app image/video proof green
+
+- Reduced blocker: `media` plus `api/ui` for the N2 checkpoint candidate in the rebuilt local `/Applications/vMLX.app`.
+- Image proof summary: `build/current-real-ui-installed-app-n2-jangtq2-image-proof-20260610.json`, `status=pass`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-image-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-image-20260610-chat.png`.
+- Video proof summary: `build/current-real-ui-installed-app-n2-jangtq2-video-proof-20260610.json`, `status=pass`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-20260610-chat.png`.
+- Proven image: installed app UI launched, image attachment persisted, server `MEDIA_DIAG` saw one `image_url`, runtime processed `num_images_processed=1`, and assistant answered `Red`.
+- Proven video: installed app UI launched, video attachment persisted, server `MEDIA_DIAG` saw one `video_url`, server decoded base64 MP4, extracted `4` frames from the 25 fps clip, runtime processed `num_images_processed=4`, and assistant answered `The video shows a solid red screen with no visible movement or change.`
+- Cache/runtime proof for both: `hybrid_ssm_v1`, attention-only TurboQuant KV, native SSM companion state, `cache_detail=paged+ssm`, `cached_tokens=18`, `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`, `block_disk_hits=3`, `block_disk_writes=2`, and SSM disk stores `2`.
+- Boundary: this clears N2 JANGTQ2 installed-app image/video only. It does not clear N2 audio, N2 JANG_1L Metal OOM, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.
+
 # 2026-06-10 - Gemma 12B MXFP4 installed-app Responses/tool/cache proof green
 
 - Reduced blocker: `api/ui` plus `cache/storage` for the Gemma 12B MXFP4 checkpoint candidate in the rebuilt local `/Applications/vMLX.app`.

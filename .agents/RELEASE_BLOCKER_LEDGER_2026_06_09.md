@@ -132,6 +132,17 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   native SSM companion state, block L2, and SSM disk hit. It does not clear
   public tunnel SSE, N2 audio, N2 JANG_1L, stricter prompt quality, or
   Developer ID DMG package/sign/notarize/release readiness.
+- 2026-06-10 N2 installed-app media update:
+  `build/current-real-ui-installed-app-n2-jangtq2-image-proof-20260610.json`
+  and `build/current-real-ui-installed-app-n2-jangtq2-video-proof-20260610.json`
+  are both `status=pass` for the same local rebuilt `/Applications/vMLX.app`
+  and N2 JANGTQ2 row. They prove installed-app image/video attachment
+  persistence, server `MEDIA_DIAG` detection, image `num_images_processed=1`,
+  video base64 MP4 decode and `4` extracted frames, visible answers `Red` and
+  `solid red screen`, no raw parser/reasoning leak, `hybrid_ssm_v1`,
+  attention-only TurboQuant KV, native SSM companion state, block L2, and SSM
+  companion disk stores. They do not clear N2 audio, N2 JANG_1L, public tunnel
+  SSE, or Developer ID DMG package/sign/notarize/release readiness.
 - 2026-06-10 Gemma installed-app update:
   `build/current-real-ui-installed-app-gemma4-12b-mxfp4-responses-tools-cache-20260610.json`
   is `status=pass` for the local rebuilt `/Applications/vMLX.app` plus

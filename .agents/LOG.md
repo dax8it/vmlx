@@ -8188,3 +8188,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof summary `build/current-real-ui-installed-app-gemma4-12b-mxfp4-video-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-video-20260610-proof.json`.
 - Proven surfaces: installed-app UI, persisted video attachment, `MEDIA_DIAG` video detection, base64 MP4 decode, `25` frames at `25.0 fps`, `4` extracted frames, Gemma media fallback, visible answer describing a solid red background, server cache controls, parser/reasoning leak checks, MXFP4 affine matmul with Metal NA active, `mixed_swa_kv_v1`, paged mixed-SWA cache, and block L2 write.
 - Boundary: no Gemma audio clearance, no public tunnel proof, and no package/sign/notarize/tag/upload/release action.
+
+# 2026-06-10 - N2 JANGTQ2 installed-app image/video proof
+
+- Ran real UI image and video proofs through `/Applications/vMLX.app` for `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` with Chat Completions, cache controls, `--is-mllm`, temperature `0`, top_p `1`, and max tokens `96`.
+- Image proof summary `build/current-real-ui-installed-app-n2-jangtq2-image-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-image-20260610-proof.json`.
+- Video proof summary `build/current-real-ui-installed-app-n2-jangtq2-video-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-20260610-proof.json`.
+- Proven image: installed-app UI, persisted image attachment, `MEDIA_DIAG` image detection, `num_images_processed=1`, visible answer `Red`, server cache controls, parser/reasoning leak checks, `hybrid_ssm_v1`, attention-only TurboQuant KV, paged+SSM cache, block L2, and SSM companion disk stores.
+- Proven video: installed-app UI, persisted video attachment, `MEDIA_DIAG` video detection, base64 MP4 decode, `4` extracted frames, `num_images_processed=4`, visible answer describing a solid red screen, server cache controls, parser/reasoning leak checks, `hybrid_ssm_v1`, attention-only TurboQuant KV, paged+SSM cache, block L2, and SSM companion disk stores.
+- Boundary: no N2 audio clearance, no N2 JANG_1L clearance, no public tunnel proof, and no package/sign/notarize/tag/upload/release action.
