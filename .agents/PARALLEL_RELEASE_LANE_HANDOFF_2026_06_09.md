@@ -100,6 +100,13 @@ that path in the current turn.
   #165, but release manifest still keeps `public_app_issue_audit=false` because
   #165 has `tool_call_contract_passes=false`. Treat that as a real DSV4/DSML
   tool-call matrix blocker, not stale packaging drift.
+- DSV4 default-cache tool-loop live retry at
+  `build/current-dsv4-default-cache-tool-loop/result.json` still skipped before
+  model load: required `120.0 GiB`, observed `112.45 GiB` available. The gate
+  source now resolves current checkpoint app Python by default; next useful
+  action is rerun the same gate when actual available memory meets the floor,
+  not lowering the threshold or accepting source-only DSML tests as release
+  clearance.
 - Proper release mechanics are the documented path in
   `/Users/eric/wiki/infra/apple-notarization.md`; do not invent a GUI-only,
   ad-hoc-signing, cert-reimport, or verifier-weakening workaround. If signing

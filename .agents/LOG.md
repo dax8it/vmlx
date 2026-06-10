@@ -7840,6 +7840,16 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation passed: focused full-checklist tests `4/4`, `py_compile`, and regenerated checklist. No release, package, sign, notarize, tag, or download action.
 - Follow-up no-heavy source recheck: `build/current-noheavy-api-cache-contract-after-qwen35-output-index-recheck-20260609.json`, `status=pass`; `responses_streaming_tool_call_arguments_and_indexes=true`, `gateway_responses_function_call_arguments_streaming=true`, `gateway_responses_reasoning_empty_final_arguments_streaming=true`, and `gateway_stale_responses_port_rejection=true`. Current source is not showing the output-index bug in synthetic/source contracts; next work is live same-model direct/gateway/tunnel capture or deployed route freshness.
 
+# 2026-06-09 18:26 PDT - DSV4 default-cache tool-loop live retry and gate path fix
+
+- Retried the DSV4 default-cache DSML/tool-loop gate for public issue #165 with current checkpoint Sequoia bundled Python:
+  `.venv/bin/python tests/cross_matrix/run_dsv4_default_cache_tool_loop_gate.py --python panel/release/sequoia-app/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/bin/python3 --model /Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG --port 8854 --timeout 900 --request-timeout 600 --min-free-gb 120 --max-output-tokens 768 --code-prompt-variant copy_block --out build/current-dsv4-default-cache-tool-loop/result.json`.
+- Result: no model load. The artifact is `status=skipped`, `reason=insufficient_free_memory`, `required_available_gb=120.0`, observed `available_gib=112.45`.
+- Refreshed `build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json`; it remains `status=open`, `failed=[]`, `missing_markers=[]`. Source DSML/parser/Responses guards, panel loop controls, and family tool-parser matrix passed; only `live_default_cache_dsv4_tool_loop_artifact_passed=false`.
+- Fixed the live gate default Python resolver so future memory-ready runs do not use the stale missing `panel/release/mac-arm64/vMLX.app/.../python3` path. It now prefers current Sequoia/Tahoe checkpoint app bundled Python, then panel bundled Python, then `.venv`, then legacy.
+- Dry-run proof: `build/current-dsv4-default-cache-tool-loop-dryrun-current-python-20260609.json` shows Sequoia bundled Python plus default native prefix/paged/block-L2 flags, DSML parser, DeepSeek reasoning parser, and no generic KV quant flag.
+- Validation passed: focused pytest `14/14`, `py_compile`, and dry-run. Boundary: DSV4/tool-call matrix remains open until the live default-cache tool-loop passes at sufficient RAM; no release/publish action.
+
 # 2026-06-09 18:38 PDT - Public app issue audit pointer refresh
 
 - Refreshed `tests/cross_matrix/run_public_app_issue_audit.py` after checkpoint app/package parity and wrote `build/current-public-app-issue-audit-after-checkpoint-packaged-integrity-20260609.json`.
