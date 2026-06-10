@@ -3960,3 +3960,60 @@ Other-agent action:
   proof, tunnel parity where deployment exposes the model, and full UI/CLI
   settings parity. Do not mark Gemma release-clear from E2B/E4B partial
   installed-app proof alone.
+
+# 2026-06-10 10:35 PDT - Gemma 12B installed-app proof lane selected
+
+- Request: continue the active objective with real runtime/API/UI/cache fixes
+  and proof, not broad test-suite churn.
+- Current allowed lane selected: Gemma 4 12B QAT JANG_4M installed-app
+  UI/API/cache proof, because E2B/E4B installed-app rows are now partial-green
+  and 12B remains unregistered in the inventory.
+- Constraints rechecked: no release/sign/notarize/package/PyPI/updater/download/
+  website action; no N2 JANG_1L; no subagents; no fake parser/cache/modality
+  claim; use `/Applications/vMLX.app` and bundled Python; inspect proof and
+  screenshot before registering.
+- Next action: run `panel/scripts/live-real-ui-model-proof.mjs` against
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-JANG_4M` with the bundled
+  app Python and Responses/tool/cache controls enabled.
+
+# 2026-06-10 10:40 PDT - Gemma 12B installed-app proof registered
+
+- Action: ran the real installed-app proof for
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-JANG_4M` with
+  `/Applications/vMLX.app` and bundled Python:
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`.
+- Proof artifacts:
+  - `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png`
+  - `build/current-gemma-qat-native-mxfp4-local-inventory-after-12b-installed-app-ui-proof-20260610.json`
+  - `build/current-full-release-objective-checklist-after-gemma-12b-installed-app-ui-proof-20260610.json`
+- Proven:
+  - `status=pass`, installed app path `/Applications/vMLX.app`, bundled Python
+    server command, served model `gemma-4-12B-it-qat-JANG_4M`.
+  - Responses wire API, built-in tool loop, reasoning display, no raw parser
+    leak, no reasoning raw parser leak, no CJK/Korean leak, and visible first/
+    second assistant content with `REAL_UI_LIVE_TOOL_ONE` and
+    `REAL_UI_LIVE_TOOL_TWO`.
+  - Gemma4 mixed-SWA native cache with storage-boundary 4-bit
+    full-attention KV, `cache_hit_tokens=9340`, `l2_block_tokens_on_disk=3538`,
+    and screenshot-visible `paged+mixed_swa cached` lines.
+  - Inventory checks now record E2B/E4B/12B installed-app UI/API/cache proof as
+    true.
+- Boundary:
+  - The 12B proof records a post-answer reasoning-only auto-continue warning in
+    the UI. The visible answer completed and the proof passed, but this remains
+    UI polish/open-boundary evidence and is not release clearance.
+  - Gemma inventory remains `status=open`; 12B is `live_proof_status=partial`.
+  - 26B/31B installed-app rows remain missing; full tunnel/UI/CLI/media/release
+    parity remains open.
+- Verification:
+  - `py_compile` passed for touched Python files.
+  - Focused pytest selected `32/32` passed.
+  - Artifact check: E2B/E4B/12B installed-app booleans are true; full checklist
+    remains `status=open`, `release_ready=false`, `failed_count=56`, with no
+    failed installed-app rows for E2B/E4B/12B.
+  - `git diff --check` passed.
+- Other-agent action: use the 12B installed-app inventory artifact as the
+  current Gemma board source. Next Gemma installed-app rows are 26B and 31B;
+  keep 12B reasoning-only warning visible as an open UI polish item and do not
+  call the Gemma group release-clear.

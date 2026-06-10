@@ -11834,3 +11834,42 @@ Next action:
 - Boundary: no release/sign/notarize/package/PyPI/updater/download/website
   action; no N2 JANG_1L; no parser/cache/modality fake fix. Gemma 12B/26B/31B
   installed-app rows and full release parity remain open.
+
+# 2026-06-10 10:35 PDT - Gemma 12B installed-app proof lane selected
+
+- Selected next concrete blocker: Gemma 4 12B QAT JANG_4M installed-app
+  UI/API/cache proof.
+- Reason: E2B/E4B installed-app rows are now registered as partial-green; 12B
+  remains unregistered and is the next release-relevant Gemma row.
+- Constraints: no release/sign/notarize/package/PyPI/updater/download/website,
+  no N2 JANG_1L, no subagents, no fake parser/cache/modality claims.
+- Planned command: run the real UI proof harness with `/Applications/vMLX.app`
+  and
+  `VMLINUX_REAL_UI_PYTHON=/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`.
+
+# 2026-06-10 10:40 PDT - Gemma 12B installed-app proof registered
+
+- Ran bundled-Python installed-app proof for
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-JANG_4M`; result
+  `status=pass`.
+- Proof JSON:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`;
+  screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png`.
+- Visible proof: first answer includes `REAL_UI_LIVE_TOOL_ONE`; second answer
+  includes `REAL_UI_LIVE_TOOL_TWO` and "second UI turn"; screenshot shows two
+  tool executions and `paged+mixed_swa cached` telemetry.
+- Cache/runtime proof: bundled Python server command, Gemma4 mixed-SWA native
+  cache, storage-boundary 4-bit full-attention KV, `cache_hit_tokens=9340`,
+  `l2_block_tokens_on_disk=3538`.
+- Registered 12B in the Gemma inventory gate and full checklist. New inventory:
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-12b-installed-app-ui-proof-20260610.json`;
+  new checklist:
+  `build/current-full-release-objective-checklist-after-gemma-12b-installed-app-ui-proof-20260610.json`.
+- Verification: py_compile passed; focused pytest selected `32/32` passed;
+  artifact check shows E2B/E4B/12B installed-app booleans true and no failed
+  installed-app rows for those three; `git diff --check` passed.
+- Boundary: 12B UI proof has a post-answer reasoning-only auto-continue
+  warning. Visible answer completed, but keep this as UI polish/open-boundary
+  evidence. Gemma remains `status=open`, `release_ready=false`; 26B/31B
+  installed-app rows and full release parity remain open.
