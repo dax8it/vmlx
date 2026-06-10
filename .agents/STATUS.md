@@ -4737,3 +4737,50 @@ Other-agent action:
 - Proven: source-level MiMo combined image+audio splice contract, plus image-only and audio-only regressions still pass.
 - Not proven: MiMo JANGTQ_2 red-square/color semantics, literal/tool-arg exactness, live audio waveform semantics, live video semantics, Responses tool-result continuation, installed-app parity, package/sign/notarize/release readiness, or source-vs-quant first divergence. Source/quant endpoints were unavailable for a live color rerun.
 - Other-agent handoff: this fix should be included in bundled runtime parity before any checkpoint DMG rebuild, but do not use it to clear MiMo semantic quality rows. Next best MiMo work remains source-vs-quant/logit/artifact diagnosis for JANGTQ_2 exactness and real live audio/video proofs.
+
+# 2026-06-10 13:04 PDT - MiMo JANGTQ2 exactness/artifact diagnosis lane selected
+
+- Current user objective continues: reduce real blockers for checkpoint quality across MiMo/N2/Gemma/Qwen without broad harness churn or fake parser/prompt/cache repairs.
+- Active directives rechecked: allowed next work is MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis; N2 JANG_1L remains off-limits; no release/sign/notarize/PyPI/updater/download/site action in this lane.
+- Current blocker: MiMo JANGTQ_2 has green dev/installed-app Responses tool transport and cache/L2 proof, but exact outputs still mutate (`ACK-CB-742` -> `ACKCB-742`, JSON truncation) and color semantics remain red.
+- Next movement: inspect current red exactness/color artifacts, MiMo JANGTQ metadata, and runtime quant/decode contract to identify a real source/artifact issue. Do not patch parser/JSON/string output repair, forced sampling, or cache behavior unless evidence shows that layer is the root cause.
+
+# 2026-06-10 13:14 PDT - MiMo JANGTQ2 exactness classified as artifact/profile, not parser/cache transport
+
+- Evidence inspected:
+  - Dev-app exact artifact `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-20260610-proof.json` mutates `ACK-CB-742` to `ACKCB-742` and stops JSON at `{"` with `persistedReasoningCount=0`, `rawParserLeak=false`, `reasoningRawParserLeak=false`.
+  - Installed-app exact artifact `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-20260610-proof.json` reproduces the same mutation/truncation with the same clean parser/reasoning/cache surfaces.
+  - A/B artifact `build/current-mimo-v25-jang2l-vs-jangtq2-exactness-ab-20260610.json` shows JANG_2L preserves `blue-cat`, JSON `blue-cat`, and tool args, while JANGTQ_2 fails all eight exactness rows.
+  - JANGTQ_2 `jang_config.json` advertises all routed projections as 2-bit (`gate_proj=2`, `up_proj=2`, `down_proj=2`) and has no per-layer fidelity bit plan. JANG_2L uses a stronger profile (`gate=3/up=2/down=2`, early down=3 overrides).
+  - Runtime logs show the native JANGTQ loader replaced `141` prestacked routed modules, used seed `42`, skipped generic TQ KV correctly for MiMo native asymmetric SWA, and honored q8 bookend repair metadata.
+- Classification: no justified source parser/cache/output-repair fix was found for JANGTQ_2 exactness. This remains an artifact/requant-profile/source-vs-quant/logit-quality blocker.
+- No-claim: do not mark MiMo JANGTQ_2 exactness green, do not fix by parser/JSON/string post-processing, and do not chase cache/L2 as the primary cause unless new first-logit evidence contradicts the current artifacts.
+- Next movement: move to a different high-value blocker with higher chance of source-side fix: N2 JANGTQ/non-JANG_1L or Gemma/Qwen API/media rows, while leaving MiMo JANGTQ_2 exactness for artifact/profile work.
+
+# 2026-06-10 13:20 PDT - Gemma4 MXFP4 visible reasoning leak lane selected
+
+- Current blocker selected from artifact scan: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-20260610-proof.json` has `status=pass` for transport/cache, but second visible assistant content starts with `thought\n...`.
+- This is a parser/reasoning separation risk, not a model-load/cache issue. It directly overlaps Eric's requirement for no hidden reasoning leaks and correct content/reasoning deltas during tool/API loops.
+- Next movement: inspect the artifact raw traces and Gemma4 parser/template code to determine whether Gemma4 channel markers are not being stripped/segregated for this MXFP4 route. No prompt-only stripping or broad parser rewrite without source evidence.
+
+# 2026-06-10 13:34 PDT - Gemma4 MXFP4 parser auto-detect source fix selected
+
+- Evidence: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-20260610-proof.json` showed visible `thought\n...` in Responses output while health reported `reasoning_parser=null` and `tool_parser=null`.
+- Trace: the real model path `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4` resolves through the registry to family `gemma4`, `tool_parser=gemma4`, `reasoning_parser=gemma4`, but the served alias resolves to `unknown` with no parsers.
+- Source issue selected: server startup initializes `_reasoning_parser` / `_tool_call_parser` before `load_model()` records `_model_path`; app/alias launches can therefore leave global parser state unset even though the loaded local bundle has parser metadata.
+- Fix target: after `load_model()` sets the loaded model path and metadata, re-apply auto parser detection from `_model_path`, preserving explicit `--reasoning-parser none` and explicit `--tool-call-parser none`. Do not add broad visible-string stripping or synthesize tool arguments.
+
+# 2026-06-10 13:47 PDT - Gemma4 MXFP4 parser auto-detect source fix proven
+
+- Source update:
+  - `vmlx_engine/server.py` now canonicalizes registry lookup keys through the existing local resolver and refreshes auto-detected reasoning/tool parsers after `load_model()` records the loaded model path.
+  - Explicit `--reasoning-parser none`, explicit parser names, explicit `--tool-call-parser none`, and explicit tool parser names remain authoritative.
+  - `vmlx_engine/api/utils.py` now resolves HF-style repo IDs from `~/models/<org>/<name>` in addition to `~/.mlxstudio/models` and HF cache, matching current proof model storage under `/Users/eric/models`.
+- Verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/server.py vmlx_engine/api/utils.py tests/test_engine_audit.py tests/test_api_utils.py`
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'loaded_gemma4_mxfp_sidecar_refreshes_auto_parsers or loaded_model_parser_refresh_preserves_explicit_disables or gemma4_supports_thinking_is_explicit_not_implicit'` -> `3 passed, 566 deselected`
+  - `.venv/bin/python -m pytest -q tests/test_api_utils.py -k 'local_models_cache or existing_directory_returned_as_is or nonexistent_path_returned_as_is'` -> `3 passed, 55 deselected`
+  - Direct local sanity: `JANGQ-AI/gemma-4-12B-it-qat-MXFP4` resolves to `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`; registry returns family `gemma4`, `tool_parser=gemma4`, `reasoning_parser=gemma4`.
+- Proven: source-level parser selection/runtime-state fix for Gemma4 MXFP4/JANG sidecar launches using repo IDs, app aliases, or loaded local paths; avoids visible Gemma4 `thought\n...` leakage when the Gemma4 parser is active.
+- Not proven yet: a rerun of the live `current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools` proof after this patch, installed-app parity, packaged/bundled runtime parity, or package/sign/notarize/release readiness.
+- Other-agent handoff: include this server/api resolver patch in the bundled Python runtime before any checkpoint DMG rebuild; then rerun the Gemma4 MXFP4 Responses tools live proof and confirm health/capabilities report Gemma4 parsers and visible assistant content no longer starts with `thought`.

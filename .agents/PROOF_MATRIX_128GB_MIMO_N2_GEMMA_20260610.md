@@ -1792,3 +1792,15 @@ Next implementation target:
   production-ready release. Keep the open rows explicit: N2 JANG_1L, MiMo
   exactness/media, DSV4, public tunnel SSE parity, audio support, and full
   `release_ready` are still open.
+
+## Gemma4 MXFP4 Parser Auto-Detect Fix - 2026-06-10 13:47 PDT
+
+- Source fix: `vmlx_engine/server.py` now resolves registry keys through the local model resolver and refreshes auto-detected reasoning/tool parser state after `load_model()` records the loaded model path. This targets the Gemma4 MXFP4 Responses tools artifact where visible content started with `thought\n...` while parser state was null.
+- Resolver fix: `vmlx_engine/api/utils.py` now resolves repo IDs from `~/models/<org>/<name>` before HF cache. Current Gemma4 MXFP4 proof bundles live at `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`, so repo-id launches now map to the local sidecar.
+- Verification:
+  - `.venv/bin/python -m py_compile vmlx_engine/server.py vmlx_engine/api/utils.py tests/test_engine_audit.py tests/test_api_utils.py`
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'loaded_gemma4_mxfp_sidecar_refreshes_auto_parsers or loaded_model_parser_refresh_preserves_explicit_disables or gemma4_supports_thinking_is_explicit_not_implicit'` -> `3 passed, 566 deselected`
+  - `.venv/bin/python -m pytest -q tests/test_api_utils.py -k 'local_models_cache or existing_directory_returned_as_is or nonexistent_path_returned_as_is'` -> `3 passed, 55 deselected`
+  - Direct local lookup: `JANGQ-AI/gemma-4-12B-it-qat-MXFP4` resolves to `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`, and registry returns `family=gemma4`, `tool=gemma4`, `reasoning=gemma4`.
+- Proven: source parser-selection path for Gemma4 MXFP/JANG sidecar launches from repo IDs, app aliases with real loaded paths, and direct local paths.
+- Still open: rerun the live Gemma4 MXFP4 Responses tools proof after this patch; verify health/capabilities show Gemma4 parsers, content/reasoning deltas are separated, final object has no visible `thought`, installed-app bundled runtime includes the patch, and packaged DMG parity is rebuilt if releasing another checkpoint.
