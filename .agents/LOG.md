@@ -1,3 +1,30 @@
+# 2026-06-10 - MiMo JANG_2L vs JANGTQ_2 exactness A/B
+
+- Ran real MiMo V2.5 JANG_2L on port `8897` with continuous batching, native
+  mixed full/SWA cache, paged cache, and block L2:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`.
+- Probe artifact:
+  `build/current-mimo-v25-jang2l-exactness-variant-ab-20260610/result.json`.
+  Summary artifact:
+  `build/current-mimo-v25-jang2l-vs-jangtq2-exactness-ab-20260610.json`.
+- Result: `status=open`, `5/8` exactness rows passed. JANG_2L preserved
+  `blue-cat` in plain completions, chat, JSON, and required tool-call args. It
+  also preserved `B7-CAT-09` inside required tool-call args.
+- Red rows: visible sentinel exactness still drifted
+  `B7-CAT-09 -> B7-CAD-09` / `B7-C44-09`, and sentinel JSON omitted `count`.
+- Contrast: MiMo JANGTQ_2 remains `0/8` on the same probe and mutates
+  `blue-cat` to `blue` / `blue grass`, JSON values, and required tool args.
+- Runtime/cache evidence: JANG_2L loaded as `JANG_2L_322_D3E16`, with
+  gate/up/down bits `3/2/2`, native `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`, paged cache, block L2, generic TurboQuant KV
+  inactive, about `104985.5 MB` active Metal after health, and a final tool
+  request cache hit of `192` tokens.
+- Boundary: this reduces the blocker but does not clear MiMo release support.
+  JANGTQ_2 remains an artifact/requant-profile/source-vs-quant
+  first-divergence or decode/logit quality issue. Do not patch by parser
+  repair, JSON repair, string post-processing, sampling clamps, or cache
+  changes.
+
 # 2026-06-10 - MiMo JANGTQ_2 vMLX fast-path A/B excluded
 
 - Ran MiMo V2.5 JANGTQ_2 with `VMLINUX_DISABLE_MIMO_V2_SWITCHGLU_FAST_PATH=1`

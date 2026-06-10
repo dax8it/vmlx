@@ -7,6 +7,38 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo JANG_2L vs JANGTQ_2 Exactness A/B
+
+Artifact:
+
+- `build/current-mimo-v25-jang2l-vs-jangtq2-exactness-ab-20260610.json`
+
+Raw probe:
+
+- `build/current-mimo-v25-jang2l-exactness-variant-ab-20260610/result.json`
+
+Proven:
+
+- Real MiMo V2.5 JANG_2L loaded on the 128GB host with native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, paged cache, block L2, and
+  no generic TurboQuant KV.
+- JANG_2L preserved `blue-cat` in plain completions, chat, JSON, and required
+  tool-call arguments.
+- JANG_2L preserved `B7-CAT-09` inside required tool-call arguments and had a
+  paged cache hit of `192` tokens on the final tool request.
+- The same eight-row probe remains fully red for MiMo JANGTQ_2, where
+  `blue-cat` mutates to `blue` or `blue grass`, JSON values mutate, and tool
+  args mutate to `{"value":"blue"}` / `{"value":"B7CAT-09"}`.
+
+Boundary:
+
+- This is not a MiMo release-clearance proof. JANG_2L still drifts visible
+  sentinel text (`B7-CAT-09` -> `B7-CAD-09` / `B7-C44-09`) and omits `count`
+  in the sentinel JSON row.
+- JANGTQ_2 remains blocked on artifact/requant-profile/source-vs-quant
+  first-divergence or decode/logit quality. Do not fix this by parser repair,
+  JSON repair, string post-processing, sampling clamps, or cache changes.
+
 ### Gemma 12B MXFP8 CRACK Same-Model Public Responses SSE
 
 Artifact:
