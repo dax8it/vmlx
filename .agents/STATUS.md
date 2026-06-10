@@ -3069,3 +3069,37 @@
   with the CLI SSM entry-cap fix, focused tests, compact red/green Qwen proof
   artifacts, and `.agents` updates only. No release, N2 JANG_1L, unrelated
   panel proof drift, or `node_modules/` were staged.
+
+# 2026-06-10 07:58 PDT - MiMo JANGTQ2 exactness/splice lane selected
+
+- Current movement: switch from Qwen to MiMo V2.5 JANGTQ_2 exactness and
+  media-splice diagnosis because the current board shows MiMo media routes load
+  and visual tower parity is fixed, but live text exactness and visual semantics
+  remain red.
+- Constraint check: active worktree only; no release/sign/notarize/PyPI/download;
+  N2 JANG_1L remains off-limits; do not spawn subagents; do not mask MiMo
+  failures with parser/string/JSON repair, sampling clamps, or prompt regex;
+  leave unrelated panel proof drift and `node_modules/` alone.
+- Next action: inspect current MiMo artifacts and source path for the
+  language-side multimodal splice / first-logit / artifact-contract boundary
+  before changing runtime code. Use existing evidence and local probes; do not
+  build a broad new test suite.
+
+# 2026-06-10 08:01 PDT - Eric correction recorded into AGENTS
+
+- Request: Eric explicitly said to write down every instruction, status, and
+  movement, and to record the no-Python-subagent constraint. He also emphasized
+  auto tool usage, content/reasoning delta streaming, interleaved
+  reasoning/tool behavior, gateway/API request kwargs, and all model
+  reasoning/tool parsers as active fix/proof work.
+- Action: updated `AGENTS.md` in this active worktree with a dated correction
+  block. This was an explicit override to the usual "do not commit AGENTS"
+  local-worktree guard.
+- Active boundaries: no release/sign/notarize/PyPI/download action; no
+  subagents; no N2 JANG_1L unless Eric reopens it in the current turn; no fake
+  parser/tool fixes such as synthesized args, reasoning-disable workarounds,
+  silent drops, prompt regex, or raw XML stripping after the fact.
+- Current lane remains MiMo V2.5 JANGTQ_2 exactness/media-splice diagnosis
+  unless Eric redirects. Parallel agent should prioritize tunnel/public
+  gateway rebuild/recapture for Qwen SSE parity and Electron UI media rows; do
+  not duplicate this lane's MiMo runtime inspection unless coordinating here.

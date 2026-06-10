@@ -130,6 +130,40 @@ Eric-owned/off-limits; do not launch, fix, prove, classify, or claim it from
 partial prior runs. Allowed N2 work here is N2 JANGTQ/non-JANG_1L only when it
 does not overlap the JANG_1L lane.
 
+### 2026-06-10 Eric correction - write every movement down
+
+Eric explicitly reinforced that this lane must not rely on chat context,
+unstaged mental state, or recursive agent behavior. Every instruction, action,
+status movement, proof artifact, blocker, no-claim boundary, and other-agent
+handoff must be recorded in `.agents/STATUS.md` and `.agents/LOG.md` as work
+happens, before the next substantive action.
+
+Current active emphasis:
+
+- Do not ignore the user's current goal; re-check the written state before
+  acting and keep the work on runtime/API/model proof that moves a checkpoint
+  release forward.
+- Do not use Python, shell, MCP, browser, or any wrapper to spawn, supervise,
+  prompt, summarize, or delegate work to subagents. Direct Python remains
+  allowed only for local proof scripts, artifact inspection, tests, and source
+  verification.
+- Keep N2 JANG_1L off this Codex lane unless Eric explicitly reopens it in the
+  current turn. Do not infer permission from available RAM or prior attempts.
+- Harshly prioritize auto tool usage, required/no-tool modes, tool-result
+  continuation, content deltas, reasoning deltas, interleaved reasoning/tool
+  streaming, request kwargs passthrough, parser selection, gateway/API/raw SSE
+  parity, cache reuse telemetry, and final response object consistency.
+- Test and fix all model reasoning/tool parser families that can affect
+  opencode/Codex-style agent loops: Qwen/Qwen-coder XML, Gemma4, MiMo
+  think-XML, MiniMax, DeepSeek/R1-style think parsers, XML function parsers,
+  and gateway/tunnel routes.
+- Treat Qwen3.6/Qwen-coder empty `arguments: {}` tool calls as release-critical
+  for both 27B and 35B family surfaces, but do not assume the proposed root
+  cause without same-model raw output. Required-arg parser failures must fail
+  closed and preserve accurate streaming/final-object evidence; do not
+  synthesize args from text preambles, disable reasoning, silently drop tool
+  calls, or strip raw XML after the fact.
+
 Current checkpoint-release pressure: Eric does want a signed/notarized working
 checkpoint release, but this agent must not enter release/sign/notarize/PyPI/
 download-update steps unless Eric explicitly asks for that action in the

@@ -10425,3 +10425,41 @@ Prepared this commit (`Scale Qwen hybrid SSM cache entries`) with the CLI SSM
 entry-cap fix, focused tests, compact red/green Qwen proof artifacts, and
 `.agents` updates only. No release, N2 JANG_1L, unrelated panel proof drift, or
 `node_modules/` were staged.
+
+## 2026-06-10 07:58 PDT - MiMo JANGTQ2 exactness/splice lane selected
+
+Switching from Qwen to MiMo V2.5 JANGTQ_2 exactness and media-splice diagnosis.
+Current evidence says MiMo media routes load and visual tower parity is fixed,
+but live text exactness and visual semantics remain red. Work in active
+worktree only. No release/sign/notarize/PyPI/download, no N2 JANG_1L, no
+subagents, and no parser/string/JSON repair, sampling clamp, or prompt regex to
+mask MiMo failures. Next action is to inspect current MiMo artifacts and source
+path for language-side multimodal splice / first-logit / artifact-contract
+boundary before any runtime edit.
+
+## 2026-06-10 08:01 PDT - Eric correction recorded into AGENTS
+
+Eric explicitly directed that every instruction, movement, status, and proof
+boundary be written down, and that the no-Python-subagent constraint be
+recorded. Updated `AGENTS.md` in this active worktree with a dated correction
+block. This is an explicit override to the usual local guard against committing
+AGENTS edits.
+
+Current constraints remain: no release/sign/notarize/PyPI/download action; no
+subagents by Python, shell, MCP, browser, or wrappers; N2 JANG_1L stays
+Eric-owned/off-limits unless reopened in the current turn; and parser/API fixes
+must not synthesize arguments, disable reasoning, silently drop malformed tool
+calls, strip raw XML after the fact, or use prompt regex/string repair to fake
+correctness.
+
+Active parser/API emphasis now written into AGENTS: auto tool usage,
+required/no-tool modes, tool-result continuation, content deltas, reasoning
+deltas, interleaved reasoning/tool streaming, request kwargs passthrough,
+parser selection, gateway/API/raw SSE parity, cache reuse telemetry, final
+object consistency, and all reasoning/tool parser families including
+Qwen/Qwen-coder XML, Gemma4, MiMo think-XML, MiniMax, DeepSeek/R1-style think
+parsers, XML function parsers, and gateway/tunnel routes.
+
+Parallel-agent handoff: prioritize public tunnel/backend rebuild and recapture
+for Qwen SSE parity plus Electron UI media rows. Do not duplicate this lane's
+MiMo JANGTQ_2 runtime inspection unless coordinating through `.agents`.
