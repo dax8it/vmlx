@@ -9375,3 +9375,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary: this is source-parity hardening. It does not clear MiMo JANGTQ_2
   visual semantic correctness, literal exactness, installed-app parity, UI
   rows, or release clearance. Fresh live proof is still required.
+
+# 2026-06-10 - MiMo V2.5 vision head-dim parity fix pushed
+
+- Commit/push: `51477f05` (`Match MiMo vision qk head default`) was pushed to
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Scope: MiMo source-parity fix plus proof artifact only. No release, signing,
+  notarization, PyPI, public tunnel, Gemma, Qwen, or N2 JANG_1L action was
+  included in this commit.
+- Unrelated local state left alone:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  remains modified from other work and `node_modules/` remains untracked.
