@@ -4266,3 +4266,21 @@ Other-agent action:
   - Treat the Qwen35 empty-args/output-index public recapture row as currently green if the cited artifact remains current.
   - Do not remove fail-closed validation or replace it with argument synthesis from visible preambles.
   - Still expand live parser/API proof across Qwen27/Qwen-coder-next and the other family parsers before claiming all opencode/Codex harness loops green.
+
+# 2026-06-10 11:24 PDT - Gemma4 31B QAT JANG_4M audio classified as honest unsupported gate
+
+- Action: inspected the existing Gemma4 31B QAT JANG_4M dev-app audio proof, the model artifact metadata, and the current server modality gates.
+- Evidence:
+  - Artifact: `docs/internal/agent-notes/current-real-ui-dev-app-gemma4-31b-jang4m-audio-20260610-proof.json`, `status=fail`, `failureStage=audio_send_message`.
+  - The UI/server error was clean: `400 - /v1/chat/completions received unsupported media modality audio. Supported modalities: text, vision, video.`
+  - The model artifact `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M/config.json` has `audio_config=null`, `has_audio=false`, `has_video=false`, and `has_vision=true`.
+  - The same proof recorded the model loaded as MLLM, native Gemma4 parser/reasoning selection, `paged+mixed_swa` cache hit telemetry, and block-disk L2 writes before the audio request was rejected.
+- Verification:
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'gemma4_runtime_modalities_do_not_infer_audio_from_token_only_config or gemma4_chat_audio_request_rejects_when_audio_not_weight_backed or gemma4_runtime_modalities_advertise_audio_with_audio_tower_weights'` passed: 3 selected, 3 passed.
+- Classification:
+  - This is not an audio runtime crash and not evidence that Gemma4 31B audio works. It is an honest unsupported-modality gate for a vision-only Gemma4 31B QAT JANG_4M artifact.
+  - Do not clear an audio E2E release row for this artifact unless a weight-backed audio tower artifact is available and live-proven.
+  - The existing Gemma4 31B dev-app image/exact rows are separate pass artifacts, but installed-app parity and real audio support remain unproven.
+- Other-agent handoff:
+  - Treat Gemma4 audio as weight-backed only. Do not infer it from `audio_token_id`, tokenizer/config tokens, or generic MLLM status.
+  - Release notes/checklists should classify this row as `audio unsupported by artifact / gated cleanly`, not `audio failed runtime`.

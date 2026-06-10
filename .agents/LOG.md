@@ -12016,3 +12016,13 @@ Next action:
   - `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k 'qwen35_raw_sse or raw_sse'` -> 4 passed.
 - Boundary: Qwen35 MXFP8 MTP public recapture/source guard is green from current evidence; do not claim Qwen27, Qwen-coder-next, all model parser families, MiMo exactness, Gemma media, installed-app parity, or release readiness from this row.
 - Other-agent note: keep fail-closed required-arg validation intact. Do not synthesize missing Qwen XML arguments from text preambles, disable reasoning, or strip parser leaks as a fake fix. Expand live parser/API proof to Qwen27/Qwen-coder-next and non-Qwen parser families before claiming full Codex/opencode harness readiness.
+
+# 2026-06-10 11:24 PDT - Gemma4 31B audio proof classified as clean unsupported-modality gate
+
+- Inspected `docs/internal/agent-notes/current-real-ui-dev-app-gemma4-31b-jang4m-audio-20260610-proof.json`.
+- The proof failed at `audio_send_message`, but the error was a clean 400 response: `/v1/chat/completions received unsupported media modality audio. Supported modalities: text, vision, video.`
+- The artifact metadata for `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M` says `audio_config=null`, `has_audio=false`, `has_video=false`, `has_vision=true`.
+- Focused server guard passed:
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'gemma4_runtime_modalities_do_not_infer_audio_from_token_only_config or gemma4_chat_audio_request_rejects_when_audio_not_weight_backed or gemma4_runtime_modalities_advertise_audio_with_audio_tower_weights'` -> 3 passed.
+- Boundary: Gemma4 31B QAT JANG_4M has live dev-app text/cache and separate image/exact proof artifacts, but audio is not supported by this artifact and must not be advertised or cleared without a weight-backed audio tower and live proof.
+- Other-agent note: classify this row as clean audio gate / unsupported-by-artifact, not runtime audio support. Keep token-only/config-only audio inference forbidden.
