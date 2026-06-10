@@ -140,6 +140,19 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   however it returned `ACKCB-742` for expected `ACK-CB-742` and only `{"` for
   expected `{"status":"ok","value":"blue-cat"}`. This matches installed app and
   confirms the blocker is not dev-vs-installed UI drift.
+- 2026-06-10 update: the current raw real-UI harness now has optional exact
+  assistant-content assertions (`VMLINUX_REAL_UI_EXPECT_ASSISTANT_1/2`), and
+  the refreshed MiMo JANGTQ_2 dev-build exact-output proof is red directly in
+  the raw artifact:
+  `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-proof-20260610.json`.
+  It loaded the real bundle, completed two UI turns, and failed on exact visible
+  mismatches: `ACK-CB-742` -> `ACKCB-742`, and
+  `{"status":"ok","value":"blue-cat"}` -> `{"status":"ok","value":"blue"}`.
+  Cache and parser surfaces were healthy (`cache_hit_tokens=40`,
+  `l2_block_tokens_on_disk=114`, no raw parser/reasoning leak), so do not
+  paper this over with parser repair, JSON repair, sampling clamps, or cache
+  changes. Treat it as artifact/logit/codebook/decode exactness until a
+  stronger runtime-kernel proof says otherwise.
 - 2026-06-10 update: MiMo JANGTQ_2 current dev-build image/media is explicitly
   red in `build/current-real-ui-dev-app-mimo-v25-jangtq2-image-proof-20260610.json`.
   The `npm run dev` Electron app loaded the real 79 GiB bundle, completed two

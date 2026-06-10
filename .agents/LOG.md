@@ -1,3 +1,13 @@
+# 2026-06-10 - MiMo JANGTQ_2 dev-app exactness harness assertion
+
+- Added optional exact assistant-content assertions to `panel/scripts/live-real-ui-model-proof.mjs`: `VMLINUX_REAL_UI_EXPECT_ASSISTANT_1` and `VMLINUX_REAL_UI_EXPECT_ASSISTANT_2`. The raw proof artifact now records the expected strings and fails directly on visible assistant mismatches.
+- Ran current Electron dev-build MiMo V2.5 JANGTQ_2 exact-output proof with expected `ACK-CB-742` then `{"status":"ok","value":"blue-cat"}`.
+- Proof summary `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-20260610-proof.json`.
+- Positive evidence: real dev app launched, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` loaded, two UI turns completed, server cache controls were visible, no raw parser/reasoning leak was recorded, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa` stayed active, paged cache hit on turn two, and block L2 wrote.
+- Red evidence: first assistant mismatch `ACK-CB-742` -> `ACKCB-742`; second assistant mismatch `{"status":"ok","value":"blue-cat"}` -> `{"status":"ok","value":"blue"}`.
+- Runtime/cache evidence: active memory `76482.7 MB`, peak `77012.3 MB`, `codec=turboquant_codebook`, `profile=JANGTQ_2`, prestacked routed experts `423`, `cache_hit_tokens=40`, `ram_tokens_cached=114`, `l2_block_tokens_on_disk=114`, `l2_tokens_on_disk=114`, block-disk writes `3`.
+- Boundary: this strengthens the existing exactness blocker. Do not hide it with parser repair, JSON repair, sampling clamps, or cache changes; the next release-relevant action is artifact/logit/codebook/decode diagnosis or a replacement/lifted-precision artifact.
+
 # 2026-06-10 - N2 JANG_1L dev-app one-turn visible-output boundary
 
 - Added a scoped proof-harness switch `VMLINUX_REAL_UI_SECOND_TURN=0` in `panel/scripts/live-real-ui-model-proof.mjs`. It only disables the second UI message and relaxes only the two-turn/cache-hit assertions; it records `secondTurnEnabled=false` in proof artifacts and does not claim multi-turn/cache reuse.

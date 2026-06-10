@@ -1,4 +1,10 @@
 ## CODEX
+- now: MiMo JANGTQ_2 current Electron dev-app exactness is red with raw harness assertions, not just compact post-classification.
+- proof: `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-proof-20260610.json`, `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-20260610-proof.json`, screenshot is `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-20260610-chat.png`.
+- harness: `panel/scripts/live-real-ui-model-proof.mjs` now supports `VMLINUX_REAL_UI_EXPECT_ASSISTANT_1` and `VMLINUX_REAL_UI_EXPECT_ASSISTANT_2`, and fails raw real-UI proofs on visible assistant exact mismatch.
+- evidence: real dev app, real JANGTQ_2 load, two completed UI turns, expected `ACK-CB-742` became `ACKCB-742`, expected `{"status":"ok","value":"blue-cat"}` became `{"status":"ok","value":"blue"}`.
+- runtime/cache: `codec=turboquant_codebook`, `profile=JANGTQ_2`, prestacked routed experts `423`, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, generic TurboQuant KV inactive, paged cache hit, `cache_hit_tokens=40`, `l2_block_tokens_on_disk=114`, `l2_tokens_on_disk=114`, block-disk writes `3`.
+- boundary: this strengthens the artifact/logit/codebook/decode exactness blocker; do not mask with parser/JSON repair, sampling clamps, or cache changes. No release action.
 - now: N2 JANG_1L current Electron dev-app one-turn visible-output probe is red, but it separates first-turn whitespace output from the prior second-turn Metal guard.
 - proof: `build/current-real-ui-dev-app-n2-jang1l-one-turn-visible-proof-20260610.json`, `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-dev-app-n2-jang1l-one-turn-visible-20260610-proof.json`, screenshot is `docs/internal/agent-notes/current-real-ui-dev-app-n2-jang1l-one-turn-visible-20260610-chat.png`.
 - harness: `panel/scripts/live-real-ui-model-proof.mjs` now supports `VMLINUX_REAL_UI_SECOND_TURN=0`; artifacts record `secondTurnEnabled=false`. This is for bounded one-turn diagnosis only and does not claim multi-turn/cache reuse.

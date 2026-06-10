@@ -486,6 +486,7 @@ Artifacts:
 - `build/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-responses-tools-cache-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`
+- `build/current-real-ui-dev-app-mimo-v25-jangtq2-exact-output-harness-assert-proof-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-image-proof-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-video-proof-20260610.json`
 - `build/current-real-ui-dev-app-mimo-v25-jangtq2-audio-proof-20260610.json`
@@ -515,6 +516,18 @@ Proven:
 - Current Electron dev-build exact-output proof also loaded the real bundle,
   streamed visible Chat turns, kept parser/reasoning leak checks clean, hit
   paged mixed-SWA cache with `cache_hit_tokens=41`, and wrote block L2.
+- Current Electron dev-build exact-output proof is now also enforced by raw
+  harness assertions. `panel/scripts/live-real-ui-model-proof.mjs` supports
+  `VMLINUX_REAL_UI_EXPECT_ASSISTANT_1/2`; the refreshed raw proof failed
+  directly on exact visible mismatches rather than relying on post-processing:
+  `ACK-CB-742` became `ACKCB-742`, and
+  `{"status":"ok","value":"blue-cat"}` became
+  `{"status":"ok","value":"blue"}`.
+- The hardened exactness run again shows cache/parser are not the primary
+  blocker: no raw parser/reasoning leak, native `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`, paged cache hit with `cache_hit_tokens=40`,
+  `l2_block_tokens_on_disk=114`, `l2_tokens_on_disk=114`, and block-disk
+  `disk_writes=3`.
 - Current Electron dev-build image/VL proof loaded the real bundle, completed
   two visible text turns, attached one image, and server `MEDIA_DIAG` saw
   `image_url`. The proof is red for media because the runtime returned HTTP
@@ -559,6 +572,9 @@ Red:
   `{"status":"ok","value":"blue-cat"}`.
 - Dev-app exact-output proof reproduced the same failure: `ACK-CB-742` became
   `ACKCB-742`, and the JSON probe stopped at `{"`.
+- Hardened raw-harness exactness proof reproduced a complete JSON-value
+  mutation: expected `{"status":"ok","value":"blue-cat"}` became
+  `{"status":"ok","value":"blue"}`.
 - Dev-app image/VL, video, and audio are red by the same honest text-only
   runtime guard as the installed app. Do not claim MiMo JANGTQ_2 media support
   from preserved media weights.
