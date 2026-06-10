@@ -117,6 +117,17 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   the safe gate still skips before launch: available `114.22-114.23 GiB`,
   required `118.57 GiB`, gap about `4.35 GiB`. Requested tool, Responses,
   Responses stream, and L2 restart probes were recorded but not launched.
+- 2026-06-10 high-free launch attempt:
+  `build/current-n2-pro-jang1l-local-memory-preflight-ultrafree-20260610.json`
+  still says strict `decision=do_not_launch` with observed available
+  `114.09 GiB`, required `118.57 GiB`, gap `4.48 GiB`. Per Eric's instruction
+  to launch one-at-a-time anyway,
+  `build/current-n2-jang1l-live-chat-cache-ultrafree-20260610.json` ran with
+  lowered JANG_1L headroom (`3 GiB`) plus low-peak knobs and still failed at
+  `phase=server_startup`: qwen3_5_moe/JANG_1L detection, qwen parser, qwen3
+  reasoning parser, hybrid cache, attention-only TurboQuant KV, native SSM
+  companion state, mmap JANG loader, `123` shards, bfloat16 for `512` experts,
+  `Wired limit set to 115 GB (model 119 GB)`, then Metal OOM before health.
 - N2 JANGTQ_2 proof does not clear N2 JANG_1L.
 - Keep architecture names explicit in every proof: base Qwen/Qwen35 MXFP8-MTP direct-source proof does not clear Nex/N2 Pro 397B JANG_1L, and N2 JANG_1L does not clear regular Qwen MTP/JANGTQ rows. Record `format`, `weight_format`, `artifact_profile`, MTP depth, `gdn_sink`, hybrid SSM/native-cache schema, TurboQuant KV state, and media weight backing from loaded health/config rather than inferred family names.
 

@@ -1092,3 +1092,12 @@
 - Proven: local rebuilt `/Applications/vMLX.app` launched, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` loaded as MLLM, two visible text turns completed before media, the app attached one red PNG image, Gemma media fallback ran with `1 image(s)`, and the assistant answered `Red`; `imageSemanticVerified=true`.
 - Runtime/cache evidence: active memory `9892.5 MB`, peak `10450.3 MB`, JANG affine matmul with Metal NA active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`, `l2_block_tokens_on_disk=77`, `l2_tokens_on_disk=77`, and block-disk writes `2`.
 - Boundary: this clears Gemma 12B JANG4M installed-app image only. It does not clear installed-app JANG4M video/audio, larger Gemma QAT rows, public tunnel SSE, package/sign/notarize/tag/upload, or release readiness.
+
+# 2026-06-10 - N2 JANG_1L high-free launch still Metal OOM
+
+- Reduced blocker: `runtime/kernel` for Nex/N2 Pro JANG_1L on the 128 GiB host.
+- Fresh no-load preflight: `build/current-n2-pro-jang1l-local-memory-preflight-ultrafree-20260610.json`, `status=open`, `decision=do_not_launch`; indexed payload `110.57 GiB`, required available `118.57 GiB`, observed available `114.09 GiB`, gap `4.48 GiB`.
+- Per Eric's launch instruction, ran a real live gate anyway with lowered JANG_1L headroom (`3 GiB`) and one-at-a-time low-peak knobs: prefill batch `64`, prefill step `128`, completion batch `32`, SSM state cache `128 MB`, paged cache block size `64`, max cache blocks `256`, block L2 `2 GB`, max output `16`, server max tokens `256`.
+- Live proof: `build/current-n2-jang1l-live-chat-cache-ultrafree-20260610.json`, `status=fail`, `phase=server_startup`; server log `build/current-n2-jang1l-live-chat-cache-ultrafree-20260610.server.log`.
+- Runtime evidence before abort: server detected `family=qwen3_5_moe`, `tool_parser=qwen`, `reasoning_parser=qwen3`, `cache_type=hybrid`; enabled attention-only TurboQuant KV for the hybrid model while preserving native full-precision SSM/GatedDelta companion state; selected JANG text-only route and mmap JANG loader; patched `482` quant-shape modules; started loading `123` shards; enabled bfloat16 for `512` experts; set `Wired limit set to 115 GB (model 119 GB)`.
+- Red boundary: startup aborted before health with `[METAL] Command buffer execution failed: Insufficient Memory`. N2 JANG_1L remains not release-clear and needs an actual lower-peak loader/runtime strategy, not another threshold reduction. N2 JANGTQ2 proof still does not clear JANG_1L.

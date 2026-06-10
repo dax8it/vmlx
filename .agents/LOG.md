@@ -8278,3 +8278,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven: installed-app UI, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` load, two visible text turns before media, image attachment persistence, Gemma media fallback with `1 image(s)`, visible answer `Red`, server cache controls, no parser/reasoning leak, native mixed-SWA cache, and block L2.
 - Runtime/cache evidence: active memory `9892.5 MB`, peak `10450.3 MB`, JANG affine matmul with Metal NA active, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`, `l2_block_tokens_on_disk=77`, and block-disk writes `2`.
 - Boundary: installed-app JANG4M video/audio, larger Gemma QAT rows, tunnel SSE, and release readiness remain open. No release action was run.
+
+# 2026-06-10 - N2 JANG_1L high-free live launch
+
+- Reran no-load Nex/N2 Pro JANG_1L preflight at `build/current-n2-pro-jang1l-local-memory-preflight-ultrafree-20260610.json`: indexed payload `110.57 GiB`, required available `118.57 GiB`, observed available `114.09 GiB`, gap `4.48 GiB`, strict decision `do_not_launch`.
+- Per Eric's instruction to launch one-at-a-time anyway, ran `build/current-n2-jang1l-live-chat-cache-ultrafree-20260610.json` with lowered JANG_1L headroom (`3 GiB`), max output `16`, server max tokens `256`, prefill batch `64`, prefill step `128`, completion batch `32`, SSM cache `128 MB`, paged cache block size `64`, max cache blocks `256`, block L2 `2 GB`, plus tool, Responses, Responses stream, and L2 restart probes requested.
+- Result: `status=fail`, `phase=server_startup`, server exit `-6`; no health or request probe was reached.
+- Server log proves this was a real launch: qwen3_5_moe/JANG_1L route, qwen tool parser, qwen3 reasoning parser, hybrid cache, attention-only TurboQuant KV with native SSM companion state, mmap JANG loader, `482` quant-shape patches, `123` shards, bfloat16 for `512` experts, `Wired limit set to 115 GB (model 119 GB)`, then `[METAL] Command buffer execution failed: Insufficient Memory`.
+- Boundary: N2 JANG_1L is still red on this 128 GiB host until a lower-peak loader/runtime path exists. Do not claim release support from another threshold reduction; N2 JANGTQ2 remains the N2 checkpoint candidate.

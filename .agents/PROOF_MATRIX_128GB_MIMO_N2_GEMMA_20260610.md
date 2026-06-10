@@ -70,7 +70,11 @@ Not proven:
 - Electron UI clicked chat transcript for every exact row. N2 JANGTQ2, Gemma
   12B MXFP4, and MiMo JANG_2L now have scoped installed-app rows below; other
   model/profile rows do not inherit those proofs.
-- N2 JANG_1L memory-safe live startup.
+- N2 JANG_1L memory-safe live startup. The latest high-free live attempt
+  `build/current-n2-jang1l-live-chat-cache-ultrafree-20260610.json` started
+  from `114.2 GiB` available with low-peak one-at-a-time knobs and still failed
+  before health after `Wired limit set to 115 GB (model 119 GB)` with
+  `[METAL] Command buffer execution failed: Insufficient Memory`.
 - MiMo JANGTQ_2 exactness.
 - Gemma audio/video semantic E2E.
 - Same-model direct/gateway/tunnel raw SSE deployed parity.
@@ -803,12 +807,24 @@ Observed:
   required `118.57`, gap `4.35`, and recorded requested tool, Responses,
   Responses stream, and L2 restart probes. This safe run did not call `Popen`
   and did not create another Metal OOM.
+- Fresh high-free launch attempt after the Gemma JANG4M installed-app image
+  proof: `build/current-n2-pro-jang1l-local-memory-preflight-ultrafree-20260610.json`
+  still had strict `decision=do_not_launch` at `available_gib=114.09`,
+  required `118.57`, gap `4.48`. Per Eric's launch instruction, the live gate
+  lowered JANG_1L headroom to `3 GiB` and ran one-at-a-time anyway:
+  `build/current-n2-jang1l-live-chat-cache-ultrafree-20260610.json`,
+  `status=fail`, `phase=server_startup`. Server log proves qwen3_5_moe/JANG_1L
+  detection, qwen tool parser, qwen3 reasoning parser, hybrid cache,
+  attention-only TurboQuant KV plus native SSM companion state, mmap JANG
+  loader, `482` quant-shape patches, `123` shards, bfloat16 for `512` experts,
+  and the same Metal OOM before health.
 
 Conclusion:
 
 - JANG_1L is not proven usable on this 128GB host. It is not merely untested and
-  not merely skipped by a conservative gate; a live startup attempt crashed in
-  Metal OOM before health.
+  not merely skipped by a conservative gate; multiple live startup attempts,
+  including the latest high-free low-peak launch, crashed in Metal OOM before
+  health.
 
 Next implementation target:
 
