@@ -1067,3 +1067,12 @@
 - Proven: local rebuilt `/Applications/vMLX.app` launched, real 79 GiB MiMo JANGTQ_2 loaded, Chat Completions produced exact visible turns `MIMO_JANGTQ2_TEXT_ONE` and `MIMO_JANGTQ2_TEXT_TWO`, server cache controls were visible, no parser/reasoning leak was recorded, and generation defaults were applied.
 - Runtime/cache evidence: active memory `76484.8 MB`, peak `77037.2 MB`, native TurboQuant codebook routed experts, `mixed_swa_kv_v1` with `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=42`, `l2_block_tokens_on_disk=120`, `l2_tokens_on_disk=120`, and block-disk writes `3`.
 - Boundary: this clears only short installed-app text/cache for MiMo JANGTQ_2. It does not clear older broader JANGTQ_2 artifact exactness failures, tools, media, source-vs-quant, public tunnel, package/sign/notarize/tag/upload, or release readiness.
+
+# 2026-06-10 - MiMo JANGTQ_2 installed-app image honestly gated
+
+- Reduced blocker: `media` plus `api/ui` for MiMo JANGTQ_2 installed-app image/VL.
+- Proof summary: `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json`, `status=fail`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-20260610-chat.png`.
+- Positive evidence: local rebuilt `/Applications/vMLX.app` launched, real 79 GiB MiMo JANGTQ_2 loaded, two visible text turns completed before media, the app attached one image, and server `MEDIA_DIAG` saw one `image_url`.
+- Red boundary: the server returned `400 - /v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.` Server log records that forced MLLM was overridden because MiMo media weights are preserved but `unwired weights_preserved_text_runtime`.
+- Runtime/cache evidence before the gate: active memory `76491.8 MB`, peak `77127.2 MB`, native `mixed_swa_kv_v1` with `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=39`, `l2_block_tokens_on_disk=132`, `l2_tokens_on_disk=132`, and block-disk writes `3`.
+- Boundary: MiMo JANGTQ_2 installed-app media remains unsupported by honest guard. Vision tensors/config metadata do not equal runtime media support. No package/sign/notarize/tag/upload/release action was run.

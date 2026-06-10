@@ -8254,3 +8254,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven: installed-app UI, real 79 GiB MiMo JANGTQ_2 load, exact visible text turns `MIMO_JANGTQ2_TEXT_ONE` and `MIMO_JANGTQ2_TEXT_TWO`, generation defaults, no parser/reasoning leak, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, paged cache hit, and block L2 writes.
 - Runtime/cache evidence: active memory `76484.8 MB`, peak `77037.2 MB`, cache hit tokens `42`, `cache_detail=paged`, `l2_block_tokens_on_disk=120`, and block-disk writes `3`.
 - Boundary: short installed-app text/cache is green, but broader MiMo JANGTQ_2 exactness/tool/media/source-vs-quant rows remain open. No release action was run.
+
+# 2026-06-10 - MiMo JANGTQ_2 installed-app image gated
+
+- Ran installed-app MiMo JANGTQ_2 image proof through `/Applications/vMLX.app` with Chat Completions, forced MLLM requested, cache controls, temperature `0`, top_p `1`, and max tokens `64`.
+- Proof summary `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-20260610-proof.json`.
+- Boundary proved: installed app attached one image and server `MEDIA_DIAG` saw `image_url`, but `/v1/chat/completions` rejected image with `400` because the loaded runtime is text-only. Supported modalities reported by the server are `text`.
+- Runtime/cache stayed live before the gate: `mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=39`, `l2_block_tokens_on_disk=132`, and block-disk writes `3`.
+- This is not a load/cache/L2 failure and not a lost attachment. Do not claim MiMo JANGTQ_2 installed-app media support. No release action was run.

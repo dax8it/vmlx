@@ -325,6 +325,7 @@ Artifact:
 - `build/current-real-ui-installed-app-mimo-v25-jang2l-tools-proof-20260610.json`
 - `build/current-real-ui-installed-app-mimo-v25-jang2l-image-proof-20260610.json`
 - `build/current-real-ui-installed-app-mimo-v25-jangtq2-text-cache-proof-20260610.json`
+- `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json`
 
 Proven:
 
@@ -442,6 +443,14 @@ Proven:
   `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa` with TurboQuant codebook routed
   experts, `cache_detail=paged`, `cache_hit_tokens=42`,
   `l2_block_tokens_on_disk=120`, and block-disk `disk_writes=3`.
+- MiMo JANGTQ_2 installed-app image/VL is red with the same honest text-only
+  guard. The app attached one image and server `MEDIA_DIAG` saw one
+  `image_url`, but `/v1/chat/completions` returned `400`: `received
+  unsupported media modality image because the loaded runtime is text-only.
+  Supported modalities: text.` Forced MLLM was overridden because the preserved
+  media weights are `unwired weights_preserved_text_runtime`. Cache/L2 stayed
+  live with `cache_detail=paged`, `cache_hit_tokens=39`,
+  `l2_block_tokens_on_disk=132`, and block-disk `disk_writes=3`.
 
 Red / not proven:
 
