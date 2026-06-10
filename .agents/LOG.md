@@ -8286,3 +8286,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Result: `status=fail`, `phase=server_startup`, server exit `-6`; no health or request probe was reached.
 - Server log proves this was a real launch: qwen3_5_moe/JANG_1L route, qwen tool parser, qwen3 reasoning parser, hybrid cache, attention-only TurboQuant KV with native SSM companion state, mmap JANG loader, `482` quant-shape patches, `123` shards, bfloat16 for `512` experts, `Wired limit set to 115 GB (model 119 GB)`, then `[METAL] Command buffer execution failed: Insufficient Memory`.
 - Boundary: N2 JANG_1L is still red on this 128 GiB host until a lower-peak loader/runtime path exists. Do not claim release support from another threshold reduction; N2 JANGTQ2 remains the N2 checkpoint candidate.
+
+# 2026-06-10 - Gemma 12B JANG4M installed-app video/VL
+
+- Ran installed-app Gemma 12B JANG4M video proof through `/Applications/vMLX.app` with Chat Completions, forced video, cache controls, temperature `0`, top_p `1`, max tokens `96`, and explicit max prompt tokens `12000`.
+- Proof summary `build/current-real-ui-installed-app-gemma4-12b-jang4m-video-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-jang4m-video-20260610-proof.json`.
+- Proven: installed-app UI, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` load, two visible text turns before media, video attachment persistence, server `MEDIA_DIAG` video detection, base64 MP4 decode, `4` extracted frames from the 25 fps fixture, visible answer `The video shows a solid, static red screen with no movement or changes.`, server cache controls, no parser/reasoning leak, native mixed-SWA cache, and block L2.
+- Runtime/cache evidence: active memory `9890 MB`, peak `10430.4 MB`, JANG affine matmul with Metal NA active, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`, `l2_block_tokens_on_disk=77`, and block-disk writes `2`.
+- Boundary: installed-app JANG4M audio, default-4k video, larger Gemma QAT rows, tunnel SSE, and release readiness remain open. No release action was run.

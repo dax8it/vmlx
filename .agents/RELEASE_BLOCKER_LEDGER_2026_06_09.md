@@ -274,6 +274,16 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   answer `Red`, no raw parser/reasoning leak, JANG affine Metal NA, native
   mixed-SWA cache, and block L2 writes. It does not clear JANG4M installed-app
   video/audio, public tunnel SSE, or package/sign/notarize/release readiness.
+- 2026-06-10 Gemma JANG4M installed-app video update:
+  `build/current-real-ui-installed-app-gemma4-12b-jang4m-video-proof-20260610.json`
+  is `status=pass` for the local rebuilt `/Applications/vMLX.app` and
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` with explicit
+  `max_prompt_tokens=12000`. It proves installed-app video attachment
+  persistence, server `MEDIA_DIAG` video detection, base64 MP4 decode, 4-frame
+  extraction from the 25 fps fixture, visible solid-red-screen answer, no raw
+  parser/reasoning leak, JANG affine Metal NA, native mixed-SWA cache, and block
+  L2 writes. It does not clear JANG4M installed-app audio, default-4k video,
+  public tunnel SSE, or package/sign/notarize/release readiness.
 - Proper release mechanics are documented in `/Users/eric/wiki/infra/apple-notarization.md`; do not invent an alternate path. The canonical keychain is `~/Library/Keychains/vmlx-build.keychain-db`, the Developer ID identity is `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, and notarization uses the `vmlx-notary` keychain profile.
 - If signing returns `errSecInternalComponent`, fix key access with the documented sequence and retry once after the partition-list grant settles:
 

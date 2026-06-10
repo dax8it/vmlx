@@ -291,10 +291,21 @@ Proven:
   `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`,
   `l2_block_tokens_on_disk=77`, `l2_tokens_on_disk=77`, and block-disk
   `disk_writes=2`.
+- Local rebuilt installed app video proof is now green for Gemma 12B JANG4M at
+  `max_prompt_tokens=12000`. The app persisted a `video_url` attachment, server
+  `MEDIA_DIAG` saw the video, decoded the base64 MP4, extracted `4` frames from
+  the 25 fps fixture, routed it through the Gemma media fallback, and returned
+  `The video shows a solid, static red screen with no movement or changes.`
+- Installed-app JANG4M video runtime/cache evidence: active memory `9890 MB`,
+  peak `10430.4 MB`, JANG affine matmul with Metal NA active, native
+  `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`,
+  `l2_block_tokens_on_disk=77`, `l2_tokens_on_disk=77`, and block-disk
+  `disk_writes=2`.
 
 Not proven:
 
-- Installed packaged app video/audio parity for JANG4M.
+- Installed packaged app audio parity for JANG4M.
+- Installed packaged app JANG4M video at the default 4k prompt cap.
 - DMG package/sign/notarize/release readiness.
 - Local panel session manager starting this exact model from launch args; these
   app proofs used a remote session connected to the server started by the proof
