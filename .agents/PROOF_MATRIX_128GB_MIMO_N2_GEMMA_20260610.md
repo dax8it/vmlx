@@ -11,27 +11,29 @@ separates what was actually loaded and proven from what remains red.
 
 Artifact:
 
-- `build/current-responses-raw-sse-parity-qwen35-direct-gateway-source-vs-tunnel-after-reasoning-item-index-20260610.json`
+- `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-refreshed-20260610.json`
 
 Proven:
 
-- Current-source direct and real panel gateway both preserve required
-  `record_fact` arguments `{"value":"blue-cat"}` with reasoning enabled.
-- Both source surfaces emit valid output indices:
-  `message=[0]`, `reasoning=[1]`, `function_call=[2]`.
-- Direct/gateway both advertise the same served model:
+- Current-source direct, real panel gateway, and current public tunnel all
+  preserve required `record_fact` arguments `{"value": "blue-cat"}` with
+  reasoning enabled.
+- All three surfaces parse cleanly, report the same served model
   `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`.
+- Direct/gateway emit valid output indices:
+  `message=[0]`, `reasoning=[1]`, `function_call=[2]`; tunnel emits
+  `message=[0]`, `function_call=[1]`.
+- All three surfaces have complete reasoning lifecycle, valid function-call
+  argument delta/done, and final response consistency.
 - Runtime health in the direct capture proves native MTP active, hybrid SSM
   cache, live attention TurboQuant KV, block-disk L2, and Qwen tool/reasoning
   parser defaults.
 
-Still red:
+Boundary:
 
-- The artifact remains `status=fail` only because the reused public tunnel SSE
-  is stale and still has `message=[0]`, `function_call=[0]`.
-- Parallel-lane action: rebuild/redeploy the tunnel/backend from current source
-  containing `841e5f40` or newer, then recapture the tunnel with the same
-  request/model. Do not synthesize tool args or disable reasoning.
+- This clears Qwen35 same-model direct/gateway/tunnel raw Responses SSE for
+  this required-tool request. It does not clear every model family, installed
+  app UI, tool-result continuation, Gemma/MiMo/N2, or release readiness row.
 
 ### MiMo JANGTQ_2 Loader Contract
 

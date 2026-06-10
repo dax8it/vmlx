@@ -10301,3 +10301,57 @@ black=`White...`. Artifact:
 `docs/internal/agent-notes/current-mimo-v25-jangtq2-direct-color-after-zero-bias-20260610.json`.
 Do not claim MiMo JANGTQ2 `vl_image` release clearance; next work is
 language-side multimodal splice/first-logit or artifact/source quant contract.
+
+## 2026-06-10 07:32 PDT - Qwen Responses/tool streaming lane selected
+
+Continuing after commit `8dc475fd`. Selected the Qwen/Qwen-coder Responses raw
+SSE/tool/reasoning streaming blocker because it directly affects opencode and
+Codex harness usability. Constraints rechecked: active worktree only, N2
+JANG_1L off-limits, no release/sign/notarize/PyPI/download, no subagents, no
+fake parser repair, no synthesized tool args, and no disabling reasoning to
+hide malformed tool calls. Next action is source/runtime tracing from current
+code before any fix.
+
+## 2026-06-10 07:38 PDT - Qwen35 Responses raw SSE direct/gateway/tunnel proof
+
+Ran focused source guards first: 34 passed across Responses streaming
+output-index, empty-XML fail-closed, reasoning-tool argument preservation,
+required-argument parser fail-closed, raw-SSE classifier, and Qwen35 capture
+scaffolding tests.
+
+Then ran live Qwen35 MXFP8-MTP same-model raw SSE. Direct-only artifact
+`build/current-responses-raw-sse-qwen35-mxfp8-mtp-direct-source-20260610.json`
+proved current source direct was green but red overall because gateway was
+skipped and the runner defaulted to stale 2026-06-09 tunnel SSE. Reran with
+gateway enabled:
+`build/current-responses-raw-sse-qwen35-mxfp8-mtp-direct-gateway-source-20260610.json`
+proved both direct and local gateway green; only stale tunnel remained red.
+Reclassified today’s direct/gateway captures against the current public tunnel
+capture `build/responses-sse-captures-20260610/tunnel-qwen35-mxfp8-mtp-tool-recapture-after-strict-source-20260610.sse`.
+
+Final artifact:
+`build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-refreshed-20260610.json`
+is `status=pass`. Direct/gateway/tunnel all preserve `record_fact` args
+`{"value": "blue-cat"}`, report
+`models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, include reasoning events without a
+reasoning-disable workaround, parse cleanly, keep final output consistent with
+the stream, and use valid output indices. Direct/gateway use
+`message=[0], reasoning=[1], function_call=[2]`; tunnel uses
+`message=[0], function_call=[1]`. This clears Qwen35 same-model raw-SSE
+direct/gateway/tunnel parity for this required-tool request. It does not clear
+all family tool-result continuation, installed-app, Gemma/MiMo/N2, or release
+readiness rows.
+
+## 2026-06-10 07:41 PDT - Qwen35 proof commit prep
+
+Preparing a proof-only commit for the Qwen35 same-model direct/gateway/tunnel
+raw-SSE parity evidence. Staging is limited to `.agents` status/proof-matrix
+updates plus the final Qwen parity JSON and matching current direct/gateway SSE
+captures/logs. Do not stage unrelated panel settings proof drift or
+`node_modules/`. No release, signing, notarization, tagging, upload, PyPI, or
+N2 JANG_1L action.
+
+Created commit this commit (`Prove Qwen35 Responses raw SSE parity`) with only
+the targeted Qwen proof artifacts and `.agents` updates. This commit is not a
+release claim and does not include unrelated panel settings drift or
+`node_modules/`.

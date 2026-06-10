@@ -2892,3 +2892,73 @@
   semantic quality remains red and is not release-cleared. The next useful
   diagnosis is language-side multimodal splice/first-logit or artifact/source
   quant contract, not prompt/parser/regex repair and not cache/L2 chasing.
+
+# 2026-06-10 07:32 PDT - Qwen Responses/tool streaming lane selected
+
+- Current user/goal carry-forward: keep moving toward production-quality fixes
+  for Nex/N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP, cache reuse,
+  TurboQuant, reasoning/tool parsers, API/gateway deltas, and UI behavior; do
+  not waste time on broad test-suite churn or recursive/subagent behavior.
+- Constraint check: active worktree is
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; N2 JANG_1L remains off
+  limits; no release/sign/notarize/PyPI/download action; no fake parser repair;
+  no synthesized tool args; no disabling reasoning to hide Qwen failures; leave
+  unrelated dirty `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  and `node_modules/` alone.
+- Next blocker selected: Qwen/Qwen-coder Responses raw SSE/tool/reasoning
+  streaming parity for opencode/Codex harnesses. Do not trust the proposed
+  empty-args root cause without evidence; trace current parser/streaming code
+  and reproduce from current source before patching.
+
+# 2026-06-10 07:38 PDT - Qwen35 Responses raw SSE direct/gateway/tunnel green
+
+- Blocker reduced: Qwen3.6/Qwen35 Responses raw SSE tool/reasoning parity for
+  opencode/Codex-style harnesses.
+- Focused source guards passed: `34 passed` across
+  `tests/test_server.py` Responses tool-index/empty-XML/reasoning-tool cases,
+  `tests/test_tool_parser_required_args_fail_closed.py`,
+  `tests/test_responses_raw_sse_parity_contract.py`, and
+  `tests/test_qwen35_responses_raw_sse_capture.py`.
+- Live same-model direct+gateway proof run loaded
+  `/Users/eric/models/JANGQ/Qwen3.6-35B-A3B-MXFP8-MTP` as
+  `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, with Qwen3 reasoning enabled,
+  Qwen tool parser enabled, native MTP active, hybrid 30 SSM + 10 attention
+  cache, TurboQuant live attention KV, paged cache, block L2, and SSM companion
+  L2. After-health RSS was about `35.872 GiB`; system memory still had about
+  `77.09 GiB` available.
+- Current pass artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-refreshed-20260610.json`
+  is `status=pass`. Direct SSE
+  `build/responses-sse-captures-20260610/direct-qwen35-mxfp8-mtp-tool-current-source-gateway-run-20260610.sse`,
+  gateway SSE
+  `build/responses-sse-captures-20260610/gateway-qwen35-mxfp8-mtp-tool-current-source-20260610.sse`,
+  and tunnel SSE
+  `build/responses-sse-captures-20260610/tunnel-qwen35-mxfp8-mtp-tool-recapture-after-strict-source-20260610.sse`
+  all preserve authoritative `record_fact` arguments `{"value": "blue-cat"}`,
+  parse cleanly, report the same model, include required reasoning events, have
+  complete reasoning lifecycle, keep final response consistent with the stream,
+  and use valid output item indices.
+- Direct/gateway indices are `message=[0]`, `reasoning=[1]`,
+  `function_call=[2]`; tunnel indices are `message=[0]`,
+  `function_call=[1]`. This clears the stale duplicate-index tunnel blocker for
+  this same Qwen35 model/request.
+- Boundary: this does not claim every model family, tool-result continuation,
+  UI installed-app flow, Gemma/MiMo/N2 parity, or release readiness is green.
+  Continue cross-family Responses/tool-result/cache/API proof next.
+
+# 2026-06-10 07:41 PDT - Commit Qwen35 raw-SSE proof only
+
+- Movement: preparing a proof-only commit for the Qwen35 same-model
+  direct/gateway/tunnel raw-SSE parity evidence and `.agents` status updates.
+- Constraint check: do not stage unrelated dirty
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  or `node_modules/`; do not release, sign, notarize, tag, upload, publish to
+  PyPI, or touch N2 JANG_1L.
+- Files to stage: `.agents/STATUS.md`, `.agents/LOG.md`,
+  `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md`, final Qwen parity
+  JSON, current direct/gateway capture JSON, and the matching direct/gateway SSE
+  plus logs. The tunnel capture is already tracked and referenced by the final
+  parity artifact.
+- Result: created commit this commit (`Prove Qwen35 Responses raw SSE parity`).
+  The commit is proof-only and does not include release actions, N2 JANG_1L
+  work, unrelated panel settings drift, or `node_modules/`.
