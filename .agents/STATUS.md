@@ -4215,3 +4215,54 @@ Other-agent action:
 - Boundary:
   - This proves the Gemma4 26B dev-app Responses/tool/cache loop for this exact two-turn file-tool contract. It does not claim installed-app bundle parity, media/audio/video, gateway/tunnel, Qwen empty-args, MiMo semantic exactness, or all Gemma rows green.
   - No release/sign/notarize/PyPI/updater/download/site action was performed.
+
+# 2026-06-10 11:35 PDT - MiMo JANGTQ_2 exactness/logit-artifact lane selected
+
+- Request: continue the persistent objective by reducing real unfixed/untested blockers for MiMo, Gemma, N2 non-JANG_1L, Qwen/tool parsers, cache, media, and UI/API proof without broad low-value test-suite churn or subagent behavior.
+- Current allowed lane selected: MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis, matching the first allowed lane in `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`.
+- Current checklist evidence: `build/current-full-release-objective-checklist-after-gemma-12b-installed-app-ui-proof-20260610.json` keeps MiMo release clearance red for `mimo_jangtq2_artifact_exactness_blocked`, decode speed, unwired media, live media/L2 gaps, and source-vs-quant/logit uncertainty.
+- Working hypothesis to test before any fix: existing MiMo JANGTQ_2 failures have valid parser/tool structure but wrong literal values, so parser/JSON repair or cache chasing would be fake. Need stronger evidence whether the remaining issue is artifact/quant contract, runtime decode/kernel path, or source-vs-quant divergence.
+- Constraints retained: no release/sign/notarize/PyPI/updater/download/site action; no N2 JANG_1L; no subagents; do not rewrite parsed tool args or repair semantic JSON values to hide MiMo literal mutation.
+
+# 2026-06-10 11:45 PDT - MiMo JANGTQ_2 exactness boundary rechecked; no local runtime patch justified
+
+- Action: inspected current MiMo JANGTQ_2 exactness artifacts, vMLX MiMo prestacked JANGTQ installer, installed `jang_tools` TQ loader/kernel, and source/quant endpoint availability.
+- Evidence:
+  - `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-quant-only-exact-probes-20260610.json` shows the quant endpoint returned HTTP 200 for all eight rows but mutates exact literals: `blue-cat -> blue`, `B7-CAT-09 -> B7CAT-09`, JSON value loses the hyphenated literal, and required tool args become `{"value":"blue cat"}`.
+  - `build/current-mimo-v25-jang2l-vs-jangtq2-exactness-ab-20260610.json` shows JANG_2L preserves the common `blue-cat` literal/tool rows while JANGTQ_2 fails all eight rows.
+  - `build/current-mimo-v25-jangtq2-exactness-classifier-after-no-fastpath-live-20260610.json` excludes tokenizer/template corruption, hidden stochastic sampling, vMLX compiled router fast path, vMLX SwitchGLU fast path, generic TurboQuant KV, cache-hit reuse, parser repair, and JSON repair as primary causes.
+  - `build/current-mimo-v25-jangtq2-native-tq-contract-classifier-20260610.json` and `build/current-mimo-v25-jangtq2-native-tq-allproj-contract-20260610.json` exclude sidecar codebook/sign mismatch, sampled prestacked shape binding mismatch, and native gather TQ selected-expert shape semantics.
+  - Source endpoint `http://erics-m5-max2.local:8126/health` timed out and local quant endpoint `http://127.0.0.1:8897/health` was not running, so a fresh source-vs-quant first-divergent-logit run is not available in this turn.
+- Classification: current evidence still points to MiMo JANGTQ_2 artifact/logit/quant-quality or corrected requant profile, not a local vMLX parser/cache/sidecar/gather-kernel patch.
+- Boundary:
+  - Do not claim MiMo JANGTQ_2 exactness is fixed or release-clear.
+  - Do not patch parser/JSON/tool args/sampling/cache to hide literal mutations.
+  - Next valid MiMo exactness movement is a real source/dequant first-divergent-logit comparison with the source endpoint running, or a corrected higher-fidelity JANGTQ artifact/profile rerun.
+- Next lane selected: Qwen/Qwen-coder Responses raw SSE/parser parity, because it remains release-critical for Codex/opencode-style harness usability and can be reduced locally without source endpoint availability.
+
+# 2026-06-10 11:48 PDT - Qwen/Qwen-coder Responses parser/API parity lane selected
+
+- Current blocker: Qwen3.6/Qwen-coder XML tool-call dialect can produce empty or missing required tool arguments, which breaks Codex/opencode-style clients if emitted as `arguments: {}`.
+- Required behavior: fail closed on missing required args, preserve valid args, keep content/reasoning deltas, function-call argument delta/done events, output indices, final object consistency, request kwargs, and cache telemetry accurate across direct/gateway/tunnel where available.
+- Constraints retained: do not synthesize `cmd`, do not infer args from visible preambles, do not disable reasoning to avoid the bug, do not silently drop tool calls, and do not strip raw XML after parser failure as a fake fix.
+- Next action: inspect current source tests/artifacts and run focused raw-SSE/parser proof or route recapture if the required endpoint is available.
+
+# 2026-06-10 11:20 PDT - Qwen35 raw SSE/parser contract reverified green from current artifacts and focused guards
+
+- Action: inspected `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json` and ran focused parser/release guards for the Qwen3.6/Qwen-coder empty-args issue.
+- Verification:
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'qwen_issue_192 or empty_required_args or function_call_arguments_delta'` passed: 3 selected, 3 passed.
+  - `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k 'qwen35_raw_sse or raw_sse'` passed: 4 selected, 4 passed.
+- Proven for the current public recapture artifact:
+  - direct local server, panel gateway, and tunnel captures are present for the same model: `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`;
+  - all required surfaces have authoritative arguments and match `{"value": "blue-cat"}`;
+  - direct and gateway kept `enable_thinking=true` and did not use a reasoning-disable workaround;
+  - direct/gateway output item ordering is valid with message, reasoning, and function_call separated; tunnel capture is present and matches expected arguments/model/function;
+  - local source contract says missing XML required args fail closed, argument streaming passthrough is guarded, previous-response history is guarded, and streaming output-index guards pass.
+- Boundary:
+  - This re-verifies Qwen35 MXFP8 MTP direct/gateway/tunnel raw SSE parser/API behavior from existing capture artifacts plus focused tests. It does not prove Qwen27, Qwen-coder-next live tunnel, all parser families, MiMo exactness, Gemma media, installed-app parity, or release readiness.
+  - No source edit, release/sign/notarize/PyPI/updater/download/site action was performed for this Qwen recheck.
+- Other-agent handoff:
+  - Treat the Qwen35 empty-args/output-index public recapture row as currently green if the cited artifact remains current.
+  - Do not remove fail-closed validation or replace it with argument synthesis from visible preambles.
+  - Still expand live parser/API proof across Qwen27/Qwen-coder-next and the other family parsers before claiming all opencode/Codex harness loops green.

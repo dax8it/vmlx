@@ -11988,3 +11988,31 @@ Next action:
 - Live proof passed: `docs/internal/agent-notes/current-real-ui-dev-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-gemma4-identity-toolchoice-20260610-proof.json`.
 - Proof showed two visible assistant turns, one `run_command` per explicit user turn, correct probe files, Responses streaming, reasoning display, mixed-SWA paged cache hits, server cache controls, and block-disk L2 writes.
 - Boundaries: dev-app Gemma4 26B only; not installed-app bundle parity, not media, not gateway/tunnel, not Qwen empty-args, not MiMo exactness, and no release action.
+
+# 2026-06-10 11:35 PDT - MiMo JANGTQ_2 exactness/logit-artifact lane selected
+
+- Re-read active directives/status/checklist after the Gemma4 panel fix. Selected MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis as the next blocker because the current checklist says parser structure is valid but literal values mutate.
+- Next action: inspect the current MiMo JANGTQ_2 proof artifacts and runtime/quant loader path before proposing any fix. No parser/JSON repair, no cache-only chase, no release action, no N2 JANG_1L.
+
+# 2026-06-10 11:45 PDT - MiMo JANGTQ_2 exactness boundary rechecked; moving to Qwen parser/API lane
+
+- Inspected the current MiMo JANGTQ_2 exactness artifacts and loader/kernel path. Existing evidence already excludes tokenizer/template, parser/JSON repair, cache/L2, vMLX compiled router, vMLX SwitchGLU fast path, sidecar table mismatch, sampled prestack shape mismatch, and native gather TQ selected-expert shape semantics.
+- Source endpoint `http://erics-m5-max2.local:8126/health` is unavailable and local quant endpoint `127.0.0.1:8897` is not running, so no fresh source-vs-quant first-divergent-logit proof can be made from the current state.
+- Classification remains artifact/logit/quant-quality or corrected requant profile. No local parser/cache/runtime patch is justified without new evidence.
+- Next lane: Qwen/Qwen-coder Responses raw SSE/parser parity for Codex/opencode harness usability.
+
+# 2026-06-10 11:48 PDT - Qwen/Qwen-coder Responses parser/API parity lane selected
+
+- Moving to Qwen/Qwen-coder Responses parser/API parity. Goal is usable Codex/opencode harness behavior: fail closed for missing required XML parameters, valid args preserved, deltas/final object/output indices consistent, and no fake fixes.
+
+# 2026-06-10 11:20 PDT - Qwen35 public recapture and focused parser guards reverified
+
+- Inspected `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`.
+- Current artifact status is `pass` for direct local server, panel gateway, and tunnel raw SSE on `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`.
+- Argument proof: all required surfaces match final/function-call arguments `{"value": "blue-cat"}` with argument delta/done consistency and final-object consistency.
+- Reasoning/tool proof: direct and gateway kept reasoning enabled, did not use a reasoning-disable workaround, and had valid message/reasoning/function-call item ordering; tunnel capture is present and matches expected model/function/arguments.
+- Source guard verification:
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'qwen_issue_192 or empty_required_args or function_call_arguments_delta'` -> 3 passed.
+  - `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k 'qwen35_raw_sse or raw_sse'` -> 4 passed.
+- Boundary: Qwen35 MXFP8 MTP public recapture/source guard is green from current evidence; do not claim Qwen27, Qwen-coder-next, all model parser families, MiMo exactness, Gemma media, installed-app parity, or release readiness from this row.
+- Other-agent note: keep fail-closed required-arg validation intact. Do not synthesize missing Qwen XML arguments from text preambles, disable reasoning, or strip parser leaks as a fake fix. Expand live parser/API proof to Qwen27/Qwen-coder-next and non-Qwen parser families before claiming full Codex/opencode harness readiness.
