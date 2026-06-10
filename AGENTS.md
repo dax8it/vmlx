@@ -288,6 +288,15 @@ named artifacts before repeating claims.
   `enableThinking=false`. Treat MiMo no-thinking output hygiene as open until
   a neutral prompt or runtime/template fix is proven. Do not strip prose as a
   fake parser fix.
+- Follow-up neutral-prompt proof
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-neutral-first-turn-20260610-proof.json`
+  passed with first assistant `OK.`, image assistant `vMLX`,
+  `requestedEnableThinking=false`, no persisted reasoning, no raw parser leak,
+  and app stream logs showing no reasoning chars. For the icon-image dev-app
+  row, classify the earlier planning-style prose as proof-harness first-turn
+  prompt contamination, not a confirmed MiMo parser leak. Keep MiMo exactness,
+  red-square color semantics, audio/video semantics, Responses continuation,
+  installed-app parity, and release readiness open.
 
 If a turn is interrupted, resume by reading the current tracker/status and
 continuing the next blocker; do not restart from old memory, old `/Users/eric/vmlx`

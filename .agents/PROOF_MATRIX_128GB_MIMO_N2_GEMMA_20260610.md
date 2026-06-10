@@ -1682,6 +1682,19 @@ Next implementation target:
   execute MiMo-generated `run_command` calls, but MiMo still mutates filenames
   and sentinel text. Other agent should work artifact/logit/decode/tool-arg
   exactness before claiming app tool support.
+- MiMo JANGTQ2 no-thinking visible-planning classification is now narrowed:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-neutral-first-turn-20260610-proof.json`
+  passes with neutral first turn (`OK.`) and image response `vMLX` under
+  `enableThinking=false`, `persistedReasoningCount=0`, `rawParserLeak=false`,
+  `reasoningRawParserLeak=false`, and app stream logs showing reasoning chars
+  `0` for both turns. Treat the earlier planning-style prose in
+  `current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-after-overlay-fix-20260610`
+  as proof-harness first-turn prompt contamination, not as a confirmed MiMo
+  parser leak. Do not add arbitrary prose stripping. Still open: MiMo literal/
+  JSON exactness, red-square color semantics, audio hygiene/semantics, video
+  semantics, Responses tool-result continuation, installed-app parity for this
+  exact media/no-thinking row, fresh-process L2 restore for media, and release
+  readiness.
 - N2 JANGTQ2 is the stronger N2 checkpoint candidate; it has live hybrid
   SSM/TQ/L2/tool/Responses proof.
 - N2 JANG_1L has a real startup/first-chat improvement from deferred startup

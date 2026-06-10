@@ -4681,3 +4681,18 @@ Other-agent action:
   - MiMo V2.5 JANGTQ_2 CLI media/L2 and dev-app image route green, but MiMo exactness, audio/video semantics, Responses continuation, installed-app parity, and no-thinking visible planning hygiene remain open.
 - No source runtime behavior, release/sign/notarize/PyPI/updater/download/site action was performed.
 - Other-agent handoff: use `AGENTS.md` as the forced continuation guard before claiming any green row; do not use older chat memory or partial proof artifacts to clear release gates.
+
+# 2026-06-10 12:31 PDT - MiMo neutral-prompt no-thinking proof launch
+
+- Current blocker: MiMo V2.5 JANGTQ_2 dev-app image route is green, but prior proof leaked visible planning-style prose with enableThinking=false.
+- Action: run one live dev-app proof with a neutral first text turn (`Reply exactly: OK`) and the same icon-image prompt to classify whether the leak was caused by proof-script first-turn prompt carryover or by MiMo template/runtime behavior.
+- Constraints: no fake parser/prose stripping, no release action, no N2 JANG_1L, no broad harness rewrite.
+
+# 2026-06-10 12:33 PDT - MiMo neutral-prompt no-thinking proof passed
+
+- Artifact: `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-neutral-first-turn-20260610-proof.json`, status `pass`.
+- Result: first assistant `OK.`, image assistant `vMLX`, `requestedEnableThinking=false`, `persistedReasoningCount=0`, `rawParserLeak=false`, `reasoningRawParserLeak=false`, `visibleAssistantTurnsComplete=true`.
+- Classification: the prior visible planning-style prose in the icon-image proof was caused by the proof harness first-turn instruction (`Include REAL_UI_LIVE once`) contaminating the later media turn, not by a confirmed MiMo parser leak. No source parser/prose stripping fix is justified from this evidence.
+- Proven surfaces in this run: current dev-app Chat Completions, real loaded MiMo JANGTQ2 MLLM, image data URL routing, icon text semantics (`vMLX`), generation defaults applied, settings persistence, server cache controls, parser/language leak checks, native MiMo mixed-SWA cache status, and one block-disk L2 write (`l2_block_tokens_on_disk=24`, `disk_writes=1`).
+- Still not proven: MiMo exactness/literal JSON, red-square color semantics, audio semantics/hygiene, video semantics, Responses tool-result continuation, installed-app parity for this exact no-thinking/media row, fresh-process L2 restore for this media proof, and release readiness.
+- Cleanup: proof server port 56814 and gateway port 8080 were checked clear; no MiMo server/Electron proof process remained.

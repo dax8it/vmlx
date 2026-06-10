@@ -12485,3 +12485,17 @@ Next action:
   - MiMo V2.5 JANGTQ_2 CLI media/L2 and dev-app image route are green, but exactness, audio/video semantics, Responses continuation, installed-app parity, and no-thinking visible planning hygiene remain open.
 - No release/sign/notarize/PyPI/updater/download/site action was performed.
 - Other-agent handoff: future continuations must start from `AGENTS.md` plus `.agents` state and must not clear any release row from older chat memory or partial artifacts.
+
+# 2026-06-10 12:31 PDT - MiMo neutral-prompt no-thinking proof launch
+
+- Running one focused live proof to classify MiMo no-thinking visible planning leakage.
+- Proof target: current dev-app, MiMo V2.5 JANGTQ_2, image data URL icon, enableThinking=false, neutral first text turn.
+- No source edit or release action before evidence.
+
+# 2026-06-10 12:33 PDT - MiMo neutral-prompt no-thinking proof passed
+
+- Ran dev-app proof `current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-neutral-first-turn-20260610` with `VMLINUX_REAL_UI_PROMPT_1=Reply exactly: OK`, image prompt `Return only the visible text in the attached image.`, and `enableThinking=false`.
+- Saved artifact `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-neutral-first-turn-20260610-proof.json`; screenshot saved beside it.
+- Output was clean: `OK.` then `vMLX`, no persisted reasoning, no raw parser leak, no tool calls, app stream logs showed reasoning chars `0` for both turns.
+- Classification: no source fix needed for MiMo no-thinking prose from the prior icon proof; the proof harness default first-turn instruction contaminated the later media turn. Keep exactness/audio/video/Responses/installed-app rows open.
+- Post-run process checks found no listener on ports 56814 or 8080 and no matching MiMo server/dev-app process.
