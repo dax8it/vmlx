@@ -867,3 +867,13 @@
 - Remaining red evidence: MiMo still mutates exact tool arguments and paths. `REAL_UI_LIVE_TOOL_ONE` / `REAL_UI_LIVE_TOOL_TWO` became `REAL_UI_LAND_TOOL_ONE` / `REAL_UI_LAND_TOOL_TWO`, and the model wrote `/tmp/real_ui_land_tool_one.txt` / `/tmp/real_ui_land_tool_two.txt` instead of the configured working-directory probe files.
 - Boundary: MiMo JANG_2L remains red for dev-app agentic tool-loop exactness. Cache/L2 is positive; next work is model/runtime/artifact decode or tool-argument exactness, not parser repair or fake argument rewriting.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - N2 JANGTQ2 dev-app image/VL proof green
+
+- Ran real Electron dev-app Nex/N2 Pro JANGTQ2 Chat Completions image proof.
+- Added tracked proof summary `build/current-real-ui-live-model-n2-jangtq2-image-proof-20260610.json`, `status=pass`.
+- Proven: app persisted the image attachment, server loaded `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` as `model_type=mllm`, `MEDIA_DIAG` saw one `image_url`, runtime processed `num_images_processed=1`, and the assistant answered `Red` for the red-image semantic probe.
+- Cache/runtime evidence in the same run: hybrid SSM cache, attention-only TurboQuant KV, server cache controls, `cache_detail=paged+ssm`, `cached_tokens=18`, `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`, block-disk `disk_hits=3`, and SSM companion stores `2`.
+- Honest media cache boundary: the server skipped prefix/paged cache store for the media prompt itself because media embeddings are path-dependent.
+- Still open: N2 audio, N2 video, installed-app parity, public tunnel parity, and N2 JANG_1L memory-safe startup.
+- No package/sign/notarize/tag/upload/release action was run.

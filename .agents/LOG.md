@@ -8078,3 +8078,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Positive: no `tool_choice='required'` follow-up error, `persistedToolCount=135`, `eventCounts.stream=239`, `eventCounts.complete=2`, `cacheHitTokens=8072`, verified server cache controls, and `l2_block_tokens_on_disk=4580`.
 - Red: MiMo still rewrote the requested `LIVE` sentinel/path into `LAND` and `/tmp`, so `long_tool_loop` remains red and expected probe files were not created.
 - No release action was run.
+
+# 2026-06-10 - N2 JANGTQ2 dev-app image/VL proof green
+
+- Ran real Electron dev-app N2 JANGTQ2 Chat Completions image proof with server cache controls enabled and `max_prompt_tokens=12000`.
+- Added tracked summary `build/current-real-ui-live-model-n2-jangtq2-image-proof-20260610.json`, `status=pass`.
+- Proven in app: image attachment persisted, server `model_type=mllm`, one `image_url` reached `MEDIA_DIAG`, runtime processed `num_images_processed=1`, and final visible answer was `Red`.
+- Runtime/cache: active about `103812.6 MB`, peak about `104874.6 MB`, hybrid SSM cache, attention-only TurboQuant KV, `cache_detail=paged+ssm`, `cached_tokens=18`, `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`.
+- Boundary: audio/video/installed app/tunnel/N2 JANG_1L remain open. No release action was run.

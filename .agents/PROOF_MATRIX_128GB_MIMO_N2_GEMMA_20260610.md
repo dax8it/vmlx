@@ -303,6 +303,7 @@ Artifact:
 - `build/current-n2-jangtq2-responses-stream-boundary-20260610.json`
 - `build/current-real-ui-live-model-n2-jangtq2-dev-app-delta-proof-20260610.json`
 - `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`
+- `build/current-real-ui-live-model-n2-jangtq2-image-proof-20260610.json`
 
 Raw ignored proof captures:
 
@@ -318,6 +319,18 @@ Proven:
 - The 101 GiB N2 JANGTQ2 profile loaded in the app proof harness; final health
   showed about `103807.6 MB` active and `108294.9 MB` peak in the longer
   attempt.
+- Real Electron dev-app image/VL proof is green. The app persisted an image
+  attachment, the server classified the model as `mllm`, `MEDIA_DIAG` observed
+  one `image_url` content part, the runtime processed `num_images_processed=1`,
+  and the assistant answered `Red` for the red-image semantic probe.
+- The N2 image proof showed hybrid SSM/TurboQuant/L2 state in the same run:
+  `cache_detail=paged+ssm`, `cached_tokens=18`,
+  `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`,
+  `l2_tokens_on_disk=118`, block-disk `disk_hits=3`, and SSM companion stores
+  `2`.
+- For the media prompt itself, the server intentionally skipped prefix/paged
+  cache store because media embeddings are path-dependent; this is the honest
+  media cache boundary, not a cache failure.
 - Responses UI rail reached `/v1/responses` and completed two turns.
 - Built-in `run_command` tool loop executed and wrote/read the expected probe
   files: `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`.
