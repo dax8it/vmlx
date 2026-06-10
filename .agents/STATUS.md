@@ -3334,3 +3334,48 @@
 - Boundary: this is an honest autodetect/runtime metadata fix. It does not make
   N2 JANGTQ2 native MTP active, does not touch N2 JANG_1L, does not clear audio,
   and does not run release/sign/notarize/PyPI/updater/download work.
+
+# 2026-06-10 09:20 PDT - Continuation after N2 MTP metadata fix
+
+- Current movement: continue from `009e02085`, pushed to both `main` and
+  `codex/pr-intake-manifest`. The last fix cleared a false N2 JANGTQ2
+  `metadata_inconsistent` MTP warning by honestly classifying the local artifact
+  as dropped-MTP; it did not clear audio, MiMo exactness/media semantics, Gemma
+  UI/installed parity, or release readiness.
+- Constraints rechecked: no release/sign/notarize/PyPI/updater/download action;
+  no N2 JANG_1L; no subagents; no fake parser/cache/sampling/semantic repairs;
+  no broad suite churn unless directly tied to a changed blocker.
+- Next action: inspect current N2 JANGTQ2 audio/capability evidence and latest
+  checklist rows. If audio is not weight-backed, fix capability/UI/API gating
+  rather than trying to force an unsupported audio proof green.
+
+# 2026-06-10 08:50 PDT - Gemma4 audio gate bundled runtime parity fixed
+
+- Selected blocker: Gemma4 installed/bundled app accepted `input_audio` even
+  when the loaded Gemma4/Gemma4-unified bundles only had `audio_config` or
+  `audio_token_id` metadata and no weight-backed `audio_tower.*` tensors.
+- Root cause: current source already rejects that request, but
+  `panel/bundled-python` and both staged Sequoia/Tahoe app runtime copies were
+  stale. Their `server.py` still advertised `gemma4_unified` audio from
+  `audio_config` alone, so the installed app decoded base64 audio and entered
+  generation instead of returning the unsupported-modality guard.
+- Fix: mechanically synced the current `vmlx_engine` package into:
+  `panel/bundled-python/python/lib/python3.12/site-packages/vmlx_engine`,
+  both staged app bundled `site-packages/vmlx_engine` copies, and both staged
+  `vmlx-engine-source/vmlx_engine` copies. No release/sign/notarize/upload was
+  run.
+- Regression: added
+  `test_gemma4_chat_audio_request_rejects_when_audio_not_weight_backed` so
+  `/v1/chat/completions` must return 400 for Gemma4 `input_audio` unless audio
+  is weight-backed.
+- Proof artifact:
+  `build/current-gemma4-audio-gate-bundled-runtime-parity-20260610.json`.
+  Bundled Python route probe now reports `status_code=400`,
+  `modalities=["text","vision"]`, and detail
+  `unsupported media modality audio`.
+- Verification: bundled parity script passed; bundled Python route probe passed
+  with HTTP 400; focused pytest passed `4/4`; `git diff --check` passed for
+  this lane.
+- Boundary: this does not claim Gemma4 audio works, does not claim N2 audio
+  works, does not touch N2 JANG_1L, and does not do package/sign/notarize/PyPI/
+  updater/download/release work.

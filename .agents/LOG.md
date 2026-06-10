@@ -10818,3 +10818,65 @@ Boundary:
 - This does not clear N2 audio, MiMo exactness/media semantics, Gemma
   installed-app parity, package/sign/notarize, PyPI, updater, download, or
   public release rows.
+
+## 2026-06-10 09:20 PDT - Continuation after N2 MTP metadata fix
+
+Request/action: continue the persistent production-readiness objective from
+`009e02085`, keeping the scope on real runtime/API/UI/cache/model blockers.
+
+Constraint check:
+
+- current head `009e02085` is pushed to `origin/main` and
+  `origin/codex/pr-intake-manifest`;
+- no release/sign/notarize/PyPI/updater/download action in this movement;
+- no N2 JANG_1L work unless Eric explicitly reopens it;
+- no subagents or recursive wrapper delegation;
+- no fake parser/cache/sampling/semantic repairs;
+- avoid broad test churn unless directly tied to a changed blocker.
+
+Next action: inspect N2 JANGTQ2 audio/capability evidence and current checklist
+rows. If the local artifact has no audio weights, fix capability/UI/API gating
+and proof accounting honestly rather than attempting to force unsupported audio
+green.
+
+## 2026-06-10 08:50 PDT - Gemma4 unsupported-audio installed/bundled parity
+
+Request/action: trace why the installed-app Gemma4 12B audio proof reached
+generation and returned empty content even though the local bundles do not have
+weight-backed Gemma4 audio.
+
+Findings:
+
+- Source request parsing recognizes OpenAI-style `input_audio` as requested
+  audio.
+- Source `_bundle_declares_native_audio()` returns `False` for the local
+  Gemma4 12B JANG_4M, Gemma4 12B QAT MXFP4, Osaurus Gemma4 12B MXFP4, and
+  Nex-N2-Pro-JANGTQ2 bundles because no `audio_tower.*` weights are indexed.
+- Source `/v1/chat/completions` already returns `400` for the synthetic
+  Gemma4-unified `audio_config`-only route probe.
+- Bundled/staged runtime copies were stale versus source. The stale copy
+  returned `True` for `model_type == gemma4_unified` when `audio_config`
+  existed, explaining the installed-app behavior that decoded base64 audio and
+  entered generation.
+
+Edits:
+
+- Synced current `vmlx_engine` into `panel/bundled-python` and both staged
+  Sequoia/Tahoe app runtime/source copies.
+- Added a focused chat-completions regression for Gemma4 audio requests without
+  audio-tower weights.
+- Added proof artifact
+  `build/current-gemma4-audio-gate-bundled-runtime-parity-20260610.json`.
+
+Verification so far:
+
+- `./panel/scripts/verify-bundled-python.sh` passed, including critical
+  `vmlx_engine` source-vs-bundled hash checks.
+- Bundled Python route probe returned HTTP 400 with `Supported modalities:
+  text, vision`.
+
+Boundary:
+
+- This is an honest unsupported-modality gate and bundled runtime parity fix.
+- It does not make Gemma4 or N2 audio supported.
+- It does not sign, notarize, publish, release, upload, or touch N2 JANG_1L.
