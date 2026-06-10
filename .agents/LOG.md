@@ -8213,3 +8213,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary proved: installed-app UI launched, text chat worked first, the app attached one audio file, server `MEDIA_DIAG` saw `input_audio`, and `/v1/chat/completions` rejected it with `400` unsupported media modality. Supported modalities reported by the server are `text, vision, video`.
 - Runtime/cache stayed live before the gate: MXFP4 affine matmul with Metal NA active, `mixed_swa_kv_v1`, generic TurboQuant KV correctly disabled, paged mixed-SWA cache, and block L2 writes.
 - This is not a load/cache/L2 failure. Do not claim Gemma installed-app audio support. No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - N2 JANG_1L override and MiMo installed-app text/cache
+
+- Refreshed no-load Nex/N2 Pro JANG_1L memory preflight before launch. Artifact `build/current-n2-pro-jang1l-local-memory-preflight-20260610-after-installed-app-proofs.json` is `status=open`, `decision=do_not_launch`, payload `110.57 GiB`, required available `118.57 GiB`, observed available `112.77 GiB`, gap `5.8 GiB`.
+- Eric explicitly overrode the JANG_1L launch-safe gate. Override launch artifact `build/current-n2-jang1l-live-chat-cache-override-20260610.json` is `status=fail`, `phase=server_startup`; server log again ends with Metal OOM after `Wired limit set to 115 GB (model 119 GB)`.
+- Ran installed-app MiMo JANG_2L text/cache proof through `/Applications/vMLX.app` with Chat Completions, no tools, no media, cache controls, temperature `0`, top_p `1`, and max tokens `96`.
+- Proof summary `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-20260610-proof.json`.
+- Proven: installed-app UI, real 105 GiB MiMo JANG_2L load, exact visible text turns `MIMO_INSTALLED_TEXT_ONE` and `MIMO_INSTALLED_TEXT_TWO`, generation defaults, no parser/reasoning leak, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, paged cache hit, and block L2 writes.
+- Boundary: MiMo installed-app tools/media/JANGTQ exactness/speed remain open. N2 JANG_1L remains red and needs a real lower-peak runtime strategy. No package/sign/notarize/tag/upload/release action was run.

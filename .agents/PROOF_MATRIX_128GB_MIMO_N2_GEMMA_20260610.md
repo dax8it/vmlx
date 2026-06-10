@@ -67,8 +67,9 @@ Fixes made:
 
 Not proven:
 
-- Electron UI clicked chat transcript for these exact rows.
-- Model-specific installed-app chat transcript parity for these exact rows.
+- Electron UI clicked chat transcript for every exact row. N2 JANGTQ2, Gemma
+  12B MXFP4, and MiMo JANG_2L now have scoped installed-app rows below; other
+  model/profile rows do not inherit those proofs.
 - N2 JANG_1L memory-safe live startup.
 - MiMo JANGTQ_2 exactness.
 - Gemma audio/video semantic E2E.
@@ -320,6 +321,7 @@ Artifact:
 - `build/current-real-ui-live-model-mimo-v25-jang2l-dev-app-followup-proof-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-image-proof-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-proof-20260610.json`
+- `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json`
 
 Proven:
 
@@ -383,6 +385,23 @@ Proven:
   reached `1071`, last cache execution used `cached_tokens=687`,
   `l2_block_tokens_on_disk=3784`, block-disk `disk_hits=18`, and
   `disk_writes=60`.
+- Local rebuilt installed app text/cache proof is green for MiMo JANG_2L with
+  tools and media disabled. `/Applications/vMLX.app` launched, loaded
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, and completed two
+  exact visible Chat Completions turns: `MIMO_INSTALLED_TEXT_ONE` then
+  `MIMO_INSTALLED_TEXT_TWO`.
+- The installed-app MiMo text/cache run recorded `installed_app_ui`,
+  `chat_completions`, `server_cache_controls`, `generation_defaults_applied`,
+  no raw parser/reasoning leak, `active_memory_mb=105017.5`,
+  `peak_memory_mb=105961.1`, affine JANG_2L matmul with Metal NA active,
+  single-active decode, native `mixed_swa_kv_v1` with
+  `cache_subtype=mimo_v2_asymmetric_swa`, `cache_detail=paged`,
+  `cached_tokens=41`, `l2_block_tokens_on_disk=114`, `l2_tokens_on_disk=114`,
+  and block-disk `disk_writes=3`.
+- The same run confirms the expected speed caveat: first-turn TTFT was
+  `25.74s`, second-turn TTFT after paged cache hit was `1.57s`, and decode was
+  about `1.9 tok/s`. This is installed-app text/cache evidence, not speed
+  clearance.
 
 Red / not proven:
 
@@ -409,6 +428,8 @@ Red / not proven:
 - VL/audio/video runtime. Image/VL is now explicitly red by a text-only runtime
   guard even when forced MLLM is requested; do not claim MiMo JANG_2L media
   support from preserved media weights.
+- Installed-app tool loop, installed-app media, and MiMo JANGTQ_2 exactness are
+  still red/open. The installed-app text/cache pass does not clear those rows.
 - Long context usability beyond the short cache proof.
 
 Next implementation target:
@@ -665,6 +686,9 @@ Artifact:
 
 - `build/current-n2-jang1l-live-chat-cache-responses-20260610.json`
 - server log: `build/current-n2-jang1l-live-chat-cache-responses-20260610.server.log`
+- `build/current-n2-pro-jang1l-local-memory-preflight-20260610-after-installed-app-proofs.json`
+- `build/current-n2-jang1l-live-chat-cache-override-20260610.json`
+- server log: `build/current-n2-jang1l-live-chat-cache-override-20260610.server.log`
 
 Observed:
 
@@ -681,6 +705,22 @@ Observed:
   119 GB)`.
 - Process aborted before health with:
   `[METAL] Command buffer execution failed: Insufficient Memory`.
+- Refreshed no-load preflight after the installed-app proofs still says
+  `decision=do_not_launch`: indexed payload `110.57 GiB`, required available
+  `118.57 GiB`, observed available `112.77 GiB`, gap `5.8 GiB`. Artifact
+  metadata confirms `artifact_profile=JANG_1L`, `format=jang`,
+  `model_type=qwen3_5_moe`, `architecture=Qwen3_5MoeForConditionalGeneration`,
+  `vision_tensors=333`, and `audio_tensors=0`.
+- Eric explicitly overrode the preflight gate and requested launch anyway. The
+  override run used smaller live knobs (`max_tokens=16`, prefill batch `64`,
+  prefill step `128`, completion batch `32`, SSM state cache `128 MB`, paged
+  cache block size `64`, max cache blocks `256`, block L2 `2 GB`) and still
+  failed during server startup before health. Before launch telemetry reported
+  `available_gib=113.05`; server log again selected `qwen3_5_moe`, qwen tool
+  parser, qwen3 reasoning parser, hybrid cache, attention-only TurboQuant KV
+  policy, loaded 123 shards, enabled bfloat16 for 512 experts, set `Wired limit
+  set to 115 GB (model 119 GB)`, then aborted with `[METAL] Command buffer
+  execution failed: Insufficient Memory`.
 
 Conclusion:
 

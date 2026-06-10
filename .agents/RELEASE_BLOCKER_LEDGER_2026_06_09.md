@@ -58,6 +58,13 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 
 - JANGTQ_2 speed/cache is partially good, but release proof is not complete.
 - JANG_2L, tool/JSON/loop, media, L2 restore, UI parity, and installed-app proof remain open.
+- 2026-06-10 update: MiMo JANG_2L installed-app text/cache is now green in
+  `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json`.
+  The local rebuilt `/Applications/vMLX.app` loaded the 105 GiB row, produced
+  exact visible text turns, used native `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`, hit paged cache, and wrote block L2. This does not
+  clear MiMo installed-app tools, media, JANGTQ_2 exactness, speed, public
+  tunnel SSE, or Developer ID DMG readiness.
 - Do not run source-vs-quant comparisons if RAM-blocked unless Eric explicitly allows.
 - Exactness failures must not be papered over by parser repair, sampling clamps, cache disabling, or JSON repair.
 - Confirm runtime dynamically reads artifact config for bit size, grouped experts, stacked vs legacy layout, JANG/JANGTQ/MXFP metadata, and model-owned generation defaults.
@@ -68,6 +75,16 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 - Especially cover `gdn_sink`, MTP, hybrid SSM/cache, paged cache, TurboQuant KV encode/decode, block-disk L2, and no parser/reasoning leaks.
 - JANG_1L should fit with careful RAM handling; treat current blocker as careful live-proof scheduling and memory discipline, not permanent infeasibility.
 - Do not launch N2/JANG_1L below the preflight headroom gate after Metal OOM evidence. If preflight says `do_not_launch`, clear RAM or schedule later instead of forcing it.
+- 2026-06-10 update: refreshed no-load preflight
+  `build/current-n2-pro-jang1l-local-memory-preflight-20260610-after-installed-app-proofs.json`
+  still says `decision=do_not_launch`: payload `110.57 GiB`, required
+  available `118.57 GiB`, observed available `112.77 GiB`, gap `5.8 GiB`.
+  Eric explicitly overrode the launch-safe gate, so
+  `build/current-n2-jang1l-live-chat-cache-override-20260610.json` launched
+  anyway with smaller batches/cache knobs. It still failed before health with
+  Metal OOM after `Wired limit set to 115 GB (model 119 GB)`. JANG_1L still
+  needs a real lower-peak runtime strategy before release support can be
+  claimed.
 - N2 JANGTQ_2 proof does not clear N2 JANG_1L.
 - Keep architecture names explicit in every proof: base Qwen/Qwen35 MXFP8-MTP direct-source proof does not clear Nex/N2 Pro 397B JANG_1L, and N2 JANG_1L does not clear regular Qwen MTP/JANGTQ rows. Record `format`, `weight_format`, `artifact_profile`, MTP depth, `gdn_sink`, hybrid SSM/native-cache schema, TurboQuant KV state, and media weight backing from loaded health/config rather than inferred family names.
 
