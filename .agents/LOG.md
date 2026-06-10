@@ -1,3 +1,60 @@
+# 2026-06-10 - Continuation blocker selection
+
+- Request: continue the persistent objective to get current blockers fixed,
+  built, and proven for Nex/N2 JANGTQ/non-JANG_1L, MiMo V2.5 JANG/JANGTQ,
+  Gemma JANG/MXFP/QAT, VL/audio/video, cache/L2/TurboQuant, reasoning/tool
+  parsers, gateway/API, and UI/runtime proof without wasting time on broad
+  low-value test-suite churn or recursive agent behavior.
+- Current lane: checklist-driven blocker selection from
+  `build/current-full-release-objective-checklist-after-qwen35-public-sse-pointer-20260610.json`.
+- Constraints: no subagents; no N2 JANG_1L; no release/sign/notarize/PyPI/
+  updater/download/site action; no fake parser/sampling/JSON/cache/modality
+  fixes; direct Python is allowed only for local artifact inspection/proofs.
+- Planned movement: inspect current failed rows, pick one allowed blocker with a
+  real evidence gap, then either apply a scoped root-cause fix or run one live
+  proof that reduces the blocker.
+- Selection result: Gemma4 E2B QAT JANG_4M installed-app/UI/API/cache proof.
+  The latest checklist shows source fullmedia/tool/L2 proofs are already green
+  for Gemma QAT JANG_4M rows, but live installed-app/UI parity remains missing.
+  `/Applications/vMLX.app` and
+  `/Users/eric/models/JANGQ-AI/gemma-4-E2B-it-qat-JANG_4M` both exist. Next
+  movement is one real installed-app proof through
+  `panel/scripts/live-real-ui-model-proof.mjs`; no package/sign/notarize/PyPI/
+  updater/download/site action is allowed or intended.
+- Harness fix: `panel/scripts/live-real-ui-model-proof.mjs` now dismisses the
+  blocking update/what's-new modal before interaction/capture and activates the
+  created chat/session before taking the chat screenshot. This fixes the proof
+  artifact gap where JSON proved persisted turns but screenshots showed the
+  modal or empty chat landing screen.
+- Proof: real installed app `/Applications/vMLX.app` loaded
+  `/Users/eric/models/JANGQ-AI/gemma-4-E2B-it-qat-JANG_4M` with bundled Python
+  and produced passing artifact
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e2b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`.
+  Screenshot
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e2b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png`
+  visibly shows the chat, reasoning panels, tool executions, cache/TPS footer,
+  and final `REAL_UI_LIVE_TOOL_TWO` answer.
+- Proven surfaces: installed app UI, real loaded model, Responses API,
+  Responses delta streaming, built-in long tool loop, reasoning display,
+  parser leak check, language leak check, settings persistence, generation
+  defaults, server cache controls, native Gemma4 `mixed_swa_kv_v1`, paged cache
+  hit telemetry, and block L2 disk storage. Cache hit tokens `9428`; L2 block
+  tokens on disk `3779`; active memory about `7465.1 MB`, peak `8347.5 MB`.
+- Accounting: new inventory artifact
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-e2b-installed-app-ui-proof-20260610.json`
+  records `gemma4_e2b_qat_jang4m.live_proof_status=partial` and
+  `installed_app_ui_proof.status=pass`; full checklist
+  `build/current-full-release-objective-checklist-after-gemma-e2b-installed-app-ui-proof-20260610.json`
+  remains `status=open`, `failed_count=56`, `release_ready=false`.
+- Boundary: this is not full Gemma release clearance. Installed-app media/CLI
+  parity and all other Gemma QAT/native MXFP rows remain open. The installed
+  app log reports bundled vmlx_engine `1.5.56` from dist-info, so this artifact
+  proves the currently installed app only, not a newer packaged build.
+- Verification: `node --check panel/scripts/live-real-ui-model-proof.mjs`,
+  `py_compile` for the changed Python checklist files, focused pytest selection
+  `32 passed`, and `git diff --check` passed. Process cleanup check found no
+  remaining proof server or `/Applications/vMLX.app` process.
+
 # 2026-06-10 - Deprecated wrapper AGENTS.md carry-forward
 
 - Request: Eric said "into agents.md" after reinforcing that the no

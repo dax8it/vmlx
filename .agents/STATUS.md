@@ -1,4 +1,55 @@
 ## CODEX
+- now: continuing the persistent objective to reduce current untested/unfixed
+  blockers for Nex/N2 JANGTQ/non-JANG_1L, MiMo V2.5 JANG/JANGTQ, Gemma
+  JANG/MXFP/QAT, VL/audio/video, cache/L2/TurboQuant, reasoning/tool parsers,
+  gateway/API, and UI/runtime proof without broad low-value test-suite churn.
+- current allowed lane selection step: inspect the latest checklist
+  `build/current-full-release-objective-checklist-after-qwen35-public-sse-pointer-20260610.json`
+  and choose one concrete allowed blocker with an evidence gap that can be
+  reduced by source/runtime proof or a scoped root-cause fix.
+- constraints: no subagents or recursive Python agent behavior; direct Python
+  only for local artifact inspection/proofs; no N2 JANG_1L; no release/sign/
+  notarize/PyPI/updater/download/site action in this lane; no fake parser,
+  sampling, JSON, cache, or modality fixes; write proven/not-proven state after
+  every movement.
+- selected lane: Gemma4 E2B QAT JANG_4M installed-app/UI/API/cache proof.
+  Reason: the current checklist shows source fullmedia/tool/L2 proofs are green
+  for Gemma QAT JANG_4M rows, but `live_proof_status` remains missing because
+  installed-app/UI parity is not proven. `/Applications/vMLX.app` and the local
+  E2B QAT JANG_4M model path both exist. Next action is one real installed-app
+  proof using `panel/scripts/live-real-ui-model-proof.mjs`; this is a proof
+  run only, not release/sign/notarize/package work.
+- result: real installed-app Gemma4 E2B QAT JANG_4M proof passed after fixing
+  the proof harness to dismiss the update modal and activate the created chat
+  before screenshot capture. Proof artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e2b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`;
+  screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e2b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png`.
+- proven: `/Applications/vMLX.app` installed-app UI launched with bundled
+  Python, loaded `/Users/eric/models/JANGQ-AI/gemma-4-E2B-it-qat-JANG_4M`,
+  used `/v1/responses`, streamed deltas, displayed reasoning, executed built-in
+  tools, preserved visible chat content in the screenshot, showed no parser or
+  language leaks, applied generation defaults, proved server cache controls,
+  native Gemma4 `mixed_swa_kv_v1`, paged cache hits, and block L2 disk storage.
+  Cache hit tokens were `9428`; L2 block tokens on disk were `3779`; active
+  memory was about `7465.1 MB`, peak `8347.5 MB`.
+- accounting: regenerated
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-e2b-installed-app-ui-proof-20260610.json`
+  with `gemma4_e2b_qat_jang4m.live_proof_status=partial` and
+  `installed_app_ui_proof.status=pass`. Regenerated
+  `build/current-full-release-objective-checklist-after-gemma-e2b-installed-app-ui-proof-20260610.json`;
+  checklist remains `status=open`, `failed_count=56`, `release_ready=false`.
+- boundary: this does not clear Gemma E2B full release parity because installed
+  app media/CLI parity and the other Gemma QAT/native MXFP rows remain open.
+  It also proves the currently installed app reports bundled vmlx_engine
+  `1.5.56` from dist-info, so do not claim installed-app parity for a newer
+  packaged build from this artifact.
+- verification: `node --check panel/scripts/live-real-ui-model-proof.mjs`,
+  `py_compile` for changed Python files, focused pytest selection `32 passed`,
+  and `git diff --check` passed. No proof server or `/Applications/vMLX.app`
+  process remained running after the proof.
+
+## CODEX
 - now: Eric asked to put the current carry-forward "into agents.md" after
   reinforcing the no Python/subagent constraint and parser/API/tool-loop
   priority. Updated the deprecated wrapper checkout guard at
