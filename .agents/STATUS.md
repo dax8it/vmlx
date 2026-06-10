@@ -906,3 +906,12 @@
 - Caveat: the second visible answer starts with the plain word `thought`. It is not a raw `<think>` tag or tool/parser markup and the leak gates passed, but keep this visible-final style caveat on the board.
 - Still open: Gemma 12B QAT MXFP4 image/video/audio dev-app media, installed-app parity, public tunnel parity, and release signing/notarization.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - Gemma 12B QAT MXFP4 dev-app image/VL proof green
+
+- Ran real Electron dev-app Gemma 4 12B QAT MXFP4 Chat Completions image proof.
+- Added tracked proof summary `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-image-proof-20260610.json`, `status=pass`.
+- Proven: app persisted the image attachment, server `MEDIA_DIAG` saw one `image_url`, Gemma media fallback ran with `1 image(s)`, and the assistant answered `Red` for the red-image semantic probe.
+- Runtime/cache evidence: MXFP4 affine quantized matmul, Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=64`, and block-disk `disk_writes=2`.
+- Still open: Gemma 12B QAT MXFP4 video/audio, installed-app parity, public tunnel parity, and release signing/notarization.
+- No package/sign/notarize/tag/upload/release action was run.

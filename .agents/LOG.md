@@ -8111,3 +8111,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Cache evidence: `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3588`, `disk_hits=30`, `disk_writes=58`.
 - Caveat: second visible answer starts with plain `thought`; leak gates passed, but keep visible-final style caveat open.
 - Boundary: media/installed app/tunnel/release remain open. No release action was run.
+
+# 2026-06-10 - Gemma 12B QAT MXFP4 dev-app image/VL proof green
+
+- Ran real Electron dev-app Gemma 4 12B QAT MXFP4 Chat Completions image proof.
+- Added tracked summary `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-image-proof-20260610.json`, `status=pass`.
+- Proven in app: image attachment persisted, server saw `image_url`, Gemma media fallback ran with `1 image(s)`, and final visible answer was `Red`.
+- Runtime/cache: MXFP4 affine matmul with Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=64`, `disk_writes=2`.
+- Boundary: video/audio/installed app/tunnel/release remain open. No release action was run.

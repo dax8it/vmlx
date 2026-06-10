@@ -59,6 +59,7 @@ Artifacts:
 - `build/current-gemma4-12b-mxfp4-jang4m-media-smoke-live-20260610.json`
 - `build/current-gemma4-12b-mxfp4-jang4m-live-runtime-audit-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-dev-app-proof-20260610.json`
+- `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-image-proof-20260610.json`
 
 Proven:
 
@@ -85,15 +86,22 @@ Proven:
   `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`,
   final `cached_tokens=2688`, `l2_block_tokens_on_disk=3588`,
   block-disk `disk_hits=30`, and `disk_writes=58`.
+- Real Electron dev-app Gemma 12B QAT MXFP4 image/VL proof is green. The app
+  persisted an image attachment, server `MEDIA_DIAG` observed one `image_url`,
+  the Gemma media fallback ran with `1 image(s)`, and the assistant answered
+  `Red` for the red-image semantic probe.
+- The MXFP4 image proof also showed MXFP4 affine matmul with Metal NA active,
+  mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`,
+  `l2_block_tokens_on_disk=64`, and block-disk `disk_writes=2`.
 
 Not proven:
 
 - Installed-app parity for these exact new artifacts.
-- Audio/video weight-backed E2E.
+- Audio/video weight-backed E2E for the MXFP4 dev-app row.
 - Full larger Gemma QAT matrix through UI/installed app.
 - Tunnel/gateway parity for these exact Gemma rows.
-- Gemma 12B QAT MXFP4 dev-app media. The current dev-app proof is
-  Responses/tools/cache only.
+- Gemma 12B QAT MXFP4 dev-app video/audio. Image is now green in the source
+  dev app.
 - The second MXFP4 visible answer begins with the plain word `thought`; this is
   not a raw `<think>` or parser markup leak and the leak gates passed, but do
   not hide this visible-final style caveat.
