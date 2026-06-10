@@ -1,4 +1,9 @@
 ## CODEX
+- now: attempting to move MiMo JANGTQ_2 source-vs-quant exactness from preflight to a live endpoint run. This is still the MiMo exactness lane only.
+- constraints: check memory/ports/repo paths before loading; no N2 JANG_1L; no release/sign/notarize/package/PyPI/updater work; no subagents; stop any server this lane starts before final response.
+- action: launched local MiMo JANGTQ_2 quant endpoint on `127.0.0.1:8897`, ran the updated first-divergence harness with source still absent, captured current quant outputs/cache health, and stopped the server cleanly; port `8897` is clear.
+- proof: `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-quant-only-exact-probes-20260610.json` and `build/current-mimo-v25-jangtq2-source-vs-quant-quant-only-health-after-20260610.json`. Quant endpoint returned HTTP `200` for all 8 rows; exact failures remain `blue-cat -> blue`, `B7-CAT-09 -> B7CAT-09`, JSON value mutation, and required tool args `{"value":"blue cat"}`.
+- boundary: source TP4 endpoint is still absent. The valid source baseline is documented as an AdLab Swift TP4 relaunch through `adlab-pair`, not a casual Python source load; no source-vs-quant conclusion can be claimed until that endpoint is up.
 - now: continuing the active goal in the MiMo V2.5 JANG/JANGTQ exactness lane. Current turn is restricted to source/dequant reference availability, MiMo runtime/quant-path inspection, and a root-cause-backed fix only if evidence points at current source.
 - constraints: no release/sign/notarize/package/PyPI/updater/download/website action; no N2 JANG_1L; no subagents; no parser/JSON/string repair masking; no sampling clamp or cache change presented as a MiMo exactness fix.
 - action: fixed the existing MiMo source-vs-quant first-divergence harness to default to `mimo-v2-jangtq2` and include the exact failing `blue-cat`, `B7-CAT-09`, JSON, and tool rows instead of only ACK proxies.

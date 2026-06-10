@@ -7,6 +7,43 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo JANGTQ_2 Quant-Only First-Divergence Side
+
+Artifacts:
+
+- `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-quant-only-exact-probes-20260610.json`
+- `build/current-mimo-v25-jangtq2-source-vs-quant-quant-only-health-after-20260610.json`
+
+Proven:
+
+- Real local MiMo JANGTQ_2 loaded as `mimo-v2-jangtq2` on `127.0.0.1:8897`.
+- Runtime used native JANGTQ TurboQuant weights, native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, paged cache, and block-disk
+  L2. Generic TurboQuant KV stayed off by explicit isolation.
+- The updated first-divergence harness now survives a missing source endpoint
+  and still executes/captures the quant side.
+- Quant endpoint returned HTTP `200` for all eight rows.
+- ACK proxy rows pass, but the real exactness rows fail:
+  `blue-cat -> blue`, `B7-CAT-09 -> B7CAT-09`,
+  JSON `value` loses the hyphenated literal, and required tool args become
+  `{"value":"blue cat"}`.
+- Server logs recorded block L2 write-through for every quant-side prompt
+  before clean shutdown.
+
+Blocked:
+
+- Source endpoint `http://erics-m5-max2.local:8126` is still absent. Current
+  AdLab handoff says valid source truth requires a deliberate Swift MiMo TP4
+  relaunch through `adlab-pair`; do not substitute a casual Python source load
+  as source truth.
+
+Boundary:
+
+- This proves current quant-side mutation and cache/runtime behavior, not
+  source-vs-quant causality. MiMo JANGTQ_2 exactness remains red until the
+  Swift TP4 source endpoint runs and the same harness classifies whether source
+  also fails or quant diverges.
+
 ### MiMo JANGTQ_2 Source-Vs-Quant First-Divergence Harness
 
 Artifact:

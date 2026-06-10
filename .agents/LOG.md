@@ -1,3 +1,34 @@
+# 2026-06-10 - MiMo source-vs-quant endpoint launch attempt
+
+- Request: continue reducing MiMo exactness blockers with real E2E evidence,
+  not more proxy harness work.
+- Current lane: MiMo V2.5 JANGTQ_2 source-vs-quant first divergence on the
+  exact failing literals and tool args.
+- Constraints: check local and max2 memory/ports/repo paths before loading;
+  no N2 JANG_1L; no release/sign/notarize/package/PyPI/updater/download/site
+  work; no subagents; stop any server this lane starts before final response.
+- Planned movement: verify whether `erics-m5-max2.local:8126` and local
+  `127.0.0.1:8897` can be started for the existing first-divergence harness.
+- Result: local quant endpoint launched and stopped cleanly. Source TP4 was not
+  launched because the active AdLab doc requires a deliberate Swift TP4
+  relaunch through `adlab-pair`; no `8126` source listener exists.
+- Proof artifacts:
+  `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-quant-only-exact-probes-20260610.json`
+  and
+  `build/current-mimo-v25-jangtq2-source-vs-quant-quant-only-health-after-20260610.json`.
+- Quant proof: real local `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`
+  loaded as `mimo-v2-jangtq2`, native JANGTQ TQ active, native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, paged cache, block L2, and
+  generic TQ KV intentionally disabled for exactness isolation.
+- Current exactness: quant returned HTTP `200` for all rows but still mutated
+  `blue-cat -> blue`, `B7-CAT-09 -> B7CAT-09`, JSON values, and required tool
+  args to `{"value":"blue cat"}`. ACK proxy rows pass, which confirms the
+  updated literal rows are necessary.
+- Harness fix: `_post_json` now records connection-refused `URLError` as a
+  row-level `request_failed` instead of aborting before quant execution.
+- Boundary: source-vs-quant is still not complete. Next external action is the
+  AdLab Swift MiMo TP4 source relaunch on `8126`, then rerun the same harness.
+
 # 2026-06-10 - MiMo exactness root-cause continuation
 
 - Request: continue toward production-quality runtime fixes without broad
