@@ -246,6 +246,15 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `cache_detail=paged+mixed_swa`, and block L2 writes. This does not clear
   Gemma audio support, public tunnel SSE, or Developer ID DMG
   package/sign/notarize/release readiness.
+- 2026-06-10 Gemma JANG4M installed-app update:
+  `build/current-real-ui-installed-app-gemma4-12b-jang4m-responses-tools-cache-20260610.json`
+  is `status=pass` for the local rebuilt `/Applications/vMLX.app` and
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`. It proves installed-app
+  `/v1/responses`, built-in `run_command` tool calls, `previous_response_id`
+  tool-result continuations, visible assistant turns, streaming deltas,
+  JANG affine Metal NA, native mixed-SWA cache, and block L2. It does not clear
+  JANG4M installed-app media, larger Gemma QAT rows, public tunnel SSE, or
+  package/sign/notarize/release readiness.
 - Proper release mechanics are documented in `/Users/eric/wiki/infra/apple-notarization.md`; do not invent an alternate path. The canonical keychain is `~/Library/Keychains/vmlx-build.keychain-db`, the Developer ID identity is `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, and notarization uses the `vmlx-notary` keychain profile.
 - If signing returns `errSecInternalComponent`, fix key access with the documented sequence and retry once after the partition-list grant settles:
 

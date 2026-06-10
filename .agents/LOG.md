@@ -8262,3 +8262,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary proved: installed app attached one image and server `MEDIA_DIAG` saw `image_url`, but `/v1/chat/completions` rejected image with `400` because the loaded runtime is text-only. Supported modalities reported by the server are `text`.
 - Runtime/cache stayed live before the gate: `mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=39`, `l2_block_tokens_on_disk=132`, and block-disk writes `3`.
 - This is not a load/cache/L2 failure and not a lost attachment. Do not claim MiMo JANGTQ_2 installed-app media support. No release action was run.
+
+# 2026-06-10 - Gemma 12B JANG4M installed-app Responses/tools/cache
+
+- Ran installed-app Gemma 12B JANG4M Responses/tool/cache proof through `/Applications/vMLX.app` with built-in tools, cache controls, temperature `0`, top_p `1`, and max tokens `128`.
+- Proof summary `build/current-real-ui-installed-app-gemma4-12b-jang4m-responses-tools-cache-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-jang4m-responses-tools-cache-20260610-proof.json`.
+- Proven: installed-app UI, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` load, `/v1/responses`, two built-in `run_command` calls, `previous_response_id` tool-result continuations, visible assistant turns, content/tool deltas, server cache controls, no parser/reasoning leak, native mixed-SWA cache, and block L2.
+- Runtime/cache evidence: active memory `9889.4 MB`, peak `12630.4 MB`, JANG affine matmul with Metal NA active, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3571`, block-disk hits `30`, and block-disk writes `58`.
+- Boundary: installed-app JANG4M image/video/audio, larger Gemma QAT rows, tunnel SSE, and release readiness remain open. No release action was run.

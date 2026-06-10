@@ -216,6 +216,7 @@ Artifact:
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-dev-app-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-video-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-audio-proof-20260610.json`
+- `build/current-real-ui-installed-app-gemma4-12b-jang4m-responses-tools-cache-20260610.json`
 
 Raw ignored proof captures:
 
@@ -263,10 +264,23 @@ Proven:
   and launch surfaces green: `cache_detail=paged+mixed_swa`,
   `cacheHitTokens=67`, `l2_tokens_on_disk=67`, `disk_writes=2`, and server
   cache controls verified.
+- Local rebuilt installed app proof is now green for Gemma 12B JANG4M
+  Responses/tool/cache. `/Applications/vMLX.app` launched as
+  `uiLaunchMode=installed-app`, loaded
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`, used `/v1/responses`,
+  executed two built-in `run_command` calls, sent scoped tool-result
+  continuations with `previous_response_id`, streamed visible assistant turns,
+  and recorded content/tool deltas.
+- Installed-app JANG4M runtime/cache evidence: `profile=JANG_4M`, JANG affine
+  matmul with Metal NA active, active memory `9889.4 MB`, peak
+  `12630.4 MB`, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`,
+  `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3571`,
+  `l2_tokens_on_disk=3571`, block-disk `disk_hits=30`, and block-disk
+  `disk_writes=58`.
 
 Not proven:
 
-- Installed packaged app parity.
+- Installed packaged app media parity for JANG4M.
 - DMG package/sign/notarize/release readiness.
 - Local panel session manager starting this exact model from launch args; these
   app proofs used a remote session connected to the server started by the proof
