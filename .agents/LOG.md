@@ -12913,6 +12913,20 @@ Next action:
   not overwrite the registered narrow-prompt proof unless a stricter 31B
   installed-app proof is rerun and passes.
 
+# 2026-06-10 14:20 PDT - Native MXFP4 installed-app proof pushed
+
+- Commit `bdb262f65` (`Prove Gemma4 12B native MXFP4 installed app`) was pushed
+  to `origin/codex/pr-intake-manifest` and `origin/main`.
+- The commit includes both the rejected no-reasoning bundled proof and accepted
+  reasoning-enabled bundled proof, plus the regenerated inventory/checklist
+  artifacts and gate pointer.
+- Current Gemma gate state: QAT JANG4M E2B/E4B/12B/26B/31B are closed; native
+  12B MXFP4 is closed; remaining Gemma open rows are
+  `gemma4_e2b_qat_native_mxfp4`, `gemma4_e4b_qat_native_mxfp4`,
+  `gemma4_26b_vl`, and `gemma4_31v_or_31b_vl`.
+- Worktree after push still has only the pre-existing dirty panel settings JSON
+  and untracked `node_modules/` outside this lane's staged work.
+
 # 2026-06-10 14:19 PDT - Native MXFP4 reasoning proof registered
 
 - Updated `INSTALLED_APP_UI_PROOFS["gemma4_12b_native_mxfp4"]` to the

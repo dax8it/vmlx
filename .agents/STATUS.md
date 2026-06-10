@@ -1,4 +1,20 @@
 ## CODEX
+- now: commit `bdb262f65` (`Prove Gemma4 12B native MXFP4 installed app`) pushed
+  to both `origin/codex/pr-intake-manifest` and `origin/main`.
+- current branch state after push: only pre-existing/unrelated
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  remains dirty and `node_modules/` remains untracked.
+- current Gemma gate state: QAT JANG4M E2B/E4B/12B/26B/31B are closed;
+  native 12B MXFP4 installed-app/UI/API/cache/reasoning is closed; remaining
+  Gemma inventory open rows are `gemma4_e2b_qat_native_mxfp4`,
+  `gemma4_e4b_qat_native_mxfp4`, `gemma4_26b_vl`, and
+  `gemma4_31v_or_31b_vl`.
+- next best other-agent work: obtain bundled installed-app reasoning/tool/cache
+  proof for E2B/E4B native MXFP4 or 26B/31B VL rows, or continue MiMo
+  exactness/media installed-app proof. Do not weaken `reasoning_display` or
+  bundled-Python requirements.
+
+## CODEX
 - verification: after registering the 12B native MXFP4 reasoning proof,
   `.venv/bin/python -m py_compile` passed for the modified gate/checklist
   scripts and focused tests; `.venv/bin/python -m pytest -q
