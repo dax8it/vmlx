@@ -12687,6 +12687,34 @@ Next action:
 - No source edit was made for this N2 row because current evidence shows the
   source contract is already correct.
 
+# 2026-06-10 13:45 PDT - Qwen35 raw SSE gate selected
+
+- Selected blocker: stale Qwen35 raw Responses SSE release-gate failure.
+- Evidence basis: the proof matrix points at
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-20260610.json`
+  as current green direct/gateway/tunnel proof, but the objective checklist
+  still reports `qwen35_raw_sse_status_pass=fail` and related argument/index
+  rows red.
+- Next action: trace the checklist/gate source to the artifact it consumes and
+  patch only stale proof-pointer or validation logic if the current artifact is
+  truly green. No broad harness work, no model launch, no release action.
+
+# 2026-06-10 13:47 PDT - Qwen35 raw SSE gate refreshed
+
+- Source trace: `tests/cross_matrix/run_full_release_objective_checklist.py`
+  already points `QWEN35_RAW_SSE_PARITY` at the current green artifact
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`.
+  The stale failing checklist consumed old generated output, not current source.
+- Action: regenerated the no-heavy checklist:
+  `.venv/bin/python tests/cross_matrix/run_full_release_objective_checklist.py --out build/current-full-release-objective-checklist-after-n2-qwen35-gate-refresh-20260610.json || true`.
+- Result: refreshed artifact is still `status=open`, but failed count dropped
+  from `73` to `56`. Querying failed rows for `qwen35_raw_sse` or generic
+  `responses_raw_sse` returned no rows, so the stale Qwen35 raw-SSE checklist
+  blocker is cleared from current evidence.
+- Boundary: this is gate refresh/status proof only; it does not clear release
+  readiness, N2 JANG_1L, MiMo exactness/media, Gemma remaining QAT installed UI
+  rows, Step/LFM/Nemotron/DSV4 rows, package/sign/notarize, or public release.
+
 # 2026-06-10 13:18 PDT - Gemma JANG/MXFP media/audio gating lane selected
 
 - Current objective continues: build/fix model runtime blockers, especially Gemma JANG/MXFP/QAT VL/video/audio/cache/API/UI, without release/sign/notarize actions.

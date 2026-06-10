@@ -33,6 +33,20 @@
   `tests/test_server.py`, and `tests/test_engine_audit.py`. Focused required
   tool fail-closed checks passed `4/4`: two streaming Responses empty-XML tests
   plus server-boundary empty-required-args guards. `git diff --check` passed.
+- next selected blocker: stale Qwen35 raw SSE release gate. The proof matrix
+  already records current Qwen35 same-model direct/gateway/tunnel Responses SSE
+  as green after the missing-required-args fail-closed guard, but
+  `build/current-full-release-objective-checklist-after-n2-jangtq2-devapp-prevresp-consumed-20260610.json`
+  still fails Qwen35 raw SSE rows. Trace the gate and update only stale proof
+  pointers/validation if current evidence supports it.
+- Qwen35 gate result: source constant already pointed at current green raw SSE
+  evidence; the stale artifact had not been regenerated. Regenerated no-heavy
+  checklist to
+  `build/current-full-release-objective-checklist-after-n2-qwen35-gate-refresh-20260610.json`.
+  It remains `status=open`, but failed count dropped from `73` to `56` and no
+  failed rows matching `qwen35_raw_sse` or generic `responses_raw_sse` remain.
+  This clears the stale checklist blocker for current Qwen35 raw SSE evidence
+  without a model relaunch or source patch.
 
 ## CODEX
 - now: continuing after Qwen27 MXFP8 tunnel parity. Current selected blocker is
