@@ -12264,6 +12264,58 @@ Next action:
 - Re-read active guards/status. The next useful blocker reduction is not another direct server curl; it is panel-side raw function-call identity capture for the Gemma 26B installed-app duplicate tool-loop proof.
 - Will use existing proof harness/dev-app route where possible; no broad test-suite churn, no release action, no subagents, no N2 JANG_1L.
 
+# 2026-06-10 12:22 PDT - MiMo panel/dev-app media parity lane selected
+
+- Continuing the active checkpoint-readiness goal after commit `51abb2953`.
+- Selected blocker: prove whether the panel/dev-app launch path now inherits
+  the current-source MiMo JANGTQ_2 media overlay fix. The CLI path is green, but
+  UI/dev-app and installed-app media parity remain unproven.
+- Constraints: do not release/sign/notarize/PyPI/update downloads, do not touch
+  N2 JANG_1L, do not spawn subagents, do not build broad new harnesses, and do
+  not claim MiMo exactness/video/audio quality from a media-routing proof.
+- Planned movement: inspect existing panel live-proof scripts and launch
+  arguments, run the smallest real dev-app proof for MiMo image/media plus
+  cache/L2, patch panel launch only if evidence shows it still gates MiMo
+  text-only.
+
+# 2026-06-10 12:22 PDT - MiMo dev-app image proof needs prompt override
+
+- Existing parallel-lane artifacts show current Electron dev-app launches MiMo
+  JANGTQ_2 with `--is-mllm`, loads as `mllm`, auto-enables preserved media,
+  and sends image/video through `/v1/chat/completions` with `engine_is_mllm=true`.
+- Existing video artifact
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610-proof.json`
+  is `status=pass`.
+- Existing image artifacts are not text-only failures anymore; they fail
+  release assertions because the proof script hardcodes a dominant-color prompt
+  and MiMo answers `Blue.` for red fixtures. That keeps image semantics red but
+  proves the request reached media runtime.
+- Next narrow edit: let `panel/scripts/live-real-ui-model-proof.mjs` accept an
+  image prompt env override, then rerun current dev-app against the same vMLX
+  icon image that passed CLI media proof. This is proof tooling for real UI
+  evidence, not broad suite building.
+
+# 2026-06-10 12:24 PDT - MiMo dev-app icon image proof passed
+
+- Added `VMLINUX_REAL_UI_IMAGE_PROMPT` / `VMLX_REAL_UI_IMAGE_PROMPT` support to
+  the existing live UI proof script so image prompts can match the fixture.
+- Ran current Electron dev-app proof with `panel/resources/icon.png`,
+  `VMLINUX_REAL_UI_IMAGE_PROMPT='Return only the visible text in the attached image.'`,
+  and `VMLINUX_REAL_UI_IMAGE_EXPECT_REGEX='vMLX'`.
+- Proof artifact:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-after-overlay-fix-20260610-proof.json`
+  has `status=pass`; screenshot:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-after-overlay-fix-20260610-chat.png`.
+- Proven: current Electron dev app, Chat Completions, `vl_image`, MiMo MLLM
+  load, `MEDIA_DIAG engine_is_mllm=true` for image input, server cache
+  controls, native MiMo `mixed_swa_kv_v1` cache, block L2 write, no raw parser
+  tags, and visible `vMLX` in the assistant output.
+- Not proven: MiMo red-square color semantics, no-thinking output hygiene,
+  audio exactness, Responses tool continuation, installed-app parity, and
+  release readiness. The visible answer included planning-style prose under
+  `enableThinking=false`, so keep that as an open MiMo parser/template/runtime
+  hygiene issue rather than claiming clean no-thinking behavior.
+
 # 2026-06-10 12:13 PDT - MiMo CLI media/L2 parity blocker resumed
 
 - Eric asked to put the carry-forward instructions into `AGENTS.md`; the active

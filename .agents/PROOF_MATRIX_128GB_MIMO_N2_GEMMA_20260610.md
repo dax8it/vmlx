@@ -12,6 +12,8 @@ separates what was actually loaded and proven from what remains red.
 Artifact:
 
 - `build/current-mimo-v25-jangtq2-cli-media-l2-after-overlay-fix-20260610.json`
+- `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-after-overlay-fix-20260610-proof.json`
+- `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-after-overlay-fix-20260610-chat.png`
 
 Raw/live files:
 
@@ -42,6 +44,10 @@ Proven:
   `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`.
 - Chat Completions image request reached the MLLM runtime and returned HTTP
   `200` with visible `vMLX`.
+- Current Electron dev-app proof now accepts an image prompt override and
+  passed with `panel/resources/icon.png`: the UI launched current source,
+  adopted the MiMo server, sent the image through Chat Completions, recorded
+  `MEDIA_DIAG engine_is_mllm=true`, and added `vl_image` to proven surfaces.
 - MiMo generic TurboQuant KV stayed inactive; native MiMo asymmetric
   full/SWA/rotating cache remained the cache contract.
 - Text cache proof wrote one block / `55` tokens to block-disk L2, repeated
@@ -60,14 +66,17 @@ Focused checks:
 Boundary:
 
 - This proves current-source CLI media routing plus text cache/L2 write and
-  fresh-process restore. It does not clear MiMo semantic exactness, red video
-  answer quality, audio hygiene/exactness, Responses tool-result continuation,
-  UI/installed-app parity, package/sign/notarize, or release readiness.
+  fresh-process restore, plus current-source dev-app image routing for a
+  vMLX icon prompt. It does not clear MiMo semantic exactness, red-square image
+  color quality, audio hygiene/exactness, Responses tool-result continuation,
+  installed-app parity, package/sign/notarize, or release readiness.
 - Media-context KV was intentionally not stored to L2; the server skipped media
   prompt cache storage because media embeddings are path-dependent.
 - Older dev-app/installed-app image/video/audio rows that returned text-only
-  `400` are stale relative to this source fix and must be rerun after the
-  app/gateway launches from this source.
+  `400` are stale relative to this source fix. Dev-app image and video now have
+  current-source media-route proof, but installed-app media still needs rerun.
+- The dev-app icon image answer still contained visible planning-style prose
+  under `enableThinking=false`; keep MiMo no-thinking output hygiene open.
 
 ### MiMo JANGTQ_2 Quant-Only First-Divergence Side
 
@@ -962,9 +971,11 @@ Proven:
   `mllm=True` and proved image routing with HTTP `200` / visible `vMLX`.
   It also proved block-disk L2 write and fresh-process restore for a text prompt
   (`55` cached tokens, restart `cache_detail=paged+disk`, `disk_hits=1`).
-  Treat the earlier dev-app/installed-app media `400` rows as stale until the
-  app/gateway is rerun from this source; do not clear UI/installed-app parity
-  from the CLI proof alone.
+- Current Electron dev-app icon image proof after the overlay fix passed with
+  `vl_image`, `current_electron_dev_build`, `chat_completions`,
+  `server_cache_controls`, `native_cache_status`, and `l2_disk_storage`.
+  Treat earlier dev-app media `400` rows as stale for current source, but do
+  not clear installed-app parity from CLI/dev-app proof alone.
 - The dev-app audio run also proved the runtime/cache boundary before the media
   guard: active memory `76491.8 MB`, peak `77127.3 MB`, TurboQuant codebook
   routed experts, prestacked layout, native `mixed_swa_kv_v1` /

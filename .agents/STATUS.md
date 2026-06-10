@@ -4465,6 +4465,62 @@ Other-agent action:
   - Do not claim MiMo JANGTQ_2 exactness is fixed or release-clear.
   - Do not patch parser/JSON/tool args/sampling/cache to hide literal mutations.
   - Next valid MiMo exactness movement is a real source/dequant first-divergent-logit comparison with the source endpoint running, or a corrected higher-fidelity JANGTQ artifact/profile rerun.
+# 2026-06-10 12:22 PDT - MiMo panel/dev-app media parity lane selected
+
+- Current blocker being reduced: MiMo V2.5 JANGTQ_2 panel/dev-app media parity
+  after the current-source CLI media overlay fix in commit `51abb2953`.
+- Why this lane: CLI `serve --is-mllm` now proves image routing and text L2,
+  but older dev-app/UI media rows still show text-only `400` and are stale
+  until rerun from current source.
+- Next action: inspect existing panel live-proof tooling and panel launch args,
+  then run the smallest real dev-app MiMo image/media proof with cache/L2
+  evidence. Patch only if panel launch or gateway still blocks the fixed
+  runtime path.
+- Boundaries retained: no release/sign/notarize/PyPI/download/site action, no
+  N2 JANG_1L, no subagents, no parser/JSON repair for MiMo exactness, and no
+  claim that image-route proof clears video/audio quality or exactness.
+
+# 2026-06-10 12:22 PDT - MiMo dev-app media evidence reclassified
+
+- Existing dev-app artifacts after the source media-detect work show the panel
+  does launch MiMo JANGTQ_2 with `--is-mllm` and the runtime receives media as
+  `engine_is_mllm=true`; the old text-only `400` is no longer the active
+  dev-app blocker in current source.
+- Video dev-app artifact is already `status=pass`:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-video-after-mllm-source-media-20260610-proof.json`.
+- Image dev-app artifacts are red because the proof script hardcodes a color
+  prompt and MiMo answers `Blue.` for red test images. That is image semantic
+  quality/exactness red, not panel launch text-only red.
+- Next action: add a small image-prompt override to the existing live UI proof
+  script and run a real dev-app image proof using `panel/resources/icon.png`
+  with expected visible text `vMLX`, matching the current-source CLI proof.
+
+# 2026-06-10 12:24 PDT - MiMo dev-app icon image proof passed
+
+- Changed proof tooling only: `panel/scripts/live-real-ui-model-proof.mjs` now
+  accepts `VMLINUX_REAL_UI_IMAGE_PROMPT` / `VMLINUX_REAL_UI_IMAGE_DATA_URL` /
+  `VMLINUX_REAL_UI_IMAGE_EXPECT_REGEX` together, so image proof prompts can
+  match the fixture instead of always using the dominant-color red-square case.
+- Live dev-app proof passed:
+  `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-icon-image-after-overlay-fix-20260610-proof.json`.
+- Proof surfaces include `current_electron_dev_build`, `real_loaded_model`,
+  `chat_completions`, `vl_image`, `server_cache_controls`,
+  `native_cache_status`, `l2_disk_storage`, `cache_hit_telemetry`,
+  `generation_defaults_applied`, `parser_leak_check`, and
+  `language_leak_check`.
+- Runtime proof: current Electron dev app launched/adopted MiMo JANGTQ_2 with
+  `--is-mllm`; server health was `model_type=mllm`; `MEDIA_DIAG` saw
+  `image_url` with `engine_is_mllm=true`; MiMo media runtime auto-enabled and
+  bound preserved visual/audio/speech tensors; native
+  `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa` and block L2 were active.
+- Output proof: attached `panel/resources/icon.png` reached the UI/API image
+  path and the assistant output contained visible `vMLX`; `imageVerified=true`.
+- Boundary: the visible answer also included planning-style prose despite
+  `enableThinking=false`, so MiMo no-thinking output hygiene remains open.
+  Red-square image color semantics, audio hygiene/exactness, Responses
+  tool-result continuation, installed-app parity, package/sign/notarize, and
+  release readiness remain open.
+
 # 2026-06-10 12:13 PDT - MiMo CLI media/L2 parity blocker resumed
 
 - Current user instruction recorded: keep the carry-forward constraints in
