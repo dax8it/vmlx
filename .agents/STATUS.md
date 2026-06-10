@@ -1487,3 +1487,5 @@
   Keep Qwen35/Qwen27 live same-model harness recapture on the list for direct,
   gateway, and public tunnel if the backend changes. No release, PyPI, signing,
   notarization, media, MiMo, Gemma, or N2 JANG_1L action was taken.
+- Commit/push: `658c9ab3 Harden Qwen empty tool-call filtering` was pushed to
+  `origin/codex/pr-intake-manifest` and fast-forwarded to `origin/main`.
