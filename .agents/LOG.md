@@ -8059,3 +8059,13 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Positive surfaces: app persisted `input_audio`, server decoded the base64 WAV, visible output streamed, server cache controls were verified, mixed-SWA cache hit/L2 were present (`cache_detail=paged+mixed_swa`, `cacheHitTokens=67`, `l2_tokens_on_disk=67`, `disk_writes=2`).
 - Red surface: audio semantic verification failed; final text did not transcribe `audio present`.
 - Boundary: not an attachment persistence or cache/L2 failure. Do not claim Gemma JANG4M audio support in a checkpoint release.
+
+# 2026-06-10 - N2 JANGTQ2 dev-app Responses tool/cache/delta proof green
+
+- Fixed the panel Responses in-turn tool-result follow-up path: `panel/src/main/ipc/chat.ts` now sends scoped `function_call_output` input with the latest `previous_response_id` and suppresses the original explicit tool choice on that follow-up.
+- Ran real Electron dev-app N2 JANGTQ2 default Responses tool/cache proof after the fix.
+- Added tracked summary `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`, `status=pass`.
+- Proven in the same app run: built-in `run_command`, tool-result continuation, visible `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`, renderer deltas (`count=8`, `count=15`), server cache controls, hybrid SSM cache, attention-only TurboQuant KV, block L2, and SSM disk.
+- Raw proof logs the source fix path twice: `Responses tool follow-up using previous_response_id=... with 1 function_call_output item(s)`.
+- Cache evidence: `cache_detail=paged+ssm`, `l2_block_tokens_on_disk=3579`, `l2_ssm_tokens_on_disk=17083`, `l2_tokens_on_disk=20662`, `block_disk_hits=110`, `ssm_disk_hits=1`.
+- Boundary: stricter custom long-delta prompt remains red with repeated `!` output and missing second tool file; installed-app parity, N2 media, public tunnel parity, N2 JANG_1L, and release gates remain open.

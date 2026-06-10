@@ -288,11 +288,14 @@ Artifact:
 - `build/current-real-ui-live-model-n2-jangtq2-dev-app-proof-20260610.json`
 - `build/current-n2-jangtq2-responses-stream-boundary-20260610.json`
 - `build/current-real-ui-live-model-n2-jangtq2-dev-app-delta-proof-20260610.json`
+- `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`
 
 Raw ignored proof captures:
 
 - `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-cache-20260610-proof.json`
 - `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-cache-longdelta-20260610-proof.json`
+- `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-default-20260610-proof.json`
+- `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-20260610-proof.json`
 
 Proven:
 
@@ -326,16 +329,37 @@ Proven:
   proof surfaces. Runtime/cache evidence included `cache_detail=paged+ssm`,
   `cached_tokens=45`, `l2_block_tokens_on_disk=120`,
   `l2_ssm_tokens_on_disk=274`, and `l2_tokens_on_disk=394`.
+- Current panel source now sends Responses in-turn tool-result follow-ups as
+  scoped `function_call_output` input with `previous_response_id`, instead of
+  replaying the whole input and re-applying the original explicit tool choice.
+  The app proof logs this twice:
+  `Responses tool follow-up using previous_response_id=... with 1 function_call_output item(s)`.
+- After that fix, the default real Electron dev-app N2 JANGTQ2 Responses
+  tool/cache/delta row is green:
+  `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`
+  has `status=pass`.
+- The green combined app proof covers built-in `run_command`, tool-result
+  continuation, visible markers, renderer deltas, cache/L2, and settings:
+  assistant messages were `Done. REAL_UI_LIVE_TOOL_ONE` and
+  `Done - this is the second UI turn. REAL_UI_LIVE_TOOL_TWO`; the tool probe
+  files contained `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`.
+- The same green proof recorded two multi-delta assistant traces (`count=8`
+  and `count=15`), `responses_delta_streaming`,
+  `responses_cache_detail_usage`, `long_tool_loop`, and
+  `tool_l2_cache_integrated`.
+- Runtime/cache evidence in the green combined app proof:
+  `hybrid_ssm_v1`, attention-only TurboQuant KV, native SSM companion state,
+  `cache_detail=paged+ssm`, `l2_block_tokens_on_disk=3579`,
+  `l2_ssm_tokens_on_disk=17083`, `l2_tokens_on_disk=20662`,
+  `block_disk_writes=59`, `block_disk_hits=110`, and `ssm_disk_hits=1`.
 
 Red:
 
-- The combined built-in-tool app proof still has a first post-tool visible
-  answer quality issue: the first post-tool answer collapsed to `Created` in the
-  tool-loop attempts, and the first prompted post-tool response did not include
-  the requested `REAL_UI_LIVE_TOOL_ONE` phrase in visible content, although the
-  tool file was written correctly.
-- The delta-only pass proves app renderer/content-delta streaming, but it does
-  not by itself prove built-in tool execution in the same request sequence.
+- A stricter custom long-delta prompt remains red:
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-20260610-proof.json`
+  failed because the second turn did not create `real_ui_tool_probe_2.txt` and
+  visible output degenerated into repeated `!` after a tool-choice-required
+  error. Do not generalize the default checkpoint pass to that stricter prompt.
 - Installed-app packaged parity, VL/audio/video, public tunnel SSE parity, and
   release readiness remain open.
 
@@ -347,11 +371,11 @@ Next implementation target:
   `status=pass`. Direct follow-up produced `16` output-text deltas and gateway
   follow-up produced `14` output-text deltas. Both completed on the same served
   model and returned `N2_DIRECT_DELTA_ONE` / `N2_DIRECT_DELTA_TWO`.
-- N2 JANGTQ2 now has dev-app proof for both sides of the split: built-in tool
-  loop/cache/L2 in one app proof, and Responses content-delta streaming in a
-  separate app proof. The remaining N2 app issue is first post-tool visible
-  answer quality in the tool-loop sequence, not core server/gateway SSE or app
-  renderer delta transport.
+- N2 JANGTQ2 now has a single green default dev-app proof for built-in tool
+  loop, Responses tool-result continuation, content-delta streaming,
+  hybrid-SSM/TurboQuant KV cache, and L2. Remaining N2 rows are installed-app
+  parity, media, public tunnel parity, N2 JANG_1L memory strategy, and the
+  stricter custom prompt quality red row.
 
 ## Red Live Attempts
 
