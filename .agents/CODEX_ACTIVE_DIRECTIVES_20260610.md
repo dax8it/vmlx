@@ -42,6 +42,12 @@ Primary active lanes for this Codex instance:
 - Qwen/Qwen3.6/Qwen3-coder Responses/tool/reasoning streaming parity, including
   direct/gateway/tunnel raw SSE, output indices, args deltas, final object
   consistency, and tool-result continuation.
+- Harsh priority: auto tool usage, content deltas, reasoning deltas, interleaved
+  reasoning/tool streaming, request kwargs, Chat/Responses API behavior,
+  gateway passthrough, raw SSE ordering, parser selection, and final-object
+  consistency must be tested and fixed across all model reasoning/tool parser
+  families. Do not hide failures by synthesizing tool args, disabling
+  reasoning, dropping kwargs, or stripping raw parser leaks after the fact.
 - N2 JANGTQ/non-JANG_1L rows only if they do not overlap Eric's N2 JANG_1L
   work.
 - Installed app/package/release-surface proof only when it follows the proper
@@ -81,7 +87,8 @@ Proceed one lane at a time, with status updates before commands:
 1. MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis.
 2. Qwen/Qwen3.6 Responses raw SSE tunnel recapture or source/gateway parity
    follow-up.
-3. Gemma JANG/MXFP/QAT VL/video/cache/API/UI proof and honest modality gating.
-4. Installed-app/release-surface verification only after current source proof is
+3. Cross-family auto-tool/reasoning/content-delta/gateway/API/kwargs parser
+   contract: test and fix all model reasoning and tool parsers.
+4. Gemma JANG/MXFP/QAT VL/video/cache/API/UI proof and honest modality gating.
+5. Installed-app/release-surface verification only after current source proof is
    worth packaging, or if Eric explicitly asks for a checkpoint release action.
-

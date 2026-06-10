@@ -1,3 +1,37 @@
+# 2026-06-10 - Cross-family parser/API/gateway streaming contract tightened
+
+- Tightened raw Responses SSE parity classification:
+  content deltas, reasoning item lifecycle, final `response.output`
+  order/content/function arguments, output-index validity, and final-object
+  consistency are now recorded and included in route-surface pass/fail checks.
+- Gateway live-capture proof now logs request kwargs:
+  `stream`, `max_output_tokens`, `temperature`, `top_p`, `top_k`,
+  `enable_thinking`, `tool_choice`, tool count, and first tool name.
+- Fixed a real parser seed mismatch in `ensure_thinking_off_sentinel()`:
+  MiniMax tool requests with `enable_thinking=False` keep the open planning
+  rail, while LFM2 and Step3.7 tool requests still close forced thinking-off
+  prompts so their tool markers can surface.
+- Verification:
+  `tests/test_reasoning_tool_interaction.py tests/test_tool_parsers.py tests/test_reasoning_modes.py tests/test_streaming_reasoning.py tests/test_xml_function_tool_parser.py tests/test_gemma4_tool_parser.py tests/test_responses_raw_sse_parity_contract.py tests/test_qwen35_responses_raw_sse_capture.py`
+  passed `385/385`; changed Python files passed `py_compile`; panel gateway
+  live-capture Vitest imported cleanly in non-live mode with `1 skipped` as
+  expected.
+- Boundary: this is source/parser/API/gateway contract hardening. It does not
+  recapture the public tunnel, and it does not prove every live model family
+  row without corresponding live captures.
+
+# 2026-06-10 - Added cross-family parser/API/gateway streaming priority
+
+- Eric added a hard priority: auto tool usage, content deltas, reasoning
+  deltas, interleaved reasoning/tool streaming, gateway/API parity, request
+  kwargs, parser selection, and final-object consistency must be tested and
+  fixed across all model reasoning/tool parser families.
+- Added that priority to `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`.
+- Boundary: do not synthesize tool args, disable reasoning, drop kwargs, or hide
+  raw parser leaks after the fact. The proof must cover parser output,
+  Chat/Responses API behavior, raw SSE deltas, gateway passthrough, and final
+  object consistency.
+
 # 2026-06-10 - Active directive guard and N2 JANG_1L correction
 
 - Added `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md` as the current hard lane
