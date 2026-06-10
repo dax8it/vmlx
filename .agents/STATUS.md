@@ -1897,3 +1897,45 @@
   no-subagent rule.
 - Not proven: no runtime/model/API/UI/cache row changed or was exercised by
   this documentation edit.
+
+# 2026-06-10 - Gemma E4B QAT JANG4M full-media source proof in progress
+
+- Directive check: allowed lane is Gemma JANG/MXFP/QAT VL/video/cache/API/UI
+  proof and honest modality gating. N2 JANG_1L remains off-limits. No release,
+  signing, notarization, PyPI, public download, or package action is being
+  taken.
+- Blocker being reduced: Gemma QAT/native MXFP4 release checklist still lacks
+  current full-media source proof for QAT JANG4M rows beyond E2B.
+- Planned direct proof command:
+  `.venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --out build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610 --port 8890 --only gemma-4-E4B-it-qat-JANG_4M --include-tools --include-l2-restart --load-timeout-s 240 --request-timeout-s 240`
+- Boundary: this is not release/signing/notarization/PyPI/download work and
+  must not be claimed as full Gemma release clearance even if it passes.
+- Live proof result: real `/Users/eric/models/JANGQ-AI/gemma-4-E4B-it-qat-JANG_4M`
+  loaded and passed with `status=pass`, `failures=0`.
+- Proof artifacts:
+  `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610/summary.json`
+  and
+  `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-E4B-it-qat-JANG_4M/result.json`.
+- Proven: visible output, cache first miss/second hit with
+  `cache_detail=paged+mixed_swa`, multi-turn recall, reasoning separation,
+  required tool call with exact `{"value": "blue-cat"}`, tool-result
+  continuation, exact JSON, exact code whitespace, image blue/red, video blue
+  through vision, audio blue, post-media text recovery, Gemma4 parser/reasoning
+  parser, JANG affine Metal NA dispatch, native mixed-SWA cache with generic
+  TurboQuant KV disabled, block L2 write, and fresh-process L2 restore with
+  `cache_detail=paged+mixed_swa+disk`.
+- Source/proof pointer edit: Gemma QAT/native inventory now records
+  `source_fullmedia_smoke.status=pass` for `gemma4_e4b_qat_jang4m`; full
+  release checklist and current regression suite consume
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-e4b-jang4m-fullmedia-20260610.json`.
+- Regenerated artifacts:
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-e4b-jang4m-fullmedia-20260610.json`
+  and
+  `build/current-full-release-objective-checklist-after-gemma-e4b-jang4m-fullmedia-20260610.json`.
+- Verification: `python3 -m py_compile` passed for touched gate files;
+  `.venv/bin/python -m pytest -q tests/test_gemma_qat_native_mxfp4_inventory_gate.py tests/test_full_release_objective_checklist.py -k 'gemma_qat or gemma4_e4b or full_release_objective_checklist'`
+  passed `28 passed`; `git diff --check` passed. Full checklist remains
+  expected-open with `failed_count=56`.
+- Not proven: E4B Responses streaming/non-streaming, UI, installed-app parity,
+  and full Gemma release clearance remain open. QAT JANG4M rows for 12B, 26B,
+  and 31B still lack current full-media source proof.

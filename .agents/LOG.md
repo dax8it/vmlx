@@ -9676,3 +9676,37 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Other-agent action: read `AGENTS.md` and
   `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md` before touching model/runtime
   work; continue direct handoff via checked-in notes/status only.
+
+# 2026-06-10 - Gemma E4B QAT JANG4M full-media source proof
+
+- Request: continue reducing real model/runtime blockers without release,
+  signing, PyPI, download updates, N2 JANG_1L work, or new harness churn.
+- Action: ran the existing all-local model smoke against real
+  `/Users/eric/models/JANGQ-AI/gemma-4-E4B-it-qat-JANG_4M` with tools, media,
+  mixed-SWA cache, and L2 restart.
+- Command:
+  `.venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --out build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610 --port 8890 --only gemma-4-E4B-it-qat-JANG_4M --include-tools --include-l2-restart --load-timeout-s 240 --request-timeout-s 240`
+- Proof artifacts:
+  - `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610/summary.json`
+  - `build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-E4B-it-qat-JANG_4M/result.json`
+- Proven: `status=pass`, zero failures, visible output, multi-turn recall,
+  reasoning separation, exact required tool args `{"value": "blue-cat"}`,
+  tool-result continuation, exact JSON/code, image/video/audio blue probes,
+  post-media text recovery, Gemma4 parser/reasoning parser, JANG affine Metal
+  NA dispatch, native mixed-SWA cache, generic TurboQuant KV disabled for
+  Gemma mixed-SWA, block L2 write, and fresh-process restore with
+  `paged+mixed_swa+disk`.
+- Source/proof accounting: added E4B to `SOURCE_FULLMEDIA_SMOKE_PROOFS`,
+  regenerated
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-e4b-jang4m-fullmedia-20260610.json`,
+  and regenerated
+  `build/current-full-release-objective-checklist-after-gemma-e4b-jang4m-fullmedia-20260610.json`.
+- Verification: touched gate files compile; focused Gemma/full-checklist tests
+  passed `28/28`; `git diff --check` passed; full checklist remains open with
+  `failed_count=56`.
+- Not proven: Gemma release clearance, E4B Responses direct/gateway/tunnel
+  streaming parity, UI/installed-app parity, and QAT JANG4M full-media source
+  proof for 12B/26B/31B.
+- Other-agent action: continue with Gemma 12B/26B/31B QAT JANG4M full-media
+  source proofs or same-family Responses/UI/installed-app proof; do not claim
+  full Gemma clearance from E2B+E4B source smoke alone.
