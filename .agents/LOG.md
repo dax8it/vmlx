@@ -7944,6 +7944,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Updated `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the concrete keychain unlock/partition-list sequence, Developer ID/notary profile boundary, and canonical Sequoia/Tahoe build -> notarize/staple/blockmap -> verify flow.
 - Boundary: no build, package, sign, notarize, tag, appcast, or download mutation was run. The known blocker is `prepackage_ready=false`, not missing knowledge of how to sign/notarize.
 
+# 2026-06-10 - N2 JANGTQ2 dev-app Responses delta proof
+
+- Ran a separate real Electron dev-app N2 JANGTQ2 Responses pass without built-in tools to isolate app renderer/content-delta streaming from the earlier built-in-tool loop.
+- Tracked summary: `build/current-real-ui-live-model-n2-jangtq2-dev-app-delta-proof-20260610.json`, `status=pass`; raw ignored proof: `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-delta-only-20260610-proof.json`.
+- Proven: current Electron dev build, real loaded `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`, `/v1/responses`, two complete visible assistant turns, `responses_delta_streaming`, `responses_cache_detail_usage`, generation defaults, server cache controls, parser/language leak checks.
+- Streaming evidence: `eventCounts.stream=45`; first assistant trace `count=21`, `N` -> `N2_APP_DELTA_ONE is ready. prefix cache, paged cache, and streaming delta are included.`; second assistant trace `count=24`, `N` -> `N2_APP_DELTA_TWO is ready. hybrid SSM, TurboQuant KV, and block disk L2 are included.`
+- Cache/runtime evidence: native cache `hybrid_ssm_v1` / `hybrid_ssm_typed` with `attention_kv`, `ssm_companion_state`, and `async_rederive`; live attention TurboQuant KV only for attention layers; SSM companion native; second trace `cached_tokens=45`, `cache_detail=paged+ssm`; final L2 totals `l2_block_tokens_on_disk=120`, `l2_ssm_tokens_on_disk=274`, `l2_tokens_on_disk=394`.
+- Boundary: this clears N2 dev-app content-delta transport. It does not prove built-in tools in this exact delta-only run, does not fix the earlier first post-tool visible answer collapse to `Created`, and does not clear installed-app/media/public tunnel/release gates. No package/sign/notarize/tag/download action.
+
 # 2026-06-10 - MiMo JANG_2L app tool-choice boundary remains exactness-red
 
 - Added scoped panel request behavior: when built-in tools are enabled and the latest user message explicitly names exactly one available tool, the panel sends a specific `tool_choice` for Chat Completions and Responses. It does not pin if no explicit tool name is present or if multiple tools are named.

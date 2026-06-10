@@ -263,6 +263,7 @@ Artifact:
 
 - `build/current-real-ui-live-model-n2-jangtq2-dev-app-proof-20260610.json`
 - `build/current-n2-jangtq2-responses-stream-boundary-20260610.json`
+- `build/current-real-ui-live-model-n2-jangtq2-dev-app-delta-proof-20260610.json`
 
 Raw ignored proof captures:
 
@@ -289,18 +290,30 @@ Proven:
   `l2_tokens_on_disk=28080`.
 - Server cache controls were visible and verified in the dev app.
 - No raw parser/tool markup leak and no hidden reasoning leak were observed.
+- Separate real Electron dev-app Responses delta pass, without built-in tools,
+  cleared the app renderer/content-delta surface. It loaded the same N2 JANGTQ2
+  row, used `/v1/responses`, and produced two assistant messages with
+  multi-event visible deltas:
+  - first trace: `count=21`, `N` -> `N2_APP_DELTA_ONE is ready...`
+  - second trace: `count=24`, `N` -> `N2_APP_DELTA_TWO is ready...`
+- That delta pass recorded `responses_delta_streaming`,
+  `responses_cache_detail_usage`, `cache_hit_telemetry`,
+  `native_cache_status`, `l2_disk_storage`, and `server_cache_controls` in the
+  proof surfaces. Runtime/cache evidence included `cache_detail=paged+ssm`,
+  `cached_tokens=45`, `l2_block_tokens_on_disk=120`,
+  `l2_ssm_tokens_on_disk=274`, and `l2_tokens_on_disk=394`.
 
 Red:
 
-- The dev-app proof did not clear `responses_delta_streaming`. Both attempts
-  failed with `requested Responses API mode but proof did not record
-  responses_delta_streaming surface`.
-- The rerun used longer post-tool prompts, but the first post-tool visible
-  answer still collapsed to `Created`; only the second assistant message
-  produced multi-delta visible content (`count=31` in the longer attempt).
-- The first prompted post-tool response did not include the requested
-  `REAL_UI_LIVE_TOOL_ONE` phrase in visible content, although the tool file was
-  written correctly.
+- The combined built-in-tool app proof still has a first post-tool visible
+  answer quality issue: the first post-tool answer collapsed to `Created` in the
+  tool-loop attempts, and the first prompted post-tool response did not include
+  the requested `REAL_UI_LIVE_TOOL_ONE` phrase in visible content, although the
+  tool file was written correctly.
+- The delta-only pass proves app renderer/content-delta streaming, but it does
+  not by itself prove built-in tool execution in the same request sequence.
+- Installed-app packaged parity, VL/audio/video, public tunnel SSE parity, and
+  release readiness remain open.
 
 Next implementation target:
 
@@ -310,10 +323,11 @@ Next implementation target:
   `status=pass`. Direct follow-up produced `16` output-text deltas and gateway
   follow-up produced `14` output-text deltas. Both completed on the same served
   model and returned `N2_DIRECT_DELTA_ONE` / `N2_DIRECT_DELTA_TWO`.
-- This narrows the still-red dev-app proof to the chat renderer/tool-loop
-  harness path or first post-tool answer behavior, not the core server or panel
-  gateway SSE transport. Do not mark N2 dev-app Responses streaming green until
-  the missing first-turn app stream trace is reproduced and fixed/proven.
+- N2 JANGTQ2 now has dev-app proof for both sides of the split: built-in tool
+  loop/cache/L2 in one app proof, and Responses content-delta streaming in a
+  separate app proof. The remaining N2 app issue is first post-tool visible
+  answer quality in the tool-loop sequence, not core server/gateway SSE or app
+  renderer delta transport.
 
 ## Red Live Attempts
 
