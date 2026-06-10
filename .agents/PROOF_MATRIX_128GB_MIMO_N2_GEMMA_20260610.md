@@ -79,11 +79,13 @@ Not proven:
 Artifact:
 
 - `build/current-real-ui-live-model-gemma4-12b-jang4m-dev-app-proof-20260610.json`
+- `build/current-real-ui-live-model-gemma4-12b-jang4m-video-proof-20260610.json`
 
 Raw ignored proof captures:
 
 - `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-responses-tools-cache-20260610-proof.json`
 - `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-image-cache-20260610-proof.json`
+- `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-video-cache-max12k-20260610-proof.json`
 
 Proven:
 
@@ -105,6 +107,18 @@ Proven:
   block-disk L2 writes.
 - No raw parser/tool markup leak and no hidden reasoning leak were observed in
   either dev-app run.
+- Real Electron dev-app video pass is now green for a 1-second solid-red MP4
+  when the session context cap is raised to `12000` prompt tokens. The app
+  persisted a `video_url` attachment, the server decoded the base64 MP4,
+  extracted frames, routed it through the MLLM media fallback, and the assistant
+  answered `solid, dark red screen...`.
+- The same video path with the default `4096` prompt cap failed honestly with
+  `HTTP 413 prompt_too_long`, reporting about `8315` prompt tokens. Therefore
+  Gemma 12B JANG4M video support is proven only with an adequately large context
+  cap for this fixture, not with the 4k cap.
+- The video pass also showed mixed-SWA cache/L2 surfaces:
+  `cache_detail=paged+mixed_swa`, `cached_tokens=20`,
+  `l2_block_tokens_on_disk=84`, and `disk_writes=2`.
 
 Not proven:
 
@@ -113,7 +127,7 @@ Not proven:
 - Local panel session manager starting this exact model from launch args; these
   app proofs used a remote session connected to the server started by the proof
   harness.
-- Gemma audio/video semantic E2E.
+- Gemma audio semantic E2E.
 - N2 or MiMo dev-app chat proof.
 - Same-model public tunnel raw SSE parity.
 

@@ -7944,6 +7944,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Updated `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the concrete keychain unlock/partition-list sequence, Developer ID/notary profile boundary, and canonical Sequoia/Tahoe build -> notarize/staple/blockmap -> verify flow.
 - Boundary: no build, package, sign, notarize, tag, appcast, or download mutation was run. The known blocker is `prepackage_ready=false`, not missing knowledge of how to sign/notarize.
 
+# 2026-06-10 - Gemma 4 12B JANG4M dev-app video proof
+
+- Generated a tiny real video fixture with `ffmpeg`: 1-second 64x64 solid-red MP4, 1613 bytes.
+- First real Electron dev-app Gemma video attempt at `max_prompt_tokens=4096` failed honestly: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-video-cache-20260610-proof.json`, `HTTP 413 prompt_too_long`, about `8315` prompt tokens.
+- Reran with `max_prompt_tokens=12000`; tracked summary `build/current-real-ui-live-model-gemma4-12b-jang4m-video-proof-20260610.json` is `status=pass`; raw ignored proof is `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-jang4m-video-cache-max12k-20260610-proof.json`.
+- Proven: real Electron dev app, real loaded `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M`, `video_url` attachment persisted, server decoded the base64 MP4, extracted frames, routed through MLLM media fallback, and assistant described a solid/dark red screen. Proof surfaces include `video_where_supported`, parser/language leak checks, cache endpoint stats, mixed-SWA native cache, L2 disk storage, and server cache controls.
+- Cache/runtime evidence: `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=84`, `disk_writes=2`; generic TurboQuant KV stayed inactive because Gemma mixed-SWA requires native RotatingKVCache metadata.
+- Boundary: Gemma 12B JANG4M video is green only with adequate context cap for this fixture. Audio semantic E2E, installed-app parity, public tunnel SSE, package/sign/notarize/tag/upload remain open. No release action.
+
 # 2026-06-10 - N2 JANGTQ2 dev-app Responses delta proof
 
 - Ran a separate real Electron dev-app N2 JANGTQ2 Responses pass without built-in tools to isolate app renderer/content-delta streaming from the earlier built-in-tool loop.
