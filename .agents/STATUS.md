@@ -986,3 +986,11 @@
 - Proven: installed app UI launched, image attachment persisted, server `MEDIA_DIAG` saw one `image_url`, Gemma media fallback ran with `1 image(s)`, and the assistant answered `Red`; `imageSemanticVerified=true`.
 - Cache/runtime proof: MXFP4 affine matmul with Metal NA active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and `block_disk_writes=2`.
 - Boundary: this clears Gemma 12B MXFP4 installed-app image only. It does not clear installed-app video, Gemma audio, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.
+
+# 2026-06-10 - Gemma 12B MXFP4 installed-app video/VL proof green
+
+- Reduced blocker: `media` plus `api/ui` for Gemma 12B MXFP4 in the rebuilt local `/Applications/vMLX.app`.
+- Proof summary: `build/current-real-ui-installed-app-gemma4-12b-mxfp4-video-proof-20260610.json`, `status=pass`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-video-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-video-20260610-chat.png`.
+- Proven: installed app UI launched, video attachment persisted, server `MEDIA_DIAG` saw one `video_url`, server decoded the base64 MP4, reported `25` frames at `25.0 fps`, extracted `4` frames, Gemma media fallback ran, and the assistant answered `The video shows a solid red background with no movement or changes.`
+- Cache/runtime proof: MXFP4 affine matmul with Metal NA active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and `block_disk_writes=2`.
+- Boundary: this clears Gemma 12B MXFP4 installed-app video only. It does not clear Gemma audio, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.

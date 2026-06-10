@@ -8181,3 +8181,10 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof summary `build/current-real-ui-installed-app-gemma4-12b-mxfp4-image-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-image-20260610-proof.json`.
 - Proven surfaces: installed-app UI, persisted image attachment, `MEDIA_DIAG` image detection, Gemma media fallback with `1 image(s)`, visible answer `Red`, server cache controls, parser/reasoning leak checks, MXFP4 affine matmul with Metal NA active, `mixed_swa_kv_v1`, paged mixed-SWA cache, and block L2 write.
 - Boundary: no installed-app video proof, no Gemma audio clearance, no public tunnel proof, and no package/sign/notarize/tag/upload/release action.
+
+# 2026-06-10 - Gemma 12B MXFP4 installed-app video proof
+
+- Generated a 1-second 64x64 solid-red MP4 fixture and ran real UI video proof through `/Applications/vMLX.app` for `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`.
+- Proof summary `build/current-real-ui-installed-app-gemma4-12b-mxfp4-video-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-video-20260610-proof.json`.
+- Proven surfaces: installed-app UI, persisted video attachment, `MEDIA_DIAG` video detection, base64 MP4 decode, `25` frames at `25.0 fps`, `4` extracted frames, Gemma media fallback, visible answer describing a solid red background, server cache controls, parser/reasoning leak checks, MXFP4 affine matmul with Metal NA active, `mixed_swa_kv_v1`, paged mixed-SWA cache, and block L2 write.
+- Boundary: no Gemma audio clearance, no public tunnel proof, and no package/sign/notarize/tag/upload/release action.

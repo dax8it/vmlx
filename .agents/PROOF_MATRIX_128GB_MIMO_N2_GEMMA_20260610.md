@@ -88,6 +88,7 @@ Artifacts:
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-audio-proof-20260610.json`
 - `build/current-real-ui-installed-app-gemma4-12b-mxfp4-responses-tools-cache-20260610.json`
 - `build/current-real-ui-installed-app-gemma4-12b-mxfp4-image-proof-20260610.json`
+- `build/current-real-ui-installed-app-gemma4-12b-mxfp4-video-proof-20260610.json`
 
 Proven:
 
@@ -165,11 +166,23 @@ Proven:
   parser/reasoning leak, `weight_format=mxfp4`, Metal NA active, native
   `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cached_tokens=20`,
   `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and `disk_writes=2`.
+- Local rebuilt installed app video/VL proof is now green for the same Gemma
+  12B QAT MXFP4 row. The app persisted a video attachment, server `MEDIA_DIAG`
+  saw one `video_url`, the server decoded the base64 MP4, reported `25 total
+  frames @ 25.0 fps`, extracted `4 frames`, routed those frames through the
+  Gemma media fallback, and the assistant answered `The video shows a solid red
+  background with no movement or changes.`
+- The installed-app video run recorded `video_where_supported`,
+  `installed_app_ui`, `server_cache_controls`, content deltas (`count=21`,
+  `12`, and `1`), no raw parser/reasoning leak, `weight_format=mxfp4`, Metal NA
+  active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`,
+  `cached_tokens=20`, `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and
+  `disk_writes=2`.
 
 Not proven:
 
-- Installed-app video/audio parity for the MXFP4 row; installed-app image is now
-  green.
+- Installed-app audio parity for the MXFP4 row; installed-app image and video
+  are now green.
 - Audio weight-backed E2E for the MXFP4 dev-app row is red; current source
   honestly rejects audio with supported modalities `text, vision, video`.
 - Full larger Gemma QAT matrix through UI/installed app.
