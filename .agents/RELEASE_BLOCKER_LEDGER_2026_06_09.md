@@ -283,6 +283,16 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   native `mixed_swa_kv_v1`, paged mixed-SWA cache, and block L2. It does not
   clear Gemma installed-app media, Gemma audio, public tunnel SSE, or Developer
   ID DMG package/sign/notarize/release readiness.
+- 2026-06-10 Gemma dev-app exactness update:
+  `build/current-real-ui-dev-app-gemma4-12b-mxfp4-exact-output-proof-20260610.json`
+  is green for the current Electron dev build and the Gemma 12B QAT MXFP4 row.
+  The app returned exact text `GEMMA-ACK-742` and exact JSON
+  `{"status":"ok","value":"gemma-blue"}`, with no parser/reasoning leak, while
+  recording `weight_format=mxfp4`, Metal NA active, `mixed_swa_kv_v1`,
+  `cache_detail=paged+mixed_swa`, `cache_hit_tokens=22`,
+  `l2_block_tokens_on_disk=61`, and block-disk writes `2`. This does not clear
+  Gemma audio, larger Gemma QAT rows, public tunnel SSE parity, or release
+  readiness.
 - 2026-06-10 Gemma installed-app image update:
   `build/current-real-ui-installed-app-gemma4-12b-mxfp4-image-proof-20260610.json`
   is `status=pass` for the same local rebuilt `/Applications/vMLX.app` and

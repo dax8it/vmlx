@@ -88,6 +88,7 @@ Artifacts:
 - `build/current-gemma4-12b-mxfp4-jang4m-media-smoke-live-20260610.json`
 - `build/current-gemma4-12b-mxfp4-jang4m-live-runtime-audit-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-dev-app-proof-20260610.json`
+- `build/current-real-ui-dev-app-gemma4-12b-mxfp4-exact-output-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-image-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-video-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-audio-proof-20260610.json`
@@ -121,6 +122,14 @@ Proven:
   `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`,
   final `cached_tokens=2688`, `l2_block_tokens_on_disk=3588`,
   block-disk `disk_hits=30`, and `disk_writes=58`.
+- Current Electron dev-build exact-output proof is green for Gemma 12B QAT
+  MXFP4: `GEMMA-ACK-742` returned exactly, and
+  `{"status":"ok","value":"gemma-blue"}` returned exactly. The same run
+  recorded no parser/reasoning leak, no persisted tools/reasoning,
+  model-owned generation defaults, `weight_format=mxfp4`, Metal NA active,
+  `mixed_swa_kv_v1`, generic TurboQuant KV correctly disabled for rotating
+  mixed-SWA metadata, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=22`,
+  `l2_block_tokens_on_disk=61`, and block-disk writes `2`.
 - Real Electron dev-app Gemma 12B QAT MXFP4 image/VL proof is green. The app
   persisted an image attachment, server `MEDIA_DIAG` observed one `image_url`,
   the Gemma media fallback ran with `1 image(s)`, and the assistant answered
