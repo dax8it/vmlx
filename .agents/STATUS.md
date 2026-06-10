@@ -1084,3 +1084,11 @@
 - Proven: local rebuilt `/Applications/vMLX.app` launched, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` loaded as MLLM, `/v1/responses` used, two built-in `run_command` calls executed, tool-result continuations used `previous_response_id`, visible assistant turns completed, content/tool deltas streamed, and no parser/reasoning leak was recorded.
 - Runtime/cache evidence: JANG affine matmul with Metal NA active, active memory `9889.4 MB`, peak `12630.4 MB`, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3571`, `l2_tokens_on_disk=3571`, block-disk hits `30`, and block-disk writes `58`.
 - Boundary: this clears Gemma 12B JANG4M installed-app Responses/tool/cache only. It does not clear installed-app JANG4M image/video/audio, larger Gemma QAT rows, public tunnel SSE, package/sign/notarize/tag/upload, or release readiness.
+
+# 2026-06-10 - Gemma 12B JANG4M installed-app image/VL proof green
+
+- Reduced blocker: `media` plus `api/ui` for Gemma 12B JANG4M installed-app image/VL parity.
+- Proof summary: `build/current-real-ui-installed-app-gemma4-12b-jang4m-image-proof-20260610.json`, `status=pass`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-jang4m-image-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-jang4m-image-20260610-chat.png`.
+- Proven: local rebuilt `/Applications/vMLX.app` launched, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` loaded as MLLM, two visible text turns completed before media, the app attached one red PNG image, Gemma media fallback ran with `1 image(s)`, and the assistant answered `Red`; `imageSemanticVerified=true`.
+- Runtime/cache evidence: active memory `9892.5 MB`, peak `10450.3 MB`, JANG affine matmul with Metal NA active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`, `l2_block_tokens_on_disk=77`, `l2_tokens_on_disk=77`, and block-disk writes `2`.
+- Boundary: this clears Gemma 12B JANG4M installed-app image only. It does not clear installed-app JANG4M video/audio, larger Gemma QAT rows, public tunnel SSE, package/sign/notarize/tag/upload, or release readiness.

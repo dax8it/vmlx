@@ -277,10 +277,20 @@ Proven:
   `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3571`,
   `l2_tokens_on_disk=3571`, block-disk `disk_hits=30`, and block-disk
   `disk_writes=58`.
+- Local rebuilt installed app image proof is now green for Gemma 12B JANG4M.
+  `/Applications/vMLX.app` launched as `uiLaunchMode=installed-app`, loaded the
+  same JANG4M artifact as MLLM, completed two visible text turns, persisted a
+  red PNG image attachment, routed it through the Gemma media fallback with
+  `1 image(s)`, and returned visible `Red`; `media.imageSemanticVerified=true`.
+- Installed-app JANG4M image runtime/cache evidence: active memory `9892.5 MB`,
+  peak `10450.3 MB`, JANG affine matmul with Metal NA active, native
+  `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=20`,
+  `l2_block_tokens_on_disk=77`, `l2_tokens_on_disk=77`, and block-disk
+  `disk_writes=2`.
 
 Not proven:
 
-- Installed packaged app media parity for JANG4M.
+- Installed packaged app video/audio parity for JANG4M.
 - DMG package/sign/notarize/release readiness.
 - Local panel session manager starting this exact model from launch args; these
   app proofs used a remote session connected to the server started by the proof
