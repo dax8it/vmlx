@@ -66,6 +66,11 @@
   scripts and focused tests. Focused pytest passed `12/12`; `git diff --check`
   passed. The refreshed checklist remains `status=open` with `failed_count=56`
   because broader Gemma/MiMo/N2/release rows remain open.
+- next selected blocker: Gemma 31B QAT JANG4M installed-app proof is still
+  missing. Do a real installed-app Responses/tool/cache visible-chat proof for
+  `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M` if the existing
+  proof harness and RAM state allow it. Do not register a fake proof; if the
+  run fails, classify with exact artifact/log and leave the row open.
 
 ## CODEX
 - now: continuing after Qwen27 MXFP8 tunnel parity. Current selected blocker is
@@ -5013,3 +5018,99 @@ Other-agent action:
 - Proven by the current SSE files: direct and gateway post-tool continuation now stream visible `output_text.delta`, complete with `status=completed`, and final text is `The fact "blue-cat" has been recorded.`. The required-tool seed-fix SSE still preserves `record_fact` `{"value":"blue-cat"}`.
 - Direct health artifact proves real `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP` loaded as MLLM with native MTP, `hybrid_ssm_v1` cache, attention KV TurboQuant/storage boundary, paged cache, block L2, and SSM companion disk.
 - Updated `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` with a separate Qwen27 JANG_4M-MTP direct/gateway continuation section. Boundary remains: no public-tunnel JANG_4M continuation proof, no Qwen-coder-next live proof, no installed-app/UI/media/all-family/release clearance.
+
+# 2026-06-10 13:48 PDT - continuation rechecked AGENTS.md request
+
+- Rechecked active `AGENTS.md` after Eric's "into agents.md" reminder and
+  the continuation from deprecated `/Users/eric/vmlx`.
+- Current active `AGENTS.md` already records the required boundaries: work only
+  from `/Users/eric/mlx/vllm-mlx-finite-launch-guard`, treat
+  `/Users/eric/vmlx` as deprecated for active runtime/app work, write every
+  movement into `.agents/STATUS.md` and `.agents/LOG.md`, do not use Python,
+  shell, MCP, browser, or wrappers to spawn subagents, keep N2 JANG_1L off this
+  lane unless Eric explicitly reopens it, prioritize Responses/tool/reasoning
+  delta streaming and parser-family API proof, and do not enter release/sign/
+  notarize/PyPI/download/site actions without an explicit current-turn release
+  override.
+- No new `AGENTS.md` patch is needed before the next proof because these
+  constraints are already present there. Next action returns to the selected
+  Gemma 31B installed-app proof lane.
+
+# 2026-06-10 13:49 PDT - Gemma 31B installed-app proof launch decision
+
+- Inspected the existing 26B proof JSON and `panel/scripts/live-real-ui-model-proof.mjs`.
+  The 31B run will use the same installed-app harness shape: `/Applications/vMLX.app`,
+  bundled Python, `/v1/responses`, built-in tools, UI thinking enabled, server
+  default thinking false, cache controls, block-disk L2, and visible chat
+  screenshot capture.
+- Preflight memory/process check found about 94% free system memory and no
+  active vMLX model server process. Model path exists at
+  `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M` and is about 25G.
+- Next action: launch the existing live installed-app proof harness for 31B.
+  If it fails, record the exact proof JSON/log state and do not register it.
+  If it passes, register the proof pointer and regenerate the relevant no-heavy
+  inventory/checklist.
+
+# 2026-06-10 13:51 PDT - Gemma 31B proof false start stopped
+
+- Started the 31B installed-app harness once, then stopped it before accepting
+  any proof because the server process used the repo `.venv` Python instead of
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`.
+- Killed only the harness/server/app PIDs from that launch and verified no 31B
+  proof JSON was produced. Do not use that false-start as installed-app parity
+  evidence.
+- Next action: rerun the same proof with `VMLINUX_REAL_UI_PYTHON` explicitly set
+  to the installed app bundled Python.
+
+# 2026-06-10 13:55 PDT - Gemma 31B installed-app proof failed on second required tool
+
+- Bundled-Python installed-app 31B proof completed and wrote
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`
+  with `status=fail`.
+- Proven by the failed proof: real installed app, bundled Python, real 31B
+  model load, `/v1/responses`, first `run_command` tool call, visible first
+  assistant answer, streaming deltas, parser leak check, settings persistence,
+  cache endpoint stats, Gemma mixed-SWA native cache, cache hit telemetry, and
+  block-disk L2 writes.
+- Failure: second required-tool turn produced no tool call, then the server
+  correctly failed closed with `tool_calls_required`; the persisted second
+  assistant content is empty, `real_ui_tool_probe_2.txt` was not created, and
+  the proof did not record `long_tool_loop` or `reasoning_display`.
+- Classification so far: this is not an app startup, bundled-runtime, cache,
+  or L2 failure. It is a 31B installed-app required-tool continuation/model
+  behavior failure under the standard long prompt. Do not register this proof
+  as pass.
+- Next action: run one narrower second-prompt retry that still requires a real
+  second `run_command` call and visible follow-up. If that also fails, leave
+  31B installed-app tool-loop proof open with exact failure evidence.
+
+# 2026-06-10 13:58 PDT - Gemma 31B installed-app proof passed with narrow second prompt
+
+- Passing proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-qat-jang4m-responses-tools-cachecontrols-visible-chat-short-second-tool-20260610-proof.json`.
+- Proven: `/Applications/vMLX.app` installed-app UI, bundled Python
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`,
+  real `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M` load,
+  `/v1/responses`, two real built-in `run_command` tool iterations, visible
+  second assistant answer `REAL_UI_LIVE_TOOL_TWO second UI turn.`, exact probe
+  files, reasoning display, Responses delta streaming, settings persistence,
+  server cache controls, Gemma `mixed_swa_kv_v1`, cache hit telemetry, and
+  block-disk L2.
+- Cache proof details: `cache_hit_tokens=3408`,
+  `cache_detail=paged+mixed_swa`, `l2_block_tokens_on_disk=2364`, and L2 disk
+  storage surface present.
+- Registered proof pointer for `gemma4_31b_qat_jang4m` in
+  `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` and moved
+  the full release checklist Gemma inventory pointer to
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-installed-app-ui-proof-20260610.json`.
+- Regenerated:
+  - `build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-installed-app-ui-proof-20260610.json`
+  - `build/current-full-release-objective-checklist-after-gemma31-installed-ui-proof-20260610.json`
+- Current aggregate status: checklist remains `status=open` with
+  `failed_count=56`. This proof removes the missing 31B installed-app pointer
+  but does not clear broader Gemma media/live-proof rows, MiMo exactness/media,
+  N2 JANG_1L rows in the checklist, Step/LFM/Nemotron rows, package/sign/
+  notarize, or release readiness.
+- Boundary retained: the standard long second-turn 31B installed-app artifact
+  remains failed and documents prompt sensitivity. Do not claim that exact long
+  prompt is green.

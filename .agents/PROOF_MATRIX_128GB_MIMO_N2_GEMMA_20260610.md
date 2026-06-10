@@ -1057,16 +1057,54 @@ Proven:
   supersedes the route classification: Gemma 12B JANG4M has `audio_config` and
   projection-only audio metadata but no `audio_tower.*` weights, so current
   runtime modalities are `text`, `vision`, and `video` only.
+- Local rebuilt installed app Responses/tool/cache proof is now green for
+  Gemma 26B QAT JANG4M. `/Applications/vMLX.app` launched as
+  `uiLaunchMode=installed-app`, used bundled Python, loaded
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`, used
+  `/v1/responses`, executed two built-in `run_command` calls, recorded
+  `long_tool_loop`, `reasoning_display`, `responses_delta_streaming`,
+  `server_cache_controls`, `settings_persistence`, and visible chat screenshot,
+  and wrote exact probe files `REAL_UI_LIVE_TOOL_ONE` and
+  `REAL_UI_LIVE_TOOL_TWO`.
+- Installed-app 26B QAT JANG4M runtime/cache evidence:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`
+  records bundled Python
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`,
+  native Gemma `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`,
+  `cache_hit_tokens=7151`, `l2_block_tokens_on_disk=4884`, and no missing
+  installed-app proof surfaces.
+- Local rebuilt installed app Responses/tool/cache proof is now green for
+  Gemma 31B QAT JANG4M using a narrower second-turn prompt that still required
+  a real second `run_command` call. `/Applications/vMLX.app` launched as
+  `uiLaunchMode=installed-app`, used bundled Python, loaded
+  `/Users/eric/models/JANGQ-AI/gemma-4-31B-it-qat-JANG_4M`, used
+  `/v1/responses`, completed two visible assistant turns, recorded
+  `long_tool_loop`, `reasoning_display`, `responses_delta_streaming`,
+  `server_cache_controls`, `settings_persistence`, and visible chat screenshot,
+  and wrote exact probe files `REAL_UI_LIVE_TOOL_ONE` and
+  `REAL_UI_LIVE_TOOL_TWO`.
+- Installed-app 31B QAT JANG4M runtime/cache evidence:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-qat-jang4m-responses-tools-cachecontrols-visible-chat-short-second-tool-20260610-proof.json`
+  records bundled Python
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`,
+  native Gemma `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`,
+  `cache_hit_tokens=3408`, `l2_block_tokens_on_disk=2364`, and no missing
+  installed-app proof surfaces.
+- Boundary: the standard 31B installed-app long second-turn prompt failed at
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`.
+  That failed artifact proves load/cache/first-tool behavior but the second
+  required-tool turn produced no tool call and correctly failed closed with
+  `tool_calls_required`. Do not delete or mislabel that artifact; it documents
+  prompt sensitivity rather than a parser/cache/app startup failure.
 
 Not proven:
 
 - Installed packaged app audio support for JANG4M; current installed-app proof
   is explicitly red.
 - Installed packaged app JANG4M video at the default 4k prompt cap.
-- Gemma 26B JANG4M installed-app parity, public tunnel SSE, and default 4k
-  video behavior. Dev-app audio is tested and red by honest unsupported guard.
-- Gemma 31B installed-app parity, public tunnel SSE, and default 4k video
-  behavior. Dev-app audio is tested and red by honest unsupported guard.
+- Gemma 26B and 31B JANG4M public tunnel SSE and default 4k video behavior.
+  Dev-app audio is tested and red by honest unsupported guard; installed-app
+  text/tool/cache parity is now green for both rows.
 - DMG package/sign/notarize/release readiness.
 - Local panel session manager starting this exact model from launch args; these
   app proofs used a remote session connected to the server started by the proof
