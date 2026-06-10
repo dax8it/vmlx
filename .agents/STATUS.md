@@ -1439,3 +1439,13 @@
 - Parity proof: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`, `status=pass`, `missing_captures=[]`.
 - Proven: direct, panel gateway, and public tunnel all report the same model `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, preserve required `record_fact` args `{"value":"blue-cat"}`, include reasoning events with no reasoning-disable workaround, parse cleanly, have consistent final output, and have valid output item indices. Current direct/gateway use `message=[0]`, `reasoning=[1]`, `function_call=[2]`; fresh tunnel uses `message=[0]`, `function_call=[1]` with no conflict.
 - Boundary: this clears the stale Qwen35 public tunnel duplicate-index blocker for this request/model. It does not prove all Qwen3-coder/N2/MiMo/Gemma parser families, tool-result continuation, installed-app parity, media, or full release readiness.
+
+# 2026-06-10 - Qwen35 raw SSE checklist pointer refreshed
+
+- Reduced blocker: stale full-objective checklist evidence for Qwen35 Responses raw SSE parity.
+- Source edit: `tests/cross_matrix/run_full_release_objective_checklist.py` now points `QWEN35_RAW_SSE_PARITY` at `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`.
+- Regression guard: `tests/test_full_release_objective_checklist.py` asserts the current Qwen35 raw SSE artifact path so the checklist cannot silently fall back to the stale red 2026-06-09 tunnel capture.
+- Checklist artifact: `build/current-full-release-objective-checklist-after-qwen35-public-sse-recapture-20260610.json`; parsed successfully with `status=open`, `release_ready=false`, and `failed_count=71`. No failed row references Qwen35 raw SSE after the pointer refresh.
+- Verification: `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k 'qwen35_raw_sse or uses_current_qwen35_raw_sse_parity_contract'` passed (`2 passed`), Python JSON parse passed, and `git diff --check` passed.
+- Boundary: this does not clear the generic Gemma4 E2B direct/gateway/tunnel raw SSE gate, which still points at `build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json` and remains red. Full release readiness remains open.
+- Parallel-agent note: next Responses work should target the still-red generic/raw SSE family rows, especially tool-result continuation, kwargs passthrough, content/reasoning/function-call deltas, no raw XML leaks, final object consistency, and gateway/tunnel parity across Gemma/MiMo/N2/Qwen families.

@@ -9014,3 +9014,27 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   does not clear tool-result continuation for every family, media rows,
   installed-app parity, N2 JANG_1L, MiMo exactness/media, Gemma audio, or full
   production readiness.
+
+# 2026-06-10 - Qwen35 raw SSE checklist pointer refreshed
+
+- Read `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`; active lane stayed
+  Qwen/Qwen3.6 Responses raw SSE/tool/reasoning parity. No release, signing,
+  notarization, PyPI, or N2 JANG_1L action was taken.
+- Updated `tests/cross_matrix/run_full_release_objective_checklist.py` so
+  `QWEN35_RAW_SSE_PARITY` references
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
+  instead of the stale 2026-06-09 source-vs-tunnel artifact.
+- Added `test_full_release_objective_checklist_uses_current_qwen35_raw_sse_parity_contract`
+  in `tests/test_full_release_objective_checklist.py`.
+- Focused verification:
+  `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k 'qwen35_raw_sse or uses_current_qwen35_raw_sse_parity_contract'`
+  passed with `2 passed`.
+- Regenerated checklist:
+  `.venv/bin/python tests/cross_matrix/run_full_release_objective_checklist.py --out build/current-full-release-objective-checklist-after-qwen35-public-sse-recapture-20260610.json`.
+  The runner still exits nonzero because the full checklist is open, but the
+  artifact parsed as JSON with `status=open`, `release_ready=false`, and
+  `failed_count=71`.
+- Current result: Qwen35 raw SSE is no longer present in the failed rows.
+- Remaining boundary: generic Gemma4 E2B raw SSE parity still fails in the same
+  checklist; MiMo exactness/media, Gemma audio/live media, N2 JANG_1L,
+  installed-app gaps, and full release readiness remain open.
