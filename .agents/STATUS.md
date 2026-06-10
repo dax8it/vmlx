@@ -1,4 +1,67 @@
 ## CODEX
+- now: Qwen27 MXFP8 same-model direct/gateway/public-tunnel raw Responses SSE
+  required-tool parity is live-proven green. No source patch was needed.
+- proof artifact:
+  `build/current-responses-raw-sse-parity-qwen27-mxfp8-direct-gateway-tunnel-20260610.json`
+  has `status=pass`.
+- raw captures:
+  - `build/responses-sse-captures-20260610/direct-qwen27-mxfp8-mtp-tool-20260610.sse`
+  - `build/responses-sse-captures-20260610/gateway-qwen27-mxfp8-mtp-tool-20260610.sse`
+  - `build/responses-sse-captures-20260610/tunnel-qwen27-mxfp8-mtp-tool-20260610.sse`
+- proven: all three surfaces report same model
+  `models/Qwen3.6-27B-MXFP8-CRACK-MTP`, parse cleanly, preserve
+  `record_fact` authoritative args `{"value": "blue-cat"}`, include reasoning
+  events with no reasoning-disable workaround, emit valid argument delta/done,
+  maintain final response consistency, and have valid output indices.
+  Direct/gateway use message=0/reasoning=1/function=2; tunnel uses
+  message=0/function=1.
+- runtime/cache proven: local
+  `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP` loaded with native MTP active
+  depth 3, `hybrid_ssm_v1`, attention KV + SSM companion + async rederive,
+  attention-only TurboQuant KV via `turboquant_kv_v1`, paged cache, and block
+  L2. Direct first request wrote 222 tokens to block L2; gateway run hit
+  `paged+ssm` cache reuse for 222 tokens.
+- matrix: added Qwen27 MXFP8 Responses Raw SSE section to
+  `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md`.
+- not proven: Qwen-coder-next, Qwen27 tunnel tool-result continuation,
+  installed-app UI, media/VL/audio/video, all parser families, or release
+  readiness.
+- no-claims: no release/sign/notarize/PyPI/updater/download/site action, no N2
+  JANG_1L, no synthetic args, no parser repair, no reasoning-disable workaround.
+- next: continue with Qwen-coder-next only if an artifact becomes available, or
+  move to the next unproven model family row such as MiMo JANG/JANGTQ API/UI/L2
+  or Gemma media/cache installed-app parity.
+
+## CODEX
+- now: selected the concrete next live proof row: Qwen3.6 27B MXFP8 MTP
+  same-model direct/gateway/public-tunnel raw Responses SSE, because the public
+  tunnel advertises `models/Qwen3.6-27B-MXFP8-CRACK-MTP` and local artifact
+  `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP` exists. No local
+  Qwen-coder-next artifact was found under `/Users/eric/models`.
+- planned command shape: capture public tunnel required-tool raw SSE at
+  `https://testapi.adlabus.dev/v1/responses`, then launch local current-source
+  Qwen27 MXFP8 as the same served model name and use the existing real gateway
+  capture path plus parity classifier.
+- no-claims: this is not Qwen-coder-next proof, not tool-result continuation
+  tunnel proof unless the tunnel continuation is explicitly captured, and not
+  release readiness. It is a Qwen27 MXFP8 same-model raw SSE tunnel parity row.
+
+## CODEX
+- now: continuing the persistent production-readiness objective after commit
+  `29bfea184` proved Qwen27 current-source panel gateway Responses
+  continuation parity. Next selected blocker is the adjacent unproven
+  Qwen/Qwen-coder raw SSE/API surface: Qwen27 tunnel if available, otherwise a
+  live Qwen-coder-next same-family required-tool + continuation proof.
+- constraints: no release/sign/notarize/PyPI/updater/download/site action; no
+  N2 JANG_1L; no subagents or recursive agent behavior; no broad test-suite
+  churn; no synthetic args, parser repair, reasoning-disable workaround, or raw
+  XML stripping to hide failures. Stop any server started here before final.
+- planned movement: locate current available Qwen-coder/Qwen3.6 artifacts and
+  tunnel/gateway capture surfaces, choose one unproven highest-value live row,
+  run direct/gateway/tunnel/API raw SSE proof with reasoning/tool deltas and
+  cache telemetry, patch only if evidence shows real source drift.
+
+## CODEX
 - now: Qwen27 current-source panel gateway Responses required-tool and
   tool-result continuation parity is live-proven green after the direct server
   finalization fix. The live server was stopped cleanly after proof.

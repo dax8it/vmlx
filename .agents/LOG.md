@@ -1,3 +1,83 @@
+# 2026-06-10 - Qwen27 MXFP8 direct/gateway/tunnel raw SSE green
+
+- Action: captured public tunnel raw SSE for
+  `models/Qwen3.6-27B-MXFP8-CRACK-MTP`, then ran current-source direct server
+  plus real panel gateway through the existing raw-SSE capture/parity runner
+  using local `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP` served as the
+  same tunnel model name.
+- Commands:
+  - `curl https://testapi.adlabus.dev/v1/responses ... >
+    build/responses-sse-captures-20260610/tunnel-qwen27-mxfp8-mtp-tool-20260610.sse`
+  - `.venv/bin/python tests/cross_matrix/run_qwen35_responses_raw_sse_capture.py
+    --model /Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP --port 8895
+    --served-model-name models/Qwen3.6-27B-MXFP8-CRACK-MTP --out
+    build/current-responses-raw-sse-parity-qwen27-mxfp8-direct-gateway-tunnel-20260610.json
+    ... --require-reasoning-events`
+- Artifact:
+  - `build/current-responses-raw-sse-parity-qwen27-mxfp8-direct-gateway-tunnel-20260610.json`
+    is `status=pass`.
+- Raw captures:
+  - `build/responses-sse-captures-20260610/direct-qwen27-mxfp8-mtp-tool-20260610.sse`
+  - `build/responses-sse-captures-20260610/gateway-qwen27-mxfp8-mtp-tool-20260610.sse`
+  - `build/responses-sse-captures-20260610/tunnel-qwen27-mxfp8-mtp-tool-20260610.sse`
+- Proven:
+  - direct, gateway, and public tunnel all report the same model
+    `models/Qwen3.6-27B-MXFP8-CRACK-MTP`;
+  - all three preserve authoritative `record_fact` args
+    `{"value": "blue-cat"}`;
+  - all three have required reasoning events, parse errors `0`, complete
+    reasoning lifecycle, function-call argument delta/done, valid output
+    indices, and final response consistency;
+  - direct/gateway output indices are
+    `message=[0]`, `reasoning=[1]`, `function_call=[2]`; tunnel indices are
+    `message=[0]`, `function_call=[1]`;
+  - local runtime health proved Qwen27 MXFP8 native MTP active at effective
+    depth 3, hybrid SSM cache, attention-only TurboQuant KV, paged cache, block
+    L2, and SSM companion/async rederive. Direct wrote 222 block-L2 tokens;
+    gateway hit `paged+ssm` reuse for 222 tokens.
+- Matrix update:
+  - Added a Qwen27 MXFP8 Responses Raw SSE section to
+    `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md`.
+- Not proven:
+  - Qwen-coder-next, Qwen27 tunnel tool-result continuation, installed-app UI,
+    media/VL/audio/video rows, all parser families, or release readiness.
+- No-claims:
+  - no release/sign/notarize/PyPI/updater/download/site action; no N2 JANG_1L;
+    no synthetic args; no parser repair; no reasoning-disable workaround.
+
+# 2026-06-10 - Qwen27 MXFP8 direct/gateway/tunnel row selected
+
+- Artifact search: no local Qwen-coder-next artifact was found under
+  `/Users/eric/models`; available Qwen3.6 artifacts include local
+  `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP`.
+- Public tunnel context: existing tunnel availability proof advertises
+  `models/Qwen3.6-27B-MXFP8-CRACK-MTP`.
+- Selected row: same-model Qwen27 MXFP8 MTP direct current source, panel
+  gateway, and public tunnel raw Responses SSE with reasoning enabled and
+  required `record_fact` args.
+- No-claims: this will not prove Qwen-coder-next, all parser families,
+  installed app, release readiness, or tunnel tool-result continuation unless
+  those are separately captured.
+
+# 2026-06-10 - Qwen-coder/Qwen tunnel/API continuation lane selected
+
+- Request: continue the persistent objective by reducing real unproven
+  runtime/API/tool-parser blockers instead of drifting into broad test-suite
+  work.
+- Current state: commit `29bfea184` is pushed to `origin/main` and
+  `origin/codex/pr-intake-manifest`; Qwen27 direct and panel gateway
+  required-tool plus tool-result continuation are green from current-source raw
+  SSE artifacts.
+- Selected next blocker: adjacent Qwen/Qwen-coder raw SSE/API surface that is
+  still unproven: Qwen27 tunnel if available, otherwise Qwen-coder-next
+  same-family direct/gateway required-tool plus continuation proof.
+- Constraints: no release/sign/notarize/PyPI/updater/download/site action, no
+  N2 JANG_1L, no subagents, no broad test-suite churn, no synthetic arguments,
+  no parser repair to hide missing args, no reasoning-disable workaround, and
+  no stripping raw XML after parser failure.
+- Next action: locate current model artifacts and existing capture route
+  surfaces, then run one real live proof on the highest-value unproven row.
+
 # 2026-06-10 - Qwen27 gateway/API continuation parity proven
 
 - Request: prove the adjacent local gateway/current-source Responses parity for

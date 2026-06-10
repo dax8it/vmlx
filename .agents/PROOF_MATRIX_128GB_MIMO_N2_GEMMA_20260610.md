@@ -216,6 +216,47 @@ Boundary:
   UI, tool-result continuation for every profile, Gemma/MiMo/N2, or release
   readiness row.
 
+### Qwen27 MXFP8 Responses Raw SSE
+
+Artifact:
+
+- `build/current-responses-raw-sse-parity-qwen27-mxfp8-direct-gateway-tunnel-20260610.json`
+
+Raw captures:
+
+- `build/responses-sse-captures-20260610/direct-qwen27-mxfp8-mtp-tool-20260610.sse`
+- `build/responses-sse-captures-20260610/gateway-qwen27-mxfp8-mtp-tool-20260610.sse`
+- `build/responses-sse-captures-20260610/tunnel-qwen27-mxfp8-mtp-tool-20260610.sse`
+
+Proven:
+
+- Same served model across current-source direct server, real panel gateway, and
+  public tunnel: `models/Qwen3.6-27B-MXFP8-CRACK-MTP`.
+- All three surfaces preserve required `record_fact` arguments
+  `{"value": "blue-cat"}` with reasoning enabled and no reasoning-disable
+  workaround.
+- All three surfaces parse cleanly, emit valid function-call argument
+  delta/done events, match the expected function/model/arguments, and keep final
+  response consistency.
+- Direct/gateway output indices are valid with
+  `message=[0]`, `reasoning=[1]`, `function_call=[2]`; tunnel output indices
+  are valid with `message=[0]`, `function_call=[1]`.
+- Runtime health in the direct capture proves local
+  `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP` loaded with native MTP active
+  at effective depth 3, `hybrid_ssm_v1` cache, `attention_kv`,
+  `ssm_companion_state`, `async_rederive`, attention-only TurboQuant KV via
+  `turboquant_kv_v1`, paged cache, and block-disk L2.
+- Gateway log preserved request kwargs: stream, max output tokens, temperature,
+  top_p, top_k, `enable_thinking=true`, `tool_choice=required`, one tool, and
+  first tool `record_fact`.
+
+Boundary:
+
+- This clears Qwen27 MXFP8 same-model direct/gateway/public-tunnel raw
+  Responses SSE for this required-tool request. It does not prove
+  Qwen-coder-next, Qwen27 tunnel tool-result continuation, installed-app UI,
+  media/VL/audio/video, all parser families, or release readiness.
+
 ### Qwen35 Tool-Result Continuation And Hybrid Cache
 
 Artifact:
