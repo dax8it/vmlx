@@ -667,6 +667,42 @@ panel/scripts/verify-release-dmgs.sh
 - `panel/scripts/build-release-dmgs.sh` first runs `tests/cross_matrix/run_release_regression_manifest.py --require-prepackage-ready`; if that ledger fails, the script must stop before DMG build. Do not bypass this stop except under an explicit checkpoint-release override that records the open rows in the release notes.
 - `panel/scripts/notarize-release-dmgs.sh` submits the final signed Sequoia and Tahoe DMG containers, staples both, regenerates blockmaps, runs `spctl`, and prints final SHA-256 values. `panel/scripts/verify-release-dmgs.sh` is the post-staple verification pass.
 
+## 2026-06-10 checkpoint DMG result
+
+- Checkpoint DMGs were built under explicit override because the release
+  regression manifest remains red:
+  `build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json`
+  has `status=fail`, `prepackage_ready=false`, and `release_ready=false`.
+- Command used:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json panel/scripts/build-release-dmgs.sh all`.
+- Signing/notary path used the documented keychain/profile:
+  `~/Library/Keychains/vmlx-build.keychain-db`, Developer ID
+  `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, profile
+  `vmlx-notary`.
+- Notary command passed:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`.
+- Verification command passed: `panel/scripts/verify-release-dmgs.sh`.
+- Local artifacts are signed, notarized, stapled, and Gatekeeper accepted:
+  - `panel/release/vMLX-1.5.56-sequoia-arm64.dmg`,
+    `sha256=42c053cd2422e72ef74753cbc240a68a319d6c10ff60c105d5ed4c4c34f34a9c`,
+    notary id `d29a3974-4674-4812-8fa2-5a7e0da69269`.
+  - `panel/release/vMLX-1.5.56-tahoe-arm64.dmg`,
+    `sha256=b35e6cb55ca0f7e50a9a4a8733f111ea3df070ccf32caa87510c8027f16fb2f2`,
+    notary id `27ff0109-e023-469d-a634-5c410f37ac3c`.
+- Do not mark production release ready from this result. It is a checkpoint
+  DMG for user testing while the open blocker rows remain explicit.
+- Do not claim audio support from this checkpoint. Gemma audio and N2 audio are
+  currently honestly guarded as unsupported, and MiMo media remains text-only
+  guarded for the tested bundles.
+- Do not claim N2 JANG_1L release support. JANG_1L is loadable and can complete
+  one bounded request after deferred startup eval, but visible output and
+  second-turn/cache/tool/Responses/L2 behavior remain red under working-set
+  pressure. N2 JANGTQ2 is the N2 checkpoint row.
+- Do not claim MiMo exactness/media release support. MiMo JANGTQ_2 tool/cache
+  transport is green, but exact literal/JSON output and media remain red.
+- No GitHub release, tag, latest manifest upload, public asset upload, or PyPI
+  publish was performed in this lane.
+
 ## Other-agent integration requirements
 
 - Before release, include all pushed source fixes from the other agent and verify they are present in the active worktree, `origin/main`, bundled Python, and installed app.

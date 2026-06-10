@@ -1324,3 +1324,21 @@
 - Runtime/cache evidence: active memory `76491.8 MB`, peak `77127.2 MB`, TurboQuant codebook routed experts (`profile=JANGTQ_2`), prestacked routed layout, native `mixed_swa_kv_v1` with `cache_subtype=mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=39`, `l2_block_tokens_on_disk=132`, `l2_tokens_on_disk=132`, and block-disk writes `3`.
 - Red evidence: image turn returned HTTP `400`: `/v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.` The server log records the reason: MiMo V2 preserved media weights override forced MLLM because bundle metadata marks vision/audio as `unwired weights_preserved_text_runtime`.
 - Boundary: this classifies MiMo JANGTQ_2 dev-app image/VL as red. It does not invalidate the MiMo JANGTQ_2 dev-app Responses/tool/cache green row and does not clear MiMo media, exactness, package/sign/notarize/tag/upload, or full `release_ready`.
+
+# 2026-06-10 - Checkpoint DMGs built, signed, notarized, stapled, verified
+
+- Built checkpoint-scope vMLX `1.5.56` Sequoia and Tahoe DMGs from the active Python/Electron worktree with the documented override path, not the production release gate:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json panel/scripts/build-release-dmgs.sh all`.
+- Release manifest produced during the build remains red: `build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json` has `status=fail`, `prepackage_ready=false`, and `release_ready=false`. This is a signed checkpoint artifact for user testing, not a production-clear release.
+- Keychain/signing path followed `/Users/eric/wiki/infra/apple-notarization.md`: `~/Library/Keychains/vmlx-build.keychain-db`, Developer ID `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`, and notary profile `vmlx-notary`.
+- Build proof: both bundled apps passed critical import/parity checks before DMG creation, including local `vmlx_engine 1.5.56`, bundled local `jang 2.5.30`, Gemma4 unified runtime, MiMo registration, N2/Qwen VLM/runtime imports, JANG/JANGTQ loaders, TurboQuant kernels, audio/VLM dependencies, and source/bundled critical-file parity.
+- Notarization command passed:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`.
+- Verification command passed:
+  `panel/scripts/verify-release-dmgs.sh`.
+- Final artifacts:
+  `panel/release/vMLX-1.5.56-sequoia-arm64.dmg` (`sha256=42c053cd2422e72ef74753cbc240a68a319d6c10ff60c105d5ed4c4c34f34a9c`) and
+  `panel/release/vMLX-1.5.56-tahoe-arm64.dmg` (`sha256=b35e6cb55ca0f7e50a9a4a8733f111ea3df070ccf32caa87510c8027f16fb2f2`).
+- Apple notary IDs: Sequoia `d29a3974-4674-4812-8fa2-5a7e0da69269`; Tahoe `27ff0109-e023-469d-a634-5c410f37ac3c`.
+- Verified status for both DMGs: `hdiutil verify` valid, `codesign --verify` valid, Developer ID authority `ShieldStack LLC (55KGF2S5AY)`, notarization ticket stapled, `xcrun stapler validate` worked, and Gatekeeper `spctl` accepted with `source=Notarized Developer ID`.
+- Boundary: no GitHub release, tag, latest manifest upload, public asset upload, or PyPI publish was performed in this lane. Checkpoint claims must stay limited to currently green rows: N2 JANGTQ2, Gemma 12B MXFP4/JANG4M text/tools/cache plus proven image/video rows where recorded, Gemma 26B/31B JANG4M dev image/video rows, and MiMo JANGTQ_2 tool/cache transport. N2 JANG_1L, MiMo exactness/media, DSV4, public tunnel SSE parity, audio support, and full `release_ready` remain open.

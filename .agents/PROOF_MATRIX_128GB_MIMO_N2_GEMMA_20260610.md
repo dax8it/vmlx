@@ -1288,3 +1288,36 @@ Next implementation target:
   aliases must stay mapped to Gemma4 parsers and rotating mixed-SWA cache.
 - Keep signed DMG release notes honest: say which profiles are checkpoint
   supported and which are experimental/red.
+
+## Checkpoint DMG Release Proof - 2026-06-10
+
+- Built local checkpoint DMGs for vMLX `1.5.56` from this worktree with an
+  explicit override because the manifest is still red:
+  `build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json`
+  reports `status=fail`, `prepackage_ready=false`, and `release_ready=false`.
+- Build command:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json panel/scripts/build-release-dmgs.sh all`.
+- Notary command:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`.
+- Verify command: `panel/scripts/verify-release-dmgs.sh`.
+- Both bundled app builds passed critical import/parity checks before DMG
+  creation: local `vmlx_engine 1.5.56`, local `jang 2.5.30`, Gemma4 unified
+  runtime, MiMo/N2 registration, JANG/JANGTQ loaders, TurboQuant kernels,
+  audio/VLM imports, and source/bundled critical-file parity.
+- Final Sequoia artifact:
+  `panel/release/vMLX-1.5.56-sequoia-arm64.dmg`,
+  `sha256=42c053cd2422e72ef74753cbc240a68a319d6c10ff60c105d5ed4c4c34f34a9c`,
+  Apple notary id `d29a3974-4674-4812-8fa2-5a7e0da69269`.
+- Final Tahoe artifact:
+  `panel/release/vMLX-1.5.56-tahoe-arm64.dmg`,
+  `sha256=b35e6cb55ca0f7e50a9a4a8733f111ea3df070ccf32caa87510c8027f16fb2f2`,
+  Apple notary id `27ff0109-e023-469d-a634-5c410f37ac3c`.
+- Verification status for both artifacts: valid disk image checksum, valid
+  Developer ID signature from `ShieldStack LLC (55KGF2S5AY)`, stapled
+  notarization ticket, stapler validation passed, and Gatekeeper accepted with
+  `source=Notarized Developer ID`.
+- Release-note boundary for other agent: this checkpoint can be described as a
+  signed/notarized user-testing DMG with current proven checkpoint rows, not a
+  production-ready release. Keep the open rows explicit: N2 JANG_1L, MiMo
+  exactness/media, DSV4, public tunnel SSE parity, audio support, and full
+  `release_ready` are still open.

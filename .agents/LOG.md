@@ -8618,3 +8618,34 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   exactness, decode speed, media wiring, JANG_2L live media/L2, Responses/tool
   semantic drift, and source-vs-quant/no-source classification. No release,
   package, sign, notarize, tag, upload, or PyPI action was run.
+
+# 2026-06-10 - Checkpoint DMG build/sign/notarize/verify complete
+
+- Followed the documented Apple release mechanics from
+  `/Users/eric/wiki/infra/apple-notarization.md`; unlocked and prepared
+  `~/Library/Keychains/vmlx-build.keychain-db` and used Developer ID
+  `Developer ID Application: ShieldStack LLC (55KGF2S5AY)`.
+- Built both checkpoint DMGs with explicit override:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-after-n2-consumed-20260610.json panel/scripts/build-release-dmgs.sh all`.
+- The generated manifest stayed red (`status=fail`,
+  `prepackage_ready=false`, `release_ready=false`), so this is recorded as a
+  checkpoint build for user testing, not a production-clear release.
+- Build-time bundled runtime verification passed for Sequoia and Tahoe:
+  `vmlx_engine 1.5.56`, local `jang 2.5.30`, Gemma4 unified runtime, MiMo/N2
+  registers, JANG/JANGTQ loaders, TurboQuant kernels, audio/VLM imports, and
+  source/bundled critical-file parity.
+- Notarized/stapled with:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`.
+- Post-staple verifier passed with `panel/scripts/verify-release-dmgs.sh`.
+- Final local artifacts:
+  - `panel/release/vMLX-1.5.56-sequoia-arm64.dmg`
+    `sha256=42c053cd2422e72ef74753cbc240a68a319d6c10ff60c105d5ed4c4c34f34a9c`,
+    notary id `d29a3974-4674-4812-8fa2-5a7e0da69269`.
+  - `panel/release/vMLX-1.5.56-tahoe-arm64.dmg`
+    `sha256=b35e6cb55ca0f7e50a9a4a8733f111ea3df070ccf32caa87510c8027f16fb2f2`,
+    notary id `27ff0109-e023-469d-a634-5c410f37ac3c`.
+- Both DMGs verified as valid disk images, valid Developer ID signatures,
+  stapled tickets, successful stapler validation, and Gatekeeper
+  `source=Notarized Developer ID`.
+- No GitHub release/tag/latest manifest upload/public asset upload/PyPI publish
+  was done from this lane.
