@@ -10241,3 +10241,30 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary: stricter second required-tool loop remains model/tool-quality red
   because `real_ui_tool_probe_2.txt` is not created. This is fail-closed proof,
   not release clearance.
+
+# 2026-06-10 continuation - selecting next concrete release blocker
+
+- Continuing active objective after commit `051116e8`.
+- Constraints rechecked: active worktree only; N2 JANG_1L off-limits; no
+  release/sign/notarize/PyPI/download; no subagents; no fake parser/JSON/tool
+  repair; leave unrelated panel settings artifact and `node_modules/` alone.
+- Next movement: choose the next high-value live blocker from the release
+  tracker and reduce it with a source/runtime fix or honest proof boundary.
+
+# 2026-06-10 continuation - MiMo installed-app media parity blocker selected
+
+- Selected blocker: MiMo V2.5 JANGTQ_2 installed-app image/media routing.
+- Starting evidence: installed-app proof
+  `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json`
+  is red because media is forced text-only even though source/dev MiMo media
+  rows have proof. Inspect root cause before patching.
+- Constraints: no N2 JANG_1L, no release actions, no fake modality
+  advertisement, no parser/JSON semantic repair.
+
+## 2026-06-10 continuation - MiMo JANGTQ2 source media predicate checked
+
+Direct `.venv` probe for `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` returned source media detection green: `is_mllm_model` true with and without force, MiMo runtime module present, auto-wired predicate true, runtime modalities `text, vision, video, audio`. Next action is a focused live dev-app image proof to distinguish current source behavior from stale installed/bundled runtime parity.
+
+## 2026-06-10 continuation - MiMo JANGTQ2 dev-app image route refreshed
+
+Ran two focused dev-app image proofs for `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` with `VMLINUX_REAL_UI_IS_MLLM=1`, one default red fixture and one 128x128 solid-red data URL. Both fresh runs got past the old text-only rejection: health reports `model_type=mllm`, media diag reports `engine_is_mllm=true`, the loader auto-enabled MiMo media from preserved sidecars, bound `visual=364`, `audio_encoder=75`, `speech_embeddings=20`, and processed one image. Both remain release-red because the assistant answered `Blue.` for red images, so `vl_image` semantic proof is still failed. Updated release tracker with the exact boundary.

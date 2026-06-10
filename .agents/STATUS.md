@@ -2800,3 +2800,47 @@
   `real_ui_tool_probe_2.txt` was created. This is fail-closed/error-surface
   proof, not N2 long-tool-loop release clearance. Installed-app parity and
   release clearance remain open.
+
+# 2026-06-10 continuation - selecting next concrete release blocker
+
+- Request carried forward by active goal: keep moving toward production-quality
+  fixes/proofs for N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP, VL/
+  audio/video, cache reuse, TurboQuant, reasoning/tool parsers, API/gateway
+  deltas, and UI behavior; avoid broad suite churn and recursive/subagent
+  behavior.
+- Directive check: current worktree is
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; N2 JANG_1L remains
+  off-limits; no release/sign/notarize/PyPI/download action; no subagents; no
+  fake parser/JSON/tool-argument repair; do not stage unrelated
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  or `node_modules/`.
+- Next movement: inspect the current release tracker for the highest-value
+  remaining live runtime/model blocker and work one concrete fix/proof lane.
+
+# 2026-06-10 continuation - MiMo installed-app media parity blocker selected
+
+- Current lane: MiMo V2.5 JANGTQ_2 installed-app media routing/parity.
+- Evidence split: current source/dev MiMo JANGTQ_2 media/tools/cache rows have
+  live proof, while
+  `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json`
+  is `status=fail` and says installed-app image/media is not wired because
+  forced MLLM is overridden to text-only.
+- Constraint check: do not touch N2 JANG_1L; no release/sign/notarize/PyPI/
+  download action; no fake media capability claims; no metadata-only media
+  support; fix only if the root cause is source/package/UI/runtime parity.
+
+# 2026-06-10 continuation - MiMo JANGTQ2 media detection source split
+
+- Current lane: MiMo V2.5 JANGTQ_2 dev/installed app image/media parity.
+- Root-cause check: source `.venv` now reports `is_mllm_model(/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2)=True`; `server._mimo_v2_media_runtime_auto_enabled(...)` is true; runtime module exposes MiMo vision/audio classes; indexed bundle has `visual.*`, `audio_encoder.*`, and `speech_embeddings.*` tensors plus image/video/audio token IDs.
+- Interpretation: the earlier dev/installed app artifacts that logged `tier=mimo_v2_preserved_text_runtime result=False` are stale-runtime or parity failures unless a fresh live app run contradicts this source check.
+- Constraint: no fake media enablement was added; do not edit source until the fresh proof shows a current source defect.
+
+# 2026-06-10 continuation - MiMo JANGTQ2 dev-app image route refreshed
+
+- Fresh dev-app proof artifacts:
+  - `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-image-after-source-media-detect-20260610-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-dev-app-mimo-v25-jangtq2-red128-image-after-source-media-detect-20260610-proof.json`
+- Proven now: source/dev app with `--is-mllm` loads MiMo JANGTQ_2 as `model_type=mllm`, server media diag reports `engine_is_mllm=true` and `registry_is_mllm=true`, preserved media runtime auto-enables, `visual=364`, `audio_encoder=75`, and `speech_embeddings=20` tensors bind, one image is processed, image attachment persists in the UI DB, and text-turn block L2 writes are present.
+- Still not proven/fixed: red image semantic correctness. Both the default 1x1 red PNG and a generated 128x128 solid red PNG returned visible `Blue.` and therefore fail `vl_image` semantic proof. This is not a release-clear MiMo media row.
+- Boundary for other agent: do not keep chasing the stale `tier=mimo_v2_preserved_text_runtime result=False` diagnosis for current source; next MiMo media work should target visual semantic/artifact/runtime quality or installed-app bundled parity after source rows are worth packaging.
