@@ -778,6 +778,14 @@ Red / not proven:
   `previous_response_id` follow-up, but the two-turn loop failed with
   `CDP timeout: Runtime.evaluate` while the second turn was still active; no
   final tool probe file semantics were verified.
+- A current rerun removed the CDP-timeout ambiguity but remains red:
+  `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-rerun-20260610.json`
+  proves real Electron dev app `/v1/responses`, Responses delta streaming,
+  `previous_response_id` tool-result follow-up, two completed visible turns,
+  paged cache hits, and block L2, but release assertions still fail because no
+  `long_tool_loop` surface was recorded. Visible content drifted
+  `REAL_UI_LIVE_TOOL_ONE` to `REAL_UI_LAND_TOOL_ONE`, and tool/file semantics
+  did not satisfy the proof contract.
 - Tool/Responses fresh-process L2 semantics beyond the source cache-restoration
   probe. The source cache-restoration row is now green, but it did not clear
   tool-loop or Responses semantics.
@@ -798,9 +806,10 @@ Next implementation target:
   not the current blocker: post-fix app attempts have paged cache hits and
   block-disk L2 writes.
 - Continue JANG_2L into Responses/tool exactness. Fresh-process block-disk L2
-  restore itself is now source-green; media honesty is now classified for
-  image/VL: the current artifact is text-only at runtime despite preserved media
-  weights.
+  restore itself is now source-green, and Responses transport/cache/delta is
+  live, but the tool-loop semantic drift remains release-red. Media honesty is
+  now classified for image/VL: the current artifact is text-only at runtime
+  despite preserved media weights.
 
 Fresh-process L2 restore proof:
 

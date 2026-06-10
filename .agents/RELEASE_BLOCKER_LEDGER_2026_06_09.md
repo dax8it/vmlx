@@ -61,6 +61,12 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `build/current-mimo-v25-jang2l-restart-l2-restore-20260610-rerun/summary.json`;
   tool/JSON/loop, Responses semantics, media, UI parity, installed-app tool/media,
   and release proof remain open.
+- 2026-06-10 update: JANG_2L current dev-app Responses/tools rerun is still red
+  in `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-rerun-20260610.json`.
+  It proves Responses transport, deltas, `previous_response_id` tool follow-up,
+  paged cache, and block L2, but fails release assertions because no
+  `long_tool_loop` surface was recorded and visible/tool semantics drifted
+  `REAL_UI_LIVE_TOOL_ONE` to `REAL_UI_LAND_TOOL_ONE`.
 - 2026-06-10 update: MiMo JANG_2L installed-app text/cache is now green in
   `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json`.
   The local rebuilt `/Applications/vMLX.app` loaded the 105 GiB row, produced
