@@ -10880,3 +10880,64 @@ Boundary:
 - This is an honest unsupported-modality gate and bundled runtime parity fix.
 - It does not make Gemma4 or N2 audio supported.
 - It does not sign, notarize, publish, release, upload, or touch N2 JANG_1L.
+
+## 2026-06-10 08:52 PDT - Responses/tool/reasoning streaming lane
+
+Request/action: continue the persistent objective after `d27c2d3c7`, with the
+next lane focused on API usability for coding agents and harnesses.
+
+Scope:
+
+- Qwen/Qwen-coder empty tool-call args report must be traced from current
+  source, not assumed.
+- Responses streaming must preserve content deltas, reasoning summaries,
+  function-call argument events, final object consistency, output-index
+  ordering, tool-result continuation, and auto/required/no-tool modes.
+- Do not synthesize missing args, hide malformed calls as success, disable
+  reasoning, or patch prompt/string semantics to fake a pass.
+
+Next action: inspect current server/tool parser paths and focused existing
+tests/proofs, then make a scoped source change only if the current route still
+fails.
+
+## 2026-06-10 08:58 PDT - Responses auto-tool invalid XML final leak
+
+Request/action: trace the reported Qwen/Qwen-coder style preamble plus empty
+XML tool call without assuming the provided root cause was fully current.
+
+Reproduction:
+
+- Simulated a Responses stream with:
+  `Quick preamble. Checking tmp...\n<tool_call><function=exec_command></function></tool_call>`
+  and a tool schema requiring `cmd`.
+- Current parser/filtering dropped the invalid tool call; it did not emit an
+  executable `{}` call.
+- Before the source patch, auto-tool mode still finalized
+  `response.output_text.done` and `response.completed.output_text` with the raw
+  XML appended, because the no-tool finalizer reused `accumulated_content`.
+
+Fix:
+
+- In the Responses no-tool finalization path, when the full stream contains
+  tool-call markers but no tool call survives parsing, strip native tool markup
+  from final visible text.
+- This preserves the streamed preamble in auto mode, fails closed for the bad
+  tool call, and avoids raw XML/history leakage.
+
+Verification:
+
+- Focused pytest passed `6/6`:
+  `streaming_responses_auto_empty_xml_tool_call_strips_final_markup`,
+  required-tool empty XML rejection, preamble empty XML no-empty-arguments,
+  nonstream parser cleanup, buffered argument survival, and output-index guard.
+- Manual repro after fix produced preamble-only final text, no function-call
+  item, no function-call argument events, no `"arguments": "{}"`, and no raw
+  XML.
+- Proof artifact:
+  `build/current-responses-auto-empty-tool-markup-leak-fix-20260610.json`.
+
+Boundary:
+
+- No fake argument synthesis, no hidden semantic repair, no reasoning disable.
+- Same-model live direct/gateway/tunnel raw SSE remains a separate proof lane.
+- No release/sign/notarize/package/PyPI/updater/download work and no N2 JANG_1L.

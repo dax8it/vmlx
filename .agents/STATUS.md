@@ -3379,3 +3379,48 @@
 - Boundary: this does not claim Gemma4 audio works, does not claim N2 audio
   works, does not touch N2 JANG_1L, and does not do package/sign/notarize/PyPI/
   updater/download/release work.
+
+# 2026-06-10 08:52 PDT - Responses/tool streaming lane active
+
+- Current movement: continue from pushed `d27c2d3c7`. Next blocker is the
+  Responses API/tool/reasoning streaming surface for agent harnesses:
+  interleaved reasoning/content deltas, auto/required/no-tool behavior,
+  tool-call args preservation, output index correctness, and no raw XML/tool
+  markup leakage.
+- Constraints rechecked: no release/sign/notarize/PyPI/updater/download action;
+  no N2 JANG_1L; no subagents or recursive wrappers; no fake parser repairs;
+  no synthesizing missing tool args; no broad test-suite churn.
+- Next action: inspect current source and existing proof rows for the Qwen/Qwen
+  coder empty-args report and Responses streaming output-index behavior. If the
+  current source still emits malformed final/stream events, patch that path
+  directly and prove with a focused route/parser check.
+
+# 2026-06-10 08:58 PDT - Responses auto-tool invalid XML markup leak fixed
+
+- Selected blocker: Qwen/Qwen-coder style streamed preamble followed by an
+  empty XML tool call such as
+  `<tool_call><function=exec_command></function></tool_call>`.
+- Root cause: current parser/filtering already fails closed for the executable
+  empty-args path when the schema requires `cmd`, so it does not emit
+  `arguments: {}`. The remaining current-source bug was Responses streaming
+  auto-tool finalization: after the invalid buffered call was dropped, the
+  no-tool path used `accumulated_content` as final visible text and leaked raw
+  `<tool_call>` / `<function=...>` markup into `response.output_text.done` and
+  `response.completed.output_text`.
+- Source fix: `stream_responses_api` now strips native tool markup from final
+  visible text when no parsed tool call survives but the full stream contains
+  tool-call markers. It does not synthesize arguments, repair semantics, disable
+  reasoning, or convert malformed XML into a tool call.
+- Regression: added
+  `test_streaming_responses_auto_empty_xml_tool_call_strips_final_markup` beside
+  the existing required-tool empty XML and output-index/argument-delta tests.
+- Proof artifact:
+  `build/current-responses-auto-empty-tool-markup-leak-fix-20260610.json`.
+  Manual repro after fix emits the preamble delta, final output text
+  `Quick preamble. Checking tmp...`, no function-call item, no
+  `response.function_call_arguments.*`, no `"arguments": "{}"`, and no raw XML.
+- Verification: focused `tests/test_server.py` Responses/tool slice passed
+  `6/6`; manual repro passed. `py_compile` and `git diff --check` are next.
+- Boundary: this is source/API fail-closed behavior only. Same-model live
+  direct/gateway/tunnel raw SSE remains separate; no release/sign/notarize/
+  package/PyPI/updater/download action; no N2 JANG_1L.
