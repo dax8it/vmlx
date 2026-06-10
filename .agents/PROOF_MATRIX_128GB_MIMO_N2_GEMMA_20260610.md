@@ -380,6 +380,20 @@ Proven:
   `cache_hit_tokens=20`, `l2_block_tokens_on_disk=62`,
   `l2_tokens_on_disk=62`, block-disk `disk_writes=2`, and image-turn media
   prefix cache storage for `365` prompt tokens.
+- Current Electron dev-build video/VL proof is green for Gemma 31B QAT JANG4M
+  at explicit `max_prompt_tokens=12000`. The app persisted one `video_url`
+  attachment, server `MEDIA_DIAG` saw `video_url`, the server decoded the
+  base64 MP4, extracted `4` frames, routed those frames through the Gemma media
+  fallback, and the assistant answered `The provided image is a solid red
+  square.`; `videoSemanticVerified=true`.
+- Dev-build Gemma 31B video/VL runtime/cache evidence:
+  `build/current-real-ui-dev-app-gemma4-31b-jang4m-video-proof-20260610.json`
+  records active memory `25842.8 MB`, peak `26233.1 MB`,
+  `weight_format=jang_affine`, `profile=JANG_4M`, Metal NA active, native
+  `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`,
+  `cache_hit_tokens=20`, `l2_block_tokens_on_disk=62`,
+  `l2_tokens_on_disk=62`, block-disk `disk_writes=2`, and video-turn media
+  prefix cache storage for `355` prompt tokens.
 - Local rebuilt installed app proof is now green for Gemma 12B JANG4M
   Responses/tool/cache. `/Applications/vMLX.app` launched as
   `uiLaunchMode=installed-app`, loaded
@@ -428,7 +442,8 @@ Not proven:
 - Installed packaged app JANG4M video at the default 4k prompt cap.
 - Gemma 26B JANG4M audio, installed-app parity, public tunnel SSE, and default
   4k video behavior.
-- Gemma 31B video/audio, installed-app parity, and public tunnel SSE.
+- Gemma 31B audio, installed-app parity, public tunnel SSE, and default 4k
+  video behavior.
 - DMG package/sign/notarize/release readiness.
 - Local panel session manager starting this exact model from launch args; these
   app proofs used a remote session connected to the server started by the proof
