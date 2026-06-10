@@ -4928,3 +4928,19 @@ Other-agent action:
 - Rechecked source endpoint: `curl -fsS --max-time 5 http://erics-m5-max2.local:8126/health` still failed to connect, so source-vs-quant first-divergence cannot be completed from this lane right now.
 - Updated `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` so the MiMo section no longer treats stale pre-overlay dev-app image/video/audio `400` rows as current-source media proof. Current-source CLI/dev-app image routing is green after the overlay fix; video/audio semantic quality and installed-app media parity remain open.
 - Boundary: do not keep chasing parser/cache/sampling/vMLX-fastpath/native-gather for MiMo JANGTQ_2 exactness without contrary logits evidence. Next useful action is source/dequant first-divergent logits or a corrected/lifted-precision artifact profile such as `gate=3/up=2/down=3` or `gate=3/up=3/down=3`, then rerun exactness/media/API/UI proof rows.
+
+# 2026-06-10 14:40 PDT - Qwen raw SSE lane selected
+
+- MiMo JANGTQ_2 exactness is now classified as source/dequant/replacement-artifact work because the source endpoint is down and current vMLX-side parser/cache/fastpath/native-gather causes are excluded.
+- Next selected blocker: Qwen/Qwen3.6/Qwen-coder Responses raw SSE parity after the missing-required-args fail-closed source guard. This targets Codex/opencode usability: required/auto/no-tool modes, content/reasoning deltas, function-call args delta/done, final object consistency, output indices, tool-result continuation, kwargs, and cache telemetry.
+- Next movement: inspect the focused existing Qwen raw-SSE capture runner and current artifacts. If it can run the exact direct/gateway/tunnel row without broad harness churn, run it; otherwise identify the narrow source/gateway blocker to fix. No argument synthesis, no reasoning-disable workaround, no release action.
+
+# 2026-06-10 14:47 PDT - Qwen27 JANG4M continuation proof reconciled
+
+- Inspected current Qwen raw-SSE state. Qwen35 same-model direct/gateway/tunnel raw SSE is already green in `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-20260610.json`, and no local Qwen-coder-next artifact exists.
+- The older Qwen27 JANG_4M-MTP direct continuation row that exhausted output in reasoning-only content is superseded by current seed-fix captures:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse`
+  - `build/responses-sse-captures-20260610/gateway-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse`
+- Proven by the current SSE files: direct and gateway post-tool continuation now stream visible `output_text.delta`, complete with `status=completed`, and final text is `The fact "blue-cat" has been recorded.`. The required-tool seed-fix SSE still preserves `record_fact` `{"value":"blue-cat"}`.
+- Direct health artifact proves real `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP` loaded as MLLM with native MTP, `hybrid_ssm_v1` cache, attention KV TurboQuant/storage boundary, paged cache, block L2, and SSM companion disk.
+- Updated `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` with a separate Qwen27 JANG_4M-MTP direct/gateway continuation section. Boundary remains: no public-tunnel JANG_4M continuation proof, no Qwen-coder-next live proof, no installed-app/UI/media/all-family/release clearance.

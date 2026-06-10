@@ -474,6 +474,43 @@ Boundary:
   Qwen-coder-next, Qwen27 tunnel tool-result continuation, installed-app UI,
   media/VL/audio/video, all parser families, or release readiness.
 
+### Qwen27 JANG_4M-MTP Direct/Gateway Tool-Result Continuation
+
+Artifacts:
+
+- `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-visible-finalization-seed-fix-20260610.sse`
+- `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse`
+- `build/responses-sse-captures-20260610/gateway-qwen27-jang4m-mtp-required-tool-after-visible-finalization-seed-fix-20260610.sse`
+- `build/responses-sse-captures-20260610/gateway-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse`
+- `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-health-after-visible-finalization-seed-fix-20260610.json`
+- `build/responses-sse-captures-20260610/gateway-qwen27-jang4m-mtp-health-after-gateway-continuation-20260610.json`
+
+Proven:
+
+- Earlier direct Qwen27 JANG_4M-MTP continuation was red because the model
+  exhausted output budget in reasoning-only content after a tool result. Current
+  seed-fix captures supersede that row.
+- Direct required-tool SSE preserves `record_fact` arguments
+  `{"value":"blue-cat"}` with reasoning-enabled startup and completed final
+  object.
+- Direct post-tool continuation SSE now emits visible `output_text.delta`
+  chunks, completes with `status=completed`, and final `output_text` is
+  `The fact "blue-cat" has been recorded.`.
+- Gateway post-tool continuation SSE shows the same visible completed response
+  through the real panel gateway path.
+- Direct health proves real local
+  `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP` / `JANGQ/Qwen3.6-27B-JANG_4M-MTP`
+  loaded as MLLM, native MTP active, `hybrid_ssm_v1` cache, attention KV
+  TurboQuant/storage boundary active, paged cache, block-disk L2, and SSM
+  companion disk stores.
+
+Boundary:
+
+- This clears the current direct/gateway Qwen27 JANG_4M-MTP tool-result
+  continuation red row from the older reasoning-only artifact. It does not prove
+  public-tunnel JANG_4M-MTP continuation, Qwen-coder-next, installed-app UI,
+  media/VL/audio/video, every parser family, or release readiness.
+
 ### Qwen35 Tool-Result Continuation And Hybrid Cache
 
 Artifact:

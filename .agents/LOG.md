@@ -12691,3 +12691,18 @@ Next action:
   - `build/current-mimo-v25-jangtq2-exactness-root-cause-boundary-20260610.json`
 - Corrected stale media wording: pre-overlay dev-app media `400` rows are no longer current-source image/video proof. Current-source CLI/dev-app image routing is green after the overlay fix, while video/audio semantic quality and installed-app media parity remain open.
 - Boundary: MiMo JANGTQ_2 exactness remains an artifact/logit/codebook/decode-quality or replacement-artifact blocker. Other agent should bring up source/dequant first-divergence or rebuild/lift the artifact profile; do not duplicate parser/cache/fastpath/native-gather checks without new contradictory evidence.
+
+# 2026-06-10 14:40 PDT - Qwen raw SSE lane selected
+
+- Current lane changed from MiMo classification to Qwen/Qwen3.6/Qwen-coder Responses raw SSE parity after the missing-required-args source guard.
+- Target: usable Codex/opencode Responses streams with reasoning enabled, required/auto/no-tool modes, content and reasoning deltas, function-call argument delta/done events, final object consistency, valid output indices, tool-result continuation, kwargs passthrough, and cache telemetry.
+- Next action: inspect the existing focused Qwen raw-SSE runner and current artifacts, then run only the exact useful row if available. No broad harness building, no fake argument synthesis, no reasoning-disable workaround, and no release/signing action.
+
+# 2026-06-10 14:47 PDT - Qwen27 JANG4M continuation proof reconciled
+
+- Inspected current Qwen35/Qwen27 raw SSE artifacts instead of relaunching. Qwen35 direct/gateway/tunnel after the missing-required-args guard is already green; Qwen-coder-next is still not local.
+- Reconciled Qwen27 JANG_4M-MTP: the old reasoning-only continuation red artifact is superseded by seed-fix direct and gateway SSE captures.
+- Direct and gateway post-tool continuation both stream visible text deltas and complete with final `output_text`: `The fact "blue-cat" has been recorded.`.
+- Direct health proves real JANG_4M-MTP load with MTP, hybrid SSM cache, attention KV TurboQuant/storage boundary, paged cache, block L2, and SSM companion disk.
+- Updated `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` with a Qwen27 JANG_4M-MTP direct/gateway continuation section.
+- Boundary: no public tunnel continuation for JANG_4M-MTP, no Qwen-coder-next live proof, no installed-app/UI/media/all-family/release clearance.
