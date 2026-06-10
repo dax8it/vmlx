@@ -9386,3 +9386,46 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Unrelated local state left alone:
   `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
   remains modified from other work and `node_modules/` remains untracked.
+
+# 2026-06-10 - MiMo JANGTQ2 live media/tools/cache boundary after head-dim fix
+
+- User request carried forward: focus on MiMo/Gemma/Qwen parser-runtime proofs,
+  write every movement down, do not use Python-spawned subagents, and do not
+  touch N2 JANG_1L.
+- Directive check before launch: MiMo lane allowed; release/sign/notarize/PyPI
+  not allowed in this lane; N2 JANG_1L off-limits.
+- Live command:
+  `VMLINUX_DISABLE_AUTO_BROWSER=1 VMLX_L2_CACHE_DIR=build/mimo-jangtq2-media-live-l2-after-head-dim-20260610 .venv/bin/python -m vmlx_engine.server --model /Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2 --port 8877 --host 127.0.0.1 --mllm --served-model-name mimo-v25-jangtq2-media-after-head-dim --max-tokens 64 --default-temperature 0 --default-top-p 1`.
+- Startup facts: JANGTQ VLM fast path loaded, media runtime auto-enabled,
+  preserved media tensor bind counts were `visual=364`, `audio_encoder=75`,
+  `speech_embeddings=20`, total assigned `459`, runtime quantized `101`
+  modules, native cache schema was MiMo `mixed_swa_kv_v1`, and generic
+  TurboQuant KV was skipped for the MiMo mixed-SWA contract.
+- Raw output directory:
+  `build/mimo-v25-after-head-dim-live-requests-20260610/`.
+- Summary artifact:
+  `build/current-mimo-v25-jangtq2-live-media-tools-cache-after-head-dim-20260610.json`.
+- Main results:
+  - text exact: `MIMO-OK` -> `MIMOOK`, fail;
+  - image icon: returned `vMLX`, pass for simple image text;
+  - red video: returned `White.`, fail for semantic color;
+  - audio default: heard `"I'm fine"` but leaked planning/prose, partial/red;
+  - audio no-think: denied receiving audio despite routed payload, fail;
+  - Responses text no-think: `MIMO-OK` -> `MIMOOK`, fail with `cached_tokens=27`;
+  - Chat required tool: emitted valid tool structure but args were
+    `{"value": "blue cat"}`, exactness fail;
+  - Responses required tool stream: valid argument delta/done and output
+    indices `0/1`, but authoritative args were `{"value": "blue cat"}`;
+  - cache stats: `cache_hit_requests=2`, `cache_hit_tokens=280`,
+    `cache_hit_tokens_by_detail.paged=280`, last Responses request
+    `cached_tokens=253`, `cache_detail=paged`, no disk L2 tokens.
+- Boundary: this proof is useful but `status=open`. It proves current source
+  live load, media routing/binding, simple image recognition, Responses tool
+  streaming shape, and same-process MiMo paged native cache. It does not prove
+  exact literals, video semantics, audio exactness/hygiene, L2 restore, UI,
+  installed app, signing, notarization, or release.
+- AGENTS.md update scope: recorded no-subagent constraint and the
+  Qwen3.6/Qwen-coder empty-args Responses/raw-SSE carry-forward so future
+  agents keep required/auto/no-tool, content/reasoning deltas, argument
+  delta/done, final object consistency, output indices, gateway/tunnel, and
+  cache reuse in scope without inventing missing tool args.

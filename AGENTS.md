@@ -43,6 +43,22 @@ direct repo edits, direct shell commands, direct live proofs, and explicit
 handoff notes only. Python remains acceptable for ordinary local verification
 or artifact inspection when it is not spawning or managing subagents.
 
+Current parser/API carry-forward from Eric: harshly prioritize auto tool usage,
+content deltas, reasoning deltas, interleaved reasoning/tool streaming, request
+kwargs, Chat/Responses API behavior, gateway passthrough, raw SSE ordering,
+parser selection, and final-object consistency across all model reasoning and
+tool parser families. The Qwen3.6 / Qwen-coder empty-args report is active for
+both 27B and 35B style XML tool-call dialects. Do not assume the report's root
+cause is correct without same-model raw output, but do treat the failure shape
+as release-critical for opencode/Codex harnesses. Missing required tool
+arguments must fail closed; do not synthesize `cmd`, infer arguments from a
+visible preamble, disable reasoning to avoid the bug, or strip raw XML after
+the fact as a fake fix. Required proof is same-model direct server, local
+gateway, and tunnel raw SSE with reasoning enabled, valid content/reasoning
+deltas, argument delta/done events, final object consistency, valid
+`output_index` ordering, required/auto/no-tool modes, tool-result continuation,
+and cache reuse telemetry.
+
 If a turn is interrupted, resume by reading the current tracker/status and
 continuing the next blocker; do not restart from old memory, old `/Users/eric/vmlx`
 notes, old Swift notes, ADLab notes, transport notes, or model upload logs.

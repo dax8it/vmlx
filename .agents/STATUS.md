@@ -1624,3 +1624,48 @@
 - Unrelated local state left alone:
   `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
   remains modified from other work and `node_modules/` remains untracked.
+
+# 2026-06-10 - MiMo JANGTQ2 live media/tools/cache proof after head-dim fix
+
+- Directive check: allowed lane is MiMo V2.5 JANG/JANGTQ exactness/media/API/cache
+  proof. N2 JANG_1L remains Eric-owned and was not touched.
+- Live server: current source served
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` on port `8877`
+  with `--mllm`, `--max-tokens 64`, greedy defaults, and
+  `VMLINUX_L2_CACHE_DIR=build/mimo-jangtq2-media-live-l2-after-head-dim-20260610`.
+  The server was stopped after the proof; no `8877` listener remains.
+- Proof artifact:
+  `build/current-mimo-v25-jangtq2-live-media-tools-cache-after-head-dim-20260610.json`.
+  Raw responses are under
+  `build/mimo-v25-after-head-dim-live-requests-20260610/`.
+- Proven:
+  - current source loads the MiMo JANGTQ_2 bundle after the head-dim fix;
+  - preserved visual/audio/speech weights bind into runtime;
+  - app icon image returns visible text `vMLX`;
+  - video and audio payloads reach the media runtime path;
+  - Chat required-tool emits valid OpenAI tool-call structure;
+  - Responses required-tool stream emits function-call argument delta/done
+    events and valid output indices (`message=0`, `function_call=1`);
+  - same-process paged native MiMo mixed-SWA cache reuse is active
+    (`cache_hit_tokens=280`, last Responses request `cached_tokens=253`);
+  - generic TurboQuant KV is not substituted for MiMo asymmetric SWA.
+- Still red:
+  - literal exactness: `MIMO-OK` became `MIMOOK` and `blue-cat` became `blue cat`;
+  - red video semantic answer returned `White.`;
+  - audio exactness/hygiene is not green: default output leaked planning prose
+    and explicit no-thinking output denied receiving audio despite routed
+    input_audio logs;
+  - block-disk L2 write/fresh-process restore were not enabled or proven in
+    this launch;
+  - auto-tool, no-tool, tool-result continuation, cancellation cleanup,
+    largest-context tail, UI, installed-app, package, signing, notarization,
+    and release clearance remain open.
+- Other-agent action: do not mark MiMo exactness or media green from this proof.
+  Next useful MiMo work is artifact/logit/quant-contract or runtime decode
+  diagnosis, plus a separate explicit L2 restart proof if needed. Do not hide
+  failures through parser semantic repair, tool-argument rewriting, prompt-only
+  folding, hidden sampling overrides, or fake release wording.
+- Carry-forward instruction written into `AGENTS.md`: Qwen3.6/Qwen-coder
+  empty-args and Responses deltas remain active across 27B/35B style XML
+  tool-call dialects; prove same-model direct/gateway/tunnel raw SSE with
+  reasoning on and do not synthesize missing tool parameters.
