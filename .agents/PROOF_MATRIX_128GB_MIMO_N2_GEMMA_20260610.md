@@ -329,6 +329,7 @@ Artifacts:
 
 - `build/current-mimo-v25-jangtq2-live-cb-cache-text-20260610.json`
 - `build/current-mimo-v25-jangtq2-exactness-variant-probe-live-20260610/result.json`
+- `build/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`
 
 Proven:
 
@@ -341,6 +342,10 @@ Proven:
   block-disk L2 were active.
 - Live cache proof observed paged cache hit and L2 block writes.
 - Exact HTTP requests completed without hidden think tags.
+- Installed-app exact-output probe loaded the real 79 GiB JANGTQ_2 bundle in
+  `/Applications/vMLX.app`, streamed Chat Completions turns, kept parser and
+  reasoning leak checks clean, recorded no persisted tools/reasoning, hit paged
+  mixed-SWA cache with `cache_hit_tokens=41`, and wrote block L2.
 
 Red:
 
@@ -348,6 +353,9 @@ Red:
   `blue-cat -> blue`, `B7-CAT-09 -> B7CAT-09` / `B7 CAT-09`, and tool args
   likewise lost characters.
 - Short cache/text row also returned `ACKCB-742` instead of `ACK-CB-742`.
+- Installed-app exact-output probe confirmed the broader issue: it returned
+  `ACKCB-742` for expected `ACK-CB-742` and only `{"` for expected
+  `{"status":"ok","value":"blue-cat"}`.
 
 Next implementation target:
 
@@ -872,7 +880,11 @@ Next implementation target:
   `function_call_output`, response/content delta surfaces, exact probe files,
   and the same paged mixed-SWA/L2 cache path are proven. Continue
   artifact/logit/decode diagnosis for literal/JSON/source-vs-quant exactness;
-  do not reduce that to parser repair.
+  do not reduce that to parser repair. The latest installed-app exact-output
+  proof `build/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`
+  is red: `ACK-CB-742` became `ACKCB-742`, and the JSON probe stopped at `{"`,
+  while parser/reasoning leak checks, paged mixed-SWA cache, and block L2 were
+  clean.
 - MiMo JANG_2L is the stronger MiMo checkpoint candidate for load/cache/text,
   but post-fix app tool exactness is still red. The panel now pins
   `tool_choice` only for explicit single-tool user requests, and the app can

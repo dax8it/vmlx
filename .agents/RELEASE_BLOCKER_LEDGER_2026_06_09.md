@@ -101,6 +101,13 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   exactly, and kept paged mixed-SWA cache/L2 evidence. This does not clear
   broader JANGTQ_2 literal/JSON/source-vs-quant exactness, media, or MiMo
   JANG_2L tool rows.
+- 2026-06-10 update: MiMo JANGTQ_2 installed-app exact-output probe is still
+  red in `build/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-proof-20260610.json`.
+  The same rebuilt app loaded the real 79 GiB bundle, kept parser/reasoning
+  leak checks clean, hit paged mixed-SWA cache with `cache_hit_tokens=41`, and
+  wrote block L2; however it returned `ACKCB-742` for expected `ACK-CB-742`
+  and only `{"` for expected `{"status":"ok","value":"blue-cat"}`. Treat this
+  as artifact/logit/quant/decode exactness, not parser repair or cache.
 - 2026-06-10 update: MiMo JANGTQ_2 installed-app image/media is now explicitly
   red in `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json`.
   The app attached an image and server `MEDIA_DIAG` saw `image_url`, but the

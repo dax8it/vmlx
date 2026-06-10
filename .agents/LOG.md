@@ -8318,3 +8318,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven: installed-app UI, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` load, `/v1/responses`, built-in `run_command`, `previous_response_id` tool follow-ups with `function_call_output`, Responses delta/cache-detail surfaces, exact probe files `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`, server cache controls, no parser/reasoning leak, native mixed-SWA cache, and block L2.
 - Runtime/cache evidence: active memory `76763.1 MB`, peak `81328.7 MB`, TurboQuant codebook routed experts with prestacked layout, `cache_detail=paged`, `cache_hit_tokens=4548`, `l2_block_tokens_on_disk=4225`, block-disk hits `36`, and block-disk writes `68`.
 - Boundary: this clears the default installed-app Responses tool loop for MiMo JANGTQ_2 only. Broader literal/JSON/source-vs-quant exactness, media, JANG_2L tools, and release readiness remain open. No release action was run.
+
+# 2026-06-10 - MiMo JANGTQ_2 installed-app exact output
+
+- Ran installed-app MiMo V2.5 JANGTQ_2 exact-output proof through `/Applications/vMLX.app` with Chat Completions, no tools, no media, cache controls, temperature `0`, top_p `1`, and max tokens `64`.
+- Proof summary `build/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-20260610-proof.json`.
+- Positive evidence: installed-app UI, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` load, visible streamed Chat turns, server cache controls, no parser/reasoning leak, no persisted tools/reasoning, native mixed-SWA cache, paged prefix hit, and block L2 writes.
+- Runtime/cache evidence: active memory `76483.5 MB`, peak `77024.8 MB`, TurboQuant codebook routed experts with prestacked layout, `cache_detail=paged`, `cache_hit_tokens=41`, `l2_block_tokens_on_disk=117`, and block-disk writes `3`.
+- Red evidence: expected `ACK-CB-742` but got `ACKCB-742`; expected `{"status":"ok","value":"blue-cat"}` but got `{"`. Boundary: exact literal/JSON output remains red for MiMo JANGTQ_2 and should stay assigned to artifact/logit/quant/decode diagnosis, not parser/cache work. No release action was run.
