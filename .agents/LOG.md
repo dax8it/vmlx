@@ -9183,3 +9183,41 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   JANGTQ_2 image/video/audio UI rows. Do not patch semantic string drift in
   parser/JSON repair and do not call installed-app media green until rebuilt
   proof exists.
+
+# 2026-06-10 - MiMo JANGTQ_2 source video/audio E2E rerun
+
+- User focus item: continue MiMo JANGTQ/JANG media proof and fixes one lane at
+  a time, without N2 JANG_1L or release actions.
+- Current source under test: `b0d5bb5d`.
+- Live command:
+  `VMLINUX_DISABLE_AUTO_BROWSER=1 VMLX_L2_CACHE_DIR=build/mimo-jangtq2-media-live-l2-20260610b .venv/bin/python -m vmlx_engine.server --model /Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2 --port 8877 --host 127.0.0.1 --mllm --served-model-name mimo-v25-jangtq2-media-source --max-tokens 64 --default-temperature 0 --default-top-p 1`.
+- Startup proof repeated the media overlay and binding path:
+  MiMo media auto-enabled, `visual=364`, `audio_encoder=75`,
+  `speech_embeddings=20`, `459` assigned media tensors, native mixed full/SWA
+  rotating cache, generic TurboQuant KV skipped by design, active Metal
+  baseline about `76.5 GB`.
+- Video proof:
+  `build/media-fixtures/red-1s-64x64.mp4` was decoded by ffmpeg as a red
+  64x64 two-frame H.264 fixture; first RGB bytes were `254,0,0`. Live
+  `/v1/chat/completions` with `video_url` returned HTTP `200`, and server logs
+  showed `MEDIA_DIAG` plus mlx-vlm numpy video reader with `total_frames=2`.
+- Video boundary:
+  generated answer was `The color that dominates this video is **black**.`
+  This clears source video transport/frame-through-vision but not semantic
+  color correctness.
+- Audio proof:
+  `build/media-fixtures/audio-present.wav` is PCM 16-bit mono 16 kHz,
+  duration `0.821688s`. Live `/v1/chat/completions` with OpenAI
+  `input_audio` base64 returned HTTP `200`; server logs showed base64 audio
+  decode to temporary wav. Generated answer: `I hear a person saying "I'm fine."`
+- Visual semantic boundary:
+  extracted red video frame and generated red/green/blue/white PNGs all
+  returned `Black.`; `panel/resources/icon.png` returned visible `VMLX`.
+  Classification: media path is active, but MiMo JANGTQ_2 visual semantics are
+  inconsistent. Do not claim visual semantic production quality from this row.
+- Artifact:
+  `build/current-mimo-v25-jangtq2-video-audio-source-proof-20260610.json`.
+- Still not claimed:
+  installed-app parity, source-vs-quant exactness, fresh-process L2 restore for
+  media, visual semantic quality, independent audio transcript correctness, or
+  release clearance.
