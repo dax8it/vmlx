@@ -1,4 +1,17 @@
 ## CODEX
+- now: commit `b0e7b0182` (`Prove Gemma4 E4B native MXFP4 installed app`) pushed
+  to both `origin/codex/pr-intake-manifest` and `origin/main`.
+- current branch state after push: only pre-existing/unrelated
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  remains dirty and `node_modules/` remains untracked.
+- current Gemma gate state: QAT JANG4M E2B/E4B/12B/26B/31B are closed; native
+  MXFP4 E2B/E4B/12B are closed; remaining Gemma inventory open rows are
+  `gemma4_26b_vl` and `gemma4_31v_or_31b_vl`.
+- next movement: attempt bundled installed-app reasoning/tool/cache proof for
+  `gemma4_26b_vl` using strict-final deterministic prompt shape, then register
+  only if the existing gate accepts it.
+
+## CODEX
 - verification: after registering E4B native MXFP4 proof, `.venv/bin/python -m
   py_compile` passed for the modified gate/checklist scripts and focused tests;
   `.venv/bin/python -m pytest -q

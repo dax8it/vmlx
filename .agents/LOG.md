@@ -12913,6 +12913,19 @@ Next action:
   not overwrite the registered narrow-prompt proof unless a stricter 31B
   installed-app proof is rerun and passes.
 
+# 2026-06-10 14:30 PDT - E4B native MXFP4 proof pushed
+
+- Commit `b0e7b0182` (`Prove Gemma4 E4B native MXFP4 installed app`) was pushed
+  to `origin/codex/pr-intake-manifest` and `origin/main`.
+- Current Gemma gate state after push: QAT JANG4M E2B/E4B/12B/26B/31B are
+  closed; native MXFP4 E2B/E4B/12B are closed; remaining Gemma open rows are
+  `gemma4_26b_vl` and `gemma4_31v_or_31b_vl`.
+- Worktree after push still has only the pre-existing dirty panel settings JSON
+  and untracked `node_modules/` outside this lane's work.
+- Next: attempt 26B VL bundled installed-app reasoning/tool/cache proof with
+  the strict-final deterministic prompt shape. Register only if the existing
+  gate accepts it.
+
 # 2026-06-10 14:29 PDT - E4B native MXFP4 proof registered
 
 - Registered the accepted E4B strict-final proof for
