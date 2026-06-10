@@ -1,3 +1,34 @@
+# 2026-06-10 - Qwen35 strict Responses direct/gateway recapture
+
+- Ran current-source Qwen35 MXFP8-MTP same-model raw SSE recapture with the
+  stricter parser/API/gateway contract:
+  `tests/cross_matrix/run_qwen35_responses_raw_sse_capture.py --port 8898
+  --out build/current-responses-raw-sse-parity-qwen35-direct-gateway-source-vs-tunnel-after-strict-parser-contract-20260610.json
+  --direct-sse build/responses-sse-captures-20260610/direct-qwen35-mxfp8-mtp-tool-after-strict-parser-contract-20260610.sse
+  --gateway-sse build/responses-sse-captures-20260610/gateway-qwen35-mxfp8-mtp-tool-after-strict-parser-contract-20260610.sse
+  --server-log build/responses-sse-captures-20260610/direct-qwen35-mxfp8-mtp-after-strict-parser-contract-20260610.server.log
+  --gateway-log build/responses-sse-captures-20260610/gateway-qwen35-mxfp8-mtp-after-strict-parser-contract-20260610.log
+  --tunnel-sse build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse
+  --require-reasoning-events`.
+- Artifact status is `fail` only because the reused public tunnel capture is
+  still stale/duplicate-index. Current-source direct and real panel gateway are
+  green under the stricter checks: authoritative args `{"value": "blue-cat"}`,
+  reasoning lifecycle complete, final `response.output` matches stream,
+  function args match, same served model, and valid indices
+  `message=0`, `reasoning=1`, `function_call=2`.
+- Gateway proof also records kwargs: `stream=true`, `max_output_tokens=512`,
+  `temperature=0`, `top_p=1`, `top_k=0`, `enable_thinking=true`,
+  `tool_choice=required`, `tool_count=1`, `first_tool_name=record_fact`.
+- Runtime/cache proof from the same run: real Qwen35 JANG MXFP8-MTP artifact
+  loaded, native MTP active with tools capped to D1, hybrid 10 attention + 30
+  SSM cache active, live attention TurboQuant KV active, paged cache active,
+  block L2 and SSM companion L2 enabled, 4 block writes / 222 tokens, then a
+  paged cache hit for the gateway request.
+- Boundary: this clears current-source direct+gateway for the Qwen tool-args,
+  reasoning, final-object, kwargs, and output-index path. It does not clear the
+  public tunnel until that backend is rebuilt/redeployed and recaptured from
+  current source. No release, notarization, PyPI, or N2 JANG_1L action was run.
+
 # 2026-06-10 - Cross-family parser/API/gateway streaming contract tightened
 
 - Tightened raw Responses SSE parity classification:
