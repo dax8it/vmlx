@@ -66,6 +66,13 @@ that path in the current turn.
   `TeamIdentifier=55KGF2S5AY`, `source=Notarized Developer ID`, and valid
   `hdiutil` checksums. No tag, appcast/latest.json mutation, GitHub release
   publish, public download update, or PyPI publish was performed.
+- Checkpoint app runtime parity is now current for both DMG flavors:
+  `build/current-installed-app-runtime-parity-audit-sequoia-checkpoint-dmg-20260609.json`
+  and `build/current-installed-app-runtime-parity-audit-tahoe-checkpoint-dmg-20260609.json`
+  are `status=pass` with bundled engine and packaged source hash parity true.
+  `build/current-release-regression-manifest-after-checkpoint-app-parity-20260609.json`
+  consumes those artifacts and still reports `prepackage_ready=false` /
+  `release_ready=false` because runtime/model/UI/cache blockers remain open.
 - The locally installed app is ad-hoc signed and valid on disk; do not call it a
   Developer ID signed or notarized checkpoint DMG.
 - The checkpoint build used local `/Users/eric/jang/jang-tools` and installed

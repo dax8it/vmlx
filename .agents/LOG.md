@@ -7790,6 +7790,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Failure boundary: the capture reuses `output_index=0` for both the initial message item and the later `function_call` item. The contract fails only `all_present_surfaces_have_valid_output_item_indices`; it is not the empty-args bug and not a reasoning-disable workaround.
 - Next proof required: same-model Qwen35 direct local and gateway raw SSE captures, plus tunnel recapture after deployed output-index fix. Keep Gemma E2B tunnel wrong-model availability separate from Qwen35 output-index validity.
 
+# 2026-06-09 - Checkpoint DMG app runtime parity proof
+
+- Ran staged-app runtime parity audits against the current checkpoint DMG app payloads without replacing `/Applications/vMLX.app`.
+- Sequoia artifact: `build/current-installed-app-runtime-parity-audit-sequoia-checkpoint-dmg-20260609.json`, `status=pass`, `missing_or_stale=[]`, bundled engine hash parity true, packaged engine-source hash parity true.
+- Tahoe artifact: `build/current-installed-app-runtime-parity-audit-tahoe-checkpoint-dmg-20260609.json`, `status=pass`, `missing_or_stale=[]`, bundled engine hash parity true, packaged engine-source hash parity true.
+- Proof-map update: release manifest/current suite now consume the Sequoia checkpoint app parity artifact for installed-app runtime parity and the Tahoe checkpoint app parity artifact for staged-app runtime parity. Regenerated `build/current-release-regression-manifest-after-checkpoint-app-parity-20260609.json`; it still reports `status=fail`, `prepackage_ready=false`, `release_ready=false`, but `installed_app_runtime_parity_audit=true` and `staged_app_runtime_parity_audit=true`.
+- Validation passed: focused parity/manifest/current-suite tests `23/23`, `py_compile`, and `git diff --check`.
+- Boundary: this is no-heavy app-runtime parity for the checkpoint DMG payloads. It is not live model/UI/media/cache clearance and does not publish/tag/upload/appcast/PyPI.
+
 # 2026-06-09 - Gemma4 31B QAT JANG_4M source smoke
 
 - Live proof run: `VMLINUX_BENCH_ISOLATED=1 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models/JANGQ-AI --only gemma-4-31B-it-qat-JANG_4M --max-models 1 --include-tools --include-l2-restart --no-media --port 8925 --load-timeout-s 600 --request-timeout-s 360 --out build/current-all-local-model-smoke-gemma4-31b-qat-jang4m-tools-nomedia-l2-20260609`.
