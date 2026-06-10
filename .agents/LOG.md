@@ -1,3 +1,33 @@
+# 2026-06-10 - MiMo exactness root-cause continuation
+
+- Request: continue toward production-quality runtime fixes without broad
+  test-suite churn or recursive subagent behavior.
+- Current lane: MiMo V2.5 JANG/JANGTQ exactness, specifically source/dequant
+  reference availability and current-source runtime/quant path inspection.
+- Constraints: no release/sign/notarize/package/PyPI/updater/download/website
+  action, no N2 JANG_1L, no subagents, no parser/JSON/string repair masking,
+  no sampling clamp or cache change presented as a MiMo exactness fix.
+- Planned movement: check whether the source/dequant reference is available
+  now; inspect the JANGTQ prestacked routed expert/decode path; patch only if
+  evidence identifies a current-source root cause, otherwise record the exact
+  remaining artifact/requant blocker and next proof needed.
+- Result: the existing first-divergence harness had a stale quant served-model
+  default (`mimo-v2-jang2l`) while pointing at the JANGTQ_2 artifact, and its
+  prompt set did not include the current failing `blue-cat` / `B7-CAT-09`
+  literal and JSON rows. Updated
+  `tests/cross_matrix/run_mimo_v2_source_vs_quant_first_divergence.py` to use
+  `mimo-v2-jangtq2` and to include those exact rows.
+- Verification: `py_compile` passed. Preflight artifact
+  `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-preflight-exact-probes-20260610.json`
+  is `status=missing_prerequisites`; source and quant model paths both exist,
+  but `http://erics-m5-max2.local:8126/health` and
+  `http://127.0.0.1:8897/health` are connection-refused.
+- Boundary: no runtime fix or release clearance. Runtime/code inspection found
+  existing dp-bit/codebook safeguards and current artifacts already exclude
+  tokenizer/template/parser/cache/vMLX-fastpath/native gather shape causes.
+  Next useful proof is running both endpoints and executing the updated
+  source-vs-quant harness to classify source-also-fails vs quant-diverges.
+
 # 2026-06-10 - MiMo JANG_2L vs JANGTQ_2 exactness A/B
 
 - Ran real MiMo V2.5 JANG_2L on port `8897` with continuous batching, native

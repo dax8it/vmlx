@@ -7,6 +7,51 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo JANGTQ_2 Source-Vs-Quant First-Divergence Harness
+
+Artifact:
+
+- `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-preflight-exact-probes-20260610.json`
+
+Source update:
+
+- `tests/cross_matrix/run_mimo_v2_source_vs_quant_first_divergence.py`
+
+Proven:
+
+- The existing first-divergence harness now defaults the quant served model to
+  `mimo-v2-jangtq2` instead of the stale `mimo-v2-jang2l` name.
+- The harness now includes the exact failing MiMo rows: plain `blue-cat`,
+  plain `B7-CAT-09`, exact JSON with `blue-cat`, exact JSON with
+  `B7-CAT-09`, plus the existing required tool-call `blue-cat` row.
+- Preflight confirms both model paths exist:
+  `/Volumes/EricsLLMDrive/jangq-ai/sources/MiMo-V2.5` on
+  `erics-m5-max2.local` and
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` locally.
+
+Blocked:
+
+- The source endpoint `http://erics-m5-max2.local:8126/health` and local quant
+  endpoint `http://127.0.0.1:8897/health` were both connection-refused during
+  this preflight, so no source-vs-quant generation rows were executed.
+
+Next command once both endpoints are running:
+
+```sh
+.venv/bin/python tests/cross_matrix/run_mimo_v2_source_vs_quant_first_divergence.py \
+  --source-base-url http://erics-m5-max2.local:8126 \
+  --quant-base-url http://127.0.0.1:8897 \
+  --source-model mimo-v2-source \
+  --quant-model mimo-v2-jangtq2 \
+  --out build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-exact-probes-20260610.json
+```
+
+Boundary:
+
+- This is harness/proof-path correction and prerequisite evidence, not a MiMo
+  runtime fix. Do not claim MiMo JANGTQ_2 exactness green until the updated
+  source-vs-quant rows run and show whether source also fails or quant diverges.
+
 ### MiMo JANG_2L vs JANGTQ_2 Exactness A/B
 
 Artifact:
