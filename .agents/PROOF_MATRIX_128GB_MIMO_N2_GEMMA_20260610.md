@@ -58,6 +58,7 @@ Artifacts:
 
 - `build/current-gemma4-12b-mxfp4-jang4m-media-smoke-live-20260610.json`
 - `build/current-gemma4-12b-mxfp4-jang4m-live-runtime-audit-20260610.json`
+- `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-dev-app-proof-20260610.json`
 
 Proven:
 
@@ -66,13 +67,36 @@ Proven:
 - Conservative text runtime passed for both rows.
 - Visible answer, multi-turn recall, reasoning-on visible answer, required
   tool call, and cache endpoint sanity passed.
+- Real Electron dev-app Gemma 12B QAT MXFP4 Responses/tools/cache proof is
+  green. The app loaded `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`,
+  executed the built-in `run_command` loop twice, used scoped Responses
+  `function_call_output` follow-ups with `previous_response_id`, and created
+  the expected probe files containing `REAL_UI_LIVE_TOOL_ONE` and
+  `REAL_UI_LIVE_TOOL_TWO`.
+- The MXFP4 app proof recorded content deltas for both assistant turns
+  (`16` and `31` trace events), `responses_delta_streaming`,
+  `responses_cache_detail_usage`, `long_tool_loop`, and
+  `tool_l2_cache_integrated`.
+- Runtime proof in the same app run: `weight_format=mxfp4`, `profile=MXFP4`,
+  `weight_matmul_dispatch=mlx_affine_quantized_matmul`,
+  `metal_na_active_on_host=true`, `passthrough_tensor_count=349`, active memory
+  about `7773.6 MB`, and peak memory about `10518 MB`.
+- Cache proof in the same app run: Gemma mixed-SWA cache,
+  `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`,
+  final `cached_tokens=2688`, `l2_block_tokens_on_disk=3588`,
+  block-disk `disk_hits=30`, and `disk_writes=58`.
 
 Not proven:
 
-- Installed-app/UI parity for these exact new artifacts.
+- Installed-app parity for these exact new artifacts.
 - Audio/video weight-backed E2E.
 - Full larger Gemma QAT matrix through UI/installed app.
 - Tunnel/gateway parity for these exact Gemma rows.
+- Gemma 12B QAT MXFP4 dev-app media. The current dev-app proof is
+  Responses/tools/cache only.
+- The second MXFP4 visible answer begins with the plain word `thought`; this is
+  not a raw `<think>` or parser markup leak and the leak gates passed, but do
+  not hide this visible-final style caveat.
 
 ### Gemma 4 12B JANG4M Real Dev-App Proof
 

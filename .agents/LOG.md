@@ -8102,3 +8102,12 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary proved: app attempted an audio turn and server saw `input_audio`, but `/v1/chat/completions` rejected it with `400` unsupported media modality; supported modalities reported by the server are `text, vision, video`.
 - This is not a load/cache/L2 failure. Do not claim N2 audio support.
 - No release action was run.
+
+# 2026-06-10 - Gemma 12B QAT MXFP4 dev-app Responses/tools/cache proof green
+
+- Ran real Electron dev-app Gemma 4 12B QAT MXFP4 Responses built-in tool/cache proof.
+- Added tracked summary `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-dev-app-proof-20260610.json`, `status=pass`.
+- Proven in app: built-in `run_command` loop, Responses tool-result continuation via `previous_response_id`, visible `REAL_UI_LIVE_TOOL_ONE` / `REAL_UI_LIVE_TOOL_TWO`, renderer deltas (`16`, `31`), MXFP4 affine matmul with Metal NA active, mixed-SWA cache, and block-disk L2.
+- Cache evidence: `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3588`, `disk_hits=30`, `disk_writes=58`.
+- Caveat: second visible answer starts with plain `thought`; leak gates passed, but keep visible-final style caveat open.
+- Boundary: media/installed app/tunnel/release remain open. No release action was run.

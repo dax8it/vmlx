@@ -896,3 +896,13 @@
 - Red evidence: app attempted an audio turn, server `MEDIA_DIAG` saw `input_audio`, and the API returned `400 - /v1/chat/completions received unsupported media modality audio. Supported modalities: text, vision, video.`
 - Boundary: this is an honest capability guard, not a crash or cache failure. Do not claim N2 JANGTQ2 audio support in the checkpoint release.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - Gemma 12B QAT MXFP4 dev-app Responses/tools/cache proof green
+
+- Ran real Electron dev-app Gemma 4 12B QAT MXFP4 Responses built-in tool/cache proof.
+- Added tracked proof summary `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-dev-app-proof-20260610.json`, `status=pass`.
+- Proven: app loaded `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`, executed `run_command` twice, used Responses tool follow-ups with `previous_response_id`, created probe files containing `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`, and streamed visible deltas on both turns.
+- Runtime/cache evidence: MXFP4 affine quantized matmul, Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3588`, block-disk `disk_hits=30`, and `disk_writes=58`.
+- Caveat: the second visible answer starts with the plain word `thought`. It is not a raw `<think>` tag or tool/parser markup and the leak gates passed, but keep this visible-final style caveat on the board.
+- Still open: Gemma 12B QAT MXFP4 image/video/audio dev-app media, installed-app parity, public tunnel parity, and release signing/notarization.
+- No package/sign/notarize/tag/upload/release action was run.
