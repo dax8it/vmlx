@@ -9221,3 +9221,35 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   installed-app parity, source-vs-quant exactness, fresh-process L2 restore for
   media, visual semantic quality, independent audio transcript correctness, or
   release clearance.
+
+# 2026-06-10 - Gemma4 12B JANG4M media proof pointer refreshed
+
+- User focus item: keep Gemma JANG/MXFP/QAT proof honest and remove false
+  blockers without inventing capability claims.
+- Finding:
+  the full release checklist still referenced stale missing artifact
+  `build/current-gemma4-12b-jang4m-media-smoke-after-vlm-prefill-guard-20260607.json`
+  even though current source proof exists at
+  `build/current-gemma4-12b-mxfp4-jang4m-media-smoke-live-20260610.json`.
+- Source edit:
+  `tests/cross_matrix/run_full_release_objective_checklist.py`
+  now points `GEMMA4_12B_JANG4M_MEDIA_SMOKE` at the current 20260610 media
+  smoke. The predicate is unchanged: it still requires `status=pass`,
+  `checks.all_rows_passed=true`, `rows.jang4m_image.status=pass`, HTTP `200`,
+  `vision_advertised=true`, `red_detected=true`, and `no_channel_leak=true`.
+- Regression edit:
+  `tests/test_full_release_objective_checklist.py` now asserts the current
+  media proof path and uses the same path in its fixture.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k 'gemma4_12b_jang4m_media or gemma4_12b_jang4m_nomedia or gemma4_12b_issue191 or current_gemma4'`
+  passed with `3 passed`.
+- Regenerated checklist:
+  `build/current-full-release-objective-checklist-after-gemma12-media-pointer-refresh-20260610.json`
+  remains `status=open`, but `failed_count` dropped to `68`; the Gemma4 12B
+  media rows `artifact_exists`, `status_pass`, and `media_rows_complete` are
+  green from the current proof.
+- Still red:
+  Gemma4 12B JANG4M no-media exact code whitespace and mixed-SWA
+  storage-quant policy remain red; Gemma E2B same-model tunnel parity remains
+  red. This is not release clearance and no packaging/signing/notarization/PyPI
+  action was taken.
