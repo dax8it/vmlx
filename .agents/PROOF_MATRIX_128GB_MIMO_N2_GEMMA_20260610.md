@@ -322,6 +322,7 @@ Artifact:
 - `build/current-real-ui-live-model-mimo-v25-jang2l-image-proof-20260610.json`
 - `build/current-real-ui-live-model-mimo-v25-jang2l-responses-tools-proof-20260610.json`
 - `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json`
+- `build/current-real-ui-installed-app-mimo-v25-jang2l-tools-proof-20260610.json`
 
 Proven:
 
@@ -402,6 +403,21 @@ Proven:
   `25.74s`, second-turn TTFT after paged cache hit was `1.57s`, and decode was
   about `1.9 tok/s`. This is installed-app text/cache evidence, not speed
   clearance.
+- Local rebuilt installed app tool proof is classified red, but it proves the
+  real installed tool surface was reached. The app launched the 105 GiB MiMo
+  row with built-in tools enabled, server cache controls visible, and emitted
+  tool events. It executed one `run_command` on the second turn and created
+  `real_ui_tool_probe_2.txt` with `REAL_UI_LIVE_TOOL_TWO`.
+- The installed-app tool proof failed the release `long_tool_loop` surface:
+  the first requested marker mutated from `REAL_UI_LIVE_TOOL_ONE` to
+  `REAL_UI_LAND_TOOL_ONE`, the expected first probe file was not created, the
+  first visible content became repetitive tool-planning prose, and the final
+  assertion was `requested real built-in tools but proof did not record
+  long_tool_loop surface`.
+- The same red tool run showed cache/L2 is not the blocker: active memory
+  `105384.7 MB`, peak `109903.3 MB`, native `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=4552`,
+  last cached tokens `3481`, and `l2_block_tokens_on_disk=4720`.
 
 Red / not proven:
 
@@ -429,7 +445,8 @@ Red / not proven:
   guard even when forced MLLM is requested; do not claim MiMo JANG_2L media
   support from preserved media weights.
 - Installed-app tool loop, installed-app media, and MiMo JANGTQ_2 exactness are
-  still red/open. The installed-app text/cache pass does not clear those rows.
+  still red/open. The installed-app text/cache pass and partial second-turn
+  tool execution do not clear those rows.
 - Long context usability beyond the short cache proof.
 
 Next implementation target:

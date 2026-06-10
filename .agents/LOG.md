@@ -8222,3 +8222,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proof summary `build/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-20260610-proof.json`.
 - Proven: installed-app UI, real 105 GiB MiMo JANG_2L load, exact visible text turns `MIMO_INSTALLED_TEXT_ONE` and `MIMO_INSTALLED_TEXT_TWO`, generation defaults, no parser/reasoning leak, native `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa`, paged cache hit, and block L2 writes.
 - Boundary: MiMo installed-app tools/media/JANGTQ exactness/speed remain open. N2 JANG_1L remains red and needs a real lower-peak runtime strategy. No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - MiMo JANG_2L installed-app tools red
+
+- Ran installed-app MiMo JANG_2L built-in tool proof through `/Applications/vMLX.app` with Chat Completions, built-in tools, cache controls, temperature `0`, top_p `1`, and max tokens `256`.
+- Proof summary `build/current-real-ui-installed-app-mimo-v25-jang2l-tools-proof-20260610.json` is `status=fail`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-tools-20260610-proof.json`.
+- Positive evidence: the installed app reached the real tool surface and executed one `run_command`, creating `real_ui_tool_probe_2.txt` with `REAL_UI_LIVE_TOOL_TWO`.
+- Red evidence: no `long_tool_loop` surface; first-turn marker mutated to `REAL_UI_LAND_TOOL_ONE`, expected first probe file was missing, and visible content became repetitive tool-planning prose.
+- Cache/L2 stayed strong: `cache_detail=paged`, `cache_hit_tokens=4552`, `l2_block_tokens_on_disk=4720`. No release action was run.

@@ -1033,3 +1033,12 @@
 - MiMo proven: local rebuilt `/Applications/vMLX.app` launched, real 105 GiB MiMo JANG_2L loaded, Chat Completions produced exact visible `MIMO_INSTALLED_TEXT_ONE` and `MIMO_INSTALLED_TEXT_TWO`, server cache controls were visible, no parser/reasoning leak was recorded, and generation defaults were applied.
 - MiMo runtime/cache evidence: active memory `105017.5 MB`, peak `105961.1 MB`, Metal NA active affine JANG_2L matmul, single-active decode, native `mixed_swa_kv_v1` with `cache_subtype=mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cached_tokens=41`, `l2_block_tokens_on_disk=114`, `l2_tokens_on_disk=114`, and block-disk writes `3`.
 - Boundary: MiMo installed-app text/cache is green, but installed-app tools/media/JANGTQ_2 exactness/speed remain open. N2 JANG_1L remains red until a lower-peak runtime strategy exists. No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - MiMo JANG_2L installed-app tool loop classified red
+
+- Reduced blocker: `api/ui` plus `parser/template` for MiMo JANG_2L installed-app built-in tool loop.
+- Proof summary: `build/current-real-ui-installed-app-mimo-v25-jang2l-tools-proof-20260610.json`, `status=fail`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-tools-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-tools-20260610-chat.png`.
+- Positive evidence: local rebuilt `/Applications/vMLX.app` launched, the real 105 GiB MiMo JANG_2L row loaded, built-in tool events streamed, one `run_command` executed on the second turn, and `real_ui_tool_probe_2.txt` contained `REAL_UI_LIVE_TOOL_TWO`.
+- Red evidence: the release assertion failed because `long_tool_loop` was not recorded. The first requested marker mutated to `REAL_UI_LAND_TOOL_ONE`, the expected first probe file was not created, and first visible content degraded into repetitive tool-planning prose.
+- Runtime/cache evidence: active memory `105384.7 MB`, peak `109903.3 MB`, native `mixed_swa_kv_v1` with `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cache_hit_tokens=4552`, last cached tokens `3481`, and `l2_block_tokens_on_disk=4720`.
+- Boundary: MiMo installed-app tools remain red. Cache/L2 is not the blocker. No package/sign/notarize/tag/upload/release action was run.

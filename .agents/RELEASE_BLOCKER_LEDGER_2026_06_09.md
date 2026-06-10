@@ -65,6 +65,13 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `mimo_v2_asymmetric_swa`, hit paged cache, and wrote block L2. This does not
   clear MiMo installed-app tools, media, JANGTQ_2 exactness, speed, public
   tunnel SSE, or Developer ID DMG readiness.
+- 2026-06-10 update: MiMo JANG_2L installed-app tools are now explicitly red in
+  `build/current-real-ui-installed-app-mimo-v25-jang2l-tools-proof-20260610.json`.
+  The installed app reached the real built-in tool surface and executed one
+  `run_command` on the second turn, but failed `long_tool_loop`: the first
+  marker mutated to `REAL_UI_LAND_TOOL_ONE`, the first probe file was missing,
+  and visible output degraded into repetitive tool-planning prose. Cache/L2 was
+  positive, so do not chase prefix/L2/TurboQuant as the primary blocker.
 - Do not run source-vs-quant comparisons if RAM-blocked unless Eric explicitly allows.
 - Exactness failures must not be papered over by parser repair, sampling clamps, cache disabling, or JSON repair.
 - Confirm runtime dynamically reads artifact config for bit size, grouped experts, stacked vs legacy layout, JANG/JANGTQ/MXFP metadata, and model-owned generation defaults.
