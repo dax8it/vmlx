@@ -25,15 +25,22 @@ Every agent continuation must do these in order:
 1. Stay in this active Python/Electron worktree unless Eric explicitly names a
    different current-turn path.
 2. Name the release blocker being reduced before editing or launching anything.
-3. Prefer a live proof that closes or classifies a blocker over a source-only
+3. Read `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`, `.agents/STATUS.md`,
+   and the latest release checklist/proof artifact before acting. Do not rely
+   on older memory, deprecated `/Users/eric/vmlx` notes, or stale release
+   snapshots.
+4. Prefer a live proof that closes or classifies a blocker over a source-only
    test, stale pointer refresh, upload chore, package/signing step, or broad
    exploration.
-4. After each proof, update `.agents/STATUS.md`, `.agents/LOG.md`, and the
+5. Write every movement down: request, action, command/proof/artifact,
+   proven/not-proven state, blockers, no-claims, and what the other agent
+   should do next.
+6. After each proof, update `.agents/STATUS.md`, `.agents/LOG.md`, and the
    release tracker with the exact artifact path, pass/fail state, and remaining
    blocker boundary.
-5. Regenerate the current release gates only when the source/proof state changed
+7. Regenerate the current release gates only when the source/proof state changed
    enough to make the status meaningful.
-6. Do not sign, notarize, tag, push release notes, or update downloads while any
+8. Do not sign, notarize, tag, push release notes, or update downloads while any
    objective row is open unless Eric explicitly overrides the lock in the
    current turn.
 
@@ -58,6 +65,19 @@ gateway, and tunnel raw SSE with reasoning enabled, valid content/reasoning
 deltas, argument delta/done events, final object consistency, valid
 `output_index` ordering, required/auto/no-tool modes, tool-result continuation,
 and cache reuse telemetry.
+
+Current N2 boundary from Eric: do not work on Nex/N2 JANG_1L unless Eric
+explicitly reopens that lane in the current turn. Treat N2 JANG_1L as
+Eric-owned/off-limits; do not launch, fix, prove, classify, or claim it from
+partial prior runs. Allowed N2 work here is N2 JANGTQ/non-JANG_1L only when it
+does not overlap the JANG_1L lane.
+
+Current checkpoint-release pressure: Eric does want a signed/notarized working
+checkpoint release, but this agent must not enter release/sign/notarize/PyPI/
+download-update steps unless Eric explicitly asks for that action in the
+current turn or the active directive file says the release lock is lifted.
+Until then, reduce model/runtime/API/UI/cache blockers and keep the release
+writeup current.
 
 If a turn is interrupted, resume by reading the current tracker/status and
 continuing the next blocker; do not restart from old memory, old `/Users/eric/vmlx`

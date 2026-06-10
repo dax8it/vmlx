@@ -1777,3 +1777,22 @@
 - Current checklist:
   `build/current-full-release-objective-checklist-after-gemma12-code-column-prompt-20260610.json`
   is `status=open`, `failed_count=57`.
+
+# 2026-06-10 - AGENTS.md current control contract update in progress
+
+- User request: write the current operating constraints into `AGENTS.md` so
+  future continuations do not ignore the active goal, N2 JANG_1L stop
+  condition, parser/API priority, or no-subagent rule.
+- Directive check: documentation/control-plane update only. Allowed lanes are
+  still MiMo, Gemma, Qwen parser/API/gateway, and N2 non-JANG_1L. N2 JANG_1L
+  remains Eric-owned/off-limits. No release/sign/notarize/PyPI/download action
+  is being taken.
+- Edit: `AGENTS.md` mandatory continuation loop now explicitly requires
+  reading `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`, `.agents/STATUS.md`,
+  and the latest checklist/proof artifact before action; writing every
+  movement with proven/not-proven/blocker/no-claim/other-agent details; keeping
+  N2 JANG_1L off-limits unless Eric reopens it; and not entering release steps
+  unless the current-turn release lock is explicitly lifted.
+- Boundary: this is not a model/runtime proof and does not clear any release
+  checklist row. It is a control-doc fix to prevent drift before the next live
+  MiMo/Gemma/Qwen proof or fix.

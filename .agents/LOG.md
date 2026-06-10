@@ -9535,3 +9535,21 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Current checklist:
   `build/current-full-release-objective-checklist-after-gemma12-code-column-prompt-20260610.json`
   is `status=open`, `failed_count=57`.
+
+# 2026-06-10 - AGENTS.md control contract update
+
+- Request: Eric said to put the current instructions into `AGENTS.md`.
+- Action: updated `AGENTS.md` in the active Python/Electron worktree, not the
+  deprecated `/Users/eric/vmlx` checkout.
+- What changed: the mandatory loop now says to read the active directives,
+  status, and latest checklist/proof artifact before acting; write every
+  movement with artifact/proven/not-proven/blocker/no-claim/other-agent fields;
+  keep N2 JANG_1L off-limits unless Eric explicitly reopens it; keep the
+  no-Python-subagent/no-delegation rule; and avoid release/sign/notarize/PyPI/
+  download updates unless explicitly unlocked in the current turn.
+- Proven: documentation reflects the active control contract.
+- Not proven: no model/runtime/API/UI/cache row was exercised by this doc
+  change.
+- Blocker boundary: release remains open from the last checklist; next useful
+  work should be a focused MiMo/Gemma/Qwen live proof or source fix, not
+  packaging or N2 JANG_1L.
