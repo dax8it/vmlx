@@ -11873,3 +11873,38 @@ Next action:
   warning. Visible answer completed, but keep this as UI polish/open-boundary
   evidence. Gemma remains `status=open`, `release_ready=false`; 26B/31B
   installed-app rows and full release parity remain open.
+
+# 2026-06-10 10:43 PDT - Gemma 26B installed-app proof lane selected
+
+- Selected next concrete blocker: Gemma 4 26B QAT JANG_4M installed-app
+  UI/API/cache proof.
+- Reason: E2B/E4B/12B installed-app rows are registered partial-green; 26B
+  remains unregistered in the Gemma inventory.
+- Constraints: no release/sign/notarize/package/PyPI/updater/download/website,
+  no N2 JANG_1L, no subagents, no fake parser/cache/modality claims.
+- Planned command: run the real UI proof harness with `/Applications/vMLX.app`,
+  bundled Python, Responses wire API, built-in tools, reasoning, and server
+  cache controls.
+
+# 2026-06-10 10:45 PDT - Gemma 26B installed-app proof classified red for duplicate tool loop
+
+- Ran bundled-Python installed-app proof for
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`.
+- Proof JSON:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`;
+  screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png`.
+- Top-level harness result was `status=pass`, but detailed evidence is red for
+  release agentic behavior: second turn emitted six duplicate `run_command`
+  calls and the follow-up emitted six more duplicate `run_command` calls for
+  the same command. Screenshot shows twelve repeated command rows.
+- Positive evidence still captured: bundled Python, installed app route,
+  visible first/second answers, parser leak checks clean, Gemma4 mixed-SWA
+  native cache, storage-boundary 4-bit full-attention KV,
+  `cache_hit_tokens=7151`, `l2_block_tokens_on_disk=4884`.
+- Decision: keep 26B out of the green installed-app inventory until duplicate
+  tool-call loop behavior is fixed or cleanly disproven. This is not release
+  clearance.
+- Next useful work: raw Responses SSE + panel event trace for 26B duplicate
+  tool calls to locate whether duplication starts in model output, server
+  Responses assembly, or panel tool-loop replay.

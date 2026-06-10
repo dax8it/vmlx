@@ -4017,3 +4017,56 @@ Other-agent action:
   current Gemma board source. Next Gemma installed-app rows are 26B and 31B;
   keep 12B reasoning-only warning visible as an open UI polish item and do not
   call the Gemma group release-clear.
+
+# 2026-06-10 10:43 PDT - Gemma 26B installed-app proof lane selected
+
+- Request: continue the active objective with concrete live model/app/cache/API
+  proof and avoid broad test-suite churn.
+- Current allowed lane selected: Gemma 4 26B QAT JANG_4M installed-app
+  UI/API/cache proof. E2B/E4B/12B installed-app rows are now partial-green, and
+  26B remains unregistered.
+- Constraints rechecked: no release/sign/notarize/package/PyPI/updater/download/
+  website action; no N2 JANG_1L; no subagents; no fake parser/cache/modality
+  claim; use `/Applications/vMLX.app` and bundled Python.
+- Next action: run the installed-app proof harness against
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M` with Responses
+  wire API, built-in tools, reasoning, and cache controls enabled.
+
+# 2026-06-10 10:45 PDT - Gemma 26B installed-app proof classified red for duplicate tool loop
+
+- Action: ran the real installed-app proof for
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M` with
+  `/Applications/vMLX.app` and bundled Python:
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`.
+- Proof artifacts:
+  - `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json`
+  - `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png`
+- Mixed result:
+  - Server/app load, bundled Python, Responses wire API, visible final text,
+    reasoning display, parser leak checks, cache telemetry, and L2 telemetry
+    were present.
+  - Cache evidence: `cache_hit_tokens=7151`,
+    `l2_block_tokens_on_disk=4884`, Gemma4 mixed-SWA native cache, and
+    storage-boundary 4-bit full-attention KV.
+- Red blocker:
+  - The second turn asked for exactly one `run_command`, but the model/app
+    executed six duplicate `run_command` calls, then six more duplicate
+    `run_command` calls on the follow-up. The screenshot shows twelve repeated
+    identical command rows.
+  - `persistedToolCount=1143` includes many generating events, but the
+    actionable issue is the repeated `calling`/`executing` duplicate commands.
+- Decision:
+  - Do not register the 26B proof as green installed-app UI/API/cache parity.
+  - Keep 26B installed-app row open until duplicate tool-call loop behavior is
+    fixed or a clean proof shows exactly bounded tool execution.
+- Boundary:
+  - This is not a parser raw-markup leak and not a cache failure. It is an
+    agentic tool-loop / model-following / UI tool-execution safety blocker.
+  - Do not hide it by only looking at top-level `status=pass`; the visible
+    screenshot and event log contradict release-clear agentic behavior.
+- Other-agent action:
+  - Reproduce 26B duplicate tool-call behavior with raw Responses SSE and panel
+    UI. Determine whether the duplicate `run_command` calls originate in model
+    output, server Responses assembly, or panel tool-loop replay before
+    patching. Do not deduplicate or drop tool calls blindly without preserving
+    final object consistency and raw event evidence.
