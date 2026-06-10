@@ -9429,3 +9429,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   agents keep required/auto/no-tool, content/reasoning deltas, argument
   delta/done, final object consistency, output indices, gateway/tunnel, and
   cache reuse in scope without inventing missing tool args.
+
+# 2026-06-10 - MiMo JANGTQ2 live media boundary pushed
+
+- Commit/push: `baa311e5` (`Record MiMo JANGTQ2 live media boundary`) was
+  pushed to `origin/codex/pr-intake-manifest` and `origin/main`.
+- Scope: proof/status/tracker/AGENTS only. No runtime code, release, signing,
+  notarization, PyPI, public download, Gemma, Qwen live tunnel, or N2 JANG_1L
+  action was included.
+- Unrelated local state left alone:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  remains modified from other work and `node_modules/` remains untracked.
