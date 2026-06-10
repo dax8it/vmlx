@@ -7897,3 +7897,14 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Health/runtime proof in the direct capture records native MTP active, hybrid SSM typed cache, TurboQuant attention KV enabled, and block disk cache writes. This is base Qwen35 MXFP8-MTP current-source proof; it does not clear Nex/N2 JANG_1L, MiMo, Gemma, UI, installed-app, or release rows.
 - Next lane action: capture panel gateway with the exact same Qwen35 model/request. If gateway matches direct, rebuild/redeploy the tunnel backend from current source and recapture. If gateway/source duplicates `0`, reopen `stream_responses_api()` before any release claim. No parser fallback, reasoning disable, or fake argument injection.
 - Boundary: no package, DMG build, signing, notarization, tag, appcast, upload, or public release action.
+
+# 2026-06-09 17:35 PDT - Qwen35 gateway raw SSE and JANG Max2 sync audit
+
+- Added gated live panel-gateway capture coverage in `panel/tests/api-gateway-qwen35-live-capture.test.ts`; `tests/cross_matrix/run_qwen35_responses_raw_sse_capture.py` now captures direct Qwen35 SSE and routes the same payload through the real `ApiGateway` class while the backend is live.
+- Fixed the raw-SSE parity classifier to accept structured gateway logs with `containsReasoning=true` as no-reasoning-disable evidence. Root cause: the gateway live capture log is JSON, while the classifier previously only recognized Python server text logs.
+- Live artifact: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-source-vs-tunnel-20260609.json`, `status=fail`, `missing_captures=[]`.
+- Direct and gateway are now green for the reported Responses failure class: both preserve `record_fact` args `{"value": "blue-cat"}`, have reasoning events, match `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, and emit valid indices `message=[0]`, `function_call=[1]`.
+- Tunnel is the only remaining red surface: it preserves args/reasoning/model but emits `message=[0]`, `function_call=[0]`, so `conflicting_output_indices=[0]`.
+- Checked JANG sync state locally and on `erics-m5-max2.local:~/jang`. Remote Max2 branch `codex/mimo-v25-cache-contract` has dirty JANG package/converter edits in `jang-tools/jang_tools/__main__.py`, `allocate.py`, `capabilities.py`, `convert.py`, and `convert_qwen35_jangtq.py`. They are package-side changes for MLP asymmetry floor control, `processor_config.json` preservation, Qwen35 JANGTQ MTP metadata stamping, and audio/video modality stamps.
+- Packaging boundary: PyPI `jang` latest is already `2.5.30`. Do not overwrite it. If the Max2 JANG changes are accepted, land them in canonical `/Users/eric/jang/jang-tools`, bump to `2.5.31`, run build/twine check/install proof, publish, then bump vMLX dependency/extras and bundled Python.
+- Boundary: no release/sign/notarize/tag/download action.
