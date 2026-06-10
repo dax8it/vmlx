@@ -7851,3 +7851,19 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Read the actual runbook `/Users/eric/wiki/infra/apple-notarization.md` and active scripts `panel/scripts/build-release-dmgs.sh`, `panel/scripts/notarize-release-dmgs.sh`, and `panel/scripts/verify-release-dmgs.sh`.
 - Updated `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the concrete keychain unlock/partition-list sequence, Developer ID/notary profile boundary, and canonical Sequoia/Tahoe build -> notarize/staple/blockmap -> verify flow.
 - Boundary: no build, package, sign, notarize, tag, appcast, or download mutation was run. The known blocker is `prepackage_ready=false`, not missing knowledge of how to sign/notarize.
+
+# 2026-06-09 17:01 PDT - Gemma 4 12B MXFP4 source image proof
+
+- Ran one live source media row: `.venv/bin/python tests/cross_matrix/run_gemma4_12b_media_smoke.py --rows mxfp4 --port 8892 --load-timeout 420 --out build/current-gemma4-12b-mxfp4-media-smoke-after-release-doc-correction-20260609.json`.
+- Result: `status=pass`; `mxfp4_image` returned visible `Red`, `vision_advertised=true`, `red_detected=true`, `no_channel_leak=true`.
+- Server log: `build/current-gemma4-12b-mxfp4-media-smoke-after-release-doc-correction-20260609_artifacts/mxfp4_image_server.log`; health records `weight_format=mxfp4`, `mlx_affine_quantized_matmul`, and `metal_na_active_on_host=true`.
+- Boundary: source API image proof only. Does not clear Gemma tools/cache/UI/installed-app/tunnel/audio/video release rows. No package/sign/notarize/tag/download/release action.
+
+# 2026-06-09 17:08 PDT - PyPI vmlx/jang checkpoint publish
+
+- Published `jang==2.5.30` from `/Users/eric/jang/jang-tools`; PyPI URL: `https://pypi.org/project/jang/2.5.30/`.
+- Published `vmlx==1.5.56` from the active worktree; PyPI URL: `https://pypi.org/project/vmlx/1.5.56/`.
+- Source/package fix: bumped vMLX hard dependency and extras from `jang>=2.5.29` to `jang>=2.5.30`, and aligned `panel/scripts/bundle-python.sh`, `tests/test_engine_audit.py`, and `vmlx_engine/utils/jang_loader.py`.
+- Build proof: fresh artifacts in `/tmp/vmlx-pypi-dist` and `/tmp/jang-pypi-dist`; `twine check` passed for both wheels and sdists.
+- Publish proof: PyPI JSON reports `jang 2.5.30` and `vmlx 1.5.56` with both wheel and sdist files. Clean temp venv no-deps install succeeded for `jang==2.5.30 vmlx==1.5.56`; installed `vmlx` metadata requires `jang>=2.5.30`.
+- Boundary: PyPI package checkpoint only. This is not a signed/notarized DMG release, and app release remains blocked by current prepackage/runtime/model/UI/cache rows.
