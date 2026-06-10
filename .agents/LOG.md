@@ -9974,3 +9974,39 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   Nemotron, DSV4, installed-app, or release readiness.
 - Other-agent action: use the latest Qwen artifact for Qwen35 raw SSE rows and
   keep working cross-family parser/API/tool-result/cache/UI proof.
+
+# 2026-06-10 05:55 PDT - Recorded AGENTS no-subagent and instruction-log guard
+
+- Request: put Eric's "write it down" and "no Python subagent" constraint into
+  `AGENTS.md`.
+- Done: patched active `AGENTS.md`,
+  `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`, and deprecated
+  `/Users/eric/vmlx/AGENTS.md`.
+- Boundary: documentation/coordination guard only; no runtime proof, release
+  action, PyPI action, signing, notarization, model launch, or N2 JANG_1L work.
+- Next: continue the active blocker list one lane at a time, with Qwen parser
+  proof green for the latest raw SSE artifact but MiMo/Gemma/N2 non-JANG_1L
+  release rows still requiring honest live evidence.
+
+# 2026-06-10 05:56 PDT - Continuation objective before MiMo blocker work
+
+- Request: keep the full production-quality checkpoint objective intact while
+  avoiding broad test-suite detours.
+- Current lane: MiMo V2.5 JANGTQ_2 exactness/media runtime classification from
+  existing proof and source inspection first.
+- Constraints: no subagents, no N2 JANG_1L, no release/sign/notarize/PyPI/
+  download action, no fake parser/JSON semantic repair.
+
+# 2026-06-10 06:02 PDT - MiMo JANGTQ2 video preprocessing cache fix
+
+- Done: patched video preprocessing cache preservation in
+  `vision_embedding_cache.py` and `mllm_batch_generator.py`, plus direct MiMo
+  video placeholder expansion in `models/mllm.py`.
+- Proof: `build/current-mimo-v25-jangtq2-video-cache-proof-after-video-tensor-cache-fix-20260610.json`.
+- Verification: py_compile passed for touched files; focused MiMo media tests
+  passed `26/26`; `git diff --check` and JSON validation passed.
+- Live result: real MiMo V2.5 JANGTQ_2 loaded; repeated red-video requests
+  returned HTTP 200; health showed `pixel_cache_hits=1`, `pixel_cache_misses=1`,
+  `pixel_cache_size=1`.
+- Boundary: visual semantics remain red (`White.` for red video), literal
+  exactness remains red, and release/installed-app/L2 rows remain open.

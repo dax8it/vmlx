@@ -24,6 +24,13 @@ Every movement must be logged in `.agents/STATUS.md` and `.agents/LOG.md`:
 
 - Do not ignore Eric's goal.
 - Write down every instruction, every status change, and every movement.
+- Before doing substantive work, write the current-turn instruction/correction
+  into `.agents/STATUS.md` and `.agents/LOG.md` so the agent is forced to check
+  it instead of drifting.
+- Do not use Python, shell wrappers, MCP tools, or any other mechanism to spawn
+  or manage subagents for this lane. Direct Python is allowed only for local
+  verification, artifact inspection, proof scripts, tests, and source
+  maintenance that does not prompt, supervise, or summarize subagents.
 - Do not work on N2 JANG_1L unless Eric explicitly reopens that lane.
 - Eric said: "im reamming nex n2 jang1l forget about it".
 - Eric then corrected the agent after an accidental N2 JANG_1L launch.

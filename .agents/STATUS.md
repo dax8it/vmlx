@@ -2283,3 +2283,88 @@
   request as green after `09bfe652` plus the latest artifact, but continue
   cross-family parser/API proof for Gemma/MiMo/N2/Qwen-coder and do not use the
   Qwen artifact as proof for other families.
+
+# 2026-06-10 05:55 PDT - AGENTS guard updated for instruction logging and no-subagent constraint
+
+- Request: Eric said to write every instruction/status/movement down, force the
+  agent to check it, emphasize auto-tool/content/reasoning/delta/API/gateway
+  parser work, and record the no Python subagent constraint "into agents.md".
+- Directive check: active worktree is
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; deprecated `/Users/eric/vmlx`
+  remains routing-only. N2 JANG_1L remains Eric-owned/off-limits. No release,
+  signing, notarization, PyPI, upload, or model launch action was taken.
+- Action: updated active `AGENTS.md` and
+  `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md` to require transcribing
+  current-turn user instructions/corrections into `.agents/STATUS.md` and
+  `.agents/LOG.md` before substantive work. The same guard now explicitly
+  prohibits Python, shell wrappers, MCP tools, or any other mechanism from
+  spawning/managing subagents; direct Python remains allowed only for local
+  verification, artifact inspection, proof scripts, tests, and source
+  maintenance that does not prompt/supervise/summarize subagents.
+- Action: updated deprecated `/Users/eric/vmlx/AGENTS.md` with the same routing
+  reminder so future agents starting in the old checkout route back to the
+  active worktree and carry the instruction-log/no-subagent constraints.
+- Proven: documentation guard only. It records the constraint and routing
+  boundary; it does not prove any model/runtime/parser/UI/release row.
+- Other-agent action: before every substantive action, read active directives
+  and status, write the current-turn instruction/correction down, then continue
+  one live blocker at a time. Do not spawn subagents for this lane.
+
+# 2026-06-10 05:56 PDT - Continuation objective logged before MiMo blocker work
+
+- Request: continue toward production-quality checkpoint readiness for Nex N2
+  JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP, VL/audio/cache reuse/
+  TurboQuant/reasoning/tool parser/API/gateway/UI, but do it in efficient
+  phases and do not waste time building broad new test-suite infrastructure.
+- Directive check: active lane is the current Python/Electron worktree
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; N2 JANG_1L remains
+  Eric-owned/off-limits; no release/sign/notarize/PyPI/download action is
+  allowed in this step; no subagent spawning or delegation is allowed.
+- Immediate blocker being reduced: MiMo V2.5 JANGTQ_2 exactness/media runtime
+  classification, using existing current proof artifacts and direct code
+  inspection before any new proof.
+- Must not claim: no model family is release-clear from this continuation
+  unless live evidence proves the full row; no parser/JSON repair is allowed to
+  mask MiMo semantic exactness; no load-only or transport-only proof is enough.
+
+# 2026-06-10 06:02 PDT - MiMo JANGTQ2 video preprocessing cache fix live-proven, visual quality still red
+
+- Request: reduce the MiMo V2.5 JANGTQ/JANG blocker with real fixes and live
+  proof, without broad test-suite detours or fake parser/JSON semantic repair.
+- Directive check: active lane was MiMo V2.5 JANGTQ_2 exactness/media/cache;
+  N2 JANG_1L remained off-limits; no release/sign/notarize/PyPI/download
+  action was taken; no subagents were used.
+- Fix: `vmlx_engine/vision_embedding_cache.py` now stores optional
+  `video_pixel_values` and `video_grid_thw` in `PixelCacheEntry`.
+- Fix: `vmlx_engine/mllm_batch_generator.py` now restores those video fields on
+  pixel-cache hit and stores video-only preprocessing outputs when
+  `video_pixel_values` is present, instead of requiring image `pixel_values`.
+- Fix: `vmlx_engine/models/mllm.py` direct/simple chat and stream paths now
+  include `mimo_v2` in the video-placeholder-to-image-frame expansion gate,
+  matching the fact that those direct paths pass sampled frames through
+  `images=`.
+- Verification: `python3 -m py_compile vmlx_engine/models/mllm.py
+  vmlx_engine/mllm_batch_generator.py vmlx_engine/vision_embedding_cache.py`
+  passed; focused MiMo media tests passed `26/26`; `git diff --check` passed;
+  JSON artifact validated.
+- Live proof: launched real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` current-source
+  server on port `8877`, with media runtime auto-enabled, visual/audio/speech
+  weights bound (`364/75/20`) and native MiMo mixed full/RotatingKVCache layout.
+  Repeated the same red-video `/v1/chat/completions` request twice; both
+  returned HTTP 200 and health after the second request reported
+  `pixel_cache_hits=1`, `pixel_cache_misses=1`, `pixel_cache_size=1`.
+- Artifact:
+  `build/current-mimo-v25-jangtq2-video-cache-proof-after-video-tensor-cache-fix-20260610.json`,
+  `status=open`.
+- Proven: video preprocessing cache preservation for video-only MiMo requests
+  is no longer structurally image-only; repeated video requests hit the pixel
+  cache under the real JANGTQ_2 runtime.
+- Still red: the red video still answered `White.`; this does not fix MiMo
+  visual semantic correctness, solid-color image correctness, text/tool/JSON
+  literal exactness, fresh-process L2 restore, installed-app parity, or release
+  clearance. Earlier live text exactness still mutates `MIMO-OK` to `MIMOOK`.
+- Other-agent action: consume this source fix when rebuilding the app/package
+  and rerun MiMo JANGTQ_2 UI video cache rows. For visual quality/exactness,
+  continue artifact/logit/quant-contract diagnosis, not parser repair, sampling
+  clamps, or cache/L2 chasing.
