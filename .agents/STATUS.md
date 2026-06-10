@@ -1051,3 +1051,11 @@
 - Red boundary: the server returned `400 - /v1/chat/completions received unsupported media modality image because the loaded runtime is text-only. Supported modalities: text.` Server log records that forced MLLM was overridden because MiMo media weights are preserved but `unwired weights_preserved_text_runtime`.
 - Runtime/cache evidence: active memory `105016.1 MB`, peak `105842.8 MB`, native `mixed_swa_kv_v1` with `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cached_tokens=39`, `l2_block_tokens_on_disk=110`, and block-disk writes `3`.
 - Boundary: MiMo installed-app media remains unsupported by honest guard. This does not clear tools, media, JANGTQ_2 exactness, package/sign/notarize/tag/upload, or release readiness.
+
+# 2026-06-10 - N2 JANG_1L launch-safe gate refreshed
+
+- Reduced blocker: `runtime/kernel` plus `cache/storage` scheduling proof for Nex/N2 Pro JANG_1L.
+- No-load preflight: `build/current-n2-pro-jang1l-local-memory-preflight-launch-safe-20260610.json`, `status=open`, `decision=do_not_launch`; indexed payload `110.57 GiB`, required available `118.57 GiB`, observed available `114.23 GiB`, gap `4.34 GiB`.
+- Launch-safe chat/cache gate: `build/current-n2-jang1l-chat-cache-launch-safe-20260610.json`, `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`; observed available `114.22 GiB`, required available `118.57 GiB`, gap `4.35 GiB`.
+- Requested probes were preserved in the gate artifact: tool, Responses, Responses stream, and L2 restart. The model was not launched because the safe gate blocked before `Popen`.
+- Boundary: this is current safe scheduling evidence only. The previous explicit override OOM remains the live failure evidence; JANG_1L still needs a lower-peak runtime strategy before any support claim. No package/sign/notarize/tag/upload/release action was run.

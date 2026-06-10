@@ -8238,3 +8238,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Boundary proved: installed app attached one image and server `MEDIA_DIAG` saw `image_url`, but `/v1/chat/completions` rejected image with `400` because the loaded runtime is text-only. Supported modalities reported by the server are `text`.
 - Runtime/cache stayed live before the gate: `mixed_swa_kv_v1`, `mimo_v2_asymmetric_swa`, `cache_detail=paged`, `cached_tokens=39`, and `l2_block_tokens_on_disk=110`.
 - This is not a load/cache/L2 failure and not a lost attachment. Do not claim MiMo installed-app media support. No release action was run.
+
+# 2026-06-10 - N2 JANG_1L launch-safe gate
+
+- Reran the no-load Nex/N2 Pro JANG_1L preflight and the launch-safe chat/cache gate after the MiMo installed-app image classification.
+- Preflight artifact `build/current-n2-pro-jang1l-local-memory-preflight-launch-safe-20260610.json` is `status=open`, `decision=do_not_launch`: payload `110.57 GiB`, required available `118.57 GiB`, observed available `114.23 GiB`, gap `4.34 GiB`.
+- Chat/cache gate artifact `build/current-n2-jang1l-chat-cache-launch-safe-20260610.json` is `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`: observed available `114.22 GiB`, gap `4.35 GiB`.
+- Requested tool, Responses, Responses stream, and L2 restart probes were recorded, but the safe gate correctly skipped before launching the server.
+- Boundary: no new Metal OOM and no runtime clearance. The earlier override launch already proved forced below-gate startup aborts before health; current safe path remains queued until memory is high enough or a lower-peak JANG_1L loader/runtime path exists.

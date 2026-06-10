@@ -721,6 +721,8 @@ Artifact:
 - `build/current-n2-pro-jang1l-local-memory-preflight-20260610-after-installed-app-proofs.json`
 - `build/current-n2-jang1l-live-chat-cache-override-20260610.json`
 - server log: `build/current-n2-jang1l-live-chat-cache-override-20260610.server.log`
+- `build/current-n2-pro-jang1l-local-memory-preflight-launch-safe-20260610.json`
+- `build/current-n2-jang1l-chat-cache-launch-safe-20260610.json`
 
 Observed:
 
@@ -753,6 +755,12 @@ Observed:
   policy, loaded 123 shards, enabled bfloat16 for 512 experts, set `Wired limit
   set to 115 GB (model 119 GB)`, then aborted with `[METAL] Command buffer
   execution failed: Insufficient Memory`.
+- Fresh launch-safe refresh after MiMo installed-app image proof still skips
+  before launch: no-load preflight observed `available_gib=114.23`, required
+  `118.57`, gap `4.34`; chat/cache gate observed `available_gib=114.22`,
+  required `118.57`, gap `4.35`, and recorded requested tool, Responses,
+  Responses stream, and L2 restart probes. This safe run did not call `Popen`
+  and did not create another Metal OOM.
 
 Conclusion:
 
