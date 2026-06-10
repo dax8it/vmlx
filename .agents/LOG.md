@@ -12630,6 +12630,63 @@ Next action:
 - Classification: N2 JANGTQ2 audio is an honest unsupported-modality gate, not a crash. The app sent `input_audio`; server media diag saw `engine_is_mllm=true`, family `qwen3_5_moe`, and returned HTTP 400: supported modalities are `text, vision, video`. Do not claim N2 audio support until a real weight-backed audio path exists.
 - Still open: public tunnel N2 JANGTQ2 SSE parity is missing from current captures; N2 JANG_1L remains off-limits; no release readiness claim.
 
+# 2026-06-10 13:38 PDT - Continuation goal re-recorded
+
+- Request: continue the active checkpoint-readiness goal and avoid wasting time
+  on broad harness/test-suite churn or recursive agent behavior.
+- Current constraints written before action: no release/sign/notarize/PyPI/
+  updater/download/site work in this turn; no N2 JANG_1L; no subagents; no fake
+  parser/string/cache/media fixes; no synthetic tool arguments; no reasoning
+  disable workaround.
+- Selection rule: inspect current proof matrix/open rows and move one concrete
+  runtime/API/cache/media/UI/source blocker with direct evidence. Use existing
+  focused proof tooling only where it directly proves the row.
+- Next action: inspect current proof matrix/status for remaining open rows and
+  choose the highest-value live/source blocker.
+
+# 2026-06-10 13:39 PDT - N2 JANGTQ2 previous-response lane selected
+
+- Selected blocker: Nex/N2 JANGTQ2 Responses previous-response/tool-loop
+  behavior, limited to the allowed non-JANG_1L lane.
+- Reason: current artifacts show direct/dev-app N2 JANGTQ2 tool/cache proof plus
+  several long-delta/fail-closed/panel-error rows. This affects the API/UI
+  agentic loop surface the checkpoint release needs and may expose a real source
+  boundary.
+- Next action: inspect existing proof JSONs and logs before any source edit or
+  relaunch. Do not claim N2 JANG_1L, do not run release actions, and do not
+  synthesize missing tool arguments or disable reasoning as a workaround.
+
+# 2026-06-10 13:42 PDT - N2 JANGTQ2 previous-response boundary classified
+
+- Evidence inspected:
+  `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`,
+  `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-default-20260610-proof.json`,
+  the stricter long-delta fail-closed artifacts, `panel/src/main/ipc/chat.ts`,
+  and `vmlx_engine/server.py`.
+- Finding: the default N2 JANGTQ2 previous-response path is green. The panel
+  sends scoped `function_call_output` items with `previous_response_id` and
+  does not re-send explicit `tool_choice` on in-turn Responses follow-ups. The
+  green proof shows two visible assistant turns, probe files ONE/TWO written,
+  renderer deltas, hybrid SSM/TurboQuant KV cache, and L2 evidence.
+- Finding: the stricter long-delta red row is a second new required-tool user
+  turn where the model did not emit a call. Current Responses server streaming
+  fails closed with `tool_calls_required` and a final failed response object,
+  rather than synthesizing arguments or placeholder tools.
+- Action: updated `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` and
+  `.agents/STATUS.md` to classify this as model/tool-reliability red for the
+  stricter prompt, not a current API previous-response replay bug.
+- Verification: `py_compile` passed for `vmlx_engine/server.py`,
+  `tests/test_server.py`, and `tests/test_engine_audit.py`.
+  Focused pytest passed `4/4`:
+  `tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_required_empty_xml_tool_call_is_rejected`,
+  `tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments`,
+  `tests/test_engine_audit.py::TestToolParserConcurrency::test_responses_final_tool_emit_drops_empty_required_args`,
+  and
+  `tests/test_engine_audit.py::TestToolParserConcurrency::test_generic_parser_empty_required_args_fail_closed_at_shared_boundary`.
+  `git diff --check` passed.
+- No source edit was made for this N2 row because current evidence shows the
+  source contract is already correct.
+
 # 2026-06-10 13:18 PDT - Gemma JANG/MXFP media/audio gating lane selected
 
 - Current objective continues: build/fix model runtime blockers, especially Gemma JANG/MXFP/QAT VL/video/audio/cache/API/UI, without release/sign/notarize actions.

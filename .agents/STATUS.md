@@ -1,4 +1,40 @@
 ## CODEX
+- now: continuing the persistent checkpoint-readiness goal after the current-turn
+  goal reminder. Select the next blocker from current written proof state, not
+  chat memory or stale release pressure.
+- objective: move real fixes/proofs for Nex/N2 JANGTQ/non-JANG_1L, MiMo V2.5
+  JANG/JANGTQ, Gemma JANG/MXFP/QAT, Qwen/Qwen-coder, VL/video/audio,
+  cache/L2/TurboQuant/JANG/JANGTQ/MXFP/MXTQ, reasoning, tool parsers, API,
+  gateway, UI, and installed-app surfaces toward checkpoint release readiness.
+- constraints: no release/sign/notarize/PyPI/updater/download/site action in
+  this turn; no N2 JANG_1L; no subagents or recursive agent delegation; avoid
+  broad low-value test-suite churn; do not synthesize tool args, disable
+  reasoning, fake media capability from metadata, patch MiMo semantic exactness
+  with parser/string repair, or claim rows from indirect evidence.
+- next movement: inspect the current proof matrix/open rows and choose one
+  concrete blocker with live-source or source-fix potential. Prefer runtime/API/
+  cache/media/UI proof over pointer churn, but patch source if the evidence
+  identifies a real current bug.
+- selected blocker: Nex/N2 JANGTQ2 Responses previous-response/tool-loop
+  behavior in the allowed non-JANG_1L lane. Current artifacts include multiple
+  long-delta/fail-closed/panel-error rows, so this may expose a real API/UI
+  boundary for Codex/opencode-style loops. Inspect existing proof JSONs before
+  editing or relaunching.
+- source inspection result: default N2 JANGTQ2 previous-response/tool-loop is
+  already green and not a replayed-tool-choice bug. The panel uses scoped
+  `function_call_output` input with `previous_response_id` and suppresses
+  explicit `tool_choice` on `isResponsesToolFollowup`. The stricter long-delta
+  red row is a second required-tool user turn where the model failed to emit a
+  call; the Responses server fail-closed path emits `tool_calls_required` plus
+  `response.completed` with `status=failed`, empty output, and usage/cache
+  detail. Keep it classified as model/tool-reliability red, not API replay
+  breakage.
+- verification: `py_compile` passed for `vmlx_engine/server.py`,
+  `tests/test_server.py`, and `tests/test_engine_audit.py`. Focused required
+  tool fail-closed checks passed `4/4`: two streaming Responses empty-XML tests
+  plus server-boundary empty-required-args guards. `git diff --check` passed.
+
+## CODEX
 - now: continuing after Qwen27 MXFP8 tunnel parity. Current selected blocker is
   MiMo V2.5 JANG_2L/JANGTQ_2 local runtime/API/cache readiness, with focus on
   a reducible local row rather than JANGTQ_2 semantic exactness. The exactness

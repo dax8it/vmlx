@@ -1565,6 +1565,14 @@ Proven:
   tool/cache/delta row is green:
   `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`
   has `status=pass`.
+- Current source inspection confirms the previous-response follow-up request
+  builder is not re-sending the original explicit required tool choice for
+  in-turn `function_call_output` continuations. `panel/src/main/ipc/chat.ts`
+  sets `input` to the scoped `function_call_output` items, sets
+  `previous_response_id`, and guards `obj.tool_choice` with
+  `!isResponsesToolFollowup`. The green proof logs two
+  `Responses tool follow-up using previous_response_id=...` lines, so the
+  default N2 JANGTQ2 red row is not a replayed-tool-choice bug.
 - The green combined app proof covers built-in `run_command`, tool-result
   continuation, visible markers, renderer deltas, cache/L2, and settings:
   assistant messages were `Done. REAL_UI_LIVE_TOOL_ONE` and
@@ -1654,6 +1662,14 @@ Red:
   failed because the second turn did not create `real_ui_tool_probe_2.txt` and
   visible output degenerated into repeated `!` after a tool-choice-required
   error. Do not generalize the default checkpoint pass to that stricter prompt.
+- Current source inspection confirms the Responses streaming fail-closed path
+  for that stricter required-tool miss is contract-shaped: when
+  `tool_choice='required'` produces no parsed tool calls, `vmlx_engine/server.py`
+  emits empty `response.output_text.done`, an incomplete message
+  `response.output_item.done`, an `error` event with
+  `code=tool_calls_required`, and `response.completed` with `status=failed`,
+  empty `output_text`, empty `output`, and usage/cache details. Do not replace
+  this with argument synthesis or a placeholder tool call.
 - Audio, public tunnel SSE parity, N2 JANG_1L, stricter custom long-delta prompt
   quality, and release readiness remain open. Image and video are green in both
   the source dev app and rebuilt installed app; audio is honestly gated as
