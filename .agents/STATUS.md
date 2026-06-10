@@ -3424,3 +3424,33 @@
 - Boundary: this is source/API fail-closed behavior only. Same-model live
   direct/gateway/tunnel raw SSE remains separate; no release/sign/notarize/
   package/PyPI/updater/download action; no N2 JANG_1L.
+
+# 2026-06-10 08:58 PDT - Bundled runtime drift found after Responses fix
+
+- Current movement: after `e49ad2319`, ran `./panel/scripts/verify-bundled-python.sh`
+  before further live/app proof. It failed on bundled `vmlx_engine/server.py`
+  content drift: source sha `0d84fe5280867cc7...`, bundled sha
+  `9632a23b0d8b861d...`.
+- Root cause: the latest source Responses markup cleanup is not yet present in
+  generated `panel/bundled-python` / staged app runtime copies.
+- Next action: mechanically sync current `vmlx_engine` into generated bundled
+  runtime copies and rerun bundled parity plus the bundled Responses empty XML
+  repro. No signing, notarizing, packaging, upload, or release action.
+
+# 2026-06-10 08:59 PDT - Bundled runtime parity restored
+
+- Generated runtime sync completed for `panel/bundled-python` and both staged
+  Sequoia/Tahoe app runtime/source copies. All checked `server.py` copies now
+  share source sha prefix `0d84fe5280867cc7`.
+- Verification passed: `./panel/scripts/verify-bundled-python.sh` is green,
+  including critical `vmlx_engine` and `jang_tools` source-vs-bundled hash
+  checks and runtime imports.
+- Bundled Python Responses repro passed from
+  `panel/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py`:
+  preamble-only final output, no function-call item, no
+  `response.function_call_arguments.*`, no `"arguments": "{}"`, and no raw XML.
+- Proof artifact:
+  `build/current-bundled-runtime-parity-after-responses-markup-fix-20260610.json`.
+- Boundary: this restores local generated runtime parity only. It is not a
+  signed/notarized package, release, PyPI publish, updater, or website action;
+  same-model direct/gateway/tunnel raw SSE remains separate; no N2 JANG_1L.

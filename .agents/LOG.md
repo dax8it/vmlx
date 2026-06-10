@@ -10941,3 +10941,50 @@ Boundary:
 - No fake argument synthesis, no hidden semantic repair, no reasoning disable.
 - Same-model live direct/gateway/tunnel raw SSE remains a separate proof lane.
 - No release/sign/notarize/package/PyPI/updater/download work and no N2 JANG_1L.
+
+## 2026-06-10 08:58 PDT - Bundled runtime parity check after Responses source fix
+
+Request/action: verify generated bundled runtime after `e49ad2319` before
+running installed-app or bundled proof.
+
+Finding:
+
+- `./panel/scripts/verify-bundled-python.sh` failed on
+  `vmlx_engine/server.py` content drift.
+- Source sha prefix: `0d84fe5280867cc7`.
+- Bundled sha prefix: `9632a23b0d8b861d`.
+- This means bundled Python lacks the latest Responses invalid-tool markup
+  cleanup and would still be stale for app/API proof.
+
+Next action: sync generated runtime copies from current source, rerun parity,
+and verify the bundled Responses repro. No release action.
+
+## 2026-06-10 08:59 PDT - Bundled runtime parity restored after source sync
+
+Action:
+
+- Synced current `vmlx_engine/` into generated bundled Python and staged
+  Sequoia/Tahoe app runtime/source copies.
+- Re-ran bundled parity and a bundled Python Responses empty XML repro.
+
+Results:
+
+- `./panel/scripts/verify-bundled-python.sh` passed.
+- Critical `vmlx_engine` files match source content.
+- Critical `jang_tools` files match source content.
+- Bundled runtime imports for MLX, MLX-LM, MLX-VLM, Gemma4, MiMo, Step3.7,
+  JANGTQ loaders, TurboQuant kernels, and vMLX runtime modules passed.
+- Bundled Responses repro from the bundled `server.py` produced preamble-only
+  final text, no function-call item, no argument events, no `{}` args, and no
+  raw XML.
+
+Proof artifact:
+
+- `build/current-bundled-runtime-parity-after-responses-markup-fix-20260610.json`
+
+Boundary:
+
+- This is local generated-runtime parity for future app proof. It is not a
+  release/sign/notarize/package/PyPI/updater/download/website action.
+- Same-model direct/gateway/tunnel live raw SSE remains separate.
+- No N2 JANG_1L work was performed.
