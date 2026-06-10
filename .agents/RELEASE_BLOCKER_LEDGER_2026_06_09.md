@@ -86,6 +86,13 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `MIMO_JANGTQ2_TEXT_ONE` / `MIMO_JANGTQ2_TEXT_TWO`, hit paged cache with
   `cache_hit_tokens=42`, and wrote block L2. This does not clear the broader
   JANGTQ_2 artifact exactness/tool/media/source-vs-quant blockers.
+- 2026-06-10 update: MiMo JANGTQ_2 installed-app Chat Completions built-in tool
+  loop is green in `build/current-real-ui-installed-app-mimo-v25-jangtq2-tools-proof-20260610.json`.
+  The rebuilt app loaded the 79 GiB bundle, executed `run_command`, created both
+  expected probe files exactly (`REAL_UI_LIVE_TOOL_ONE` and
+  `REAL_UI_LIVE_TOOL_TWO`), completed visible assistant turns, and recorded
+  paged mixed-SWA cache/L2 evidence. This does not clear broader JANGTQ_2
+  exactness/source-vs-quant, Responses tools, media, or MiMo JANG_2L tool rows.
 - 2026-06-10 update: MiMo JANGTQ_2 installed-app image/media is now explicitly
   red in `build/current-real-ui-installed-app-mimo-v25-jangtq2-image-proof-20260610.json`.
   The app attached an image and server `MEDIA_DIAG` saw `image_url`, but the

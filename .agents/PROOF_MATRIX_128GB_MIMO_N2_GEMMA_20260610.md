@@ -858,8 +858,16 @@ Next implementation target:
   MiMo JANG_2L short cache/text, and N2 JANGTQ2 full chat/cache/Responses/L2.
 - Do not spend time proving generic cache. For MiMo use `mixed_swa_kv_v1`; for
   N2 use `hybrid_ssm_v1` with attention TQ KV plus native SSM companion.
-- MiMo JANGTQ2 is loaded/cached but exactness-red; do artifact/logit/decode
-  diagnosis, not parser repair.
+- MiMo JANGTQ2 is loaded/cached and the installed-app default Chat Completions
+  built-in tool loop is now green, but broader exactness remains red. New proof
+  `build/current-real-ui-installed-app-mimo-v25-jangtq2-tools-proof-20260610.json`
+  loaded the real 79 GiB bundle in `/Applications/vMLX.app`, executed
+  `run_command`, created both expected probe files exactly, completed visible
+  turns, kept parser/reasoning leak checks clean, and recorded paged
+  mixed-SWA/L2 evidence (`cache_hit_tokens=4548`,
+  `l2_block_tokens_on_disk=4225`, block-disk hits `36`, writes `68`). Continue
+  artifact/logit/decode diagnosis for literal/JSON/source-vs-quant exactness;
+  do not reduce that to parser repair.
 - MiMo JANG_2L is the stronger MiMo checkpoint candidate for load/cache/text,
   but post-fix app tool exactness is still red. The panel now pins
   `tool_choice` only for explicit single-tool user requests, and the app can

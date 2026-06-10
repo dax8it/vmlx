@@ -8302,3 +8302,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Positive evidence: installed-app UI, real `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-JANG_4M` load, two visible text turns before audio, audio attachment persistence, server `MEDIA_DIAG` input_audio detection, base64 WAV decode, server cache controls, no parser/reasoning leak, native mixed-SWA cache, and block L2 before the media turn.
 - Red evidence: final audio turn had empty visible assistant content, `visibleAssistantTurnsComplete=false`, `audioSemanticVerified=false`, and no `audio_where_supported` surface.
 - Boundary: JANG4M installed-app audio is red. Do not claim audio support; text/tools/image/video rows remain separately green. No release action was run.
+
+# 2026-06-10 - MiMo JANGTQ_2 installed-app tools
+
+- Ran installed-app MiMo V2.5 JANGTQ_2 built-in tool proof through `/Applications/vMLX.app` with Chat Completions, built-in tools, cache controls, temperature `0`, top_p `1`, and max tokens `256`.
+- Proof summary `build/current-real-ui-installed-app-mimo-v25-jangtq2-tools-proof-20260610.json` is `status=pass`; raw proof is `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-tools-20260610-proof.json`.
+- Proven: installed-app UI, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` load, built-in `run_command` loop, exact probe files `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`, visible assistant turns, server cache controls, no parser/reasoning leak, native mixed-SWA cache, and block L2.
+- Runtime/cache evidence: active memory `76763.1 MB`, peak `81328.7 MB`, TurboQuant codebook routed experts with prestacked layout, `cache_detail=paged`, `cache_hit_tokens=4548`, `l2_block_tokens_on_disk=4225`, block-disk hits `36`, and block-disk writes `68`.
+- Boundary: this clears the default installed-app Chat Completions tool loop for MiMo JANGTQ_2 only. Broader exactness/source-vs-quant, Responses tools, media, JANG_2L tools, and release readiness remain open. No release action was run.
