@@ -71,6 +71,19 @@
 - Red evidence: first assistant visible content was empty/whitespace (`8` streamed space tokens), and the second UI turn failed with HTTP `503`: Metal GPU working set too full at `102%` of the `107.5GB` cap. This means real dev-app load + one bounded request is proven, but visible quality and multi-turn/cache reuse remain red.
 - Boundary: this does not clear N2 JANG_1L tools, Responses, Responses stream, L2 restart, media, installed-app parity, public tunnel parity, package/sign/notarize/tag/upload, or release support. No release action was run.
 
+# 2026-06-10 - Qwen35 Responses source/gateway raw SSE recapture
+
+- Ran fresh same-model Qwen35 MXFP8-MTP Responses raw-SSE capture from current source after the reasoning output-item index fix.
+- Command: `.venv/bin/python tests/cross_matrix/run_qwen35_responses_raw_sse_capture.py --out build/current-responses-raw-sse-parity-qwen35-direct-gateway-source-vs-tunnel-after-reasoning-item-index-20260610.json --direct-sse build/responses-sse-captures-20260610/direct-qwen35-mxfp8-mtp-tool-after-reasoning-item-index-20260610.sse --gateway-sse build/responses-sse-captures-20260610/gateway-qwen35-mxfp8-mtp-tool-after-reasoning-item-index-20260610.sse --server-log build/responses-sse-captures-20260610/direct-qwen35-mxfp8-mtp-after-reasoning-item-index.server.log --gateway-log build/responses-sse-captures-20260610/gateway-qwen35-mxfp8-mtp-after-reasoning-item-index.log --tunnel-sse build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse --cache-dir build/current-responses-raw-sse-qwen35-direct-source-cache-20260610 --require-reasoning-events --min-available-gb 16`.
+- Artifact `build/current-responses-raw-sse-parity-qwen35-direct-gateway-source-vs-tunnel-after-reasoning-item-index-20260610.json` is `status=fail`, but the fail is isolated to the reused public tunnel capture.
+- Direct current-source proof: `record_fact` args preserved as `{"value": "blue-cat"}`, reasoning events present, no reasoning-disable workaround, model `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, and output indices `message=[0]`, `reasoning=[1]`, `function_call=[2]`.
+- Panel gateway proof: same args, same model, reasoning events present, no reasoning-disable workaround, and output indices `message=[0]`, `reasoning=[1]`, `function_call=[2]`. The vitest gateway capture passed `1/1`.
+- Tunnel boundary: the reused public tunnel SSE still preserves args and reasoning events, but is stale and emits `message=[0]`, `function_call=[0]`, so `conflicting_output_indices=[0]`.
+- Runtime/cache evidence: current source loaded real `/Users/eric/models/JANGQ/Qwen3.6-35B-A3B-MXFP8-MTP`; health reported native MTP active for `qwen3_5_moe`, hybrid SSM typed cache, live attention TurboQuant KV, block disk L2, SSM companion L2, and q4 attention-KV storage boundary. First request wrote 4 block-L2 blocks / 222 tokens; gateway request reused 222 cached KV+SSM tokens and re-compressed 10 KV layers to TurboQuant.
+- Memory evidence: before launch 111.76 GiB available; after health process RSS 35.769 GiB with 76.01 GiB still available.
+- Classification: current source direct+gateway no longer reproduce the #190/#192 output-index/tool-args bug. Remaining action is to rebuild/redeploy the public tunnel/backend from `841e5f40` or newer and recapture tunnel raw SSE with the same model/request.
+- Boundary: no source patch was made in this step, no parser fallback or fake arg repair was added, and no release/package/sign/notarize/PyPI action was run.
+
 # 2026-06-10 - Gemma 31B JANG4M dev-app audio boundary
 
 - Ran current Electron dev-build Gemma 4 31B QAT JANG4M audio proof with `npm run dev`, Chat Completions, one app audio attachment, server cache controls, temperature `0`, top_p `1`, max tokens `128`, and max prompt tokens `12000`.
