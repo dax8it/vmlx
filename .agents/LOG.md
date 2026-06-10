@@ -9289,3 +9289,50 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   storage-quant policy remain red; Gemma E2B same-model tunnel parity remains
   red. This is not release clearance and no packaging/signing/notarization/PyPI
   action was taken.
+
+# 2026-06-10 - Gemma QAT audio runtime gate
+
+- User focus item: Gemma JANG/MXFP/QAT honest modality detection; do not claim
+  audio from config or token metadata when no audio tower weights exist.
+- Directive check passed: this is an allowed Gemma lane, and N2 JANG_1L remains
+  Eric-owned/not touched.
+- Source edits:
+  - `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py` now
+    records `audio_declared_by_config` separately from runtime `audio`, with
+    runtime audio true only when `audio_tower.*` weights are present.
+  - Metadata-only `embed_audio.*` rows record `audio_runtime_supported=false`
+    and `audio_embed_only=true`.
+  - Required-row classification now preserves
+    `declared_required_modalities` but removes `audio` from effective
+    `required_modalities` for bundles that advertise audio metadata without
+    audio tower weights.
+  - Current suite/checklist/objective digest pointers now use
+    `build/current-gemma-qat-native-mxfp4-local-inventory-after-audio-runtime-gate-20260610.json`.
+- Generated artifacts:
+  - `build/current-gemma-qat-native-mxfp4-local-inventory-after-audio-runtime-gate-20260610.json`
+  - `build/current-full-release-objective-checklist-after-gemma-audio-runtime-gate-20260610.json`
+  - `build/current-objective-proof-after-gemma-audio-runtime-gate-20260610.json`
+- Artifact facts:
+  - inventory `status=open`, `count=21`, `missing_required_rows=[]`,
+    `source_live_smoke_open_rows=[]`.
+  - full checklist `status=open`, `failed_count=67`.
+  - 12B rows record `audio_declared_by_config=true`, runtime `audio=false`,
+    `audio_runtime_supported=false`, and effective `required_modalities`
+    without audio.
+  - E2B/E4B keep audio runtime-supported because audio tower weights are
+    present.
+- Verification:
+  - `.venv/bin/python -m pytest -q tests/test_gemma_qat_native_mxfp4_inventory_gate.py`
+    passed `9 passed`.
+  - `.venv/bin/python -m pytest -q tests/test_current_regression_suite.py -k gemma_qat_inventory_gate`
+    passed `2 passed`.
+  - `.venv/bin/python -m pytest -q tests/test_full_release_objective_checklist.py -k gemma_qat`
+    passed `3 passed`.
+  - `python3 -m py_compile tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py tests/cross_matrix/run_full_release_objective_checklist.py tests/cross_matrix/summarize_objective_proof.py tests/cross_matrix/run_current_regression_suite.py`
+    passed.
+- Boundary: this is inventory/checklist honesty, not a new live media proof.
+  No release, signing, notarization, PyPI, installed-app, public tunnel, MiMo,
+  Qwen, or N2 JANG_1L action was taken.
+- Other-agent action: keep E2B/E4B audio E2E live tests because they are
+  weight-backed. Do not let 12B/26B/31B audio go green unless audio tower
+  weights or a real runtime implementation exists and is live-proven.

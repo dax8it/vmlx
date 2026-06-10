@@ -1546,3 +1546,40 @@
   Gemma QAT media/live rows, public Responses tunnel parity, MiMo exactness and
   media/L2 rows, installed-app parity, and release clearance. No release,
   signing, notarization, PyPI, or N2 JANG_1L action was taken.
+
+# 2026-06-10 - Gemma QAT audio runtime gate in progress
+
+- Directive check: allowed lane is Gemma JANG/MXFP/QAT honest modality
+  detection. N2 JANG_1L remains Eric-owned and is not being touched.
+- Requested focus: do not advertise fake audio from config/token metadata;
+  audio must be weight-backed and live-proven where claimed.
+- Source edit: `tests/cross_matrix/run_gemma_qat_native_mxfp4_inventory_gate.py`
+  now splits `audio_declared_by_config` from runtime `audio` support. Runtime
+  audio is true only when `audio_tower.*` weights exist; metadata-only
+  `embed_audio.*` no longer counts as audio support.
+- Classification edit: when a required Gemma row declares audio but has no
+  `audio_tower.*` weights, the inventory records
+  `declared_required_modalities` separately and removes `audio` from the
+  effective `required_modalities` instead of treating metadata-only audio as a
+  native-audio proof.
+- Pointer edits: current suite, objective checklist, objective digest, and
+  release tracker now point at
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-audio-runtime-gate-20260610.json`.
+- Regenerated artifacts:
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-audio-runtime-gate-20260610.json`,
+  `build/current-full-release-objective-checklist-after-gemma-audio-runtime-gate-20260610.json`,
+  and `build/current-objective-proof-after-gemma-audio-runtime-gate-20260610.json`.
+- Current proof state: inventory remains `status=open`, `missing_required_rows=[]`,
+  `source_live_smoke_open_rows=[]`, and checklist remains `status=open` with
+  `failed_count=67`. For 12B, audio is now recorded as
+  `audio_declared_by_config=true`, `audio=false`,
+  `audio_runtime_supported=false`; E2B/E4B keep audio runtime-supported because
+  they have audio tower weights.
+- Verification run so far: Gemma inventory tests `9 passed`; current-suite
+  pointer tests `2 passed`; Gemma release-checklist focused tests `3 passed`;
+  py_compile passed for the edited cross-matrix scripts.
+- Not proven: live audio E2E for E2B/E4B, installed-app/UI/tunnel parity,
+  release clearance, PyPI, signing, notarization, or any N2 JANG_1L claim.
+- Other-agent action: keep E2B/E4B live audio rows active because they are
+  weight-backed; do not claim 12B/26B/31B audio unless audio tower weights or a
+  real runtime audio implementation is present and live-proven.
