@@ -7840,6 +7840,16 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation passed: focused full-checklist tests `4/4`, `py_compile`, and regenerated checklist. No release, package, sign, notarize, tag, or download action.
 - Follow-up no-heavy source recheck: `build/current-noheavy-api-cache-contract-after-qwen35-output-index-recheck-20260609.json`, `status=pass`; `responses_streaming_tool_call_arguments_and_indexes=true`, `gateway_responses_function_call_arguments_streaming=true`, `gateway_responses_reasoning_empty_final_arguments_streaming=true`, and `gateway_stale_responses_port_rejection=true`. Current source is not showing the output-index bug in synthetic/source contracts; next work is live same-model direct/gateway/tunnel capture or deployed route freshness.
 
+# 2026-06-09 18:25 PDT - Checkpoint packaged integrity proof-map refresh
+
+- Fixed stale packaged-integrity/release-gate proof pointers after the checkpoint DMG app parity run. `panel/scripts/release-gate-python-app.py` now refreshes `build/current-objective-proof-after-n2-jang1l-memory-refresh-20260609.json`, matching the current suite/release manifest instead of the older PR-intake objective artifact.
+- Updated packaged-integrity pointers in `run_packaged_integrity_contract.py`, `release_regression_manifest.py`, `run_current_regression_suite.py`, `run_public_app_issue_audit.py`, and matching tests to `build/current-packaged-integrity-contract-after-checkpoint-app-parity-20260609.json`.
+- Root cause for the first manifest mismatch: the packaged-integrity artifact was passing, but release manifest expected-open requirements had dropped the still-open Gemma QAT/native MXFP4 runtime/media/cache/API/UI release row. Added that expected-open row back so packaged integrity can be green while Gemma remains explicitly blocked.
+- Proof: `build/current-packaged-integrity-contract-after-checkpoint-app-parity-20260609.json` is `status=pass`, `failed=[]`; `release_gate_unit_contracts` passed `49`, bundled Python verifier passed, and dry release gate failed only for known open objectives while using the current objective digest.
+- Regenerated `build/current-release-regression-manifest-after-checkpoint-packaged-integrity-20260609.json`: overall `status=fail`, `prepackage_ready=false`, `release_ready=false`; targeted components now show `packaged_integrity_matrix=true`, `installed_app_runtime_parity_audit=true`, and `staged_app_runtime_parity_audit=true`.
+- Validation passed: focused pytest `57/57`, `py_compile`, packaged-integrity runner, regenerated release manifest, and `git diff --check`.
+- Boundary: no publish/tag/upload/appcast/PyPI action. This only clears packaged-integrity proof-map parity for the checkpoint DMGs; runtime/model/UI/cache release rows remain open.
+
 # 2026-06-09 - Apple signing/notary runbook correction
 
 - Corrected the release lane against `/Users/eric/wiki/infra/apple-notarization.md` instead of treating the keychain state as permanently blocked.

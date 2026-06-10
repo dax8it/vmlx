@@ -18,9 +18,14 @@ that path in the current turn.
   `panel/scripts/build-and-install.sh`. The installed-app runtime parity audit
   now passes at
   `build/current-installed-app-runtime-parity-audit-after-installed-app-rebuild-20260606.json`.
-- Packaged integrity has green source/unit and bundled verifier checks in
-  `build/current-packaged-integrity-contract-after-installed-app-rebuild-20260606.json`.
-  Its older keychain-blocked wording is superseded by the signed-checkpoint audit below.
+- Packaged integrity is current and green for the checkpoint app parity slice in
+  `build/current-packaged-integrity-contract-after-checkpoint-app-parity-20260609.json`.
+  It verifies bundled engine/hash parity, bundled `jang_tools` parity, staged app
+  engine/source parity, no packaged `__pycache__`, hardened runtime/notarization
+  verifier/submit contracts, and the dry release gate's current objective-digest
+  path. `build/current-release-regression-manifest-after-checkpoint-packaged-integrity-20260609.json`
+  still reports `prepackage_ready=false` and `release_ready=false`, but now has
+  `packaged_integrity_matrix=true`.
 - Signed-checkpoint DMG readiness is now captured in
   `build/current-signed-checkpoint-dmg-readiness-20260609.json`. Existing local
   June 5 Sequoia/Tahoe DMGs are signed, stapled, and Gatekeeper-accepted, but
@@ -84,6 +89,11 @@ that path in the current turn.
   and remains `status=fail`, `prepackage_ready=false`, `release_ready=false`.
   Treat the next blocker as release proof scope/model/API/UI rows, not signing
   access.
+- The current packaged-integrity manifest is
+  `build/current-release-regression-manifest-after-checkpoint-packaged-integrity-20260609.json`.
+  It keeps Gemma QAT/native MXFP4 full runtime/media/cache/API/UI clearance in
+  the expected-open set; do not remove that blocker just because source no-media
+  QAT smokes are green.
 - Proper release mechanics are the documented path in
   `/Users/eric/wiki/infra/apple-notarization.md`; do not invent a GUI-only,
   ad-hoc-signing, cert-reimport, or verifier-weakening workaround. If signing
