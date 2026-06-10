@@ -3563,3 +3563,61 @@
   N2 JANGTQ2 tool/cache/delta proof remains the green checkpoint row.
 - Boundary: no synthetic tool calls, no parser repair, no N2 JANG_1L, and no
   release/sign/notarize/package/PyPI/updater/website action.
+
+# 2026-06-10 09:44 PDT - Responses required-tool fail-closed lane active
+
+- Current allowed lane: Responses API required-tool fail-closed behavior for
+  N2/Qwen-style agent harnesses after the strict N2 long-delta reduction.
+- Constraints rechecked: no release/sign/notarize/package/PyPI/updater/website
+  action, no N2 JANG_1L, no subagents, no synthetic tool calls or argument
+  repair, no hidden parser cleanup presented as success.
+- Next action: inspect
+  `build/current-responses-required-tool-stream-fail-closed-after-n2-longdelta-20260610.json`
+  and current `vmlx_engine/server.py` handling to decide whether there is a
+  source bug to fix or only a proof/boundary to record.
+
+# 2026-06-10 09:50 PDT - Gemma audio/modality current-state audit active
+
+- Finding from previous lane: the Responses required-tool fail-closed artifact
+  is already `status=pass`; source emits a failed response with empty output,
+  no function call, no argument deltas, no `{}` args, and
+  `tool_calls_required`. No source patch is appropriate there.
+- Current allowed lane: Gemma JANG/MXFP/QAT audio/modality honesty. The proof
+  matrix has older rows where Gemma audio reached runtime and failed semantic
+  checks, plus newer rows where audio is honestly unsupported. Need current
+  source/bundled truth before claiming or patching.
+- Constraints rechecked: no release/sign/notarize/package/PyPI/updater/website
+  action, no N2 JANG_1L, no subagents, no fake audio advertisement from
+  config/projection metadata alone.
+- Next action: probe current source and bundled runtime modality detection plus
+  `/v1/chat/completions` audio guard for local Gemma 12B/26B/31B JANG/MXFP/QAT
+  rows where paths exist.
+
+# 2026-06-10 09:56 PDT - Gemma audio current-state proof added
+
+- Proof artifact:
+  `build/current-gemma-jang-mxfp-audio-modality-current-state-20260610.json`.
+- Current source and bundled Python agree for local Gemma 12B QAT MXFP4,
+  12B JANG_4M, 12B QAT JANG_4M, 26B QAT JANG_4M, 31B QAT JANG_4M, and native
+  12B MXFP4.
+- Proven current modalities: `text`, `vision`, `video`.
+- Proven audio boundary: no checked row has `audio_tower.*` weights. The 12B
+  unified/MXFP rows have audio config/token/projection metadata only, so audio
+  is `declared_not_runtime_supported`; 26B/31B do not advertise audio config and
+  are `not_advertised`.
+- Matrix updated so older semantic-red audio rows are not mistaken for current
+  audio support. Audio remains unsupported, not fixed.
+- Boundary: no source change, no release/sign/notarize/package/PyPI/updater/
+  website action, no N2 JANG_1L.
+
+# 2026-06-10 10:02 PDT - Active AGENTS routing guard updated
+
+- Request: Eric provided the deprecated `/Users/eric/vmlx` routing guard and
+  said to put it into `AGENTS.md`.
+- Action: updated this active worktree's `AGENTS.md` with an explicit
+  deprecated-wrapper checkout guard.
+- Proven: future continuations that start in `/Users/eric/vmlx` are instructed
+  to switch here, read the active `.agents` state, and avoid old Swift/wrapper
+  notes for Python engine/app work.
+- Boundary: docs-only routing update. No runtime source change, no release/
+  sign/notarize/package/PyPI/updater/website action, and no N2 JANG_1L.

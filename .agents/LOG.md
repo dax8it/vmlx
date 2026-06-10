@@ -11194,3 +11194,115 @@ Other-agent next action:
 - Compare strict prompt behavior in true local session mode versus loopback
   remote mode, and inspect prompt/template/tool-schema pressure for N2. Do not
   call this strict row green from the loopback tool-choice reduction.
+
+## 2026-06-10 09:44 PDT - Responses required-tool fail-closed lane active
+
+Request/action: continue with a source-relevant Responses/tool blocker rather
+than pushing on N2 strict prompt quality without a new root cause.
+
+Selected lane:
+
+- Responses required-tool fail-closed behavior for N2/Qwen-style harnesses.
+- Artifact to inspect:
+  `build/current-responses-required-tool-stream-fail-closed-after-n2-longdelta-20260610.json`.
+
+Constraints:
+
+- No release/sign/notarize/package/PyPI/updater/download/website action.
+- No N2 JANG_1L.
+- No subagents.
+- No synthetic tool calls, argument repair, or parser masking.
+
+Next action:
+
+- Inspect artifact and current server handling. Patch only if the evidence
+  shows a source/API bug; otherwise record the honest boundary and move on.
+
+## 2026-06-10 09:50 PDT - Gemma audio/modality current-state audit active
+
+Finding from previous lane:
+
+- `build/current-responses-required-tool-stream-fail-closed-after-n2-longdelta-20260610.json`
+  is already `status=pass`.
+- It proves in-process Responses streaming required-tool fail-closed behavior:
+  empty final output, failed completed response, `tool_calls_required`, no
+  function call item, no argument delta/done, and no `{}` arguments.
+- No source patch is appropriate for that already-green contract.
+
+Selected lane:
+
+- Gemma JANG/MXFP/QAT audio/modality honesty. Current matrix entries include
+  older semantic-audio failures and newer unsupported-audio guard rows, so the
+  next useful action is to verify current source and bundled truth.
+
+Constraints:
+
+- No release/sign/notarize/package/PyPI/updater/download/website action.
+- No N2 JANG_1L.
+- No subagents.
+- Do not advertise audio from config/projection metadata alone.
+
+Next action:
+
+- Probe current source and bundled runtime modality detection plus audio request
+  guard behavior for local Gemma JANG/MXFP/QAT rows that exist.
+
+## 2026-06-10 09:56 PDT - Gemma audio current-state proof added
+
+Action:
+
+- Probed local Gemma 12B QAT MXFP4, 12B JANG_4M, 12B QAT JANG_4M, 26B QAT
+  JANG_4M, 31B QAT JANG_4M, and native 12B MXFP4 config/index metadata.
+- Probed current source and bundled Python server helpers for
+  `_bundle_declares_native_audio` and `_loaded_runtime_modalities`.
+- Updated the proof matrix to state the current audio boundary.
+
+Proof artifact:
+
+- `build/current-gemma-jang-mxfp-audio-modality-current-state-20260610.json`
+
+Proven:
+
+- Source and bundled runtime agree: runtime modalities are `text`, `vision`,
+  and `video`.
+- No checked row has `audio_tower.*` weights.
+- 12B unified/MXFP rows have audio config/token/projection metadata only, so
+  audio is declared but not runtime-supported.
+- 26B/31B rows do not advertise audio config and have no audio tower.
+
+Not proven:
+
+- Gemma audio support.
+- Gemma audio semantic E2E.
+- Release readiness.
+
+Boundary:
+
+- This is proof/matrix cleanup, not a source patch. Do not claim audio works
+  unless a future artifact contains real audio tower weights and passes live
+  audio E2E. No release/sign/notarize/package/PyPI/updater/download/website
+  action and no N2 JANG_1L.
+
+## 2026-06-10 10:02 PDT - Active AGENTS routing guard updated
+
+Request:
+
+- Eric provided the `/Users/eric/vmlx` `AGENTS.md` guard stating that the
+  wrapper checkout is deprecated for active vMLX runtime/app work and said to
+  put it into `AGENTS.md`.
+
+Action:
+
+- Updated this active worktree's `AGENTS.md` with a narrow
+  "Deprecated wrapper checkout guard" section.
+
+Proven:
+
+- Future continuations are directed away from `/Users/eric/vmlx` and old Swift
+  or wrapper notes, back to this active Python/Electron worktree and the current
+  `.agents` state.
+
+Boundary:
+
+- Docs-only guard update. No runtime source change, no release/sign/notarize/
+  package/PyPI/updater/download/website action, and no N2 JANG_1L.

@@ -7,6 +7,33 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### Gemma JANG/MXFP Audio Modality Current State
+
+Artifact:
+
+- `build/current-gemma-jang-mxfp-audio-modality-current-state-20260610.json`
+
+Proven:
+
+- Current source and bundled Python agree for the local Gemma 12B QAT MXFP4,
+  12B JANG_4M, 12B QAT JANG_4M, 26B QAT JANG_4M, 31B QAT JANG_4M, and native
+  12B MXFP4 rows.
+- Runtime modalities are `text`, `vision`, and `video`.
+- Audio is not runtime-supported for these rows. The 12B unified/MXFP rows have
+  `audio_config`, `audio_token_id`, and `embed_audio.embedding_projection`, but
+  no `audio_tower.*` weights. The 26B/31B rows do not advertise `audio_config`
+  and also have no `audio_tower.*` weights.
+- Current bundled runtime matches source for `_bundle_declares_native_audio` and
+  `_loaded_runtime_modalities`.
+
+Boundary:
+
+- Do not use older Gemma audio semantic-red rows as evidence that audio is
+  currently supported. Current source/bundled truth is honest unsupported-audio
+  gating until a weight-backed `audio_tower.*` artifact exists and passes live
+  audio E2E.
+- This is not a release/sign/notarize/package/PyPI/updater action.
+
 ### Qwen35 Responses Raw SSE
 
 Artifact:

@@ -12,6 +12,18 @@ Do not work from `/Users/eric/vmlx`, `/Users/eric/vmlx/swift`, old Swift
 handoffs, adlab, Max2, TP4, RDMA, or Thunderbolt lanes unless Eric explicitly
 asks for that exact path in the current turn.
 
+## Deprecated wrapper checkout guard
+
+If a continuation starts in `/Users/eric/vmlx`, treat that checkout as a
+deprecated wrapper/history repo for current vMLX app/runtime work. Do not edit,
+build, launch, test, probe, or use old implementation notes from that tree for
+active engine/app tasks. Switch to this active Python/Electron worktree, read
+this `AGENTS.md`, `.agents/STATUS.md`, `.agents/LOG.md`, and
+`.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`, then continue from the written
+state here. Do not infer Swift work from vMLX, JANG, cache, MTP, model-runtime,
+or app/runtime wording unless Eric explicitly names that path in the current
+turn.
+
 ## Active release control board - read before every action
 
 The target is not "one model smokes" or "the package builds." The target is the
