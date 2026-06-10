@@ -2423,3 +2423,65 @@
   TurboQuant/codebook logit comparison against JANG_2L or source/dequant for
   the first divergent token, or rebuilding the artifact with a corrected
   prestacked routed-expert quant contract.
+
+# 2026-06-10 06:11 PDT - Continuation objective logged before native JANGTQ inspection
+
+- Request: keep moving on the full checkpoint objective and avoid broad
+  test-suite detours, recursive/subagent work, fake guards, parser/JSON
+  semantic repair, or hidden sampling clamps.
+- Directive check: active lane remains MiMo V2.5 JANGTQ_2 exactness/logit/
+  artifact diagnosis in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`;
+  N2 JANG_1L remains off-limits; no release/sign/notarize/PyPI/download action
+  is allowed in this step.
+- Immediate blocker being reduced: native JANGTQ/TurboQuant codebook runtime
+  contract for MiMo prestacked SwitchMLP routed experts, because current proof
+  excludes tokenizer/template/cache/generic-TQ-KV/parser/vMLX-router/
+  vMLX-SwitchGLU fast paths.
+- Must not claim: no MiMo exactness fix, artifact fix, installed-app parity,
+  or release clearance until live output proves it.
+
+# 2026-06-10 06:18 PDT - Post-compaction continuation before native JANGTQ inspection
+
+- Request: continue from the MiMo JANGTQ_2 exactness classifier and do direct
+  runtime proof/fix work, while keeping Eric's written constraints active.
+- Directive check: active worktree remains
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; current lane remains MiMo
+  V2.5 JANGTQ_2 exactness/logit/artifact diagnosis; N2 JANG_1L remains
+  Eric-owned/off-limits; no release/sign/notarize/PyPI/download action is
+  allowed in this step.
+- Immediate blocker being reduced: whether the vMLX MiMo prestacked SwitchMLP
+  TurboQuant binding is faithfully using the artifact's JANGTQ codebook/sign
+  contract and native gather matmul shape contract.
+- Must not claim: no MiMo exactness fix, no Gemma/N2/Qwen release clearance, no
+  installed-app parity, and no checkpoint release readiness from source
+  inspection alone.
+
+# 2026-06-10 06:31 PDT - MiMo JANGTQ2 native TurboQuant contract classifier
+
+- Request: continue MiMo JANGTQ_2 exactness diagnosis and avoid fake parser,
+  cache, sidecar, or sampling fixes.
+- Evidence gathered: the current artifact's `jangtq_runtime.safetensors`
+  contains `codebook.2048.2`, `codebook.4096.2`, `signs.2048.42`, and
+  `signs.4096.42`; each matches the generated `jang_tools` runtime table
+  exactly (`max_abs_diff=0.0`). The main safetensor index has 141
+  `.tq_packed/.tq_norms/.tq_bits` prestacked SwitchMLP groups and no indexed
+  codebook/sign keys.
+- Kernel proof: a direct real-tensor parity check compared
+  `jang_tools.turboquant.gather_tq_matmul` against an explicit selected-expert
+  dequant reference for MiMo layer 1 gate/down tensors. Broadcast gate,
+  sorted-prefill gate, and per-row down shapes all matched with max absolute
+  diff below `1e-6`.
+- Artifact:
+  `build/current-mimo-v25-jangtq2-native-tq-contract-classifier-20260610.json`,
+  `status=open`.
+- Classification: current MiMo JANGTQ_2 literal exactness is not explained by
+  ignored sidecar codebook/sign tables, prestacked shape binding for the
+  sampled groups, or native gather-kernel broadcast/sorted/per-row semantics.
+  Remaining target is source-vs-quant first divergent logits or corrected
+  artifact/requant profile.
+- Must not claim: no exactness fix, no MiMo release clearance, no installed-app
+  parity, no visual/audio/video semantic clearance, and no DMG readiness.
+- Other-agent action: stop duplicating sidecar/codebook/gather-kernel checks
+  for the current MiMo JANGTQ_2 artifact. Next useful work is source-vs-quant
+  first divergent token/logit with the source endpoint running, or a corrected
+  artifact profile such as `gate=3/up=2/down=3` or `gate=3/up=3/down=3`.

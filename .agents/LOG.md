@@ -10033,3 +10033,37 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   native JANGTQ/TurboQuant codebook artifact or kernel/logit quality.
 - Server stopped cleanly; no release, signing, PyPI, download, or N2 JANG_1L
   action.
+
+# 2026-06-10 06:11 PDT - Continuation before native JANGTQ inspection
+
+- Request: continue MiMo JANGTQ_2 exactness diagnosis without broad test-suite
+  detours or fake repair.
+- Current lane: inspect native JANGTQ/TurboQuant codebook and prestacked
+  SwitchMLP routed-expert binding against runtime expectations.
+- Constraints: no subagents, no N2 JANG_1L, no release/sign/notarize/PyPI/
+  download action, no parser/JSON semantic repair, no hidden sampling clamp.
+
+# 2026-06-10 06:18 PDT - Post-compaction continuation before native JANGTQ inspection
+
+- Request: resume without restarting from stale memory, keep every movement
+  written down, and continue direct proof/fix work.
+- Current lane: MiMo V2.5 JANGTQ_2 native TurboQuant/prestacked SwitchMLP
+  contract inspection after the no-fastpath classifier left artifact/logit/
+  quant quality as the remaining target.
+- Constraints: no subagents, no N2 JANG_1L, no release/sign/notarize/PyPI/
+  download action, no fake parser/JSON repair, no hidden sampling clamp.
+
+# 2026-06-10 06:31 PDT - MiMo native TurboQuant contract classifier
+
+- Done: inspected the current MiMo JANGTQ_2 sidecar, prestacked SwitchMLP
+  tensor layout, and native gather TurboQuant kernel contract.
+- Proof:
+  `build/current-mimo-v25-jangtq2-native-tq-contract-classifier-20260610.json`.
+- Result: sidecar codebook/sign tables exactly match generated JANG tables;
+  sampled prestacked gate/up/down shapes match vMLX binding expectations; real
+  MiMo tensors agree with an explicit selected-expert dequant reference for
+  gate broadcast, gate sorted, and down per-row gather paths at sub-`1e-6`
+  max absolute diff.
+- Boundary: this is a classifier, not a fix. MiMo JANGTQ_2 exactness remains
+  artifact/logit/requant-profile blocked; do not clear MiMo, UI,
+  installed-app, media semantics, package, signing, notarization, or release.
