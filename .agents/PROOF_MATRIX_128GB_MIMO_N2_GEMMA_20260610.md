@@ -1697,6 +1697,22 @@ Next implementation target:
   readiness.
 - N2 JANGTQ2 is the stronger N2 checkpoint candidate; it has live hybrid
   SSM/TQ/L2/tool/Responses proof.
+- Qwen27 JANG_4M MTP direct Responses tool-result continuation is no longer
+  the stale reasoning-only red row after `c468d9b17`. Current direct artifacts:
+  required-tool
+  `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-visible-finalization-seed-fix-20260610.sse`
+  and continuation
+  `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse`.
+  The required-tool turn preserves reasoning-enabled tool selection with valid
+  function-call args `{"value":"blue-cat"}`. The terminal no-new-tools
+  continuation completes with visible streaming deltas and final output
+  `The fact "blue-cat" has been recorded.`. Health artifact
+  `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-health-after-visible-finalization-seed-fix-20260610.json`
+  shows native MTP active (`effective_depth=3`, text+vl), `hybrid_ssm_v1`,
+  attention-only live TurboQuant KV, block L2, and SSM companion L2
+  (`l2_block_tokens_on_disk=292`, `l2_ssm_tokens_on_disk=548`). Scope remains
+  direct server only; gateway/tunnel, Qwen-coder-next, and broader family
+  parser/API loops still need proof.
 - N2 JANG_1L has a real startup/first-chat improvement from deferred startup
   eval, but the release blocker moved to post-first-request working-set
   pressure. Latest deferred-eval artifacts are

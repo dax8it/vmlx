@@ -266,12 +266,19 @@ named artifacts before repeating claims.
   `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-continuation-fix-20260610.sse`
   has argument deltas, argument done, and final function-call arguments
   matching `{"value":"blue-cat"}`.
-- Qwen27 JANG_4M MTP reasoning-enabled tool-result continuation is red:
-  `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-fix-20260610.sse`
-  ended incomplete with reasoning-only output and no visible text. The
-  thinking-off diagnostic proves a workaround path, not a valid release fix.
-  Do not clear opencode/Codex-style Qwen27 agent loops until reasoning-enabled
-  post-tool final synthesis is fixed and re-proven.
+- Qwen27 JANG_4M MTP direct tool-result continuation has a newer green direct
+  proof after commit `c468d9b17`: required-tool SSE
+  `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-visible-finalization-seed-fix-20260610.sse`
+  keeps reasoning enabled for the tool-selection turn and emits
+  `response.function_call_arguments.done` with `{"value":"blue-cat"}`;
+  continuation SSE
+  `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse`
+  completes with visible `response.output_text.delta` and final
+  `output_text="The fact \"blue-cat\" has been recorded."`. The older
+  `...tool-result-continuation-after-fix-20260610.sse` remains red historical
+  evidence. Scope: direct server terminal no-new-tools post-tool synthesis only;
+  do not claim gateway/tunnel, Qwen-coder-next, or all parser-family loops from
+  this proof.
 - Gemma4 QAT JANG_4M source no-media smokes are green across E2B/E4B/12B/26B/
   31B from the parallel lane, and Gemma4 31B audio is currently classified as
   an honest unsupported-modality gate for a vision-only artifact. Do not

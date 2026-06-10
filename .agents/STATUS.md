@@ -4696,3 +4696,20 @@ Other-agent action:
 - Proven surfaces in this run: current dev-app Chat Completions, real loaded MiMo JANGTQ2 MLLM, image data URL routing, icon text semantics (`vMLX`), generation defaults applied, settings persistence, server cache controls, parser/language leak checks, native MiMo mixed-SWA cache status, and one block-disk L2 write (`l2_block_tokens_on_disk=24`, `disk_writes=1`).
 - Still not proven: MiMo exactness/literal JSON, red-square color semantics, audio semantics/hygiene, video semantics, Responses tool-result continuation, installed-app parity for this exact no-thinking/media row, fresh-process L2 restore for this media proof, and release readiness.
 - Cleanup: proof server port 56814 and gateway port 8080 were checked clear; no MiMo server/Electron proof process remained.
+
+# 2026-06-10 12:34 PDT - Qwen27 reasoning-enabled tool-result continuation lane selected
+
+- Current blocker: Qwen27 JANG_4M MTP direct `/v1/responses` required-tool call is green, but reasoning-enabled tool-result continuation is red: prior artifact `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-fix-20260610.sse` ended incomplete with reasoning-only output and no visible text.
+- Goal: trace Responses post-tool continuation request/template/channel handling and fix only a real source issue.
+- Constraints: do not disable reasoning as a release fix, do not synthesize tool args, do not parser-repair missing output, do not touch N2 JANG_1L, no release/sign/notarize/PyPI/updater/download/site action.
+
+# 2026-06-10 12:36 PDT - Qwen27 direct post-tool continuation reclassified green from current seed-fix proof
+
+- Current source already contains commit `c468d9b17` (`Fix Qwen Responses tool-result finalization`).
+- Evidence update: newer direct SSE artifacts supersede the older red `...tool-result-continuation-after-fix-20260610.sse` row.
+  - Required-tool: `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-visible-finalization-seed-fix-20260610.sse` has reasoning-enabled tool selection and `response.function_call_arguments.done` arguments `{\"value\": \"blue-cat\"}`.
+  - Continuation: `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-visible-finalization-seed-fix-20260610.sse` completes with visible output deltas and final `output_text=The fact \"blue-cat\" has been recorded.`.
+  - Health/cache: `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-health-after-visible-finalization-seed-fix-20260610.json` shows native MTP active, `hybrid_ssm_v1`, attention-only live TurboQuant KV, block L2, and SSM companion L2.
+- Verification run: `.venv/bin/python -m pytest -q tests/test_responses_history.py -k \"reasoning_only or chained_response_helper\"` selected 11 and passed; `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k \"terminal_tool_result_synthesis or visible_finalization\"` selected 2 and passed.
+- Classification: Qwen27 direct terminal no-new-tools post-tool synthesis is green. This is not a claim for gateway/tunnel, Qwen-coder-next, Qwen27 nonterminal/new-tool continuations, or all parser families.
+- No new runtime source edit, release/sign/notarize/PyPI/updater/download/site action was performed.

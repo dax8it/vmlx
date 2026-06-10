@@ -12499,3 +12499,16 @@ Next action:
 - Output was clean: `OK.` then `vMLX`, no persisted reasoning, no raw parser leak, no tool calls, app stream logs showed reasoning chars `0` for both turns.
 - Classification: no source fix needed for MiMo no-thinking prose from the prior icon proof; the proof harness default first-turn instruction contaminated the later media turn. Keep exactness/audio/video/Responses/installed-app rows open.
 - Post-run process checks found no listener on ports 56814 or 8080 and no matching MiMo server/dev-app process.
+
+# 2026-06-10 12:34 PDT - Qwen27 reasoning-enabled tool-result continuation lane selected
+
+- Switching from MiMo classification to Qwen27 Responses continuation because it directly affects Codex/opencode-style agent loops.
+- Evidence to inspect: required-tool green SSE and continuation red SSE under `build/responses-sse-captures-20260610/`.
+- No source edit before root-cause trace.
+
+# 2026-06-10 12:36 PDT - Qwen27 direct post-tool continuation reclassified green from current seed-fix proof
+
+- Inspected current source and newer Qwen27 SSE artifacts after `c468d9b17`.
+- Required-tool seed-fix SSE preserves reasoning-enabled function-call args `blue-cat`; terminal continuation seed-fix SSE emits visible output deltas and completed final object.
+- Focused guards passed: 11 Responses history tests and 2 terminal synthesis/visible finalization source guards.
+- Scope remains direct server only; gateway/tunnel and Qwen-coder-next remain open.
