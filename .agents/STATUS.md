@@ -4284,3 +4284,37 @@ Other-agent action:
 - Other-agent handoff:
   - Treat Gemma4 audio as weight-backed only. Do not infer it from `audio_token_id`, tokenizer/config tokens, or generic MLLM status.
   - Release notes/checklists should classify this row as `audio unsupported by artifact / gated cleanly`, not `audio failed runtime`.
+
+# 2026-06-10 11:25 PDT - Qwen27 direct Responses raw SSE proof selected
+
+- Current blocker being reduced: Qwen3.6 27B/Qwen-coder style XML tool-call parser/API risk remains broader than the already-green Qwen35 public direct/gateway/tunnel recapture.
+- Current checklist says Qwen27 has installed-app/API/cache/video rows, but the raw-SSE parity row currently cites the Qwen35 recapture. A same-family Qwen27 direct raw SSE capture is the next narrow movement toward Codex/opencode harness confidence.
+- Planned proof: launch `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP` on localhost, request `/v1/responses` streaming with reasoning enabled and required `record_fact` tool, capture raw SSE, and inspect content/reasoning/tool argument delta/done/final object consistency.
+- Constraints retained: no release/sign/notarize/PyPI/updater/download/site action; no Nex/N2 JANG_1L; do not synthesize missing args, disable reasoning, or patch parser behavior unless raw events prove a root cause.
+
+# 2026-06-10 11:25 PDT - Qwen27 direct raw SSE required-tool green; reasoning-enabled tool-result continuation red
+
+- Live model: `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP`, served as `qwen36-27b-jang4m-mtp-direct-sse-20260610` on local port 8894.
+- Load/runtime proof:
+  - Health reported `model_loaded=true`, `model_type=mllm`, native MTP `status=native_runtime_active`, `effective_depth=3`, `runtime_scope=text+vl`.
+  - Native cache reported `hybrid_ssm_v1` with `attention_kv`, `ssm_companion_state`, and `async_rederive`.
+  - TurboQuant KV reported enabled for attention layers only, with SSM companion state native/full precision and storage-boundary q4 attention KV.
+- Required-tool raw SSE green artifact:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-continuation-fix-20260610.sse`.
+  - Result: `status=completed`, output types `[message, reasoning, function_call]`, function name `record_fact`, two `response.function_call_arguments.delta` events, `response.function_call_arguments.done` arguments `{"value": "blue-cat"}`, final function-call item arguments `{"value": "blue-cat"}`.
+  - No empty `{}` arguments were emitted in the valid required-tool row.
+- Reasoning-enabled tool-result continuation red artifact:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-fix-20260610.sse`.
+  - Result: `status=incomplete`, 312 reasoning deltas, no output text deltas, final output types `[message, reasoning]`, warning `reasoning only (no visible message, no tool calls)`, `max_output_tokens` exhausted at 512.
+  - The reasoning text repeatedly states that it should output `recorded blue-cat`, but never exits the reasoning channel into visible content.
+- Diagnostic thinking-off continuation artifact:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-thinkingoff-diagnostic-20260610.sse`.
+  - Result: `status=completed`, visible output `The fact recorded is: **blue-cat**`, no reasoning deltas, usage included `cached_tokens=101`, `cache_detail=paged+ssm`.
+  - This confirms the failure is reasoning-channel/template/final-synthesis specific. It is not a valid release fix because disabling reasoning must not be used to hide reasoning-enabled tool-loop failures.
+- Failed attempted fix:
+  - A narrow terminal tool-result synthesis prompt was tried locally and removed because it did not change the reasoning-enabled failure. No source change from that attempt remains.
+- Current classification:
+  - Qwen27 direct required-tool raw SSE parser/argument streaming is green.
+  - Qwen27 direct reasoning-enabled tool-result continuation remains red for Codex/opencode-style harnesses because it can produce reasoning-only incomplete output after a successful tool call.
+  - Next valid fix target is Qwen reasoning/template/channel finalization for post-tool continuations, not argument synthesis, parser repair, or global reasoning-disable.
+- No release/sign/notarize/PyPI/updater/download/site action was performed. The Qwen27 server was stopped after proof.

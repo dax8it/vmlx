@@ -12026,3 +12026,28 @@ Next action:
   - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'gemma4_runtime_modalities_do_not_infer_audio_from_token_only_config or gemma4_chat_audio_request_rejects_when_audio_not_weight_backed or gemma4_runtime_modalities_advertise_audio_with_audio_tower_weights'` -> 3 passed.
 - Boundary: Gemma4 31B QAT JANG_4M has live dev-app text/cache and separate image/exact proof artifacts, but audio is not supported by this artifact and must not be advertised or cleared without a weight-backed audio tower and live proof.
 - Other-agent note: classify this row as clean audio gate / unsupported-by-artifact, not runtime audio support. Keep token-only/config-only audio inference forbidden.
+
+# 2026-06-10 11:25 PDT - Qwen27 direct raw SSE lane selected
+
+- Next movement: direct `/v1/responses` raw SSE capture for `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP`.
+- Reason: Qwen35 direct/gateway/tunnel recapture is green, but Eric explicitly called out the 27B/35B XML empty-arguments family risk and opencode/Codex harness usability.
+- Proof target: reasoning enabled, required `record_fact` tool, argument delta/done, final object consistency, output indices, parser leak check, and cache telemetry where exposed.
+- No release action, no N2 JANG_1L, no fake parser repair.
+
+# 2026-06-10 11:25 PDT - Qwen27 direct proof split: required tool green, reasoning-enabled continuation red
+
+- Loaded `/Users/eric/models/JANGQ/Qwen3.6-27B-JANG_4M-MTP` on local port 8894 as `qwen36-27b-jang4m-mtp-direct-sse-20260610`.
+- Runtime health proved native MTP active (`effective_depth=3`, text+vl), `hybrid_ssm_v1` cache, live attention TurboQuant KV, q4 storage-boundary attention KV, paged cache, block L2, and SSM companion disk.
+- Required-tool raw SSE artifact green:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-required-tool-after-continuation-fix-20260610.sse`
+  - Two argument deltas, done args `{"value": "blue-cat"}`, final function_call args `{"value": "blue-cat"}`, output types `[message, reasoning, function_call]`, completed status.
+- Reasoning-enabled tool-result continuation artifact red:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-after-fix-20260610.sse`
+  - 312 reasoning deltas, no visible text deltas, final `status=incomplete`, `output_text=""`, warning `reasoning only`, max output exhausted at 512.
+  - Reasoning repeatedly said it would output `recorded blue-cat` but never left the reasoning channel.
+- Diagnostic only:
+  - `build/responses-sse-captures-20260610/direct-qwen27-jang4m-mtp-tool-result-continuation-thinkingoff-diagnostic-20260610.sse`
+  - With `enable_thinking=false`, the same continuation completed with visible text and `cached_tokens=101`, `cache_detail=paged+ssm`.
+  - This is evidence of a reasoning-channel/final-synthesis issue, not an acceptable release workaround.
+- A local prompt-anchor source change was tried, failed to improve the live result, and was reverted before commit.
+- Other-agent note: do not claim Qwen27 Responses tool-result continuation green. Fix should target Qwen reasoning/template/channel finalization after tool outputs while preserving reasoning-enabled required-tool calls and fail-closed missing-arg validation.
