@@ -17,7 +17,8 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 - Gateway/tunnel/port/wake/sleep/session routing must be checked separately from engine parsing. A Cloudflare/gateway model miss or stale sleeping backend is not the same as a local parser bug.
 - No executable `{}` argument payload should be emitted for required tool calls when required args are actually missing; fail closed instead.
 - Current split: local no-heavy guards cover empty XML required-arg fail-closed behavior and output-index ordering. Gemma4 E2B direct/gateway captures preserve `record_fact` args and valid indices, but the public tunnel does not advertise `gemma4-e2b-sse`. Qwen35 public tunnel preserves args and reasoning events, but reuses `output_index=0` for both message and function_call. Treat Qwen35 as deployed/tunnel freshness unless current-source direct/gateway raw SSE reproduces the duplicate index.
-- Next proof: same-model Qwen35 current-source direct plus panel-gateway raw SSE with reasoning enabled and the exact tunnel request. If direct/gateway use output index `1`, rebuild/redeploy the tunnel backend and recapture; if they duplicate `0`, reopen the source streaming finalization path.
+- Current same-model Qwen35 direct proof: `build/current-responses-raw-sse-parity-qwen35-direct-source-vs-tunnel-20260609.json` captures current source against `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`; direct source uses `message=[0]`, `function_call=[1]`, preserves `{"value": "blue-cat"}`, and keeps reasoning events on. The artifact still fails because gateway is missing and the tunnel still duplicates `output_index=0`.
+- Next proof: panel-gateway raw SSE with reasoning enabled and the exact Qwen35 tunnel request. If gateway uses output index `1`, rebuild/redeploy the tunnel backend and recapture; if it duplicates `0`, reopen the source streaming finalization path.
 
 2. MiniMax random Chinese / visible planning
 
@@ -42,6 +43,7 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 - JANG_1L should fit with careful RAM handling; treat current blocker as careful live-proof scheduling and memory discipline, not permanent infeasibility.
 - Do not launch N2/JANG_1L below the preflight headroom gate after Metal OOM evidence. If preflight says `do_not_launch`, clear RAM or schedule later instead of forcing it.
 - N2 JANGTQ_2 proof does not clear N2 JANG_1L.
+- Keep architecture names explicit in every proof: base Qwen/Qwen35 MXFP8-MTP direct-source proof does not clear Nex/N2 Pro 397B JANG_1L, and N2 JANG_1L does not clear regular Qwen MTP/JANGTQ rows. Record `format`, `weight_format`, `artifact_profile`, MTP depth, `gdn_sink`, hybrid SSM/native-cache schema, TurboQuant KV state, and media weight backing from loaded health/config rather than inferred family names.
 
 5. DSV4
 

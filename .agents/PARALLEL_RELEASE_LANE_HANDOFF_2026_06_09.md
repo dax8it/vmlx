@@ -102,7 +102,15 @@ panel/scripts/verify-release-dmgs.sh
    `response.function_call_arguments.delta`, `.done`, final object consistency,
    valid output indices, and tool-result continuation.
 2. Fix or recapture the Qwen35 tunnel output-index path. Current failing proof:
-   `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-recapture-20260609.json`.
+   `build/current-responses-raw-sse-parity-qwen35-direct-source-vs-tunnel-20260609.json`.
+   Current-source direct raw SSE:
+   `build/responses-sse-captures-20260609/direct-qwen35-mxfp8-mtp-tool-current-source-20260609.sse`.
+   Current-source server log:
+   `build/responses-sse-captures-20260609/direct-qwen35-mxfp8-mtp-current-source.server.log`.
+   Direct current source preserves `record_fact` args `{"value": "blue-cat"}`,
+   has reasoning events, uses the same served model as the tunnel
+   (`models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`), and emits valid indices:
+   `message=[0]`, `function_call=[1]`.
    Fresh tunnel raw capture:
    `build/responses-sse-captures-20260609/tunnel-qwen35-mxfp8-mtp-tool-recapture-max512-20260609.sse`.
    It preserves `record_fact` args `{"value": "blue-cat"}`, has reasoning
@@ -116,10 +124,10 @@ panel/scripts/verify-release-dmgs.sh
    Current source audit: `stream_responses_api()` closes the message at
    `output_index=0`, increments, then emits function calls at the next index.
    Do not add a fake parser fallback or disable reasoning for this row. The
-   next useful proof is Qwen35 current-source direct plus panel-gateway raw SSE
-   with the exact tunnel request/model. If direct/gateway emit function calls at
-   `output_index=1`, rebuild/redeploy the tunnel backend from current source and
-   recapture. If direct/gateway also reuse `0`, reopen the source streaming path.
+   next useful proof is panel-gateway raw SSE with the exact tunnel request/model.
+   If gateway emits function calls at `output_index=1`, rebuild/redeploy the
+   tunnel backend from current source and recapture. If gateway/source also reuse
+   `0`, reopen the source streaming path.
 3. Run Gemma4 media/UI proof from current source or the rebuilt installed app.
    Installed-app runtime parity is now green, so the next useful Gemma work is
    real model/media/API/UI behavior, not another parity hash audit.

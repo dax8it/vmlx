@@ -7887,3 +7887,13 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Build proof: fresh artifacts in `/tmp/vmlx-pypi-dist` and `/tmp/jang-pypi-dist`; `twine check` passed for both wheels and sdists.
 - Publish proof: PyPI JSON reports `jang 2.5.30` and `vmlx 1.5.56` with both wheel and sdist files. Clean temp venv no-deps install succeeded for `jang==2.5.30 vmlx==1.5.56`; installed `vmlx` metadata requires `jang>=2.5.30`.
 - Boundary: PyPI package checkpoint only. This is not a signed/notarized DMG release, and app release remains blocked by current prepackage/runtime/model/UI/cache rows.
+
+# 2026-06-09 17:25 PDT - Qwen35 direct Responses SSE source-vs-tunnel proof
+
+- Added `tests/cross_matrix/run_qwen35_responses_raw_sse_capture.py` and `tests/test_qwen35_responses_raw_sse_capture.py` to capture current-source Qwen35 MXFP8-MTP raw Responses SSE with reasoning enabled and required `record_fact`, then classify it beside the existing public tunnel capture.
+- Live artifact: `build/current-responses-raw-sse-parity-qwen35-direct-source-vs-tunnel-20260609.json` is `status=fail`, with `missing_captures=["gateway"]`.
+- Current-source direct proof is green for the reported failure class: same served model as tunnel (`models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`), authoritative args `{"value": "blue-cat"}`, reasoning events present, parse errors `0`, and valid output indices `message=[0]`, `function_call=[1]`.
+- Tunnel remains red but narrower: it preserves args and reasoning events, but still emits `message=[0]` and `function_call=[0]`, so `conflicting_output_indices=[0]`.
+- Health/runtime proof in the direct capture records native MTP active, hybrid SSM typed cache, TurboQuant attention KV enabled, and block disk cache writes. This is base Qwen35 MXFP8-MTP current-source proof; it does not clear Nex/N2 JANG_1L, MiMo, Gemma, UI, installed-app, or release rows.
+- Next lane action: capture panel gateway with the exact same Qwen35 model/request. If gateway matches direct, rebuild/redeploy the tunnel backend from current source and recapture. If gateway/source duplicates `0`, reopen `stream_responses_api()` before any release claim. No parser fallback, reasoning disable, or fake argument injection.
+- Boundary: no package, DMG build, signing, notarization, tag, appcast, upload, or public release action.
