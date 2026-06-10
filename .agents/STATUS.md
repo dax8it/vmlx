@@ -6164,3 +6164,37 @@ Other-agent action:
   - `python3 -m py_compile vmlx_engine/scheduler.py vmlx_engine/server.py vmlx_engine/sampling.py`
   - `npm --prefix panel run typecheck -- --pretty false`
   - `git diff --check -- vmlx_engine/scheduler.py vmlx_engine/server.py vmlx_engine/sampling.py panel/src/main/sessions.ts panel/src/main/ipc/models.ts`
+
+# 2026-06-10 16:35 PDT - continuation after MiMo cache/default patch
+
+- Current user objective persists: reduce real blockers for MiMo, Gemma, Qwen/Qwen-coder, and N2 JANGTQ/non-JANG_1L toward a signed checkpoint release, without release/sign/notarize/PyPI actions in this lane.
+- Re-read active directives and status. N2 JANG_1L remains off-limits. No subagents. Do not build broad test-suite churn.
+- Selected current blocker: MiMo V2.5 JANG_2L sampler overhead and cache-hit reconstruct stall from the latest live proof. The previous commit proved text routing, quant coverage, deferred mixed-SWA L2 store, and default top_k=64, but speed remains red and a paged-cache hit timed out before decode.
+- Next action: trace compact top-k sampling and MiMo paged-cache reconstruct implementation, then patch one root-cause runtime path with focused proof.
+
+# 2026-06-10 16:43 PDT - MiMo sampler next hypothesis
+
+- Inspected sampler/cache paths after `af6a6365e`. `mx.topk` returns values only in this MLX build, so it cannot directly replace `argpartition` because token indices are needed.
+- Direct MLX micro-benchmark on a 256k vocab vector shows current compact top-k math is ~1ms outside the loaded model, while live MiMo still showed ~600ms/token sampler time.
+- New hypothesis: live slowdown is dominated by the compiled GPU categorical/random/evaluation path under the 102GB MiMo working set, not by top-k candidate selection alone.
+- Next edit: add a bounded top-k CPU-materialized sampler path that uses GPU only to select top-k logits/indices, samples among those 64 candidates on CPU, and returns a materialized token. This targets the live bottleneck without changing model weights/cache/parser behavior.
+
+# 2026-06-10 16:51 PDT - CPU sampler hypothesis rejected; switching to MiMo small-hit cache guard
+
+- CPU-materialized compact top-k sampler was tested live with a 2-token MiMo request and failed: first sample took `73279ms`, second sample `521ms`, and the request timed out.
+- The unproven CPU sampler path was reverted immediately and must not be claimed as a fix.
+- Current actionable MiMo blocker: paged-cache hit/reconstruct stall on a tiny 28-token mixed-SWA prefix. For MiMo, reconstructing native mixed full/SWA caches for very short prefixes is worse than simply prefilling the prompt.
+- Next edit: add a MiMo/mixed-SWA minimum paged-hit token threshold so small paged/L2 hits are released and treated as cache misses; long-context cache remains available.
+
+# 2026-06-10 17:04 PDT - MiMo short paged-hit guard proof
+
+- Implemented mixed-SWA short paged-hit guard in `vmlx_engine/scheduler.py`: for mixed-attention non-DSV4/non-ZAYA models, paged hits below `VMLINUX_MIXED_SWA_MIN_PAGED_HIT_TOKENS` (default `256`) are released and treated as misses.
+- Live proof artifact: `build/current-mimo-jang2l-short-hit-guard-20260610.server.log` and `.response.txt`.
+- Proven live with existing 28-token MiMo block L2 entry:
+  - server saw `Paged cache hit ... 28 tokens`;
+  - guard logged `ignoring short mixed-SWA paged cache hit (cached_tokens=28 < 256)`;
+  - scheduler then logged `paged cache miss, processing all 29 tokens`;
+  - no worker-side paged reconstruct was attempted;
+  - response completed with `Hello!`.
+- Still red: first sampled token remained very slow (`avg_sample_ms=29718.65` for first step, second sample ~521ms; 2 tokens in 31s). MiMo speed is now classified as first-sample sampler/compile latency plus ongoing sampler overhead, not the tiny-prefix paged reconstruct path.
+- CPU compact top-k sampler experiment was rejected and reverted; do not reintroduce it without a different first-sample strategy.

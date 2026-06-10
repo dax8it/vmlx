@@ -13734,3 +13734,15 @@ Next action:
 - Patched MiMo mixed-SWA cache finalization to defer clean prompt-boundary paged/L2 store to scheduler idle time, added MiMo omitted-top_k=64 defaults in API/UI, and changed compact top-k top_p filtering to normalize inside selected top-k.
 - Live proof: source MiMo JANG_2L text runtime loaded with full quant coverage and native mixed-SWA paged/L2 cache. Deferred cache store queued and then wrote 48 layers / 28 tokens to block L2 in 0.70s. Fresh default request resolved `top_k: 64` and produced clean text.
 - Still red: speed is not solved. Model forward is ~2ms/token, but sampler remains ~624ms/token after warmup; `31 tokens in 47.94s`. A paged-cache hit/reconstruct request also timed out before decode. No release, signing, PyPI, N2 JANG_1L, or subagent action.
+
+# 2026-06-10 16:35 PDT
+- Continuation recorded. Staying on MiMo sampler/cache red blocker; no release, N2 JANG_1L, PyPI, or subagent action. Next: inspect compact sampling and paged-cache reconstruct paths for a direct runtime fix.
+
+# 2026-06-10 16:43 PDT
+- MiMo sampler root-cause hypothesis refined: isolated top-k is cheap, live compiled categorical/random path is likely slow under 102GB model load. Preparing CPU-materialized compact top-k sampler path.
+
+# 2026-06-10 16:51 PDT
+- CPU compact sampler hypothesis rejected by live 2-token MiMo proof (`first sample 73279ms`). Reverted that path. Next fix is MiMo mixed-SWA small paged-hit guard to avoid tiny-prefix reconstruct stalls.
+
+# 2026-06-10 17:04 PDT
+- MiMo short mixed-SWA paged-hit guard proved live: existing 28-token hit was ignored, reconstruct avoided, request completed. Remaining red is first-sample sampler/compile latency (`~29.7s` first sample), not tiny-prefix cache reconstruction.
