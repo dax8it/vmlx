@@ -887,3 +887,12 @@
 - Honest media cache boundary: the server skipped prefix/paged cache store for the video prompt because media embeddings are path-dependent.
 - Still open: N2 audio, installed-app parity, public tunnel parity, and N2 JANG_1L memory-safe startup.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - N2 JANGTQ2 dev-app audio honestly gated
+
+- Generated a 16 kHz mono WAV saying `audio present` and ran real Electron dev-app Nex/N2 Pro JANGTQ2 Chat Completions audio proof.
+- Added tracked proof summary `build/current-real-ui-live-model-n2-jangtq2-audio-proof-20260610.json`, `status=fail`.
+- Positive evidence before the audio turn: real model loaded as `mllm`, text chat turns completed, hybrid SSM cache and attention-only TurboQuant KV were active, and cache/L2 remained green with `cache_detail=paged+ssm`, `cached_tokens=18`, `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`.
+- Red evidence: app attempted an audio turn, server `MEDIA_DIAG` saw `input_audio`, and the API returned `400 - /v1/chat/completions received unsupported media modality audio. Supported modalities: text, vision, video.`
+- Boundary: this is an honest capability guard, not a crash or cache failure. Do not claim N2 JANGTQ2 audio support in the checkpoint release.
+- No package/sign/notarize/tag/upload/release action was run.

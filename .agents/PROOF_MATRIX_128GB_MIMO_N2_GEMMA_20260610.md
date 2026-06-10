@@ -286,7 +286,8 @@ Proven:
 Not proven:
 
 - Installed-app/UI path for this exact 20260610 proof.
-- VL/audio/video.
+- Dev-app image/video for this exact profile are proven in the app section
+  below; audio remains red by explicit unsupported-modality guard.
 - Same-model direct/gateway/tunnel public parity.
 - JANG_1L profile.
 
@@ -305,6 +306,7 @@ Artifact:
 - `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`
 - `build/current-real-ui-live-model-n2-jangtq2-image-proof-20260610.json`
 - `build/current-real-ui-live-model-n2-jangtq2-video-proof-20260610.json`
+- `build/current-real-ui-live-model-n2-jangtq2-audio-proof-20260610.json`
 
 Raw ignored proof captures:
 
@@ -342,6 +344,11 @@ Proven:
   `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`,
   `l2_tokens_on_disk=118`, block-disk `disk_hits=3`, and SSM companion stores
   `2`.
+- Real Electron dev-app audio proof is red by explicit runtime guard, not by
+  crash. The app attempted an audio turn, server `MEDIA_DIAG` saw
+  `input_audio`, and the API returned `400`:
+  `/v1/chat/completions received unsupported media modality audio. Supported
+  modalities: text, vision, video.`
 - Responses UI rail reached `/v1/responses` and completed two turns.
 - Built-in `run_command` tool loop executed and wrote/read the expected probe
   files: `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`.
@@ -398,8 +405,9 @@ Red:
   failed because the second turn did not create `real_ui_tool_probe_2.txt` and
   visible output degenerated into repeated `!` after a tool-choice-required
   error. Do not generalize the default checkpoint pass to that stricter prompt.
-- Installed-app packaged parity, VL/audio/video, public tunnel SSE parity, and
-  release readiness remain open.
+- Installed-app packaged parity, audio, public tunnel SSE parity, and release
+  readiness remain open. Image and video are green in the source dev app; audio
+  is honestly gated as unsupported.
 
 Next implementation target:
 
@@ -412,7 +420,7 @@ Next implementation target:
 - N2 JANGTQ2 now has a single green default dev-app proof for built-in tool
   loop, Responses tool-result continuation, content-delta streaming,
   hybrid-SSM/TurboQuant KV cache, and L2. Remaining N2 rows are installed-app
-  parity, media, public tunnel parity, N2 JANG_1L memory strategy, and the
+  parity, audio, public tunnel parity, N2 JANG_1L memory strategy, and the
   stricter custom prompt quality red row.
 
 ## Red Live Attempts

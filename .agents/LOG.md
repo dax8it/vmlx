@@ -8094,3 +8094,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven in app: `video_url` persisted, server decoded the base64 MP4, extracted `4` frames from `25 total frames @ 25.0 fps`, processed `num_images_processed=4`, and final visible answer described a solid red screen.
 - Runtime/cache: active about `103824.4 MB`, peak about `105305.7 MB`, hybrid SSM cache, attention-only TurboQuant KV, `cache_detail=paged+ssm`, `cached_tokens=18`, `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`.
 - Boundary: audio/installed app/tunnel/N2 JANG_1L remain open. No release action was run.
+
+# 2026-06-10 - N2 JANGTQ2 dev-app audio gated
+
+- Generated `build/media-fixtures/audio-present.wav` and ran real Electron dev-app N2 JANGTQ2 Chat Completions audio proof.
+- Added tracked summary `build/current-real-ui-live-model-n2-jangtq2-audio-proof-20260610.json`, `status=fail`.
+- Boundary proved: app attempted an audio turn and server saw `input_audio`, but `/v1/chat/completions` rejected it with `400` unsupported media modality; supported modalities reported by the server are `text, vision, video`.
+- This is not a load/cache/L2 failure. Do not claim N2 audio support.
+- No release action was run.
