@@ -8619,6 +8619,30 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   semantic drift, and source-vs-quant/no-source classification. No release,
   package, sign, notarize, tag, upload, or PyPI action was run.
 
+# 2026-06-10 - Responses reasoning/tool SSE output-index source fix
+
+- Fixed `stream_responses_api()` reasoning/tool SSE bookkeeping. Streaming
+  reasoning now gets its own `response.output_item.added/done` lifecycle with
+  `type=reasoning` at output index `1`, and function calls emitted after a
+  message+reasoning stream use output index `2`. This prevents reasoning/tool
+  item index collisions while preserving the existing fail-closed behavior for
+  empty/missing required tool arguments.
+- This does not synthesize missing `cmd`/tool args and does not infer tool
+  parameters from visible preambles. It only makes the SSE item lifecycle and
+  final `response.output` object consistent.
+- Verification:
+  - `tests/test_server.py -k 'streaming_responses_tool_call_arguments_survive_buffering or streaming_responses_tool_call_uses_next_output_index_without_text or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_reasoning_tool_call_keeps_arguments'`
+    passed `5/5`.
+  - `tests/test_responses_raw_sse_parity_contract.py tests/test_hybrid_batching.py -k 'raw_sse_parity or responses_api_uses_standard_reasoning_summary_events or responses_api_no_reasoning_done_when_suppressed'`
+    passed `19/19`.
+  - `py_compile vmlx_engine/server.py` and `git diff --check` passed.
+  - Direct in-process SSE probe showed event indices `message=0`,
+    `reasoning=1`, `function_call=2`, final `response.output` order
+    `[message, reasoning, function_call]`, and function-call arguments done on
+    index `2`.
+- Boundary: source/in-process proof only. Same-model direct/gateway/tunnel raw
+  SSE capture is still required before closing deployed #190/#192 parity.
+
 # 2026-06-10 - Fresh v1.5.57 checkpoint release
 
 - Bumped source/app package surfaces to `1.5.57` and committed
