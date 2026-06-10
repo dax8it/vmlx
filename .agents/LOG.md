@@ -1,3 +1,13 @@
+# 2026-06-09 - Responses Qwen35 tunnel output-index classification
+
+- Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no package/sign/notarize/tag/download release action.
+- Reduced blocker class: `api/ui` Responses raw-SSE parity for reasoning-enabled tool calls.
+- Current-source trace: `stream_responses_api()` closes the streaming message item at `output_index=0`, appends it, increments `output_index`, then emits function_call items at the next index. The no-heavy contract still covers source empty XML required-arg fail-closed behavior, output-index ordering, gateway argument passthrough, and stale Responses port rejection.
+- Artifact truth: `build/current-responses-raw-sse-parity-qwen35-tunnel-output-index-recapture-20260609.json` remains `status=fail`; the only present surface is public tunnel Qwen35, which preserves `record_fact` args `{"value": "blue-cat"}` and has `reasoning_events=10`, but emits `message=[0]` and `function_call=[0]`.
+- Gemma same-model tunnel boundary: `build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json` remains `status=fail`; direct/gateway Gemma4 E2B preserve args and valid indices, but tunnel returns `model_not_found` because `gemma4-e2b-sse` is not advertised there.
+- Classification: do not fix this by disabling reasoning, inventing missing arguments, or adding parser fallback injection. Next proof is Qwen35 current-source direct and panel-gateway raw SSE with the exact tunnel request/model. If those use function_call `output_index=1`, rebuild/redeploy the tunnel backend and recapture. If they duplicate `0`, reopen the source streaming finalization path.
+- Boundary: Responses parity remains open for same-model direct/gateway/tunnel, deployed tunnel freshness, final object consistency, and tool-result continuation. No release action.
+
 # 2026-06-09 - Gemma4 12B JANG4M no-media current proof pointer
 
 - Stayed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; no deprecated `/Users/eric/vmlx`, no package/sign/notarize/tag/download release action.

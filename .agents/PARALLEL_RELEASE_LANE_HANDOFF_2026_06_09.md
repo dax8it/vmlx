@@ -113,6 +113,13 @@ panel/scripts/verify-release-dmgs.sh
    gateway argument passthrough. Treat the next Qwen35 action as live recapture
    or deployed/tunnel freshness unless a same-model current-source capture
    contradicts that.
+   Current source audit: `stream_responses_api()` closes the message at
+   `output_index=0`, increments, then emits function calls at the next index.
+   Do not add a fake parser fallback or disable reasoning for this row. The
+   next useful proof is Qwen35 current-source direct plus panel-gateway raw SSE
+   with the exact tunnel request/model. If direct/gateway emit function calls at
+   `output_index=1`, rebuild/redeploy the tunnel backend from current source and
+   recapture. If direct/gateway also reuse `0`, reopen the source streaming path.
 3. Run Gemma4 media/UI proof from current source or the rebuilt installed app.
    Installed-app runtime parity is now green, so the next useful Gemma work is
    real model/media/API/UI behavior, not another parity hash audit.

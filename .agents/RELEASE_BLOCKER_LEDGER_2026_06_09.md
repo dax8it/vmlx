@@ -16,6 +16,8 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
 - Specific issue to trace: streaming code near line `13592` checks `if tc_args:`; reported failure means `tc_args` is empty. Trace why `_parse_tool_calls_with_parser` returns empty args when reasoning is on, and trace how the streaming loop accumulates tool-call deltas.
 - Gateway/tunnel/port/wake/sleep/session routing must be checked separately from engine parsing. A Cloudflare/gateway model miss or stale sleeping backend is not the same as a local parser bug.
 - No executable `{}` argument payload should be emitted for required tool calls when required args are actually missing; fail closed instead.
+- Current split: local no-heavy guards cover empty XML required-arg fail-closed behavior and output-index ordering. Gemma4 E2B direct/gateway captures preserve `record_fact` args and valid indices, but the public tunnel does not advertise `gemma4-e2b-sse`. Qwen35 public tunnel preserves args and reasoning events, but reuses `output_index=0` for both message and function_call. Treat Qwen35 as deployed/tunnel freshness unless current-source direct/gateway raw SSE reproduces the duplicate index.
+- Next proof: same-model Qwen35 current-source direct plus panel-gateway raw SSE with reasoning enabled and the exact tunnel request. If direct/gateway use output index `1`, rebuild/redeploy the tunnel backend and recapture; if they duplicate `0`, reopen the source streaming finalization path.
 
 2. MiniMax random Chinese / visible planning
 
