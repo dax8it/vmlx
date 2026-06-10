@@ -9130,3 +9130,56 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
   action was taken, and this does not prove every parser family or media row.
 - Commit/push: `658c9ab3 Harden Qwen empty tool-call filtering` was pushed to
   `origin/codex/pr-intake-manifest` and fast-forwarded to `origin/main`.
+
+# 2026-06-10 - MiMo JANGTQ_2 source media runtime routing fixed
+
+- User focus item: MiMo V2.5 JANG/JANGTQ media/API/cache proof without fake
+  guards, while not touching Eric-owned N2 JANG_1L.
+- Source fix: MiMo `weights_preserved_text_runtime` metadata no longer blocks
+  media routing when the current source runtime can actually consume the
+  preserved bundle. Auto-enable now requires concrete evidence: local MiMo VLM
+  runtime classes, `preprocessor_config.json`, `audio_tokenizer/model.safetensors`,
+  token IDs from top-level or `processor_config`, and indexed media weights
+  under `visual.*`, `audio_encoder.*`, and `speech_embeddings.*`.
+- Loader fix: JANG VLM and JANGTQ VLM fast paths apply the same MiMo media
+  overlay before constructing `ModelConfig`, including inside
+  `jang_tools.load_jangtq_vlm._mlx_vlm_skeleton()`. The local MiMo config
+  consumes the overlay by clearing `unwired_modalities` and setting
+  `mimo_v2_multimodal_runtime`, so the runtime actually constructs `visual`
+  and `audio_encoder` before preserved media weights bind.
+- Verification:
+  `.venv/bin/python -m py_compile vmlx_engine/server.py vmlx_engine/models/mllm.py vmlx_engine/utils/jang_loader.py`
+  passed.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_capability_gate.py tests/test_mimo_v2_media_runtime.py tests/test_mimo_v2_mllm_runtime_registration.py tests/test_engine_audit.py -k 'mimo_v2'`
+  passed with `57 passed`.
+- Real artifact skeleton proof:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` now reports
+  `_mimo_v2_bind_media_weights=True`, `has_visual=True`,
+  `has_audio_encoder=True`, status `mimo_v2_multimodal_runtime`, and
+  `unwired=[]`.
+- Real artifact media-binding proof:
+  `_bind_mimo_v2_preserved_media_weights_from_index()` assigned
+  `visual=364`, `audio_encoder=75`, and `speech_embeddings=20`.
+- Live API proof:
+  source server on `127.0.0.1:8877` loaded the real JANGTQ_2 model as MLLM,
+  assigned `459` media tensors, used MiMo native mixed full/SWA rotating cache,
+  skipped generic TurboQuant KV by design, and handled a data-URL image request
+  through `/v1/chat/completions` with HTTP `200` and visible content
+  `The text "vMLX"`.
+- Cache proof:
+  repeated text chat hit paged cache on the second request with
+  `cached_tokens=29`, `cache_detail=paged`, `cache_hit_tokens=29`, and
+  `ram_tokens_cached=56`. L2 disk was not enabled in this launch, so no L2
+  restore claim is made.
+- Still red:
+  MiMo exactness remains red because live text `Reply exactly: MIMO-OK`
+  returned `MIMOOK`. Installed-app parity, video E2E, audio E2E,
+  fresh-process L2 restore, and release clearance remain open.
+- Artifact:
+  `build/current-mimo-v25-jangtq2-media-runtime-source-proof-20260610.json`.
+- Other-agent action:
+  rebuild/relaunch current Electron dev app from this source and rerun MiMo
+  JANGTQ_2 image/video/audio UI rows. Do not patch semantic string drift in
+  parser/JSON repair and do not call installed-app media green until rebuilt
+  proof exists.
