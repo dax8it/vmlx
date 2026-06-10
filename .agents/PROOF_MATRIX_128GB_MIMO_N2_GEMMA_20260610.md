@@ -60,6 +60,7 @@ Artifacts:
 - `build/current-gemma4-12b-mxfp4-jang4m-live-runtime-audit-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-dev-app-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-image-proof-20260610.json`
+- `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-video-proof-20260610.json`
 
 Proven:
 
@@ -93,15 +94,24 @@ Proven:
 - The MXFP4 image proof also showed MXFP4 affine matmul with Metal NA active,
   mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`,
   `l2_block_tokens_on_disk=64`, and block-disk `disk_writes=2`.
+- Real Electron dev-app Gemma 12B QAT MXFP4 video/VL proof is green for the
+  same 1-second 64x64 solid-red MP4 fixture used by the N2 proof. The app
+  persisted a `video_url` attachment, server `MEDIA_DIAG` observed one
+  `video_url`, the server decoded the base64 MP4, reported
+  `25 total frames @ 25.0 fps`, extracted `4 frames`, and the assistant
+  answered `The video shows a solid red screen.`
+- The MXFP4 video proof also showed MXFP4 affine matmul with Metal NA active,
+  mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`,
+  `l2_block_tokens_on_disk=65`, and block-disk `disk_writes=2`.
 
 Not proven:
 
 - Installed-app parity for these exact new artifacts.
-- Audio/video weight-backed E2E for the MXFP4 dev-app row.
+- Audio weight-backed E2E for the MXFP4 dev-app row.
 - Full larger Gemma QAT matrix through UI/installed app.
 - Tunnel/gateway parity for these exact Gemma rows.
-- Gemma 12B QAT MXFP4 dev-app video/audio. Image is now green in the source
-  dev app.
+- Gemma 12B QAT MXFP4 dev-app audio. Image and video are now green in the
+  source dev app.
 - The second MXFP4 visible answer begins with the plain word `thought`; this is
   not a raw `<think>` or parser markup leak and the leak gates passed, but do
   not hide this visible-final style caveat.

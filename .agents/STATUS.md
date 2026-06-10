@@ -915,3 +915,12 @@
 - Runtime/cache evidence: MXFP4 affine quantized matmul, Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=64`, and block-disk `disk_writes=2`.
 - Still open: Gemma 12B QAT MXFP4 video/audio, installed-app parity, public tunnel parity, and release signing/notarization.
 - No package/sign/notarize/tag/upload/release action was run.
+
+# 2026-06-10 - Gemma 12B QAT MXFP4 dev-app video/VL proof green
+
+- Ran real Electron dev-app Gemma 4 12B QAT MXFP4 Chat Completions video proof with the 1-second solid-red MP4 fixture.
+- Added tracked proof summary `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-video-proof-20260610.json`, `status=pass`.
+- Proven: app persisted the `video_url` attachment, server `MEDIA_DIAG` saw one `video_url`, the server decoded the base64 MP4, reported `25 total frames @ 25.0 fps`, extracted `4 frames`, and the assistant answered `The video shows a solid red screen.`
+- Runtime/cache evidence: MXFP4 affine quantized matmul, Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=65`, and block-disk `disk_writes=2`.
+- Still open: Gemma 12B QAT MXFP4 audio, installed-app parity, public tunnel parity, and release signing/notarization.
+- No package/sign/notarize/tag/upload/release action was run.

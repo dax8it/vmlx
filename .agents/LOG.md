@@ -8119,3 +8119,11 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Proven in app: image attachment persisted, server saw `image_url`, Gemma media fallback ran with `1 image(s)`, and final visible answer was `Red`.
 - Runtime/cache: MXFP4 affine matmul with Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=64`, `disk_writes=2`.
 - Boundary: video/audio/installed app/tunnel/release remain open. No release action was run.
+
+# 2026-06-10 - Gemma 12B QAT MXFP4 dev-app video/VL proof green
+
+- Ran real Electron dev-app Gemma 4 12B QAT MXFP4 Chat Completions video proof.
+- Added tracked summary `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-video-proof-20260610.json`, `status=pass`.
+- Proven in app: `video_url` persisted, server decoded the base64 MP4, extracted `4` frames from `25 total frames @ 25.0 fps`, and final visible answer described a solid red screen.
+- Runtime/cache: MXFP4 affine matmul with Metal NA active, mixed-SWA cache, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=65`, `disk_writes=2`.
+- Boundary: audio/installed app/tunnel/release remain open. No release action was run.
