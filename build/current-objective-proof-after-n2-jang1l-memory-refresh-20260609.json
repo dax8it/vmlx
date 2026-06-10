@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-09T18:16:02-0700",
+  "created_at": "2026-06-09T18:27:28-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
@@ -372,7 +372,7 @@
     },
     {
       "requirement": "App maxToolIterations cap is enforced for DSV4 tool loop",
-      "status": "open",
+      "status": "pass",
       "evidence": [
         "build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json"
       ],
@@ -391,7 +391,7 @@
         ],
         "source_hashes_recorded": {
           "tests/cross_matrix/run_tool_call_contract.py": "f4e09ec189d43c71f8e38473c213592e4372256f47e045ad61126be87b1217ba",
-          "vmlx_engine/server.py": "ca045d9df8cab304b315c4357a159457bbd1b56a23b43546b4f0bda3192720e1",
+          "vmlx_engine/server.py": "b1f56da8f1415ebdf1d9c9fd6895e213e66ea563d986aec3ebf9fd77c88f0452",
           "vmlx_engine/tool_parsers/abstract_tool_parser.py": "ba766e6193d67e64613a28af17ed336e875e7b209ac974ebbc7499a06b158bd3",
           "vmlx_engine/tool_parsers/qwen_tool_parser.py": "a6b6c4429efaca07fd50db5da35c0e103119c89a4c29579a7b98b259b7fb3acb",
           "vmlx_engine/tool_parsers/auto_tool_parser.py": "63849fcd759ab609dae1514e6b8dce67d78f8016211a3e11fcb6e1115a650dba",
@@ -400,12 +400,12 @@
           "tests/test_tool_format.py": "7175cee08f849dd564f7ff8553bad27506b4a260368afd6d669f2f4bb4acfaea",
           "tests/test_tool_parsers.py": "7866068581ec5a159910ea9dba7935597e77cc5a245c1a45c1ae5474d5197950",
           "tests/test_gemma3_tool_parser.py": "184f78d88c266868971e2b92dac34bdf70309f73a242f8204f6f6d1607e11ea6",
-          "tests/test_gemma4_tool_parser.py": "e9532be651782d8ccd630725cd91f5595f85d246570607d7f1ddfba6e64c046a",
+          "tests/test_gemma4_tool_parser.py": "4e35c804391a8a966eeef1d2a921b968bc1af4a67a117ac5b016e52a3bb40826",
           "tests/test_glm47_tool_parser.py": "34260287a4cf76deb63526b6f3e65d57e02c7cfa22b2ec271b5283b365f93c78",
           "tests/test_granite_tool_parser.py": "27ec8d06e830a38b28e4d1e3599019236bce566e09acd2f9704d1cee7839061f",
           "tests/test_hunyuan_tool_parser.py": "21acf81ce2965beb487e856a441bd987ab238061fb6928c3a215e5e02925c971",
           "tests/test_xml_function_tool_parser.py": "7105232d4c26628c7dc0fac71d2c2f85f87fad6bf06b0a3944345c78c1756a79",
-          "tests/test_engine_audit.py": "d7cb6386c726505560d1438eed9fa132253e2c98b737f12337944b5d4b6199f3",
+          "tests/test_engine_audit.py": "bc72000988d5d5cc4f809acd6133ed1bd853f32df1b7fc572f214597913279db",
           "panel/src/main/ipc/coding-tools.ts": "42937f7253b2e483d905693a5911c9072368b47bb338e70a86230f02f9d848e1",
           "panel/src/main/tools/executor.ts": "89f0869f819912d339aabbd2b3cd080f5a47b7ebb8c15fceeefc3b711b5b2fd5",
           "panel/src/main/ipc/chat.ts": "1d147559881dabf7b50bc003ba98ad352307799b915feb3163c8328d38ec5504",
@@ -438,11 +438,7 @@
           "panel/tests/request-builder.test.ts": "cbf8a7808680d5a056bf34e8a961b47e45b3414226ceb35f106c831300bcc285"
         },
         "missing_source_hashes": [],
-        "stale_source_hashes": [
-          "vmlx_engine/server.py",
-          "tests/test_gemma4_tool_parser.py",
-          "tests/test_engine_audit.py"
-        ],
+        "stale_source_hashes": [],
         "missing_source_files": [],
         "evidence_files_present": {
           "build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json": true

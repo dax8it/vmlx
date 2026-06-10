@@ -7840,6 +7840,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
 - Validation passed: focused full-checklist tests `4/4`, `py_compile`, and regenerated checklist. No release, package, sign, notarize, tag, or download action.
 - Follow-up no-heavy source recheck: `build/current-noheavy-api-cache-contract-after-qwen35-output-index-recheck-20260609.json`, `status=pass`; `responses_streaming_tool_call_arguments_and_indexes=true`, `gateway_responses_function_call_arguments_streaming=true`, `gateway_responses_reasoning_empty_final_arguments_streaming=true`, and `gateway_stale_responses_port_rejection=true`. Current source is not showing the output-index bug in synthetic/source contracts; next work is live same-model direct/gateway/tunnel capture or deployed route freshness.
 
+# 2026-06-09 18:31 PDT - Gemma QAT/native MXFP4 inventory/objective refresh
+
+- Regenerated `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json` and `build/current-objective-proof-after-n2-jang1l-memory-refresh-20260609.json`.
+- Gemma inventory remains `status=open`, with `missing_required_rows=[]`, all QAT/JANG_4M and QAT/native MXFP4 rows present, and `source_live_smoke_open_rows=[]`.
+- Objective digest now records the full set of Gemma source-live-smoke artifacts and keeps release clearance open with `all_required_live_proofs_present=false`. This is intentional: source smokes do not clear installed-app/UI/media/cache/API/tunnel release rows.
+- Secondary cleanup from the refreshed tool-call contract: `App maxToolIterations cap is enforced for DSV4 tool loop` is now `pass`; stale source hashes for `server.py`, `tests/test_gemma4_tool_parser.py`, and `tests/test_engine_audit.py` are gone from that row.
+- Validation passed: focused pytest `17/17` and `py_compile`.
+- Boundary: no Gemma release claim, no package/sign/notarize/tag/upload action.
+
 # 2026-06-09 18:26 PDT - DSV4 default-cache tool-loop live retry and gate path fix
 
 - Retried the DSV4 default-cache DSML/tool-loop gate for public issue #165 with current checkpoint Sequoia bundled Python:

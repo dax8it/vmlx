@@ -107,6 +107,11 @@ that path in the current turn.
   action is rerun the same gate when actual available memory meets the floor,
   not lowering the threshold or accepting source-only DSML tests as release
   clearance.
+- Gemma QAT/native MXFP4 inventory was refreshed after the other-agent source
+  smokes. `source_live_smoke_open_rows=[]` and all required local rows are
+  present, but every required row remains release-open because full
+  media/cache/API/UI/installed-app/tunnel proof is still missing. Do not turn
+  those source smokes into release clearance.
 - Proper release mechanics are the documented path in
   `/Users/eric/wiki/infra/apple-notarization.md`; do not invent a GUI-only,
   ad-hoc-signing, cert-reimport, or verifier-weakening workaround. If signing
