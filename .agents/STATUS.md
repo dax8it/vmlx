@@ -4784,3 +4784,41 @@ Other-agent action:
 - Proven: source-level parser selection/runtime-state fix for Gemma4 MXFP4/JANG sidecar launches using repo IDs, app aliases, or loaded local paths; avoids visible Gemma4 `thought\n...` leakage when the Gemma4 parser is active.
 - Not proven yet: a rerun of the live `current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools` proof after this patch, installed-app parity, packaged/bundled runtime parity, or package/sign/notarize/release readiness.
 - Other-agent handoff: include this server/api resolver patch in the bundled Python runtime before any checkpoint DMG rebuild; then rerun the Gemma4 MXFP4 Responses tools live proof and confirm health/capabilities report Gemma4 parsers and visible assistant content no longer starts with `thought`.
+
+# 2026-06-10 14:02 PDT - Gemma4 MXFP4 post-fix live proof lane selected
+
+- Current user objective continues: prioritize real runtime/API/model fixes and proofs for checkpoint readiness across Gemma/MiMo/N2/Qwen, avoid broad harness churn, avoid fake parser/output repair, and keep every movement written down.
+- Active directives rechecked: no N2 JANG_1L, no subagents, no release/sign/notarize/PyPI/updater/download/site action, and parser/API/tool/content/reasoning delta correctness remains high priority.
+- Current blocker: commit `b8a4c489a` fixed source parser auto-detect after load for Gemma4 MXFP4/JANG sidecar launches, but the live Gemma4 MXFP4 Responses tools row has not been rerun after the patch.
+- Next movement: look for an existing proof runner/command for `current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-20260610`; use existing runner only. Do not create a new broad harness. If no focused proof is available, move to the next source-side parser/API blocker.
+
+# 2026-06-10 14:04 PDT - Gemma4 MXFP4 post-fix live proof still red for visible thought leak
+
+- Ran existing focused proof command:
+  `VMLINUX_REAL_UI_MODEL_PATH=/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4 VMLINUX_REAL_UI_SERVED_MODEL=gemma4-12b-qat-mxfp4-post-parser-autodetect-20260610 VMLINUX_REAL_UI_PROOF_BASENAME=current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-post-parser-autodetect-20260610 VMLINUX_REAL_UI_WIRE_API=responses VMLINUX_REAL_UI_BUILTIN_TOOLS=1 VMLINUX_REAL_UI_ENABLE_THINKING=0 VMLINUX_REAL_UI_MAX_TOKENS=96 VMLINUX_REAL_UI_MAX_PROMPT_TOKENS=12000 VMLINUX_REAL_UI_MAX_TOOL_ITERATIONS=4 VMLINUX_REAL_UI_CHECK_SERVER_CACHE_CONTROLS=1 node panel/scripts/live-real-ui-model-proof.mjs`
+- Artifact: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-post-parser-autodetect-20260610-proof.json`, harness `status=pass`.
+- Red finding: second visible assistant content is still `thought\nThe second UI turn is complete. REAL_UI_LIVE_TOOL_TWO`; stream trace first content is `thought`; `persistedReasoningCount=0`; health still reports `tool_parser=null`, `reasoning_parser=null`.
+- Proven by this run: real 12B MXFP4 loaded, Responses API/tool loop works, cache hit telemetry works (`cache_hit_requests=3`, `cache_hit_tokens=3619`), Gemma4 mixed-SWA block L2 writes (`l2_block_tokens_on_disk=3517`), and proof processes cleaned up.
+- Not proven: Gemma4 MXFP4 parser selection/reasoning separation. The previous source fix is insufficient for the live server startup path. Continue tracing root cause; do not claim this row green.
+
+# 2026-06-10 14:12 PDT - Gemma4 live leak root cause refined to per-request parser fallback
+
+- Local helper reproduction showed `_responses_fast_path_visible_text()` and `clean_output_text()` already strip the exact `thought\n...` string.
+- The live artifact stream trace shows `response.output_text.delta` content beginning with `thought`, so the leak occurred before final object cleanup in the streaming Responses path.
+- Root cause selected for source fix: streaming Chat/Responses only create a request reasoning parser from the global `_reasoning_parser`. CLI/app launch paths can leave the global parser unset even when the loaded model config resolves to `reasoning_parser=gemma4`; there is no per-request registry fallback before streaming deltas.
+- Fix target: in streaming Chat and Responses, after resolving the loaded model config, instantiate the family reasoning parser as a request-local fallback when `_reasoning_parser` is missing and reasoning was not explicitly disabled. Do not alter model text globally and do not synthesize content or tool args.
+
+# 2026-06-10 13:06 PDT - Gemma4 request-parser fallback proof inspection selected
+
+- Continuation resumed after the request-local Gemma4 reasoning parser fallback patch and focused source tests.
+- Current constraints rechecked: no N2 JANG_1L, no subagents, no release/sign/notarize/PyPI/download/site action, and every movement must be written to `.agents` before the next substantive action.
+- Current artifact to inspect: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610-proof.json`.
+- No claim is allowed from harness `status=pass` alone because the previous Gemma4 MXFP4 live proof also reported pass while visible assistant content still began with `thought`.
+
+# 2026-06-10 13:06 PDT - Gemma4 request-parser fallback live proof green for current-source row
+
+- Inspected artifact `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610-proof.json`.
+- Proven by artifact content: `status=pass`, real model path `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`, Responses wire API, built-in tools enabled, first assistant content `The file has been created successfully. REAL_UI_LIVE_TOOL_ONE`, second assistant content `The second UI turn is complete with REAL_UI_LIVE_TOOL_TWO.`, `rawParserLeak=false`, `reasoningRawParserLeak=false`, and both stream traces begin with visible `The` rather than `thought`.
+- Cache proof in same artifact: native Gemma4 mixed-SWA cache, `cache_hit_requests=3`, `cache_hit_tokens=3619`, `cache_detail=paged+mixed_swa`, and block-disk L2 `l2_block_tokens_on_disk=3518`.
+- Process cleanup checked after the proof: no matching proof server/dev-app/Electron process and no listener on checked proof ports.
+- Boundary: current-source Gemma4 12B QAT MXFP4 dev-app Responses/tools visible `thought` leak row is green. Still not proven: installed-app parity, packaged/bundled Python parity, Gemma media/video/audio, all Gemma QAT sizes for this exact post-fix row, Qwen empty-args direct/gateway/tunnel, MiMo JANGTQ_2 exactness, N2 rows, sign/notarize/release readiness.

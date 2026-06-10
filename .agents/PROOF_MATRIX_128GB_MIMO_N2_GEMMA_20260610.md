@@ -7,6 +7,63 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### Gemma4 12B QAT MXFP4 Responses Tool/Cache Leak Fix
+
+Artifact:
+
+- `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610-proof.json`
+
+Source update:
+
+- `vmlx_engine/server.py`
+- `tests/test_engine_audit.py`
+
+Proven:
+
+- Real local Gemma4 12B QAT MXFP4 loaded from
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`.
+- Responses API dev-app proof used built-in tools and completed two tool-loop
+  turns with visible assistant output:
+  `The file has been created successfully. REAL_UI_LIVE_TOOL_ONE` and
+  `The second UI turn is complete with REAL_UI_LIVE_TOOL_TWO.`
+- The prior visible `thought\n...` leak is gone in this proof:
+  `rawParserLeak=false`, `reasoningRawParserLeak=false`, and stream traces for
+  both messages begin with visible `The` rather than `thought`.
+- Cache proof remained active: `cache_hit_requests=3`,
+  `cache_hit_tokens=3619`, `cache_detail=paged+mixed_swa`, and Gemma4
+  mixed-SWA block-disk L2 recorded `3518` tokens on disk.
+- Process cleanup was verified after the proof; no matching proof server,
+  dev-app, or Electron process was left listening on the checked ports.
+
+Root-cause/fix boundary:
+
+- The source bug was the streaming Chat/Responses request path depending only
+  on the global `_reasoning_parser`. CLI/app launch paths can leave that global
+  unset even when the loaded model config resolves to `reasoning_parser=gemma4`.
+- The fix adds a request-local reasoning parser fallback from the loaded model
+  config when the global parser is missing and reasoning parser selection was
+  not explicitly disabled.
+- Explicit `--reasoning-parser none` remains a hard opt-out.
+- No text was synthesized, no tool arguments were invented, no reasoning was
+  disabled to hide the leak, and no broad output post-repair was added.
+
+Verification:
+
+- `.venv/bin/python -m py_compile vmlx_engine/server.py tests/test_engine_audit.py`
+- `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'request_reasoning_parser_falls_back_to_loaded_config or request_reasoning_parser_fallback_respects_explicit_none or loaded_gemma4_mxfp_sidecar_refreshes_auto_parsers or loaded_model_parser_refresh_preserves_explicit_disables or gemma4_supports_thinking_is_explicit_not_implicit'`
+  passed `5/5`.
+- Focused live proof command:
+  `VMLINUX_REAL_UI_MODEL_PATH=/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4 VMLINUX_REAL_UI_SERVED_MODEL=gemma4-12b-qat-mxfp4-request-parser-fallback-20260610 VMLINUX_REAL_UI_PROOF_BASENAME=current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610 VMLINUX_REAL_UI_WIRE_API=responses VMLINUX_REAL_UI_BUILTIN_TOOLS=1 VMLINUX_REAL_UI_ENABLE_THINKING=0 VMLINUX_REAL_UI_MAX_TOKENS=96 VMLINUX_REAL_UI_MAX_PROMPT_TOKENS=12000 VMLINUX_REAL_UI_MAX_TOOL_ITERATIONS=4 VMLINUX_REAL_UI_CHECK_SERVER_CACHE_CONTROLS=1 node panel/scripts/live-real-ui-model-proof.mjs`
+
+Boundary:
+
+- This clears the current-source Gemma4 12B QAT MXFP4 dev-app
+  Responses/tools visible `thought` leak row.
+- It does not prove installed-app parity, packaged/bundled Python parity,
+  Gemma media/video/audio rows, every Gemma QAT size, direct/gateway/tunnel
+  Qwen empty-args parity, MiMo JANGTQ_2 exactness, N2 rows, or release
+  readiness.
+
 ### MiMo Source Combined-Media Splice Fix
 
 Source update:

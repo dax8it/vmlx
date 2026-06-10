@@ -218,6 +218,14 @@ state so future continuations are forced to check it instead of relying on chat
 memory. This section is a standing carry-forward until a newer checked-in
 instruction supersedes it.
 
+Current proof carry-forward: Gemma4 12B QAT MXFP4 current-source dev-app
+Responses/tools visible `thought` leak was fixed by request-local reasoning
+parser fallback from the loaded model config and proven in
+`docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610-proof.json`.
+This does not clear installed-app parity, bundled Python parity, Gemma media
+rows, all Gemma sizes, Qwen empty-args direct/gateway/tunnel parity, MiMo
+JANGTQ_2 exactness, N2 rows, or release readiness.
+
 - Keep the work on fixes and proof that move a signed checkpoint release
   surface forward, but do not run release/sign/notarize/PyPI/updater/download/
   website actions unless Eric explicitly asks for that action in the current

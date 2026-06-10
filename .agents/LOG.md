@@ -12561,3 +12561,31 @@ Next action:
 - Patched `vmlx_engine/api/utils.py` to resolve `~/models/<org>/<name>` repo-id cache paths used by current proof models.
 - Verified compile, focused engine-audit parser refresh tests, focused resolver tests, diff check, and direct local Gemma4 MXFP4 repo-id lookup.
 - Boundary: source fix is proven; live app proof and installed-app/package parity remain open.
+
+# 2026-06-10 14:02 PDT - Gemma4 MXFP4 post-fix live proof lane selected
+
+- Rechecked state after `b8a4c489a`; only unrelated dirty files remain.
+- Selecting the Gemma4 MXFP4 live Responses tools rerun because it directly proves whether parser auto-detect now prevents visible `thought` leakage in the real API/UI path.
+
+# 2026-06-10 14:04 PDT - Gemma4 MXFP4 post-fix live proof still red
+
+- Existing proof runner completed and cleaned up, but the visible `thought` leak persists.
+- Next root-cause trace: why the live CLI/server process does not activate Gemma4 parser globals even though direct registry lookup of the model path resolves to Gemma4 parsers.
+
+# 2026-06-10 14:12 PDT - Gemma4 live leak root cause refined to per-request parser fallback
+
+- The fast-path visible text helper is not the current leak source; the server streamed `thought` as output delta.
+- Next edit is request-local parser fallback from loaded model config for stream paths, guarded by explicit reasoning-parser disable.
+
+# 2026-06-10 13:06 PDT - Gemma4 request-parser fallback proof inspection selected
+
+- Continuation resumed in `/Users/eric/mlx/vllm-mlx-finite-launch-guard` after the request-local Gemma4 reasoning parser fallback patch and focused source tests.
+- Current constraints rechecked: no N2 JANG_1L, no subagents, no release/sign/notarize/PyPI/download/site action, and every movement must be written to `.agents` before the next substantive action.
+- Next movement: inspect the completed live artifact `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610-proof.json` and verify process cleanup. Do not claim the Gemma4 MXFP4 visible-reasoning row green unless the artifact content itself proves no visible `thought` leak and valid Responses/tool/cache behavior.
+
+# 2026-06-10 13:06 PDT - Gemma4 request-parser fallback proof inspected green
+
+- Artifact inspected: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-tools-request-parser-fallback-20260610-proof.json`.
+- Result: current-source Gemma4 12B QAT MXFP4 dev-app Responses/tools visible `thought` leak row is green. Both assistant turns contain visible answer text without `thought`, parser leak flags are false, tool loop completed, and cache/L2 telemetry is present.
+- Cleanup: no matching proof server, dev-app, Electron, or checked proof-port listener remained after the run.
+- Boundary: this is not installed-app/package/release clearance and does not close Gemma media/audio/video, Qwen empty-args direct/gateway/tunnel, MiMo exactness, or N2 rows.
