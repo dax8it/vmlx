@@ -1765,3 +1765,15 @@
 - Boundary: Gemma 12B JANG_4M no-media exact-code row is green from current
   source. Gemma QAT/native MXFP4 full live media/UI/installed-app rows remain
   open; this is not release clearance.
+
+# 2026-06-10 - Gemma exact-code prompt fix pushed
+
+- Commit/push: `2ddbba65` (`Clarify Gemma exact code smoke prompt`) was pushed
+  to `origin/codex/pr-intake-manifest` and `origin/main`.
+- Scope: Gemma no-media exact-code prompt contract, focused Gemma proof
+  artifacts, release-checklist pointer/artifact, tracker, and status notes.
+  No release, signing, notarization, PyPI, public download, or N2 JANG_1L
+  action was included.
+- Current checklist:
+  `build/current-full-release-objective-checklist-after-gemma12-code-column-prompt-20260610.json`
+  is `status=open`, `failed_count=57`.

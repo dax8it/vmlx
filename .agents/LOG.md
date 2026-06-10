@@ -9523,3 +9523,15 @@ MiniMax #179, real UI matrix, and DSV4 blockers.
     printed `failed_count=57`.
   - Focused pointer tests passed `3 passed`.
   - `py_compile` passed for the edited Python files.
+
+# 2026-06-10 - Gemma exact-code prompt fix pushed
+
+- Commit/push: `2ddbba65` (`Clarify Gemma exact code smoke prompt`) was pushed
+  to `origin/codex/pr-intake-manifest` and `origin/main`.
+- Scope: Gemma no-media exact-code prompt contract, focused Gemma proof
+  artifacts, release-checklist pointer/artifact, tracker, and status notes.
+  No release, signing, notarization, PyPI, public download, or N2 JANG_1L
+  action was included.
+- Current checklist:
+  `build/current-full-release-objective-checklist-after-gemma12-code-column-prompt-20260610.json`
+  is `status=open`, `failed_count=57`.
