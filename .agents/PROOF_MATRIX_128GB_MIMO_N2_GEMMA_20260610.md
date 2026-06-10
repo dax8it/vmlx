@@ -87,6 +87,7 @@ Artifacts:
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-video-proof-20260610.json`
 - `build/current-real-ui-live-model-gemma4-12b-qat-mxfp4-audio-proof-20260610.json`
 - `build/current-real-ui-installed-app-gemma4-12b-mxfp4-responses-tools-cache-20260610.json`
+- `build/current-real-ui-installed-app-gemma4-12b-mxfp4-image-proof-20260610.json`
 
 Proven:
 
@@ -155,10 +156,20 @@ Proven:
   `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3584`,
   `l2_tokens_on_disk=3584`, block-disk `disk_hits=30`, and
   `disk_writes=58`.
+- Local rebuilt installed app image/VL proof is also green for Gemma 12B QAT
+  MXFP4. The app persisted the image attachment, the server `MEDIA_DIAG` saw
+  one `image_url`, the Gemma media fallback ran with `1 image(s)`, and the
+  assistant answered `Red` for the red-image semantic probe.
+- The installed-app image run recorded `vl_image`, `installed_app_ui`,
+  `server_cache_controls`, content deltas (`count=21`, `12`, and `1`), no raw
+  parser/reasoning leak, `weight_format=mxfp4`, Metal NA active, native
+  `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cached_tokens=20`,
+  `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and `disk_writes=2`.
 
 Not proven:
 
-- Installed-app media parity for image/video/audio in this exact MXFP4 run.
+- Installed-app video/audio parity for the MXFP4 row; installed-app image is now
+  green.
 - Audio weight-backed E2E for the MXFP4 dev-app row is red; current source
   honestly rejects audio with supported modalities `text, vision, video`.
 - Full larger Gemma QAT matrix through UI/installed app.

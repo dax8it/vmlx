@@ -978,3 +978,11 @@
 - Proven: installed app UI launched, Gemma 12B QAT MXFP4 loaded as MLLM, `/v1/responses` used, two built-in `run_command` calls executed, tool probe files contained `REAL_UI_LIVE_TOOL_ONE` and `REAL_UI_LIVE_TOOL_TWO`, visible assistant turns completed, renderer content deltas counted `16` and `24`, no raw parser/reasoning leak, and server cache controls were verified in the app settings surface.
 - Cache/runtime proof: MXFP4 affine matmul with Metal NA active, active memory about `7772.4 MB`, peak about `10512.9 MB`, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cache_hit_tokens=3538`, `l2_block_tokens_on_disk=3584`, `l2_tokens_on_disk=3584`, `block_disk_hits=30`, and `block_disk_writes=58`.
 - Boundary: this clears Gemma 12B MXFP4 installed-app default Responses/tool/cache parity only. It does not clear Gemma installed-app media, Gemma audio, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.
+
+# 2026-06-10 - Gemma 12B MXFP4 installed-app image/VL proof green
+
+- Reduced blocker: `media` plus `api/ui` for Gemma 12B MXFP4 in the rebuilt local `/Applications/vMLX.app`.
+- Proof summary: `build/current-real-ui-installed-app-gemma4-12b-mxfp4-image-proof-20260610.json`, `status=pass`; raw proof and screenshot are `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-image-20260610-proof.json` and `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-mxfp4-image-20260610-chat.png`.
+- Proven: installed app UI launched, image attachment persisted, server `MEDIA_DIAG` saw one `image_url`, Gemma media fallback ran with `1 image(s)`, and the assistant answered `Red`; `imageSemanticVerified=true`.
+- Cache/runtime proof: MXFP4 affine matmul with Metal NA active, native `mixed_swa_kv_v1`, `cache_detail=paged+mixed_swa`, `cached_tokens=20`, `l2_block_tokens_on_disk=70`, `l2_tokens_on_disk=70`, and `block_disk_writes=2`.
+- Boundary: this clears Gemma 12B MXFP4 installed-app image only. It does not clear installed-app video, Gemma audio, public tunnel SSE parity, package/sign/notarize/tag/upload, or full `release_ready`.
