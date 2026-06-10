@@ -1,3 +1,27 @@
+# 2026-06-10 - Active directive guard and N2 JANG_1L correction
+
+- Added `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md` as the current hard lane
+  guard for this Codex instance.
+- Required behavior recorded: before any model load, proof run, release step,
+  packaging step, PyPI step, source edit, or commit, Codex must read the
+  directive file and state the allowed lane in the status update.
+- Required logging recorded: every movement must list request, action,
+  command/proof/artifact, proven status, not-proven status, blockers,
+  no-claims, and the other-agent next action.
+- Correction recorded: Eric had said to stop/forget N2 JANG_1L because he is
+  handling that lane. Codex mistakenly launched an N2 JANG_1L proof anyway.
+  The runner and server were stopped, port `8876` was verified clear, and the
+  unproven N2 JANG_1L source baseline patch was removed.
+- Aborted-run boundary: only
+  `build/current-n2-jang1l-live-chat-cache-baseline-refresh-20260610.server.log`
+  exists from that mistake. There is no JSON proof artifact and it must not be
+  used as release evidence.
+- Hard boundary: N2 JANG_1L remains Eric-owned until explicitly reassigned.
+  Current allowed lanes for this Codex instance are MiMo V2.5 JANG/JANGTQ,
+  Gemma JANG/MXFP/QAT, Qwen/Qwen3.6 Responses/tools/reasoning parity, N2
+  JANGTQ/non-JANG_1L only, and installed-app/release-surface proof only when
+  explicitly appropriate.
+
 # 2026-06-10 - Release gate refresh after MiMo/N2 dev-app proofs
 
 - Updated the canonical objective digest path from the stale N2 memory-only artifact to `build/current-objective-proof-after-mimo-n2-dev-app-proof-refresh-20260610.json`.
