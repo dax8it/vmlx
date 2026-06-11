@@ -1,3 +1,75 @@
+# 2026-06-11 01:34 PDT - Gemma4 E2B required-tool live classification
+
+- Reran Gemma4 E2B QAT JANG4M source dev UI Responses/tool/cache row after
+  Gemma4 native required-tool prompt injection and streaming retry.
+- Reasoning-on artifact:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-reasoning-cache-stress-after-streaming-required-retry-20260611-proof.json`
+  remains `status=fail`, `failureStage=first_send_message`.
+- Reasoning-on result: the first pass produced only reasoning text; the new
+  Responses streaming required-tool retry fired, preserved
+  `enable_thinking=True`, hit prefix cache with `448` cached tokens, and still
+  produced no valid Gemma4 tool call. The server kept fail-closed
+  `tool_calls_required`; no empty/synthesized args were executed.
+- Thinking-off control artifact:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-cache-thinking-off-control-20260611-proof.json`.
+- Thinking-off result: the UI completed two turns with no send errors, emitted
+  two real Responses `function_call` items for `run_command`, executed tool
+  follow-ups, wrote `real_ui_tool_probe_1.txt=REAL_UI_LIVE_TOOL_ONE` and
+  `real_ui_tool_probe_2.txt=REAL_UI_LIVE_TOOL_TWO`, and ended with visible text
+  `This is the second UI turn. REAL_UI_LIVE_TOOL_TWO`.
+- Cache/runtime proof from thinking-off control: Gemma4 native mixed-SWA cache,
+  q4 storage-boundary KV, block-disk L2, `ram_tokens_cached=3410`,
+  `l2_block_tokens_on_disk=3410`, `disk_hits=36`, and `disk_writes=56`.
+- Harness boundary: thinking-off control is marked `status=fail` only because
+  the proof expected a normal `responses_delta_streaming` text-delta surface;
+  tool-first Responses flows can complete via function_call events and terminal
+  text without ordinary text deltas. That streaming-surface assertion needs
+  separate correction before marking the row pass.
+- Release boundary: Gemma4 reasoning-on required tools remain red and release
+  is not ready from this row.
+
+# 2026-06-11 01:24 PDT - Gemma4 required-tool source patch unit-verified
+
+- Source patch added to `vmlx_engine/api/tool_calling.py`: Gemma4 native tool
+  prompts now require concrete native exemplars and get a required-turn
+  reminder/example in Gemma4 syntax
+  `<|tool_call>call:name{arg:<|"|>value<|"|>}<tool_call|>`.
+- Regression added:
+  `tests/test_tool_format.py::TestFallbackToolPromptFormat::test_gemma4_required_tool_choice_fallback_injects_native_tool_call`.
+  It failed before the runtime patch because the original Gemma4 prompt was
+  returned unchanged once the tool name was visible.
+- Verification: focused Gemma4/Qwen fallback subset passed `3/3`; full
+  `.venv/bin/python -m pytest -q tests/test_tool_format.py` passed `117/117`;
+  `.venv/bin/python -m py_compile vmlx_engine/api/tool_calling.py
+  vmlx_engine/tool_parsers/gemma4_tool_parser.py` passed.
+- Boundary: this is only source/static proof. The real UI Gemma4 E2B
+  Responses/tool/reasoning/cache row still needs rerun before claiming the
+  live blocker fixed.
+
+# 2026-06-11 01:24 PDT - Gemma4 E2B required tool miss selected
+
+- Current movement: reduce the Gemma4 required-tool blocker from the live real
+  UI Responses/tool/reasoning/cache stress row.
+- Evidence:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-reasoning-cache-stress-20260611-proof.json`
+  is `status=fail` at `first_send_message`.
+- Observed behavior: the source dev app launched Gemma4 E2B QAT JANG4M with
+  `--tool-call-parser gemma4`, `--reasoning-parser gemma4`, Responses
+  streaming, and cache controls; the model emitted reasoning text but no native
+  tool call under a required tool request. The server returned
+  `tool_calls_required`, so no empty or synthesized tool arguments were
+  executed.
+- Partial green from the failed row: model load, UI route, Responses route,
+  reasoning surface, q4 KV storage-boundary cache, mixed-SWA/cache/L2 telemetry,
+  and fail-closed enforcement.
+- Still red: Gemma4 required native tool generation, tool-result continuation,
+  gateway/tunnel parity, installed-app parity for this row, and release
+  readiness.
+- Next action: write a failing source test for Gemma4 required native tool
+  fallback/reminder injection and patch only the confirmed prompt-reinforcement
+  gap. Do not synthesize arguments from preamble text, disable reasoning, or
+  mask raw markup after the fact.
+
 # 2026-06-10 23:13 PDT - Qwen-coder gateway SSE parity selected
 
 - Installed-app parity for the Responses `max_tokens` alias fix is committed as
