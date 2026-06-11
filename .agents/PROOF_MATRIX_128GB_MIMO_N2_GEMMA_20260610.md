@@ -2838,8 +2838,41 @@ Next implementation target:
   `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` and `True` for
   `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`. `py_compile`
   and `git diff --check` passed.
-- Still red:
-  MiMo JANG_2L required-tool exactness/agentic loop, MiMo JANGTQ_2 literal and
-  special-character exactness, MiMo real media semantics, thinking-on rows,
-  speed/long-output quality, installed-app parity for this exact source commit,
-  and signed/notarized release publication.
+- Still red before the follow-up row below:
+  MiMo JANGTQ_2 literal and special-character exactness, MiMo real media
+  semantics, thinking-on rows, speed/long-output quality, installed-app parity
+  for this exact source commit, and signed/notarized release publication.
+
+## MiMo JANG_2L Required Tool Loop - 2026-06-11
+
+- Green source/runtime row:
+  MiMo V2.5 affine `JANG_2L` now has a current-source live text/no-media
+  Responses required-tool loop. The source fix is in
+  `vmlx_engine/api/tool_calling.py`: XML-function/MiMo fallback prompts inject a
+  compact hard `tool_choice=required` first-tool contract and concrete native
+  XML example when the rendered prompt lacks that contract.
+- Live proof artifacts:
+  - `build/live-mimo-jang2l-required-contract-20260611/responses_required_tool_bluecat_after_required_contract.sse`
+  - `build/live-mimo-jang2l-required-contract-20260611/responses_tool_result_continuation_after_required_contract.sse`
+  - `build/live-mimo-jang2l-required-contract-20260611/health_after_required_tool.json`
+  - `build/live-mimo-jang2l-required-contract-20260611/health_after_continuation.json`
+- Proven:
+  required-tool stream emitted `record_fact` with exact final arguments
+  `{"value":"blue-cat"}` through argument delta/done/final function_call item,
+  valid output index `1`, completed status, no visible prose/tool-markup leak.
+  Tool-result continuation with `tool_choice=none` streamed exactly
+  `STORED blue-cat.` and emitted no extra tool call.
+- Cache/runtime evidence:
+  affine JANG, native `mimo_v2_asymmetric_swa` cache, generic TurboQuant KV
+  disabled, prefix+paged+block-L2 active, block L2 advanced from `637` to
+  `740` tokens on disk.
+- Shutdown evidence:
+  after changing scheduler step-executor shutdown to
+  `wait=False, cancel_futures=True`, a patched live restart/stop on port `8099`
+  exited cleanly with `Scheduler step executor shutdown complete` and no
+  Python 3.13 `PyThreadState_Get` fatal.
+- Still red/open:
+  MiMo JANGTQ_2 literal/special-character exactness and media semantics,
+  thinking-on interleaved reasoning/tool rows, installed-app parity for this
+  exact source commit, broader speed/long-output rows, and signed/notarized
+  release publication.

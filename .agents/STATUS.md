@@ -8774,3 +8774,32 @@ Other-agent action:
   no local Qwen-coder-next artifact was found under the checked model roots, so
   this is not a live Qwen-coder-next proof. Keep same-model live proof open
   until that artifact or a reachable deployment is available.
+
+# 2026-06-11 01:35 PDT MiMo JANG_2L tool loop + shutdown update
+
+- Source fix:
+  XML-function/MiMo fallback tool instructions now treat `tool_choice=required`
+  as a hard current-turn contract. If the rendered instruction scope lacks that
+  contract, fallback injects a compact first-`<tool_call>` rule plus a
+  concrete native XML function example. No parser repair, fake args, or
+  generation-output rewrite was added.
+- Live proof:
+  real source server for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` on port `8098`
+  emitted `record_fact({"value":"blue-cat"})` with argument delta/done/final
+  consistency and valid function output index `1`. Follow-up with
+  `tool_choice=none` and the returned `call_id` streamed final text exactly
+  `STORED blue-cat.` and emitted no extra tool call.
+- Cache/runtime proof:
+  health artifacts show affine JANG, native `mimo_v2_asymmetric_swa`,
+  prefix+paged+block-L2 active, generic TurboQuant KV disabled, and
+  `l2_block_tokens_on_disk` advanced from `637` to `740`.
+- Shutdown fix:
+  scheduler step-executor shutdown now uses `wait=False, cancel_futures=True`.
+  Live patched restart/stop on port `8099` exited cleanly with
+  `Scheduler step executor shutdown complete`; the previous Python 3.13
+  `PyThreadState_Get` fatal did not recur.
+- Still open:
+  MiMo JANGTQ_2 exactness/media, thinking-on reasoning/tool interleaving,
+  installed-app parity for this source commit, and release packaging remain
+  red/open.

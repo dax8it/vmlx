@@ -14521,3 +14521,53 @@ Next action:
   reuse as invalid.
 - Boundary: this is not a new live same-model Qwen-coder-next proof and not a
   release/sign/notarize/PyPI/updater/site action.
+
+# 2026-06-11 MiMo tool exactness blocker selected
+- Current blocker being reduced: MiMo V2.5 JANG/JANGTQ required-tool and
+  agentic loop exactness. Prior live JANG_2L source proof loaded and cached
+  correctly but required `blue-cat` produced no tool call and failed closed as
+  `tool_calls_required`.
+- Boundary: no N2 JANG_1L, no release/sign/notarize/PyPI/updater/site, no fake
+  parser repair, no synthetic arguments, and no broad test-suite churn. Trace
+  the actual tool prompt/request path before editing. If root cause is artifact
+  or logits rather than source prompt/parser/runtime, classify it honestly.
+
+# 2026-06-11 MiMo JANG_2L required-tool loop fixed/proven
+- Root cause reduced in source prompt path: the XML-function/MiMo fallback
+  accepted native tool-name/schema visibility as enough even when
+  `tool_choice=required` was active. That could leave MiMo with a generic XML
+  example but no hard current-turn first-tool contract.
+- Source fix: `vmlx_engine/api/tool_calling.py` now requires the
+  XML-function fallback to inject a compact `tool_choice=required` contract
+  unless the rendered instruction scope already has one. It also appends a
+  current-turn reminder to the latest user message during re-render. This does
+  not synthesize tool calls, rewrite arguments, disable reasoning globally, or
+  relax parser validation.
+- Regression/source verification:
+  - `.venv/bin/python -m pytest -q tests/test_tool_fallback_injection.py tests/test_tool_format.py -k "qwen_required_tool_choice_fallback_injects_hard_first_call_contract or mimo_xml_function"` -> `6 passed`.
+  - `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k "scheduler_step_executor_shutdown_does_not_join_worker or xml_function_tool_fallback_accepts_native_mimo_schema"` -> `2 passed`.
+  - `py_compile` for touched Python files and `git diff --check` passed.
+- Live source proof artifacts:
+  - `build/live-mimo-jang2l-required-contract-20260611/responses_required_tool_bluecat_after_required_contract.sse`
+  - `build/live-mimo-jang2l-required-contract-20260611/responses_tool_result_continuation_after_required_contract.sse`
+  - `build/live-mimo-jang2l-required-contract-20260611/health_after_required_tool.json`
+  - `build/live-mimo-jang2l-required-contract-20260611/health_after_continuation.json`
+- Live green evidence: real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` emitted
+  `record_fact` with exact arguments `{"value":"blue-cat"}` through
+  `response.function_call_arguments.delta`, `done`, and final function_call
+  item at output index `1`; no visible prose leaked. The no-tools continuation
+  streamed final visible text exactly `STORED blue-cat.` with no extra tool
+  call. Health proved affine JANG, native `mimo_v2_asymmetric_swa` cache,
+  generic TQ-KV disabled, prefix+paged+block-L2 active, and L2 tokens advanced
+  from `637` after the tool turn to `740` after continuation.
+- Shutdown fix: `Scheduler.shutdown()` now cancels the scheduler step executor
+  with `wait=False` instead of joining the llm-worker during Python 3.13
+  finalization. Live patched restart/stop on port `8099` logged
+  `Scheduler step executor shutdown complete`, `Engine stopped`, and exited
+  without the previous `PyThreadState_Get` fatal.
+- Boundary: this clears current-source MiMo JANG_2L required tool plus
+  tool-result continuation for this exact text/no-media row. It does not clear
+  MiMo JANGTQ_2 literal exactness, MiMo media semantics, thinking-on rows,
+  installed-app parity for this commit, package/sign/notarize/PyPI/updater/site,
+  or N2 JANG_1L.
