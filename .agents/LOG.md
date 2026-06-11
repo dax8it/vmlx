@@ -15915,3 +15915,25 @@ Next action:
   npm root command failed due missing root package.json; panel Vitest with
   `--runInBand` failed because Vitest does not support that option; rerun
   without the option passed.
+
+# 2026-06-11 00:59 PDT - MiMo speed lane selected
+
+- Commit `949fd81e4` is pushed to both branch and main.
+- Current worktree has only the known unrelated dirty panel-settings proof JSON.
+- Next movement is root-cause inspection for MiMo decode speed/runtime behavior:
+  upcast, quant module binding, cache subtype, prefill/decode fast paths, and
+  artifact-vs-runtime boundary.
+
+# 2026-06-11 01:00 PDT - MiMo speed evidence rechecked
+
+- Rechecked `build/current-mimo-jang2l-speed-cache-root-cause-20260611/SUMMARY.json`.
+- Current classification remains:
+  classic JANG_2L is logits/lm_head materialization bound, not cache/L2/body
+  decode bound. Body model step is about 2-3 ms; token-1 logits were ~34s
+  before warmup and ~2.5s after warmup, token-2 logits ~0.6s.
+- JANGTQ_2 is much faster in existing speed proof (~39 tok/s), but exactness
+  remains red. The release choice is therefore a product/checkpoint tradeoff:
+  speed with exactness limitation (JANGTQ_2) versus better literal/tool
+  exactness but slow lm_head/logits path (JANG_2L).
+- No source patch made because current evidence does not identify an upcast,
+  cache, RotatingKVCache, or SwitchGLU runtime bug.

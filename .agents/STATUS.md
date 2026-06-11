@@ -10213,3 +10213,53 @@ Other-agent action:
 - Boundary:
   this is source/API compatibility proof, not a live same-model direct/gateway/
   tunnel recapture and not release readiness.
+
+# 2026-06-11 00:59 PDT MiMo decode-speed root-cause lane selected
+
+- Current repo state:
+  `949fd81e4 Emit Responses failed event for required tool miss` is pushed to
+  `origin/codex/pr-intake-manifest` and `origin/main`. Only unrelated dirty
+  file remains:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`.
+- Selected blocker:
+  MiMo V2.5 JANG/JANGTQ decode speed and whether the observed weak throughput
+  is caused by vMLX runtime behavior such as upcasting, quant module binding,
+  cache type, prefill/decode path selection, or by artifact/model-profile
+  quality.
+- Current action:
+  inspect MiMo runtime code, current live proof artifacts/logs, quant module
+  binding, cache subtype behavior, and speed telemetry before proposing a
+  source fix. Do not assume the model must be remade unless the evidence points
+  there.
+- Boundaries:
+  no N2 JANG_1L, no release/signing/PyPI, no fake speed claims from health-only
+  proof, and no broad test churn.
+
+# 2026-06-11 01:00 PDT MiMo speed boundary re-verified from artifacts
+
+- Checked:
+  `build/current-mimo-jang2l-speed-cache-root-cause-20260611/SUMMARY.json`.
+- Proven:
+  classic MiMo JANG_2L native mixed full/SWA cache and block-disk L2 are active
+  and can hit cache. Cache reuse is not the current primary speed bottleneck.
+  Affine SwitchGLU/body decode fast path is active; traced body model step is
+  about `2-3 ms`, while logits/lm_head materialization dominates. Prior source
+  proof reduced first user 2-token request from tens of seconds to about
+  `4s` after single-batch warmup.
+- Concrete numbers:
+  before single-batch warmup, token-1 logits materialization was about
+  `34124.88 ms` while model body was `2.62 ms`. After warmup, user token-1
+  logits materialization was about `2532.17 ms`, token-2 logits about
+  `606.22 ms`, and model body token-1 about `3.1 ms`.
+- JANGTQ comparison:
+  `build/current-mimo-v25-jangtq2-speed-boundary-after-singlebatch-tokenbuffer-skip-20260609.json`
+  records about `39.2 tok/s` server throughput / `39.1298` wall decode tok/s,
+  so JANGTQ_2 is the viable high-speed MiMo path, but its exactness remains red.
+- Classification:
+  no new source fix is justified from current evidence for upcasting,
+  prefix/L2 cache, RotatingKVCache metadata, or SwitchGLU body path. If further
+  optimizing classic JANG_2L, the next useful target is lm_head/logits
+  materialization specifically.
+- Boundary:
+  do not claim MiMo JANG_2L high-speed release clearance; do not claim MiMo
+  JANGTQ_2 exactness/media release clearance from its speed.
