@@ -12915,3 +12915,52 @@ Other-agent action:
   smoke passed, aggregate refreshed with `ling_bailing` and `nemotron` covered.
 - Release boundary:
   no release/sign/notarize/PyPI/updater/site action was run in this lane.
+
+# 2026-06-11 continuation PDT - LFM/MiniMax/Step live-slice selected
+
+- Current blocker:
+  cross-family live multi-turn smoke still lacks LFM, MiniMax, and Step3.7
+  coverage at the aggregate-expected artifact
+  `build/current-all-local-model-smoke-live-slice-tools-media-continuation-20260606/summary.json`.
+- Local candidates found:
+  `/Users/eric/models/JANGQ-AI/LFM2.5-8B-A1B-MXFP4`,
+  `/Users/eric/models/JANGQ/MiniMax-M2.7-Small-JANGTQ`, and
+  `/Users/eric/models/JANGQ/Step-3.7-Flash-JANG_K`.
+- Boundary:
+  do not use N2 JANG_1L; do not run release/sign/notarize/PyPI/updater/site;
+  keep this to bundled-Python runtime/API/cache/tool/reasoning proof.
+- Next movement:
+  dry-run then run the bundled-Python smoke into the aggregate-expected live
+  slice artifact path with `--include-tools`, using real row output/server logs
+  to classify any failure before source edits.
+
+# 2026-06-11 continuation PDT - LFM/MiniMax proven, Step3.7 still failing
+
+- Green live command:
+  `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --only LFM2.5-8B-A1B-MXFP4,MiniMax-M2.7-Small-JANGTQ --skip CRACK --include-tools --load-timeout-s 900 --request-timeout-s 300 --out build/current-all-local-model-smoke-live-slice-tools-media-continuation-20260606`.
+- Green result:
+  pass, completed `2`, failed `0`.
+- Proven LFM row:
+  bundled-Python load, non-reasoning classification, text cache repeat,
+  multi-turn recall, required tool call, tool-result continuation, exact JSON,
+  exact code/whitespace, and hybrid SSM cache telemetry.
+- Proven MiniMax Small row:
+  bundled-Python load, reasoning-on separation, text cache repeat, multi-turn
+  recall, required tool call, tool-result continuation, exact JSON, exact
+  code/whitespace, and hybrid SSM cache telemetry.
+- Step3.7 diagnostic:
+  `build/current-all-local-model-smoke-step37-jangk-tool-newline-diagnostic-20260611/summary.json`
+  remains fail. The failure is `tool_required`: expected
+  `{"value":"blue-cat"}` but emitted `{"value":"\nblue-cat\n"}`. Other Step
+  probes in the failed row reached cache repeat, reasoning separation,
+  tool-result continuation, exact JSON/code, image/video, and post-media
+  recovery, but the row is not pass because required tool args are not exact.
+- Source status:
+  attempted Step parser/server normalization was not committed because live
+  proof did not move; do not claim Step3.7 fixed from unit-only parser changes.
+- Aggregate:
+  refreshed
+  `build/current-objective-proof-after-lfm-minimax-smoke-refresh-20260611.json`;
+  cross-family smoke now covers `dsv4`, `gemma4`, `lfm`, `ling_bailing`,
+  `minimax`, `nemotron`, and `qwen36`; still missing `hy3`, `mimo_v2`,
+  `step3p7`, `zaya_text`, and `zaya_vl`.

@@ -18085,3 +18085,33 @@ Next action:
 - Pushed:
   `origin/codex/pr-intake-manifest` and `origin/main`.
 - No release/sign/notarize/PyPI/updater/site action performed.
+
+# 2026-06-11 continuation PDT - LFM/MiniMax/Step live-slice selected
+
+- Checked aggregate expected paths and local model availability.
+- Selected next runnable missing families:
+  LFM2.5, MiniMax Small, and Step3.7.
+- Artifact target:
+  `build/current-all-local-model-smoke-live-slice-tools-media-continuation-20260606/summary.json`.
+- Excluded:
+  Hy3 because no current local artifact was found, MiMo because Eric is remaking
+  it, and N2 JANG_1L because it is off-limits in this lane.
+
+# 2026-06-11 continuation PDT - LFM/MiniMax proven, Step3.7 still failing
+
+- Ran bundled-Python live smoke for LFM2.5, MiniMax Small, and Step3.7.
+- LFM2.5 and MiniMax Small passed. Regenerated the aggregate-expected artifact
+  with just those green rows:
+  `build/current-all-local-model-smoke-live-slice-tools-media-continuation-20260606/summary.json`.
+- Step3.7 stayed red in diagnostic artifact:
+  `build/current-all-local-model-smoke-step37-jangk-tool-newline-diagnostic-20260611/summary.json`.
+- Step3.7 failure shape:
+  required tool `record_fact` was called, but arguments were
+  `{"value":"\nblue-cat\n"}` instead of exact `{"value":"blue-cat"}`.
+- Important:
+  attempted parser/server normalizers were removed because they did not change
+  the live Step3.7 result. Do not tell release notes or other agents that
+  Step3.7 tool args are fixed.
+- Aggregate refresh:
+  `build/current-objective-proof-after-lfm-minimax-smoke-refresh-20260611.json`
+  now covers `lfm` and `minimax`; Step3.7 remains open.
