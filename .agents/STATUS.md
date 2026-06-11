@@ -14070,3 +14070,9 @@ Other-agent action:
 - This did not load, modify, prove, or classify N2 JANG_1L. It is limited to the non-JANG_1L Qwen/N2 JANG/JANGTQ policy surface.
 - Focused proof passed: engine audit N2/Qwen/Gemma media selection (6), exact N2 Pro Qwen35-MoE registry policy row (1), full model-family detection contract (34 passed, 1 skipped), py_compile, and git diff --check.
 - Still release-critical/open: live same-model direct/gateway/tunnel raw SSE for Qwen/Qwen-coder tool/content/reasoning deltas; N2 JANGTQ live API/cache/UI proof; Gemma media/cache/UI/installed-app parity; MiMo artifact/remake/exactness/media; signed checkpoint release lane after source rows are worth packaging.
+
+## 2026-06-11 14:45 PDT - User lane change: remove N2 and MiMo
+- Eric explicitly removed N2 and MiMo from this agent's active list while those artifacts are remade elsewhere.
+- Do not continue N2 or MiMo source, live-load, UI, cache, exactness, speed, media, or release-clearance work from this lane unless Eric reopens one of those lanes in a later current-turn instruction.
+- Active focus for this lane is now Qwen/Qwen-coder Responses API tool/reasoning/content streaming correctness, gateway/tunnel passthrough behavior, cache-reuse endpoint usability for agent harnesses, and Gemma JANG/MXFP/QAT runtime/API/cache/UI parity.
+- Historical N2/MiMo commits and proof remain recorded, but they are no longer next-work items.
