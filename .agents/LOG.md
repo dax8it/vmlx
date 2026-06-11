@@ -18983,3 +18983,38 @@ Next action:
   `3 passed`.
 - No release/sign/notarize/PyPI/site/updater action was run. No subagents were
   used. N2 JANG_1L was not touched.
+
+## 2026-06-11 CODEX - Post Qwen Parser Hardening Continuation
+
+- Continuing after pushed commit `bedeec8c9`.
+- Constraints retained: active Python/Electron worktree only, no deprecated
+  `/Users/eric/vmlx`, no subagents, no N2 JANG_1L, and no release/sign/
+  notarize/PyPI/site/updater actions in this block.
+- Current task: inspect the current objective/checklist/release artifacts and
+  source state for the nearest real source/runtime/API/cache blocker affecting
+  Gemma JANG/MXFP/QAT, N2 JANGTQ2/non-JANG_1L, Qwen/Qwen-coder Responses
+  tools/reasoning/cache, or any explicitly reopened MiMo lane.
+- Avoid broad test-suite construction and avoid metadata-only edits unless the
+  evidence shows stale proof is the true blocker.
+
+## 2026-06-11 CODEX - Qwen Parser Release-Gate Wiring
+
+- Inspected current blockers after `bedeec8c9`. Remaining release blockers are
+  still real/off-limits/external: N2 JANG_1L, MiMo artifact/remake/exactness/
+  media, Qwen35 public tunnel recapture, MiniMax reporter parity/hash drift,
+  and DSV4 memory-gated long-output. The missing Hy3 smoke artifact is absent
+  from `build/`, so it was not fake-cleared.
+- Source/proof wiring changed:
+  `tests/cross_matrix/run_noheavy_api_cache_contract.py` now hashes the Qwen
+  parser and required-args parser matrix, runs
+  `qwen_xml_required_args_parser_contracts`, and emits
+  `qwen_xml_function_required_args_fail_closed`.
+- `tests/cross_matrix/release_regression_manifest.py`,
+  `tests/cross_matrix/run_current_regression_suite.py`, and
+  `tests/test_current_regression_suite.py` now require that no-heavy Qwen
+  parser check and source-hash coverage.
+- Refreshed no-heavy, tool-call, cache-architecture, objective, release
+  manifest, and full-checklist artifacts. No-heavy/tool/cache/objective rows
+  passed after refresh; full release remains open with `failed_count=16`.
+- No release/sign/notarize/PyPI/site/updater action was run. No subagents were
+  used. N2 JANG_1L was not touched.

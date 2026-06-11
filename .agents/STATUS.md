@@ -13988,3 +13988,40 @@ Other-agent action:
 - unchanged boundaries: no release/sign/notarize/PyPI/site/updater action was
   run, no subagents were used, N2 JANG_1L was not touched, and public Qwen35
   tunnel parity remains a deploy/recapture row rather than a local parser row.
+
+## CODEX
+- now: 2026-06-11 13:10 PDT continuing after pushed commit `bedeec8c9`.
+- scope lock remains: active vMLX Python/Electron worktree only; no deprecated
+  `/Users/eric/vmlx`; no subagents or recursive LLM delegation; no N2 JANG_1L;
+  no release/sign/notarize/PyPI/site/updater actions in this block.
+- objective focus: move actual source/runtime/API/cache/model behavior toward a
+  signed checkpoint release for Gemma JANG/MXFP/QAT, N2 JANGTQ2/non-JANG_1L,
+  Qwen/Qwen-coder Responses tooling/reasoning/cache, and any reopened MiMo
+  lane. Avoid broad new harness construction and avoid metadata-only churn
+  unless current evidence proves stale evidence is the blocker.
+- next action: inspect current objective/checklist/release rows and source
+  diffs, pick the nearest confirmed source-fixable blocker, then patch and
+  verify it with focused commands.
+- completed: wired the Qwen/Qwen-coder XML-function required-argument parser
+  regression into the existing no-heavy API/cache release contract. The
+  contract now hashes `vmlx_engine/tool_parsers/qwen_tool_parser.py` and
+  `tests/test_tool_parser_required_args_fail_closed.py`, runs the Qwen parser
+  required-args matrix, and exposes
+  `qwen_xml_function_required_args_fail_closed` as a required release-manifest
+  check.
+- refreshed proof artifacts:
+  `build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json`,
+  `build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json`,
+  `build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json`,
+  `build/current-objective-proof-after-step37-bundled-vlm-proof-20260611.json`,
+  `build/current-release-regression-manifest-after-step37-bundled-vlm-proof-20260611.json`,
+  and
+  `build/current-full-release-objective-checklist-after-n2-jangtq2-split-20260611.json`.
+- verification so far: no-heavy API/cache contract `status=pass` with
+  `qwen_xml_required_args_parser_contracts: rc=0 passed=20`; tool-call
+  contract `status=pass`; cache architecture contract `status=pass`; objective
+  digest shows the Qwen/no-heavy/tool/cache rows as `PASS`.
+- release status remains open: full checklist still `status=open`,
+  `failed_count=16`; open rows are N2 JANG_1L/off-limits, MiMo
+  artifact/remake/exactness/media, Qwen35 public tunnel recapture, MiniMax
+  reporter parity/hash drift, and DSV4 memory-gated long-output.
