@@ -18029,3 +18029,51 @@ Next action:
 - Storage hygiene:
   removed generated Qwen35 `block_cache` payloads before staging; committed
   proof JSON/server-log artifacts only.
+
+# 2026-06-11 continuation PDT - Ling/Nemotron smoke slice selected
+
+- Checked:
+  current aggregate open rows, manifest command references, local model
+  availability, and active heavy processes.
+- Selected:
+  the missing cross-family smoke artifact
+  `build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606/summary.json`.
+- Local models available:
+  `Ling-2.6-flash-JANGTQ` and `Nemotron-Omni-Nano-JANGTQ-CRACK`.
+- Local model missing:
+  `Hy3-preview-JANGTQ2` was not found in current local model roots. Older Hy3
+  notes/proofs/source files exist, but they are not current model artifacts and
+  must not be used as live coverage.
+- Next movement:
+  run the smoke for the available Ling/Bailing and Nemotron rows under the
+  expected artifact path. Classify failures from real row output/server logs
+  before source edits. Do not claim Hy3.
+
+# 2026-06-11 continuation PDT - Ling/Nemotron smoke proof passed
+
+- Found a real harness classifier issue before the live run:
+  stale bundle `capabilities.supports_thinking=true` could override the
+  Ling/Bailing non-reasoning family rule and schedule an invalid reasoning row.
+- Fixed:
+  the Ling/Bailing and ZAYA non-reasoning override now runs after capability
+  metadata is read.
+- Added:
+  `test_classify_model_keeps_ling_non_reasoning_despite_stale_capability`.
+- Verified:
+  focused classifier tests passed, 3 selected.
+- Live smoke:
+  `Ling-2.6-flash-JANGTQ` and `Nemotron-Omni-Nano-JANGTQ-CRACK` passed with
+  `--include-tools` under bundled Python.
+- Ling proof:
+  cache repeat hit `paged+ssm`, exact required tool args, tool-result
+  continuation, multi-turn recall, exact JSON/code, block-disk write, SSM/cache
+  telemetry, and no reasoning row.
+- Nemotron proof:
+  cache repeat hit `paged+ssm`, separated reasoning, exact required tool args,
+  tool-result continuation, multi-turn recall, exact JSON/code, image/video/audio
+  media semantics, post-media text recovery, block-disk write, and SSM/cache
+  telemetry.
+- Aggregate refresh:
+  `build/current-objective-proof-after-ling-nemotron-smoke-refresh-20260611.json`
+  now covers `ling_bailing` and `nemotron`; Hy3 remains honestly open because no
+  current model artifact was found locally.

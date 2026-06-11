@@ -12842,3 +12842,64 @@ Other-agent action:
   generated `block_cache` payloads were removed before commit; only JSON proof
   files, server log, refreshed contract/aggregate artifacts, and `.agents`
   notes were committed.
+
+# 2026-06-11 continuation PDT - Ling/Nemotron smoke slice selected
+
+- Current aggregate:
+  `build/current-objective-proof-after-qwen35-smoke-live-refresh-20260611.json`
+  still has cross-family smoke and real Electron matrix open for Hy3, LFM,
+  Ling/Bailing, MiniMax, MiMo, Nemotron, Step3.7, ZAYA text, and ZAYA-VL.
+- Selection:
+  target `build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606/summary.json`.
+- Local model availability:
+  found `/Users/eric/models/JANGQ/Ling-2.6-flash-JANGTQ` and
+  `/Users/eric/models/dealign.ai/Nemotron-Omni-Nano-JANGTQ-CRACK`; no current
+  local `Hy3-preview-JANGTQ2` model artifact was found under `/Users/eric/models`,
+  `/Users/eric/.mlxstudio/models`, `/opt/adlab/models`, or
+  `/Volumes/EricsLLMDrive`.
+- Boundary:
+  do not claim Hy3 coverage from old notes or source files. Run the available
+  Ling/Bailing + Nemotron smoke slice and let the aggregate continue to report
+  Hy3 missing unless a current model artifact appears.
+- Next command:
+  dry-run then run
+  `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --only Ling-2.6-flash-JANGTQ,Nemotron-Omni-Nano-JANGTQ-CRACK --include-tools --load-timeout-s 900 --request-timeout-s 300 --out build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606`.
+
+# 2026-06-11 continuation PDT - Ling/Nemotron smoke proof passed
+
+- Source fix:
+  `bench/all_local_model_smoke.py` now applies the Ling/Bailing and ZAYA
+  non-reasoning override after stale `capabilities.supports_thinking` metadata
+  is read, so old bundle metadata cannot incorrectly schedule a reasoning row.
+- Regression:
+  `tests/test_all_local_model_smoke.py::test_classify_model_keeps_ling_non_reasoning_despite_stale_capability`.
+- Focused test command:
+  `.venv/bin/pytest tests/test_all_local_model_smoke.py::test_classify_model_keeps_ling_non_reasoning_despite_stale_capability tests/test_all_local_model_smoke.py::test_classify_model_keeps_zaya_text_non_reasoning tests/test_all_local_model_smoke.py::test_classify_model_does_not_infer_zaya_vl_video_from_vl_name_or_token -q`.
+- Focused test result:
+  3 passed.
+- Live command:
+  `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --only Ling-2.6-flash-JANGTQ,Nemotron-Omni-Nano-JANGTQ-CRACK --skip JANGTQ2 --include-tools --load-timeout-s 900 --request-timeout-s 300 --out build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606`.
+- Live result:
+  pass, completed `2`, failed `0`.
+- Proven Ling/Bailing row:
+  non-reasoning classification, bundled-Python load, text cache repeat with
+  `paged+ssm`, multi-turn recall, required tool call with exact
+  `{"value":"blue-cat"}` arguments, tool-result continuation, exact JSON, exact
+  code/whitespace, SSM-aware cache hit telemetry, block-disk writes, media-salt
+  logging, and no hybrid-KV-without-SSM cache hit.
+- Proven Nemotron row:
+  bundled-Python load, text cache repeat with `paged+ssm`, multi-turn recall,
+  reasoning-on separation (`FINAL=OK` visible, reasoning separated), required
+  tool call with exact `{"value":"blue-cat"}` arguments, tool-result
+  continuation, exact JSON/code/whitespace, image blue/repeat/red-change, video
+  blue, audio blue, post-media text recovery, SSM-aware cache hit telemetry,
+  block-disk writes, and media-salt logging.
+- Aggregate:
+  refreshed
+  `build/current-objective-proof-after-ling-nemotron-smoke-refresh-20260611.json`;
+  cross-family smoke covered families now include `dsv4`, `gemma4`,
+  `ling_bailing`, `nemotron`, and `qwen36`.
+- Still not proven by this slice:
+  Hy3 remains missing because no current local model artifact was found; LFM,
+  MiniMax, MiMo, Step3.7, ZAYA text, ZAYA-VL, real Electron UI parity, broad N2
+  aggregate, DSV4 long-output/code, and installed-app packaging remain open.
