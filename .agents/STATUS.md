@@ -1,4 +1,20 @@
 ## CODEX
+- now: MiMo panel launch/parser detection drift is fixed in source. MiMo keeps
+  the `think_xml` reasoning parser for cleanup/separation while still reporting
+  `supportsThinking=false`, `thinkInTemplate=false`, and
+  `defaultEnableThinking=false`.
+- root cause: `registerFamily('mimo_v2')` declared `reasoningParser:
+  'think_xml'`, but `applyJangCapabilities()` erased it when JANG capabilities
+  were present. That matches screenshot-class launches missing
+  `--reasoning-parser think_xml`.
+- proof: `npm --prefix panel run typecheck` passed; `npm --prefix panel test
+  -- --run tests/model-config-registry.test.ts` passed `69/69`; `git
+  diff --check` passed.
+- boundary: this is a panel launch/config parser-hygiene fix only. It does not
+  prove MiMo JANG_2L speed, semantic quality, JANGTQ literal exactness, media,
+  or release readiness, and it does not fake-enable MiMo thinking.
+
+## CODEX
 - now: Qwen/Qwen-coder Responses empty-tool-args source proof was refreshed for
   the reported preamble + empty XML function shape and the separate
   `output_index` reuse bug.

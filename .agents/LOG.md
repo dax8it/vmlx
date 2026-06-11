@@ -14415,3 +14415,23 @@ Next action:
   reported Qwen/Qwen-coder models, plus deployed tunnel parity and cache-reuse
   tool-result continuation proof. Do not classify #190/#192 as fully closed
   from this source-only refresh.
+
+# 2026-06-10 21:47 PDT MiMo panel reasoning-parser cleanup fix
+- Current blocker being reduced: MiMo V2.5 JANG/JANGTQ panel launch/parser
+  hygiene for the screenshot-class odd visible output and missing
+  `--reasoning-parser think_xml` launch argument.
+- Root cause found in panel detection: `registerFamily('mimo_v2')` declared
+  `reasoningParser: 'think_xml'` with `supportsThinking: false`, which is the
+  desired cleanup/separation contract, but `applyJangCapabilities()` erased the
+  reasoning parser for any MiMo bundle with JANG capability stamps. This made
+  some panel/app launches parserless even though the MiMo parser exists.
+- Source fix: keep MiMo `reasoningParser='think_xml'` while preserving
+  `supportsThinking=false`, `thinkInTemplate=false`, and
+  `defaultEnableThinking=false`. This does not fake-enable thinking; it only
+  restores cleanup/parser launch parity.
+- Verification: `npm --prefix panel run typecheck` passed,
+  `npm --prefix panel test -- --run tests/model-config-registry.test.ts`
+  passed `69/69`, and `git diff --check` passed.
+- Boundary: this does not prove MiMo JANG_2L speed, semantic quality,
+  JANGTQ literal exactness, media, or installed-app release readiness. It fixes
+  the panel launch/config drift that omitted the MiMo cleanup parser.

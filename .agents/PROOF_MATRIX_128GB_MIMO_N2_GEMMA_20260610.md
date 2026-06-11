@@ -7,6 +7,27 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo Panel `think_xml` Launch Parity Fix
+
+Proven:
+
+- Panel source now preserves MiMo `reasoningParser='think_xml'` from JANG
+  capability detection while still forcing `supportsThinking=false`,
+  `thinkInTemplate=false`, and `defaultEnableThinking=false`.
+- Root cause fixed: `applyJangCapabilities()` previously erased MiMo's
+  cleanup parser when JANG capability stamps were present, so some panel/app
+  launches omitted `--reasoning-parser think_xml` despite the family registry
+  declaring it.
+- Verification passed: `npm --prefix panel run typecheck`,
+  `npm --prefix panel test -- --run tests/model-config-registry.test.ts`
+  (`69/69`), and `git diff --check`.
+
+Boundary:
+
+- This is parser-launch hygiene only. It does not clear MiMo JANG_2L speed,
+  semantic quality, JANGTQ literal exactness, media, or installed-app release
+  readiness, and it does not fake-enable MiMo thinking.
+
 ### MiMo JANGTQ_2 Thinking-On Proof Red + Native Cache UI Guard
 
 Artifact:
