@@ -14201,3 +14201,17 @@ Other-agent action:
 - artifact: `build/current-gemma4-12b-qat-mxfp4-content-auto-direct-gateway-responses-cache-20260611.json`, `status=pass`. Green raw captures/logs under `build/responses-sse-captures-20260611/gemma-12b-mxfp4-content-auto-gateway-v3/`; the low-budget red boundary remains under `build/responses-sse-captures-20260611/gemma-12b-mxfp4-content-auto-gateway/`.
 - proven: current source server plus real panel ApiGateway proxy, no-tool visible streaming with `response.output_text.delta` on direct and gateway, exact reconstructed content `CONTENT_OK zebra-17`, no function call emitted under `tool_choice=none`, auto-tool emitted `record_fact` with function-call argument delta/done on direct and gateway, exact args `{\"value\": \"auto-green-dog\"}`, complete reasoning lifecycle, valid output indices, final response consistency, no raw XML/tool markup leak, native Gemma `mixed_swa_kv_v1`, `cache_hit_tokens=181`, `cache_hit_requests=2`, `l2_block_tokens_on_disk=181`, and `disk_writes=4`.
 - boundary: source/gateway only; no public tunnel, installed app UI click-through, media, signed/notarized package, N2, or MiMo claim.
+
+## CODEX
+- now: moving from source/gateway raw SSE into panel chat/UI state handling for the same Responses surfaces.
+- next proof target: verify the Electron panel chat path consumes Responses `response.output_text.delta`, reasoning summary deltas/done, function-call argument delta/done, no-tool visible content, auto-tool calls, and final persisted assistant/tool state without dropping kwargs or leaking raw XML/tool markup.
+- reason: source/gateway raw SSE is now green for Gemma4 12B MXFP4 content/no-tool/auto-tool/cache, but release readiness also requires UI/chat state proof; this movement is panel source/UI harness proof only unless a full installed app click-through is explicitly run later.
+- boundary: no release/sign/notarize/PyPI/site/updater action, no N2/MiMo, no public tunnel, no media claim.
+
+## CODEX
+- now: Gemma4 12B QAT MXFP4 Electron dev-app real UI Responses content/cache proof is green.
+- artifact: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-content-cache-20260611-proof.json`, `status=pass`; screenshot: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-12b-qat-mxfp4-responses-content-cache-20260611-chat.png`.
+- proven: real loaded Gemma4 12B QAT MXFP4 model, Electron dev app chat UI, remote session through UI API, `wireApi=responses`, `enable_thinking=true`, no built-in tools for this UI pass, two visible assistant turns exactly `CONTENT_OK zebra-17`, reasoning probe answered `FOUR`, `eventCounts.stream=171`, `reasoningDone=2`, `complete=3`, `visibleAssistantTurnsComplete=true`, no raw parser/tool/reasoning markup leak, no language/numeric reasoning leak, generation defaults/request max tokens applied, UI metrics show cached prompt tokens, native Gemma `mixed_swa_kv_v1`, cache hit telemetry, cache endpoint stats, L2 disk storage, server cache controls, and settings persistence.
+- cache proof from UI run: `cacheHitTokens=91`, scheduler `cache_hit_tokens=89`, L2 block tokens on disk `91`, disk writes `3`, cache detail `paged+mixed_swa` visible in screenshot.
+- visual check: screenshot shows two `CONTENT_OK zebra-17` assistant turns, reasoning accordions, and the second/third metric rows include `paged+mixed_swa cached`.
+- boundary: Electron dev app only; not installed-app parity, not public tunnel, not media, not auto-tool UI, not release/sign/notarize/PyPI/site/updater, not N2/MiMo.
