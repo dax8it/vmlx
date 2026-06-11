@@ -1,4 +1,26 @@
 ## CODEX
+- now: Qwen/Qwen-coder Responses empty-tool-args source proof was refreshed for
+  the reported preamble + empty XML function shape and the separate
+  `output_index` reuse bug.
+- proof: `.venv/bin/python -m pytest -q tests/test_tool_parsers.py
+  tests/test_server.py tests/test_responses_raw_sse_parity_contract.py -k
+  "streaming_xml_empty_required_args_fail_closed or
+  empty_function_with_required_schema_fails_closed or
+  streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments
+  or streaming_responses_tool_call_uses_next_output_index_without_text or
+  classifier_flags_function_call_reusing_message_output_index or
+  raw_sse_parity_fails_when_surface_reuses_message_output_index_for_tool"`
+  selected `6` tests and passed `6/6`.
+- proven: missing required XML args fail closed, streamed preamble plus empty
+  XML never emits executable `{}` arguments, valid required args remain
+  preserved, and function_call output indices must advance past the message
+  item index.
+- boundary: this is refreshed source/synthetic proof only. Same-model
+  direct/gateway/tunnel raw SSE and live cache-reuse/tool-result continuation
+  remain required before closing the deployed #190/#192 style issue for
+  Qwen3.6/Qwen-coder 27B/35B.
+
+## CODEX
 - now: Gemma panel-side audio false-advertisement is fixed in source for local
   Gemma4/Gemma4-text rows. The panel now stamps
   `architectureHints.audioRuntimeAvailable` from indexed `audio_tower.*`

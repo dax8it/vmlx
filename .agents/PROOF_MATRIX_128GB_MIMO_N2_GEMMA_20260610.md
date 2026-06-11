@@ -1122,6 +1122,14 @@ Proven:
   Completions fail-closed parity, next output-index allocation for function
   calls, duplicate-output-index classification, and interleaved
   content/reasoning/tool SSE classification.
+- 2026-06-10 21:41 PDT focused refresh selected `6` current tests and passed
+  `6/6`: Qwen streaming XML empty required args fail closed, empty
+  `<function=exec_command></function>` fails closed with required schema,
+  Responses streamed preamble plus empty XML never emits executable `{}`,
+  function_call output indices advance past the message item, and the raw-SSE
+  classifier flags output-index reuse. Command:
+  `.venv/bin/python -m pytest -q tests/test_tool_parsers.py tests/test_server.py
+  tests/test_responses_raw_sse_parity_contract.py -k "streaming_xml_empty_required_args_fail_closed or empty_function_with_required_schema_fails_closed or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_tool_call_uses_next_output_index_without_text or classifier_flags_function_call_reusing_message_output_index or raw_sse_parity_fails_when_surface_reuses_message_output_index_for_tool"`.
 
 Boundary:
 

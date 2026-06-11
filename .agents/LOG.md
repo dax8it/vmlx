@@ -14377,3 +14377,41 @@ Next action:
   parts for known-no-audio Gemma while preserving image/video routing. This is
   an honest capability gate, not a parser repair, argument synthesis, sampling
   change, release step, or metadata-only proof.
+
+# 2026-06-10 21:37 PDT Gemma panel audio gate pushed
+- Commit `63a01acd6` (`Gate Gemma audio attachments in panel`) pushed to both
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Verification passed before push: `npm --prefix panel run typecheck`,
+  `npm --prefix panel test -- --run tests/model-config-registry.test.ts`
+  (`69 passed`), and `git diff --check`.
+- Proven: panel detection now distinguishes Gemma config/projection-only audio
+  from real indexed `audio_tower.*` audio and local chat IPC omits only
+  unsupported `input_audio` parts for no-audio Gemma while preserving
+  image/video multimodal routing.
+- Not proven: Gemma audio semantic E2E remains unsupported/red until a
+  weight-backed audio tower artifact exists and passes live audio proof. No
+  release/sign/notarize/PyPI/updater/site action.
+
+# 2026-06-10 21:41 PDT Qwen/Responses empty-args source proof refreshed
+- Current blocker being reduced: Qwen/Qwen-coder XML tool-call dialect with
+  visible preamble plus empty `<function=...></function>`, required tool args,
+  Responses content/reasoning/tool streaming, and output-index consistency for
+  Codex/opencode harnesses.
+- Focused source proof passed:
+  `.venv/bin/python -m pytest -q tests/test_tool_parsers.py tests/test_server.py
+  tests/test_responses_raw_sse_parity_contract.py -k
+  "streaming_xml_empty_required_args_fail_closed or
+  empty_function_with_required_schema_fails_closed or
+  streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments
+  or streaming_responses_tool_call_uses_next_output_index_without_text or
+  classifier_flags_function_call_reusing_message_output_index or
+  raw_sse_parity_fails_when_surface_reuses_message_output_index_for_tool"`
+  selected `6` tests and passed `6`.
+- Proven at source/synthetic level: missing required XML args fail closed,
+  streamed preamble plus empty XML never emits executable `{}` arguments,
+  valid required args remain preserved, and function_call items must advance
+  beyond the message output index.
+- Still open: same-model direct/gateway/tunnel raw SSE recapture from the live
+  reported Qwen/Qwen-coder models, plus deployed tunnel parity and cache-reuse
+  tool-result continuation proof. Do not classify #190/#192 as fully closed
+  from this source-only refresh.
