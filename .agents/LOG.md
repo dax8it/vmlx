@@ -14245,3 +14245,45 @@ Next action:
 - Verification: parser/Responses/Qwen35 harness slice passed `25 passed`;
   changed-file `py_compile` and `git diff --check` passed.
 - Boundary: no release/sign/notarize/PyPI/updater/site and no N2 JANG_1L claim.
+
+# 2026-06-10 21:00 PDT MiMo parser/perf blocker selected
+- Current user emphasis recorded: deep-check whitespace, spacing, special
+  characters, raw delimiters, visible preambles, tool arguments, reasoning
+  deltas, and content deltas across all model parser families, with MiMo as
+  the immediate live blocker.
+- Current MiMo issue being reduced: the installed-app MiMo JANG_2L user log
+  showed unacceptable ~0.3 tok/s visible behavior and odd text output. Existing
+  source proofs classify MiMo JANG_2L as functionally usable under
+  deterministic Responses/tool prompts but slow, while MiMo JANGTQ_2 is much
+  faster and honestly gates media as text-runtime only.
+- Next action: trace MiMo JANG_2L normal-mode decode/cache/logit timing and
+  parser exactness from current source artifacts and runtime code before any
+  source edit. No release/sign/notarize/PyPI/updater/site action, no N2
+  JANG_1L work, no fake parser repair, and no recursive subagent delegation.
+
+# 2026-06-10 21:02 PDT MiMo/parser verification refreshed
+- Current source already contains the MiMo SingleBatch decode/logits warmup and
+  panel MiMo preserved-media force-text detection. The deterministic installed
+  app MiMo JANG_2L/JANGTQ_2 proofs both launched bundled Python with
+  `--tool-call-parser xml_function --reasoning-parser think_xml`, but the
+  requests used `enable_thinking=false`; therefore they prove deterministic
+  tool/cache/delta behavior, not thinking-on interleaved reasoning/tool output.
+- Fresh Python verification passed: `.venv/bin/python -m pytest -q
+  tests/test_tool_parsers.py::TestQwenToolParser
+  tests/test_xml_function_tool_parser.py
+  tests/test_tool_parser_required_args_fail_closed.py
+  tests/test_responses_raw_sse_parity_contract.py
+  tests/test_think_xml_parser.py
+  tests/test_reasoning_modes.py::test_think_xml_reasoning_parser_is_registered_for_mimo_v2
+  tests/test_reasoning_modes.py::test_think_xml_reasoning_parser_no_tags_remains_visible_content`
+  reported `71 passed`.
+- Fresh py_compile passed for SingleBatch warmup, scheduler, server, XML tool
+  parser, generic tool parser, and think_xml parser files.
+- Initial Vitest command used stale test paths and failed with "No test files
+  found"; reran the actual panel registry file. Focused MiMo/force-text slice
+  passed `4 passed`; full `panel/tests/model-config-registry.test.ts` passed
+  `67 passed`.
+- Boundary remains: MiMo JANG_2L steady decode is still slow; MiMo JANGTQ_2 is
+  fast but literal required-tool special-character exactness remains red; MiMo
+  preserved-media bundles are honestly text-only gated, not VL/audio/video
+  semantic passes; no release/sign/notarize/PyPI/updater/site action.

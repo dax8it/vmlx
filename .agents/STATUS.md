@@ -8585,3 +8585,43 @@ Other-agent action:
   This closes the current-source direct/gateway plus current tunnel raw-SSE
   proof row for Qwen35 MXFP8 MTP. It does not claim N2 JANG_1L, MiMo media, or
   a release/sign/notarize/PyPI/updater/site action.
+
+# 2026-06-10 21:00 PDT Current MiMo parser/perf state
+
+- Current user emphasis recorded:
+  whitespace, newlines, paths, shell snippets, XML entities, Unicode, quotes,
+  JSON escaping, raw delimiters, visible preambles, tool arguments, reasoning
+  deltas, content deltas, argument delta/done events, final object consistency,
+  and gateway/API parity are first-class release evidence. Do not paper over
+  them with synthetic args, hidden sampling changes, or reasoning-disable
+  workarounds.
+- Current MiMo JANG_2L performance classification:
+  current source contains the MiMo SingleBatch decode/logits warmup. Prior live
+  source proof reduced the first-user logits compile stall from tens of seconds
+  to a few seconds, but steady-state JANG_2L still sits around the slow
+  affine/full-vocab `lm_head` boundary. It is functional for deterministic
+  tool/cache flows but must not be advertised as the fast MiMo lane.
+- Current MiMo installed-app no-media proof state:
+  JANG_2L and JANGTQ_2 deterministic installed-app Responses/tool/cache rows
+  are green with `--tool-call-parser xml_function` and
+  `--reasoning-parser think_xml` on the bundled server command. Those proofs
+  used `enable_thinking=false`, so they prove parser availability, tool-result
+  continuation, cache/L2, and delta streaming, but not thinking-on
+  reasoning/tool interleaving.
+- Current MiMo open rows:
+  JANGTQ_2 literal/special-character exactness remains red for required-tool
+  strings such as `blue-cat` under live raw SSE; treat it as artifact/logit/
+  quant/template contract work, not a transport repair. MiMo media remains
+  honestly force-text-gated for the preserved-media text-runtime bundles; do
+  not claim vision/audio/video semantics until weight-backed runtime media
+  passes.
+- Fresh verification:
+  Python parser/API slice passed `71 passed`, covering Qwen parser behavior,
+  XML-function parser behavior, required-args fail-closed behavior, raw SSE
+  output-index/argument contracts, and MiMo `think_xml` no-tag visibility.
+  `py_compile` passed for the touched parser/server/warmup files. Panel registry
+  verification passed with focused MiMo/force-text slice `4 passed` and full
+  `tests/model-config-registry.test.ts` `67 passed`.
+- Verification caveat:
+  a stale Vitest command using `tests/main/...` paths failed with "No test files
+  found"; the correct current file path is `panel/tests/model-config-registry.test.ts`.
