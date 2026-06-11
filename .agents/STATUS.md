@@ -6943,3 +6943,51 @@ Other-agent action:
     JANGTQ_2 artifact quality, or release readiness.
 - Process state:
   - proof server was stopped after trace capture.
+
+# 2026-06-11 parser/API exactness continuation
+
+- Request:
+  - deep-look the remaining parser/API issues around spacing, special
+    characters, Unicode, XML/JSON escaping, path/newline payloads, raw
+    delimiters, and streaming/final-object preservation.
+- Selected blocker:
+  - cross-family tool/reasoning parser exactness for opencode/Codex-style
+    agent loops after the existing XML-family, compact XML, DSML, and
+    Responses SSE fixes.
+- Current action:
+  - inspect parser-family coverage and run focused source/API guards first;
+  - only patch if a concrete preservation, fail-closed, or stream/final-object
+    mismatch is reproduced.
+- Boundaries:
+  - no synthetic tool arguments;
+  - no disabling reasoning to hide parser bugs;
+  - no release/sign/notarize/PyPI/updater/site action;
+  - no N2 JANG_1L work;
+  - no subagents.
+- Reproduced issue:
+  - Qwen plain-line schema-gated fallback (`tool_name\nargument`) rebuilt the
+    string argument from stripped non-empty lines, losing leading/trailing
+    spaces and trailing newline payloads.
+- Source change:
+  - Qwen fallback now identifies the schema-valid tool-name line but preserves
+    the raw following text as the single string argument;
+  - think-tag removal for this fallback no longer trims outer argument text;
+  - whitespace-only required payloads still fail closed and the fallback stays
+    request-schema gated.
+  - Nemotron parameter parsing now keeps exact same-line string payloads while
+    normalizing pretty-printed one-line scalar wrappers like
+    `<parameter=path>\n.\n</parameter>` back to `"."`.
+- Verification:
+  - `tests/test_tool_parsers.py::TestQwenToolParser` passed `10/10`;
+  - full `tests/test_tool_parsers.py` passed `96/96`;
+  - Responses streaming exactness/fail-closed/output-index slice passed `4/4`;
+  - XML-family exactness slice passed `10/10`;
+  - `py_compile` and `git diff --check` passed.
+- Proven:
+  - Qwen plain-line fallback no longer rewrites spacing, Unicode, or newline
+    string payloads in source parser coverage.
+  - Nemotron remains compatible with pretty-printed scalar XML while preserving
+    exact same-line XML string arguments covered by the XML-family slice.
+- Not proven:
+  - this is not a fresh live same-model direct/gateway/tunnel SSE recapture;
+  - it does not clear remaining model-family live API/UI/cache rows.

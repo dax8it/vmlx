@@ -13831,3 +13831,9 @@ Next action:
 
 # 2026-06-11 MiMo SingleBatch startup decode warmup
 - Added MiMo single-active startup decode warmup through the real `SingleBatchGenerator` raw-cache path. Live proof on port `59945`: startup paid `MiMo-V2 SingleBatch decode graph warmup complete in 44.97s`; first real user request returned `OK` in `4.00s`; trace token 1 `model_ms=3.10`, `logits_ms=2532.17`, `sample_ms=11.97`, token 2 `model_ms=2.10`, `logits_ms=606.22`, `sample_ms=1.14`. Prior comparable first-token logits were `34124.88` and `72395.20`. This fixes the massive first-user TTFT compile hit, not steady-state `~0.5s/token` logits, exactness, media, installed app, or release readiness. Server stopped after proof.
+
+# 2026-06-11 parser/API exactness continuation
+- Switching to the spacing/special-character parser/API blocker. Current action is source/API coverage inspection plus focused guards for whitespace, Unicode, XML entities, JSON escaping, paths, newlines, raw delimiters, streaming argument delta/done, final object consistency, and fail-closed missing required args. No release, N2 JANG_1L, PyPI, synthetic parser args, reasoning disablement, or subagent action.
+
+# 2026-06-11 Qwen plain-line argument preservation
+- Reproduced Qwen plain-line fallback rewriting string arguments by stripping lines. Fixed it to preserve the raw text after the schema-recognized tool-name line, with think-tag removal that does not trim outer argument text. Full parser rerun exposed a Nemotron pretty-print scalar compatibility edge; patched that parser to normalize wrapper newlines only for one-line scalar values while preserving exact same-line XML strings. Proof: Qwen parser `10/10`, full tool parser file `96/96`, Responses streaming exactness/fail-closed/output-index `4/4`, XML-family exactness `10/10`, `py_compile`, and `git diff --check`. Not a fresh live gateway/tunnel recapture.
