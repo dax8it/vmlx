@@ -7079,3 +7079,59 @@ Other-agent action:
 - Not proven:
   - Gemma4 installed-app `reasoning_display` remains red;
   - do not register this artifact as a pass.
+
+# 2026-06-11 continuation - parser spacing/special-character deep audit
+
+- Request:
+  - continue from the active Python/Electron worktree and deep-look all
+    remaining issues around spacing, special characters, Unicode punctuation,
+    XML entities, JSON escaping, paths, newlines, raw delimiters, and
+    stream/final-object preservation.
+- Selected blocker:
+  - cross-family parser/API exactness for opencode/Codex-style agent loops,
+    especially where parser fallback, reasoning stripping, or final full-output
+    parsing could rewrite user/tool payloads.
+- Current action:
+  - audit remaining parser/reasoning/API surfaces after the existing XML-family,
+    compact XML, DSML, Qwen fallback, Nemotron, and Responses SSE fixes;
+  - patch only if a concrete preservation or fail-closed bug is reproduced.
+- Boundaries:
+  - no release/sign/notarize/PyPI/updater/site action;
+  - no N2 JANG_1L work;
+  - no subagents or recursive delegation;
+  - no synthetic tool arguments, no reasoning disablement, and no fake
+    stripping-only parser fixes.
+- Reproduced issue:
+  - DeepSeek V3/R1 tool parser validated JSON but returned `func_args.strip()`
+    and was not enforcing request-schema required arguments;
+  - when a full DeepSeek tool call was rejected, the looser simple-pattern
+    fallback could reparse `function<｜tool▁sep｜>name` as a bogus tool name and
+    still emit `{}`.
+- Source change:
+  - DeepSeek tool calls now parse JSON once, validate required args through the
+    shared schema helper, serialize valid dict payloads with
+    `ensure_ascii=False`, preserve raw invalid payloads exactly when no schema
+    requires rejection, and only run the simple fallback when the full dialect
+    did not match at all.
+- Verification:
+  - `tests/test_tool_parsers.py::TestDeepSeekToolParser` plus shared
+    `tests/test_tool_parser_required_args_fail_closed.py` passed `15/15`;
+  - parser-family exactness suite passed:
+    `tests/test_tool_parsers.py`,
+    `tests/test_tool_parser_required_args_fail_closed.py`, and
+    `tests/test_reasoning_tool_interaction.py` = `182/182`;
+  - Responses streaming guards for XML special arguments, empty required XML
+    calls, and buffered argument finalization passed `3/3`;
+  - `py_compile` and `git diff --check` passed.
+- Proven:
+  - DeepSeek parser no longer emits executable empty `{}` args for required
+    tools;
+  - DeepSeek JSON string payloads preserve leading/trailing spaces, Unicode,
+    and newline bytes through JSON normalization;
+  - raw invalid DeepSeek fallback strings are no longer stripped when accepted
+    without a schema.
+- Not proven:
+  - this is source/unit/API regression proof, not a fresh live DeepSeek-family
+    direct/gateway/tunnel same-model recapture;
+  - this does not clear Gemma installed-app reasoning display, MiMo media or
+    exactness, N2 rows, installed-app parity, or release readiness.
