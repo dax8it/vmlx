@@ -3416,3 +3416,40 @@ Next implementation target:
   not clear 26B/31B Responses video, Qwen/N2/MiMo media, tunnel parity, full
   reasoning/tool stress, release packaging, sign/notarize, PyPI, updater JSON,
   or website release rows.
+
+## Nex/N2 Pro JANGTQ2 Installed-App Responses Video/Cache - 2026-06-11
+
+- Proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-video-cache-bundled-python-20260611-proof.json`.
+- Status:
+  passed with installed `/Applications/vMLX.app`, bundled Python,
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`,
+  `wireApi=responses`, deterministic sampling, MLLM enabled, video enabled,
+  audio disabled, and server cache controls enabled.
+- Proven:
+  installed app UI, bundled Python, real 101GB N2 JANGTQ2 load,
+  `/v1/responses`, Responses delta streaming, video attachment preservation,
+  `video_url` request body, base64 MP4 decode, 25-frame ingestion with 4
+  extracted frames, N2 frame-through-vision path, semantic red/solid video
+  answer, generation defaults, parser/language leak checks, Responses
+  cache-detail usage, native `hybrid_ssm_v1` cache, attention-only TurboQuant
+  KV, q4 storage-boundary attention KV, SSM companion state, async clean SSM
+  capture/rederive policy, SSM companion L2, paged/prefix cache reuse, cache
+  endpoint stats, and block-disk L2 writes.
+- Runtime/cache details:
+  health reports `turboquant_codebook`, `weight_format=mxtq`, profile
+  `JANGTQ2`, `540` prestacked routed-expert TQ targets, `2725` indexed tensors,
+  `15` attention layers, `45` SSM companion layers, and live attention
+  TurboQuant KV. Cache totals: `50` RAM tokens cached, `50` L2 block tokens,
+  `68` SSM tokens on disk, `118` total L2 tokens, `2` block disk writes, `2`
+  SSM stores, and `3` block-disk hits. Cache-hit telemetry: `1` request / `18`
+  tokens via `paged+ssm`.
+- Metrics:
+  load about `69.9s`; memory about `103.8GB` active / `105.3GB` peak; visible
+  text turns about `27-29 tok/s`; video prefill about `125 prompt tok/s`.
+- No-claims:
+  this is not N2 audio proof, not native MTP proof, and not N2 JANG_1L proof.
+  MTP remains `metadata_only_missing_weights` / `dropped` because indexed
+  weights contain zero MTP tensors. This does not clear direct/gateway/tunnel
+  raw SSE parity, package/sign/notarize, PyPI, updater JSON, website, or public
+  release rows.

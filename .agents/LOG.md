@@ -16431,3 +16431,38 @@ Next action:
   `8.4GB` peak.
 - Boundary: not audio, not 26B/31B Responses video, not Qwen/N2/MiMo media
   clearance, not tunnel parity, and not release/sign/notarize readiness.
+
+# 2026-06-11 02:08 PDT - selected N2 JANGTQ2 installed-app Responses video
+
+- Next live row: Nex/N2 Pro JANGTQ2 installed-app `/v1/responses` video parity
+  with bundled Python.
+- Rationale: N2 JANGTQ2 installed-app image and Chat video are green, and
+  Responses tools/cache/reasoning rows are green, but Responses media parity is
+  still a missing next row.
+- Boundary: no N2 JANG_1L, no audio claim, no MTP claim, no release/sign/
+  notarize/PyPI/updater/site action, no subagents, and no source edit unless
+  the proof exposes a real N2 Responses-media defect.
+
+# 2026-06-11 02:10 PDT - N2 JANGTQ2 installed-app Responses video pass
+
+- Ran installed-app bundled-Python proof for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` with
+  `/v1/responses`, deterministic sampling, MLLM enabled, red MP4 fixture, and
+  server cache controls.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-video-cache-bundled-python-20260611-proof.json`.
+- Result: `status=pass`.
+- Proven: installed app UI, bundled Python, real 101GB N2 JANGTQ2 load,
+  Responses delta streaming, video attachment preservation, MP4 decode,
+  25-frame ingestion with 4 extracted frames, N2 frame-through-vision path,
+  semantic red/solid answer, native `hybrid_ssm_v1` cache, attention-only
+  TurboQuant KV, q4 storage-boundary attention KV, SSM companion state,
+  async clean SSM capture/rederive policy, SSM companion L2, block-disk L2,
+  settings persistence, generation defaults, parser/language leak checks, and
+  cache endpoint stats.
+- Metrics: load about `69.9s`; memory about `103.8GB` active / `105.3GB` peak;
+  cache hit `18` tokens via `paged+ssm`; cache totals `50` RAM tokens, `50`
+  L2 block tokens, `68` SSM tokens, `118` total L2 tokens; text turns about
+  `27-29 tok/s`; video prefill about `125 prompt tok/s`.
+- Boundary: not audio, not native MTP, not N2 JANG_1L, not direct/gateway/
+  tunnel raw SSE parity, and not release/sign/notarize readiness.
