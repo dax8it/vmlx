@@ -13200,3 +13200,43 @@ Other-agent action:
 - Release boundary:
   no DMG build, signing, notarization, PyPI, updater, website, or public
   release action was run.
+
+# 2026-06-11 continuation PDT - ZAYA-VL JANGTQ4 targeted retry selected
+
+- Current blocker being reduced:
+  cross-family live smoke still lacks `zaya_vl`.
+- Classification so far:
+  `ZAYA1-VL-8B-MXFP4` fails with `gather_qmm` dimension mismatch in
+  `vmlx_engine.models.zaya1_vl`.
+- Local alternative:
+  `/Users/eric/models/JANGQ/ZAYA1-VL-8B-JANGTQ4` exists and is small enough for
+  a targeted one-row bundled retry.
+- Next movement:
+  dry-run then run isolated bundled all-local smoke for only
+  `ZAYA1-VL-8B-JANGTQ4` with tools/media.
+- Boundaries:
+  no parser fake-fix, no N2 JANG_1L, no MiMo remake, no release/sign/notarize/
+  PyPI/updater/site.
+
+# 2026-06-11 continuation PDT - ZAYA-VL JANGTQ4 classified current-not-pass
+
+- Command:
+  isolated bundled all-local smoke for `ZAYA1-VL-8B-JANGTQ4`.
+- Artifact:
+  `build/current-all-local-model-smoke-zaya-vl-jangtq4-bundled-after-zaya-parser-fix-20260611/summary.json`.
+- Result:
+  failed with 3 semantic/quality failures, not a runtime crash.
+- Passed inside failed row:
+  multi-turn recall, required tool, tool-result continuation, exact JSON,
+  exact code/whitespace, blue image, blue image repeat, and red image changed.
+- Failed inside row:
+  `text_cache_repeat_1` and `text_cache_repeat_2` answered
+  `The color word that repeats in the sequence is "blue."` instead of exact
+  `blue`; `text_no_media_after_image` answered as if an image was attached.
+- Runtime/cache evidence:
+  JANGTQ VLM fast path loaded, ZAYA typed CCA cache enabled, paged prefix cache
+  and block-disk L2 wrote typed ZAYA CCA blocks, and cache hit was observed.
+- Aggregate:
+  `build/current-objective-proof-after-zaya-vl-jangtq4-classification-20260611.json`
+  points at this current failed ZAYA-VL artifact. Cross-family live smoke
+  remains open for `hy3`, `mimo_v2`, and `zaya_vl`.

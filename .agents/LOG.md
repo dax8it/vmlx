@@ -18216,3 +18216,15 @@ Next action:
 
 - Pushed `2d2431d76 Fix ZAYA tool argument newlines` to branch and main.
 - No release publishing action was run.
+
+# 2026-06-11 continuation PDT - ZAYA-VL JANGTQ4 targeted retry selected
+
+- Next movement is a one-row isolated bundled smoke for
+  `ZAYA1-VL-8B-JANGTQ4`; MXFP4 failed with `gather_qmm` dimension mismatch.
+
+# 2026-06-11 continuation PDT - ZAYA-VL JANGTQ4 classified current-not-pass
+
+- `ZAYA1-VL-8B-JANGTQ4` bundled smoke reached tools/media/cache but failed exact
+  visible-output/no-media quality checks.
+- Aggregate now points at the current failed artifact instead of a stale missing
+  ZAYA-VL path.
