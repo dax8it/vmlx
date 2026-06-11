@@ -19041,3 +19041,8 @@ Next action:
 - Added API-level regression for tool_choice=none with Qwen-style empty XML function markup.
 - Verification: targeted Responses history tests passed (2), required-args parser/XML/SSE contract checks passed (22).
 - Boundary: this does not synthesize missing args or hide required-tool failures; invalid required tool calls still fail closed.
+
+## 2026-06-11 CODEX - No-heavy proof wiring
+- Added responses_no_tool_invalid_markup_cleanup to the no-heavy API/cache checks and release manifest expectations.
+- Refreshed current no-heavy artifact with status=pass and missing_markers=[].
+- Verification: no-heavy contract passed; current-regression meta-tests passed (3); py_compile and git diff --check passed.

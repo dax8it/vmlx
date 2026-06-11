@@ -14048,3 +14048,8 @@ Other-agent action:
 - Patched /v1/responses streaming cleanup so tool_choice=none strips native tool-call residue even when the markup is invalid and parser validation returns no tool call.
 - Reproduces the Qwen-family empty XML shape in no-tool mode: text preamble plus <tool_call><function=exec_command></function></tool_call> must not leak into output_text.done or response.completed.
 - Focused proof passed: targeted Responses streaming regression, Qwen required-args parser matrix, XML required-schema empty function gate, and raw SSE local contract consumption.
+
+## 2026-06-11 13:58 PDT - No-heavy proof wiring for Responses no-tool cleanup
+- Wired the Responses no-tool invalid-markup regression into run_noheavy_api_cache_contract.py as responses_no_tool_invalid_markup_cleanup.
+- Refreshed build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json: status=pass, missing_markers=[], responses_history_contracts passed 4 tests.
+- Focused meta-tests passed: no-heavy Responses tool/history contract marker coverage and current artifact routing.
