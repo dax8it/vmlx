@@ -16719,3 +16719,62 @@ Next action:
 - No public publish actions were run: no GitHub release upload, no updater JSON,
   no website/CDN, no PyPI. This is a local signed/notarized checkpoint build
   with open objective rows still listed by the pre-DMG manifest.
+
+# 2026-06-11 03:34 PDT - public release asset replacement starting
+
+- Checked `jjang-ai/mlxstudio` release list: `v1.5.57` exists and is current
+  latest.
+- Checked release assets for `v1.5.57`. Existing public hashes differ from the
+  freshly signed/notarized checkpoint DMGs:
+  old Sequoia DMG sha256
+  `68bfea742acf991887d7cf6858a1300fd20c26b3cd49f0e6601d88506f379525`;
+  fresh Sequoia DMG sha256
+  `7bfa301b65d499dd51655b2c0aade4b8ffdf299ec798027be5a688d378885f1e`.
+  old Tahoe DMG sha256
+  `bafe3e4329b341f993ee0c25e34c0bef78131e90066a8b72f3a5ead8b6160ef7`;
+  fresh Tahoe DMG sha256
+  `bbebd29d8e9d9ad4de7fbcb460c58390a114f03b8f38dd66f8733601238e4eed`.
+- Current action:
+  replace the four `v1.5.57` GitHub release assets with
+  `gh release upload --clobber` using the freshly notarized local DMGs and
+  regenerated blockmaps.
+
+# 2026-06-11 03:26 PDT - public checkpoint release surface refreshed
+
+- Replaced public `v1.5.57` assets on both GitHub release repos:
+  `jjang-ai/mlxstudio` and `jjang-ai/vmlx`.
+- Verified both release pages now point to the fresh signed/notarized checkpoint
+  artifacts:
+  Sequoia DMG
+  `sha256=7bfa301b65d499dd51655b2c0aade4b8ffdf299ec798027be5a688d378885f1e`,
+  Tahoe DMG
+  `sha256=bbebd29d8e9d9ad4de7fbcb460c58390a114f03b8f38dd66f8733601238e4eed`,
+  Sequoia blockmap
+  `sha256=ca2ed0ce1a78299644ce8d5176b5a157eb27f6a210e7ad4fc583aecca10d2325`,
+  Tahoe blockmap
+  `sha256=666cae4dbc2af789192bca1722fbeb5e99eaedb5d2e0e26ec7bda919d3bb8f90`.
+- Updated both GitHub release bodies to remove the stale `68bfea...` and
+  `bafe3e...` hashes and list the current notary ids
+  `c62866cf-b8f6-41eb-a6b6-f86b1e585377` and
+  `49b40858-e795-4704-9578-b55a84fe6dfb`.
+- Updated local updater manifests in the active `jjang-ai/vmlx` worktree and
+  sibling `jjang-ai/mlxstudio` checkout so both `latest.json` files carry the
+  fresh Sequoia/Tahoe hashes and current proof boundary.
+- Patched live `exploit.team:/var/www/mlx.studio/update/latest.json` and
+  `/var/www/mlx.studio/download/index.html`. The download page immediately
+  served the fresh hashes. The updater URL initially kept serving the stale
+  JSON because nginx `open_file_cache` retained the old file; `nginx -t` passed
+  and `systemctl reload nginx` refreshed the response.
+- Public verification after reload:
+  `https://mlx.studio/update/latest.json` returns `version=1.5.57`, Sequoia
+  hash `7bfa301b65d499dd51655b2c0aade4b8ffdf299ec798027be5a688d378885f1e`,
+  Tahoe hash `bbebd29d8e9d9ad4de7fbcb460c58390a114f03b8f38dd66f8733601238e4eed`,
+  `cache-control: no-cache, no-store, must-revalidate`, and
+  `cf-cache-status: DYNAMIC`; `https://mlx.studio/download/` displays the same
+  fresh hashes.
+- No Cloudflare API purge command or token was available in this shell; current
+  public verification shows Cloudflare dynamic pass-through after nginx reload.
+- Still not done in this movement:
+  PyPI publish/update was not performed; runtime/model proof rows remain governed
+  by the pre-DMG manifest state (`release_ready=false`,
+  `prepackage_ready=false`, `current_proof_sweep=fail`).

@@ -11382,3 +11382,35 @@ Other-agent action:
   `release_ready=false`, and `current_proof_sweep=fail`. No GitHub release,
   updater JSON, website/CDN, PyPI, or public download mutation has been done in
   this movement.
+
+# 2026-06-11 03:26 PDT public checkpoint release surface refreshed
+
+- Public GitHub releases refreshed:
+  `jjang-ai/vmlx` and `jjang-ai/mlxstudio` `v1.5.57` assets now match the
+  fresh signed/notarized checkpoint DMGs and blockmaps.
+- Current public release hashes:
+  Sequoia DMG
+  `7bfa301b65d499dd51655b2c0aade4b8ffdf299ec798027be5a688d378885f1e`,
+  Tahoe DMG
+  `bbebd29d8e9d9ad4de7fbcb460c58390a114f03b8f38dd66f8733601238e4eed`,
+  Sequoia blockmap
+  `ca2ed0ce1a78299644ce8d5176b5a157eb27f6a210e7ad4fc583aecca10d2325`,
+  Tahoe blockmap
+  `666cae4dbc2af789192bca1722fbeb5e99eaedb5d2e0e26ec7bda919d3bb8f90`.
+- Release bodies were updated on both repos with the fresh hashes and current
+  notary ids `c62866cf-b8f6-41eb-a6b6-f86b1e585377` and
+  `49b40858-e795-4704-9578-b55a84fe6dfb`.
+- Updater/site:
+  active `jjang-ai/vmlx/latest.json`, sibling
+  `/Users/eric/mlx/mlxstudio/latest.json`, live
+  `exploit.team:/var/www/mlx.studio/update/latest.json`, and live
+  `/var/www/mlx.studio/download/index.html` now carry/display the fresh hashes.
+  Nginx was reloaded after `nginx -t` because `open_file_cache` kept the stale
+  updater JSON until reload.
+- Public verification:
+  `https://mlx.studio/update/latest.json` returns the fresh hashes with
+  no-store headers and `cf-cache-status: DYNAMIC`; `https://mlx.studio/download/`
+  displays the fresh Sequoia/Tahoe hashes.
+- Boundary:
+  this is a public signed/notarized checkpoint release surface, not a
+  production-green runtime claim. PyPI was not published in this movement.

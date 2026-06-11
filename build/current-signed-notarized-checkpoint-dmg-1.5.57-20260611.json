@@ -20,7 +20,10 @@
     "bundle_verify_after_refresh": "./panel/scripts/verify-bundled-python.sh",
     "build": "VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db VMLX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db ./panel/scripts/build-release-dmgs.sh all",
     "notarize": "VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db VMLX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db ./panel/scripts/notarize-release-dmgs.sh",
-    "final_verify": "./panel/scripts/verify-release-dmgs.sh"
+    "final_verify": "./panel/scripts/verify-release-dmgs.sh",
+    "github_release_upload_mlxstudio": "gh release upload v1.5.57 panel/release/vMLX-1.5.57-sequoia-arm64.dmg panel/release/vMLX-1.5.57-sequoia-arm64.dmg.blockmap panel/release/vMLX-1.5.57-tahoe-arm64.dmg panel/release/vMLX-1.5.57-tahoe-arm64.dmg.blockmap --repo jjang-ai/mlxstudio --clobber",
+    "github_release_upload_vmlx": "gh release upload v1.5.57 panel/release/vMLX-1.5.57-sequoia-arm64.dmg panel/release/vMLX-1.5.57-sequoia-arm64.dmg.blockmap panel/release/vMLX-1.5.57-tahoe-arm64.dmg panel/release/vMLX-1.5.57-tahoe-arm64.dmg.blockmap --repo jjang-ai/vmlx --clobber",
+    "github_release_notes": "gh release edit v1.5.57 --repo jjang-ai/vmlx --notes <latest notes>; gh release edit v1.5.57 --repo jjang-ai/mlxstudio --notes <latest notes>"
   },
   "bundled_runtime": {
     "vmlx": "1.5.57",
@@ -81,9 +84,77 @@
       }
     }
   },
+  "public_github_releases": [
+    {
+      "repo": "jjang-ai/vmlx",
+      "tag": "v1.5.57",
+      "url": "https://github.com/jjang-ai/vmlx/releases/tag/v1.5.57",
+      "uploaded": true,
+      "release_body_updated": true,
+      "assets_verified_after_upload": [
+        {
+          "name": "vMLX-1.5.57-sequoia-arm64.dmg",
+          "digest": "sha256:7bfa301b65d499dd51655b2c0aade4b8ffdf299ec798027be5a688d378885f1e",
+          "size": 480111695,
+          "state": "uploaded"
+        },
+        {
+          "name": "vMLX-1.5.57-sequoia-arm64.dmg.blockmap",
+          "digest": "sha256:ca2ed0ce1a78299644ce8d5176b5a157eb27f6a210e7ad4fc583aecca10d2325",
+          "size": 500599,
+          "state": "uploaded"
+        },
+        {
+          "name": "vMLX-1.5.57-tahoe-arm64.dmg",
+          "digest": "sha256:bbebd29d8e9d9ad4de7fbcb460c58390a114f03b8f38dd66f8733601238e4eed",
+          "size": 495965218,
+          "state": "uploaded"
+        },
+        {
+          "name": "vMLX-1.5.57-tahoe-arm64.dmg.blockmap",
+          "digest": "sha256:666cae4dbc2af789192bca1722fbeb5e99eaedb5d2e0e26ec7bda919d3bb8f90",
+          "size": 516346,
+          "state": "uploaded"
+        }
+      ]
+    },
+    {
+      "repo": "jjang-ai/mlxstudio",
+      "tag": "v1.5.57",
+      "url": "https://github.com/jjang-ai/mlxstudio/releases/tag/v1.5.57",
+      "uploaded": true,
+      "release_body_updated": true,
+      "assets_verified_after_upload": [
+        {
+          "name": "vMLX-1.5.57-sequoia-arm64.dmg",
+          "digest": "sha256:7bfa301b65d499dd51655b2c0aade4b8ffdf299ec798027be5a688d378885f1e",
+          "size": 480111695,
+          "state": "uploaded"
+        },
+        {
+          "name": "vMLX-1.5.57-sequoia-arm64.dmg.blockmap",
+          "digest": "sha256:ca2ed0ce1a78299644ce8d5176b5a157eb27f6a210e7ad4fc583aecca10d2325",
+          "size": 500599,
+          "state": "uploaded"
+        },
+        {
+          "name": "vMLX-1.5.57-tahoe-arm64.dmg",
+          "digest": "sha256:bbebd29d8e9d9ad4de7fbcb460c58390a114f03b8f38dd66f8733601238e4eed",
+          "size": 495965218,
+          "state": "uploaded"
+        },
+        {
+          "name": "vMLX-1.5.57-tahoe-arm64.dmg.blockmap",
+          "digest": "sha256:666cae4dbc2af789192bca1722fbeb5e99eaedb5d2e0e26ec7bda919d3bb8f90",
+          "size": 516346,
+          "state": "uploaded"
+        }
+      ]
+    }
+  ],
   "no_claims": [
     "This does not make the full release objective production-green.",
-    "This does not upload to GitHub releases, PyPI, updater JSON, vmlx.net, mlx.studio, or Cloudflare.",
+    "This does not publish to PyPI. Web-origin and CDN publication are tracked separately from GitHub release asset replacement.",
     "This does not close open model/runtime rows that remain red in the prepackage manifest."
   ]
 }
