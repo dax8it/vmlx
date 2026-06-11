@@ -7,6 +7,49 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### Nex/N2 Pro JANGTQ2 Installed-App Bundled Audio Honest Gate
+
+Artifact:
+
+- `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-bundled-python-20260610-proof.json`
+- screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-bundled-python-20260610-chat.png`
+
+Live setup:
+
+- Installed app UI: `/Applications/vMLX.app`.
+- Bundled runtime:
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`.
+- Real model:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`.
+- Chat Completions streaming, `enable_thinking=false`, deterministic
+  `temperature=0`, `top_p=1`, `top_k=1`.
+- Media fixture: generated 1-second 16 kHz mono WAV, sent as `input_audio`.
+
+Observed result:
+
+- Status `fail` because requested audio was not supported.
+- UI/session did send one audio attachment:
+  `files=[{"kind":"audio","name":"real-ui-proof-audio.wav","mime":"audio/wav"}]`.
+- Request body contained `input_audio`, `format="wav"`, and non-empty audio
+  data.
+- Server media diagnostic saw `types={"input_audio":1}` for family
+  `qwen3_5_moe`.
+- API returned HTTP 400:
+  `/v1/chat/completions received unsupported media modality audio. Supported
+  modalities: text, vision, video.`
+
+Boundary:
+
+- This is an honest current installed-app/bundled-runtime audio gate, not an
+  audio success proof.
+- Do not advertise N2 JANGTQ2 audio from token/config metadata. Current proved
+  modalities for this bundle/runtime are text, vision, and video.
+- Loader/runtime still proved JANGTQ2 VLM fast path, hybrid SSM cache,
+  attention-only TurboQuant KV, q4 storage-boundary KV, block-disk L2, and SSM
+  companion L2 before the audio request was rejected.
+- This is not N2 JANG_1L and not a release/sign/notarize/PyPI action.
+
 ### Nex/N2 Pro JANGTQ2 Installed-App Bundled Video Proof
 
 Artifact:

@@ -14154,3 +14154,14 @@ Next action:
 - Media cache boundary: video prompt prefix/paged cache store was skipped because media embeddings are path-dependent and must not be rebuilt from text-only tokens.
 - Metrics: `stream=30`, `complete=3`, `50` L2 block tokens, `68` SSM L2 tokens, `2` disk writes, live speeds `30.0`, `27.5`, `29.4 tok/s`, peak memory `110.4GB`.
 - Boundary: Chat Completions video/VL proof only, not Responses media proof, not audio proof, not N2 JANG_1L, and no release action.
+
+# 2026-06-10 20:38 PDT N2 bundled audio honesty row selected
+- Selected N2 JANGTQ2 installed-app bundled-Python audio row to refresh the stale `.venv` unsupported-audio evidence.
+- Boundary: honest gating only if runtime rejects audio; no token/config-only audio claim.
+
+# 2026-06-10 20:40 PDT N2 JANGTQ2 bundled audio honestly gated
+- Artifact `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-bundled-python-20260610-proof.json` recorded current installed-app/bundled Python audio failure.
+- UI sent a real WAV attachment as `input_audio`; server media diagnostic saw `types={"input_audio":1}` for `qwen3_5_moe`.
+- API returned HTTP 400: unsupported media modality audio; supported modalities are text, vision, video.
+- Classification: honest audio gate for N2 JANGTQ2; do not advertise audio from token/config metadata.
+- Runtime before rejection still loaded JANGTQ2 VLM fast path with hybrid SSM cache, attention-only TurboQuant KV, q4 storage-boundary KV, block-disk L2, and SSM companion L2.

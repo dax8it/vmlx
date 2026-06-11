@@ -8410,3 +8410,35 @@ Other-agent action:
 - Boundaries:
   Chat Completions video/VL proof only, not Responses media proof, not audio
   proof, not N2 JANG_1L, and not a release action.
+
+# 2026-06-10 20:38 PDT N2 bundled audio honesty row selected
+
+- Existing N2 audio installed-app artifact failed using `.venv` with:
+  unsupported media modality audio; supported modalities text, vision, video.
+- Next movement:
+  rerun N2 JANGTQ2 installed-app audio with bundled Python to verify current
+  runtime behavior and document either real audio support or honest gating.
+- Boundary:
+  do not coerce audio into text/vision, do not infer from tokens/config, and do
+  not claim audio support if runtime rejects it.
+
+# 2026-06-10 20:40 PDT N2 JANGTQ2 bundled audio honestly gated
+
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-bundled-python-20260610-proof.json`.
+- Installed-app UI `/Applications/vMLX.app` and bundled Python served real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`.
+- Audio request was sent with one WAV attachment:
+  `kind=audio`, `mime=audio/wav`, and request body `input_audio`.
+- Runtime/server rejected it with HTTP 400:
+  `/v1/chat/completions received unsupported media modality audio. Supported
+  modalities: text, vision, video.`
+- Classification:
+  current N2 JANGTQ2 bundle/runtime is text+vision+video, not audio. This is
+  honest gating, not an audio success proof and not a crash.
+- Runtime before rejection still proved JANGTQ2 VLM fast path, hybrid SSM
+  cache, attention-only TurboQuant KV, q4 storage-boundary KV, block-disk L2,
+  and SSM companion L2.
+- Boundary:
+  do not advertise audio for N2 JANGTQ2 from config/token metadata; no N2
+  JANG_1L and no release action.
