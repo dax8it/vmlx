@@ -8740,3 +8740,21 @@ Other-agent action:
   MiMo JANGTQ_2 literal/special-character exactness, MiMo thinking-on, and
   real media semantics. This supports the suspicion that current MiMo artifacts
   may need to be rebuilt/remade rather than papered over in parser/runtime code.
+
+# 2026-06-11 00:40 PDT MiMo JANG/JANGTQ envelope detector update
+
+- Source fix:
+  `vmlx_engine.cli._bundle_declares_mxtq_jangtq()` now lets explicit local
+  bundle metadata override path/repo-name text. MiMo V2.5 `JANG_2L` with
+  `format="jang"` plus affine `mxtq_bits` no longer gets misclassified as a
+  JANGTQ/MXTQ bundle. True `format/profile="jangtq|mxtq"` bundles and configless
+  repo/path fallbacks still take the conservative JANGTQ/MXTQ policy.
+- Current proof:
+  focused CLI policy audit slice passed `3 passed`; direct local probe returns
+  `False` for `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` and
+  `True` for `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`.
+  `py_compile` and `git diff --check` passed.
+- Boundary:
+  this clears only the JANG-vs-JANGTQ runtime detector false positive. MiMo
+  required-tool exactness, reasoning-on, media semantics, speed, installed-app
+  parity, and release packaging remain separate rows.

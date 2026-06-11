@@ -14470,3 +14470,35 @@ Next action:
   shuts down `_step_executor` with `wait=True, cancel_futures=True` and clears
   the reference. This targets the shutdown fatal only; it does not alter
   generation, parser output, cache semantics, or tool-call behavior.
+
+# 2026-06-11 MiMo/JANG envelope autodetect bug selected
+- Current blocker being reduced: runtime/autodetect correctness for JANG vs
+  JANGTQ/MXTQ envelopes. Live MiMo JANG_2L launch logged
+  `MXTQ/JANGTQ bundle detected` even though the artifact is affine JANG_2L, not
+  TurboQuant/JANGTQ.
+- Boundary: this is not N2 JANG_1L, not release/sign/notarize/PyPI/updater/site,
+  not a parser rewrite, and not a broad test-suite task. Trace the CLI/runtime
+  detector and patch only if source confirms false-positive JANGTQ detection.
+
+# 2026-06-11 MiMo/JANG envelope autodetect fix
+- Root cause confirmed: `_bundle_declares_mxtq_jangtq()` treated path text and
+  any bare `mxtq_bits` key as JANGTQ/MXTQ before allowing explicit bundle
+  metadata to decide. MiMo V2.5 `JANG_2L` is affine JANG with
+  `format="jang"` plus affine `mxtq_bits`, so it was incorrectly routed through
+  the conservative JANGTQ/MXTQ MPP_NAX disable log/policy.
+- Source fix: local `config.json` / `jang_config.json` metadata now wins over
+  path text. Explicit `format|weight_format|method|profile` containing
+  `jangtq` or `mxtq` still disables the auto lane; explicit
+  `format|weight_format|method="jang"` keeps auto. Bare `mxtq_bits` still
+  disables only when no explicit affine JANG metadata is present. Path-name
+  fallback remains for repo IDs or config-missing paths.
+- Verification:
+  - Focused audit slice passed `3 passed` for JANGTQ/MXTQ policy including the
+    new affine MiMo JANG fixture.
+  - Direct local probe:
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L -> False`;
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2 -> True`.
+  - `py_compile` for `vmlx_engine/cli.py` and `tests/test_engine_audit.py`
+    passed, and `git diff --check` passed.
+- Boundary: no generation, parser, cache-state, tool-arg, media, N2 JANG_1L,
+  release/sign/notarize/PyPI/updater/site behavior was changed here.

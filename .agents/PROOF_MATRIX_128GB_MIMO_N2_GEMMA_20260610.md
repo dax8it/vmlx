@@ -2824,3 +2824,22 @@ Next implementation target:
 - Still open: installed-app bundled runtime must include this patch before a
   packaged checkpoint can claim the same MXFP4 parser fix; packaged DMG parity
   remains a release lane and was not performed here.
+
+## MiMo JANG/JANGTQ Envelope Detection - 2026-06-11
+
+- Green source row:
+  affine MiMo V2.5 `JANG_2L` local bundles with explicit `format="jang"` are no
+  longer classified as JANGTQ/MXTQ just because they carry affine `mxtq_bits`.
+  True JANGTQ/MXTQ metadata and configless path/repo-name fallbacks still take
+  the conservative JANGTQ/MXTQ MPP_NAX policy.
+- Proof:
+  focused CLI policy audit slice passed `3 passed`; direct local detector probe
+  returned `False` for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` and `True` for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`. `py_compile`
+  and `git diff --check` passed.
+- Still red:
+  MiMo JANG_2L required-tool exactness/agentic loop, MiMo JANGTQ_2 literal and
+  special-character exactness, MiMo real media semantics, thinking-on rows,
+  speed/long-output quality, installed-app parity for this exact source commit,
+  and signed/notarized release publication.
