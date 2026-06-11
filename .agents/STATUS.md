@@ -14810,3 +14810,30 @@ Other-agent action:
   release-clear:
   `build/current-full-release-objective-checklist-after-jang-tools-installed-parity-20260611.json`
   is `status=open`, `failed_count=16`.
+
+## CODEX - 2026-06-11 signed/notarized checkpoint DMG complete
+- result: checkpoint DMGs for vMLX `1.5.57` were built, signed, notarized,
+  stapled, and verified locally. No tag, appcast, updater JSON, website,
+  GitHub release, or PyPI publish was performed in this movement.
+- build command:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-after-jang-tools-parity-20260611.json panel/scripts/build-release-dmgs.sh all`
+- notarize command:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`
+- final verifier:
+  `panel/scripts/verify-release-dmgs.sh`
+- artifacts:
+  `panel/release/vMLX-1.5.57-sequoia-arm64.dmg` (`458M`, sha256
+  `1f925d1321b39d0ba7b6b4d8e23662fc6b2d2ac254879678a6f66ebc991fb18c`,
+  notary id `8048a188-d2c3-410f-abd2-5accee85d420`), and
+  `panel/release/vMLX-1.5.57-tahoe-arm64.dmg` (`473M`, sha256
+  `b2612b9d6c1f45bddf19450cd053b977bf4461c7ddc9686ede72ecd7360a2641`,
+  notary id `7507114a-a1ee-4af8-be48-aaf51b0948ce`).
+- verification evidence: both DMGs passed `hdiutil verify`, `codesign
+  --verify --deep --strict --verbose=4`, stapler validation, and Gatekeeper
+  assessment with `source=Notarized Developer ID`.
+- checkpoint boundary: this is a usable signed/notarized checkpoint, not a full
+  production release-clear. The latest full objective checklist remains
+  `status=open`, `failed_count=16`; remaining red rows include Qwen35 tunnel
+  reasoning lifecycle, DSV4 long-output/resource proof, Issue #179 reporter
+  parity/root-cause rows, and N2/MiMo release-clearance rows that Eric has
+  currently moved out of this lane.

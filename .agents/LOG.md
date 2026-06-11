@@ -19692,3 +19692,30 @@ item lifecycle as direct and gateway.
 - Current full checklist remains checkpoint-only, not production release-clear:
   `build/current-full-release-objective-checklist-after-jang-tools-installed-parity-20260611.json`
   is `status=open`, `failed_count=16`.
+
+# 2026-06-11 signed/notarized checkpoint DMG complete
+
+- Built checkpoint DMGs with explicit checkpoint override:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-after-jang-tools-parity-20260611.json panel/scripts/build-release-dmgs.sh all`.
+- Build produced:
+  `panel/release/vMLX-1.5.57-sequoia-arm64.dmg` and
+  `panel/release/vMLX-1.5.57-tahoe-arm64.dmg`.
+- Notarized with:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`.
+- Apple notary accepted both submissions:
+  Sequoia `8048a188-d2c3-410f-abd2-5accee85d420`; Tahoe
+  `7507114a-a1ee-4af8-be48-aaf51b0948ce`.
+- Final verification command:
+  `panel/scripts/verify-release-dmgs.sh`.
+- Final verification passed for both DMGs: `hdiutil verify` valid, Developer ID
+  signature valid, `Notarization Ticket=stapled`, stapler validate passed, and
+  Gatekeeper accepted with `source=Notarized Developer ID`.
+- Final hashes:
+  `1f925d1321b39d0ba7b6b4d8e23662fc6b2d2ac254879678a6f66ebc991fb18c  panel/release/vMLX-1.5.57-sequoia-arm64.dmg`
+  and
+  `b2612b9d6c1f45bddf19450cd053b977bf4461c7ddc9686ede72ecd7360a2641  panel/release/vMLX-1.5.57-tahoe-arm64.dmg`.
+- No tag, appcast, updater JSON, website/download metadata, GitHub release, or
+  PyPI publish was performed.
+- Boundary: this is a signed/notarized checkpoint artifact set, not a full
+  production release-clear. Remaining objective checklist is still
+  `status=open`, `failed_count=16`.
