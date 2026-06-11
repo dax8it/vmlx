@@ -7498,3 +7498,96 @@ Other-agent action:
   - Keep the earlier red artifact as evidence that stochastic prompts can
     choose the wrong shell command; do not use it to block the deterministic
     installed-app cache/tool row.
+
+# 2026-06-11 continuation - MiMo JANGTQ_2 live block
+
+- Current objective:
+  - continue reducing unproven runtime/API/UI/cache/model blockers toward a
+    working checkpoint surface without release/sign/notarize/PyPI/updater/site
+    action;
+  - avoid broad test-suite churn and use direct live proof/classification where
+    possible.
+- Active lane chosen from `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`:
+  - MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis.
+- Current boundary:
+  - MiMo V2.5 JANG_2L installed-app no-media deterministic
+    Responses/tool/cache row is green;
+  - MiMo JANGTQ_2 remains open;
+  - N2 JANG_1L remains off-limits;
+  - release/sign/notarize/PyPI/updater/site remains locked.
+- Next action:
+  - locate the local MiMo JANGTQ_2 model and existing artifacts, then run one
+    deterministic installed-app no-media Responses/tool/cache proof if the
+    model is present and memory headroom is acceptable.
+
+# 2026-06-11 MiMo JANGTQ_2 deterministic installed-app proof passed
+
+- Artifact:
+  - `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-responses-tools-cache-deterministic-printf-bundled-python-20260611-proof.json`
+- Result:
+  - status `pass`;
+  - real installed `/Applications/vMLX.app` UI used bundled Python
+    `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`;
+  - model:
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`;
+  - served model `MiMo-V2.5-JANGTQ_2`;
+  - Responses API, built-in tools, cache controls, no reasoning probe;
+  - deterministic request overrides: `temperature=0`, `top_p=1`, `top_k=1`;
+  - server used `--tool-call-parser xml_function` and
+    `--reasoning-parser think_xml`.
+- Proven surfaces:
+  - installed app UI;
+  - real loaded model;
+  - bundled Python runtime;
+  - Responses API and Responses delta streaming;
+  - Responses cache-detail usage;
+  - built-in `run_command` auto tool loop;
+  - exact tool-result continuation for this deterministic `printf` contract:
+    `MIMO_JANGTQ2_DETERMINISTIC_ONE` and
+    `MIMO_JANGTQ2_DETERMINISTIC_TWO second UI turn.`;
+  - settings persistence;
+  - generation defaults / request max-token resolution;
+  - parser and visible-language leak checks;
+  - server cache controls;
+  - cache endpoint stats;
+  - native MiMo mixed-SWA cache status;
+  - cache hit telemetry;
+  - L2 disk storage;
+  - tool/L2 cache integration.
+- Runtime/quant detection proof:
+  - `codec=turboquant_codebook`;
+  - `profile=JANGTQ_2`;
+  - routed expert bit layout `gate=2/up=2/down=2-bit`;
+  - 423 routed-expert TurboQuant targets;
+  - `prestacked_switch=423`, `split_expert=0`;
+  - sidecars detected: `jang_config=true`, `jangtq_runtime=true`,
+    `prestacked_bundle=true`;
+  - weight dispatch `jang_tools_turboquant_custom_kernels`;
+  - native cache schema `mixed_swa_kv_v1` with full-attention KV,
+    sliding-window KV, and rotating-window metadata;
+  - generic TurboQuant KV remains off, which is correct for the MiMo native
+    mixed-SWA cache contract.
+- Metrics:
+  - event counts: `stream=28`, `tool=76`, `complete=2`;
+  - persisted tools: `76`;
+  - cache: 3 cache-hit requests, 10463 cached prompt tokens, 3732 RAM cached
+    tokens, 3732 L2 block tokens on disk, 60 disk writes, 321 disk hits;
+  - memory: about 76620.2MB active, 81454.4MB peak, 1020.5MB cache;
+  - speed samples: live decode about 34.2 and 40.0 tok/s with TTFT 0.73s and
+    1.08s.
+- Classification:
+  - MiMo V2.5 JANGTQ_2 installed-app no-media deterministic
+    Responses/tool/cache row is green for the surfaces above;
+  - this is stronger current evidence than older installed-app JANGTQ_2 rows
+    that used the repo `.venv` server instead of bundled Python.
+- Still not proven:
+  - MiMo JANGTQ_2 media/image/video/audio;
+  - MiMo JANGTQ_2 literal/source-vs-quant exactness release clearance;
+  - broad stochastic agent reliability;
+  - release/sign/notarize readiness.
+- Other-agent note:
+  - Use this artifact as the current MiMo JANGTQ_2 installed-app no-media
+    Responses/tool/cache green proof.
+  - Keep the exactness classifier open: prior evidence still localizes literal
+    exactness drift to JANGTQ artifact/native quant-logit/decode quality, not
+    tokenizer/template/parser/cache.
