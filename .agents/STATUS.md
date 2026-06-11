@@ -9750,3 +9750,42 @@ Other-agent action:
 - Boundary:
   this improves N2 JANGTQ2 capability/UI/API truthfulness only. It does not
   clear N2 JANG_1L, N2 audio, public tunnel parity, or release readiness.
+
+# 2026-06-11 01:07 PDT MiMo media/exactness source-trace lane
+
+- Current movement:
+  Gemma and Qwen are absent from the current failed objective checklist; MiMo is
+  the remaining user-priority red area alongside non-priority Step/LFM/Nemotron
+  rows. Resume MiMo with source-tracing only where evidence suggests an engine
+  defect.
+- Boundary:
+  do not repair literal exactness by rewriting parsed tool args or generated
+  JSON. Do not claim MiMo media from `vision_config`/`audio_config` alone. Do
+  not relaunch N2 JANG_1L or start release/sign/notarize work.
+- Target:
+  inspect `current-mimo-v2-jang2l-current-audit-after-media-route-proof-20260610.json`
+  and current MiMo media/runtime source to determine whether the red rows are
+  honest artifact/runtime-unwired gates or if UI/API still advertises/attempts
+  unsupported media incorrectly.
+
+# 2026-06-11 01:20 PDT MiMo stale-media panel gate fixed
+
+- Fixed:
+  panel `detectModelConfigFromDir()` now keeps stale MiMo JANG/JANGTQ artifacts
+  text-only when they have `vision_config`/`audio_config` plus a JANG sidecar but
+  no explicit MiMo media-runtime capability stamp. This matches the Python
+  engine fail-closed policy and prevents `modelForceTextOnly:false` UI routing
+  for preserved-but-unwired MiMo media bundles.
+- Preserved:
+  verified MiMo capability stamps and explicit overlay opt-in still work; this
+  does not demote source/media-enabled artifacts that actually declare the media
+  runtime.
+- Still open:
+  MiMo JANG_2L decode speed, MiMo JANGTQ2 literal exactness, and real MiMo
+  image/video/audio semantic E2E proof remain open. No parser/output rewrite was
+  made to hide those failures.
+- Verification:
+  `npm test -- tests/model-config-registry.test.ts` passed 72 tests.
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'mimo_v2_runtime_modalities_stay_text_only or mimo_v2_capabilities_do_not_advertise_unwired_vl or mimo_v2_text_only_capabilities_do_not_fallback_to_vision_when_registry_misses'` passed 3 selected tests.
+  `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_capability_gate.py`
+  passed 9 tests.

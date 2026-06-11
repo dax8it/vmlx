@@ -15622,3 +15622,47 @@ Next action:
 - Remaining N2 boundaries:
   N2 JANGTQ2 remains the checkpoint candidate. This does not clear N2 audio,
   N2 JANG_1L, public tunnel SSE parity, or the full release row.
+
+# 2026-06-11 01:07 PDT MiMo media/exactness source-trace lane
+
+- Request carried forward:
+  continue actual model/runtime blockers, prioritizing MiMo/N2/Gemma/Qwen and
+  avoiding broad test-suite churn or fake parser/cache fixes.
+- Current selection:
+  Gemma and Qwen have no current failed rows in
+  `build/current-full-release-objective-checklist-after-qwen35-auto-tool-cache-proof-20260611.json`.
+  MiMo remains red for local release clearance, JANG_2L speed, JANGTQ2 literal
+  exactness, and media semantics.
+- Boundary:
+  do not rewrite tool arguments or JSON values to hide MiMo exactness failures;
+  do not infer media support from preserved configs; only patch if source still
+  advertises or routes unsupported media incorrectly.
+- Next check:
+  inspect current MiMo media/exactness artifacts and the panel/server
+  capability gating code to identify an actionable source defect versus an
+  honest artifact/runtime gap.
+
+# 2026-06-11 01:20 PDT MiMo stale-media panel gate fixed
+
+- Source finding:
+  Python server capability code already keeps MiMo `weights_preserved_text_runtime`
+  bundles text-only and reports preserved/unwired media separately. Panel
+  detection could still fall through for stale MiMo JANG artifacts that retained
+  `vision_config`/`audio_config` but lacked the newer capability stamps,
+  matching the shape of the reported `modelForceTextOnly:false` MiMo UI log.
+- Patch:
+  `panel/src/main/model-config-registry.ts` now applies MiMo media policy even
+  when `config.json.capabilities` is missing, consults JANG sidecar capabilities
+  and runtime mode when present, preserves explicit media-runtime/overlay paths,
+  and fails stale JANG media-config-only artifacts closed as text-only.
+- Regression:
+  added `keeps stale MiMo V2 JANG media configs text-only without explicit media
+  runtime proof` to `panel/tests/model-config-registry.test.ts`.
+- Verification:
+  `npm test -- tests/model-config-registry.test.ts` -> 72 passed.
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k 'mimo_v2_runtime_modalities_stay_text_only or mimo_v2_capabilities_do_not_advertise_unwired_vl or mimo_v2_text_only_capabilities_do_not_fallback_to_vision_when_registry_misses'` -> 3 passed.
+  `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_capability_gate.py` -> 9 passed.
+- Boundary:
+  this fixes UI/API capability truthfulness only. It does not clear MiMo media
+  semantics, JANG_2L speed, JANGTQ2 exactness, package/sign/notarize, or any
+  release row by itself.
