@@ -14463,3 +14463,57 @@ Other-agent action:
   `model_config_registry.py`, `models/mllm.py`, `native_mtp.py`,
   `tool_parsers/qwen_tool_parser.py`, `tool_parsers/step3p5_tool_parser.py`,
   `tool_parsers/zaya_tool_parser.py`, and `utils/jang_loader.py`.
+
+## CODEX
+- now: probing a clean JANG-source bundled-Python path without mutating the
+  dirty `/Users/eric/jang` checkout.
+- finding: `panel/scripts/bundle-python.sh` and
+  `panel/scripts/verify-bundled-python.sh` both support
+  `VMLINUX_JANG_TOOLS_SOURCE`/`VMLX_JANG_TOOLS_SOURCE`. This can point at a
+  clean exported JANG source while leaving the dirty converter/allocation work
+  alone.
+- next action: export current `/Users/eric/jang` HEAD for `jang-tools` into
+  `/tmp`, run `panel/scripts/bundle-python.sh` with
+  `VMLINUX_JANG_TOOLS_SOURCE=<clean-export>/jang-tools` and no dirty-source
+  override, then rerun `verify-bundled-python.sh` with the same source override.
+- boundary: this is a local bundled-Python parity refresh only. It does not
+  rebuild/install `/Applications/vMLX.app`, sign, notarize, tag, upload, or
+  alter the dirty JANG checkout.
+
+## CODEX
+- now: clean JANG-source bundled-Python probe found a real release-grade source
+  blocker.
+- command: exported `/Users/eric/jang` HEAD `jang-tools` to
+  `/tmp/vmlx-clean-jang-source-20260611/jang-tools`, then ran
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-20260611/jang-tools
+  ./scripts/bundle-python.sh` from `panel/`. The bundle command completed.
+- verification command:
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-20260611/jang-tools
+  ./panel/scripts/verify-bundled-python.sh`.
+- result: failed before imports with `RELEASE BLOCKED — cannot compare source
+  and bundled jang_tools/step37/__init__.py`. Both the clean exported source
+  and the clean-source bundle lacked `jang_tools/step37`.
+- root cause: the local dirty `/Users/eric/jang` checkout contains
+  `jang-tools/jang_tools/step37/{__init__.py,nvfp4_codec.py,step3p7_mlx.py}`
+  as untracked files, while clean JANG HEAD does not. vMLX release verifier
+  hash-gates those Step3.7 JANG runtime files, so a release-grade bundle cannot
+  be built from current clean JANG HEAD until those runtime files are committed
+  to JANG or the verifier/source contract is deliberately changed with proof.
+- next local action: restore the ignored local `panel/bundled-python` smoke
+  environment from the dirty JANG checkout so development/runtime imports remain
+  available. This must still be marked non-release-grade.
+
+## CODEX
+- now: restored local smoke bundled Python after the clean-source probe.
+- command: installed `/Users/eric/jang/jang-tools` into
+  `panel/bundled-python` with `VMLINUX_ALLOW_DIRTY_JANG_SOURCE=1`, rewrote 16
+  console-script shebangs back to the bundled sibling-Python trampoline, and
+  reran `./panel/scripts/verify-bundled-python.sh`.
+- result: local smoke verifier passed, including `jang_tools.step37.step3p7_mlx`
+  and all critical vMLX/JANG/MLX imports.
+- proof artifact:
+  `build/current-bundled-python-clean-jang-source-probe-20260611.json`.
+- boundary: current ignored local `panel/bundled-python` is development/smoke
+  usable again, but it is not a release-grade bundle until the Step3.7 JANG
+  runtime files are present in clean JANG source and the dirty converter/source
+  state is resolved.

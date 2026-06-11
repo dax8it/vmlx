@@ -102,6 +102,16 @@
   `/Users/eric/jang/jang-tools` is clean or a clean JANG source is selected.
   The local bundled-python verifier pass after dirty-source override is only a
   smoke/parity refresh, not a release-grade bundle.
+- Clean JANG-source bundle probe:
+  `build/current-bundled-python-clean-jang-source-probe-20260611.json` is
+  `status=open`. Exporting clean `/Users/eric/jang` HEAD to
+  `/tmp/vmlx-clean-jang-source-20260611/jang-tools` and bundling with
+  `VMLINUX_JANG_TOOLS_SOURCE` completed, but verifier failed because clean JANG
+  HEAD lacks `jang_tools/step37`. The dirty local JANG checkout has untracked
+  `jang-tools/jang_tools/step37/{__init__.py,nvfp4_codec.py,step3p7_mlx.py}`;
+  those runtime files need to be committed/release-sourced before a real
+  checkpoint bundle. Local `panel/bundled-python` was restored for smoke use
+  from the dirty checkout and verifies, but remains non-release-grade.
 - `n2_pro_397b_release_clearance`: dominated by N2 `JANG_1L`, which is
   Eric-owned/off-limits for this lane. Do not claim or launch it here.
   The N2 JANGTQ2 profile has explicit green rows; keep broad release clearance
