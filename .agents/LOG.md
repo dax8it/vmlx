@@ -17312,3 +17312,41 @@ Next action:
   generation defaults, reasoning template, API/tool/MCP, installed parity, and
   staged parity are green in this source aggregate run; VL media, packaged
   integrity, release manifest, and release gate are not green.
+
+# 2026-06-11 continuation PDT - VL media cache blocker lane start
+
+- Current failing proof:
+  aggregate current suite now fails only `vl_media_cache_contracts`,
+  `packaged_integrity_contracts`, `release_regression_manifest`, and
+  `release_gate_skip_app`.
+- Action:
+  inspect `run_vl_media_cache_contract.py` and its current artifact to isolate
+  the exact media/cache failures before touching source.
+- Boundaries:
+  no release/sign/notarize/PyPI/site action; no N2 JANG_1L load/proof; media
+  support must be weight-backed/runtime-proven, not inferred from token/config
+  metadata alone.
+
+# 2026-06-11 continuation PDT - VL media cache blocker result
+
+- Exact failure isolated:
+  `panel_vl_media_followup_contracts` was the only failing child in the VL
+  media cache runner. The source guard in `panel/src/main/ipc/chat.ts` is
+  stricter than the stale test: remote media follow-up is allowed only when the
+  session is remote and not force-text-only.
+- Applied change:
+  updated `panel/tests/tool-media-followup.test.ts` to assert
+  `chatIsMultimodal || (isRemote && !modelForceTextOnly)`.
+- Verification:
+  `npx vitest run tests/tool-media-followup.test.ts
+  tests/image-display-consistency.test.ts --reporter=verbose` passed
+  `13 passed`. `run_vl_media_cache_contract.py` passed with `status=pass`,
+  `failed=[]`, engine `45 passed`, panel media follow-up `13 passed`, panel
+  VLM settings `12 passed`, and panel family detection `14 passed`.
+- Aggregate current suite:
+  `run_current_regression_suite.py` still exits open, but VL media cache is now
+  green and failed steps are reduced to `packaged_integrity_contracts`,
+  `release_regression_manifest`, and `release_gate_skip_app`.
+- No-claim boundary:
+  this did not run live model media E2E and did not package/sign/notarize. The
+  next blocker is packaged integrity/release manifest state.

@@ -11975,3 +11975,45 @@ Other-agent action:
 - Still not ready:
   no release/sign/notarize/PyPI/site action was run; release manifest/gate remain
   red because VL media and packaged integrity are still open.
+
+# 2026-06-11 continuation PDT VL media cache blocker lane
+
+- Current blocker:
+  `vl_media_cache_contracts` is now the next source/proof blocker from the
+  current regression suite after cache architecture, panel settings, model
+  artifact format, and native MTP cleared.
+- Scope:
+  isolate real media/runtime/cache contract failures for Gemma/Qwen/MiMo/Nemotron
+  style image/video/audio routing, including honest weight-backed audio gates,
+  frame-through-vision video claims, media cache salt, and post-media recovery.
+- Boundaries:
+  no release/sign/notarize/PyPI/site action, no N2 JANG_1L load/proof, no
+  subagents, and no metadata-only media capability claims.
+
+# 2026-06-11 continuation PDT VL media cache blocker result
+
+- Root cause:
+  the engine/panel media route had already tightened remote follow-up media
+  forwarding to `chatIsMultimodal || (isRemote && !modelForceTextOnly)`, but
+  the panel media follow-up contract still expected the older
+  `chatIsMultimodal || isRemote` literal. The stricter source guard is the
+  correct release boundary because force-text-only remote sessions must not
+  silently accept image/video bytes.
+- Fix:
+  updated the panel contract expectation to match the existing stricter guard.
+  No runtime media capability was faked or expanded.
+- Verification:
+  focused Vitest passed for tool-media follow-up and image display consistency
+  (`13 passed`, `2` suites). `run_vl_media_cache_contract.py --out
+  build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json`
+  now reports `status=pass`, `failed=[]`, with engine media/cache contracts
+  `45 passed`, panel media follow-up `13 passed`, panel VLM settings
+  `12 passed`, and panel family detection `14 passed`.
+- Aggregate current suite:
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  remains `status=open`; failed steps are now only
+  `packaged_integrity_contracts`, `release_regression_manifest`, and
+  `release_gate_skip_app`.
+- Still not ready:
+  no release/sign/notarize/PyPI/site action was run. The remaining release gate
+  is packaging/integrity plus manifest/app-gate state, not VL media cache.

@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-11T05:50:36-0700",
+  "created_at": "2026-06-11T05:59:21-0700",
   "status": "open",
   "known_open_requirements": [
     "Cross-family live multi-turn smoke matrix is release-cleared",
@@ -13,7 +13,6 @@
     "DSV4 same-process cache hit improves latency/TTFT and records paged+dsv4 hit",
     "DSV4 block disk L2 stores and hits after restart",
     "DSV4 Responses one-tool call stops after tool result",
-    "Generation defaults, Native MTP, and VL media gates are current",
     "Qwen/JANG packaged MX matmul speed is release-cleared",
     "Qwen native MTP live decode speed and output equivalence are release-cleared",
     "Qwen 27B JANG_4M prompt-processing speed floor is release-cleared",
@@ -118,219 +117,6 @@
         "missing_evidence": [
           "build/current-dsv4-responses-one-tool-stop-20260606.json"
         ]
-      }
-    },
-    "Generation defaults, Native MTP, and VL media gates are current": {
-      "status": "open",
-      "caveat": "This proves no-heavy wiring, metadata ownership, and media/cache compatibility. Live MTP speed/equivalence and video/Omni quality remain separate live rows.",
-      "evidence": [
-        "build/current-generation-defaults-contract-after-pr-intake-matrix-refresh-20260609.json",
-        "build/current-native-mtp-contract-after-noheavy-contract-refresh-20260608.json",
-        "build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json"
-      ],
-      "details": {
-        "generation_defaults": {
-          "status": "pass",
-          "failed": [],
-          "missing_rows": [],
-          "missing_family_rows": [],
-          "failed_family_rows": [],
-          "missing_markers": [],
-          "contract_checks": {
-            "generation_config_defaults_are_surfaced": true,
-            "jang_config_sampling_defaults_override_generation_config": true,
-            "disabled_top_k_sentinels_normalize_to_off": true,
-            "mode_specific_jang_repetition_penalty_is_metadata_owned": true,
-            "request_api_overrides_win_over_startup_defaults": true,
-            "bundle_max_new_tokens_preserved_when_omitted": true,
-            "omitted_max_tokens_without_bundle_default_is_bounded": true,
-            "server_default_output_cap_is_not_request_ceiling": true,
-            "no_hidden_sampler_forcing_or_repetition_floor": true,
-            "additional_args_cannot_override_app_owned_cli_flags": true,
-            "local_high_risk_model_metadata_audit": true,
-            "panel_does_not_emit_default_sampler_cli_flags": true,
-            "legacy_count_floor_still_nontrivial": true,
-            "generation_defaults_family_matrix_complete": true
-          },
-          "source_hashes_recorded": {
-            "vmlx_engine/server.py": "e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528",
-            "vmlx_engine/cli.py": "280432b41e3a34e9f68747ec4244739c2766f0bc77d6fc6891fd594986da22f7",
-            "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
-            "tests/test_reasoning_modes.py": "ee5ede8146d3311c5c96c64f24399897c32ab7fa3f00ad505a88068fac11ace2",
-            "panel/src/main/ipc/models.ts": "0a2723920bd1fd4d5761e0eda0abcba1b9a0ed23f1126da7ebcf99c4fdfbee5f",
-            "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
-            "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
-            "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
-            "panel/src/renderer/src/components/sessions/SessionSettings.tsx": "3a62ebb6c1c38a070518b523c063e0639d66e00a9bcd2c504e50bc89884b15f0",
-            "panel/src/renderer/src/components/chat/ChatSettings.tsx": "a9c3fbad9ba1baf5f60d0b90bf26a33f6b80e728cea2515917e684ee91825ad4",
-            "panel/src/main/database.ts": "617f5ab8131da45631515fe8ffee25dafb552934bc130b10a2c6baea5a8114cd",
-            "panel/src/main/ipc/chat.ts": "2c9f69e8893e16dc3057164872983ec177dd2b4e0150902befbaae2ddd42e777",
-            "panel/src/shared/sessionConfigMigrations.ts": "923dac3146e0fcedd4e00282700822f3048de6ebba76baf18cc9845e7655d8b2",
-            "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
-            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
-            "tests/test_panel_cli_flag_contract.py": "c505fb04b31b109a474f9726ba0defbb0a7564b50b3f71354fde07bdf5e55c65",
-            "tests/cross_matrix/run_generation_defaults_contract.py": "1487efb15550884c9ac32f6e8321fdd757de836e17d7d35202232fdf2df812c7",
-            "tests/cross_matrix/run_local_generation_metadata_audit.py": "b166705167c391e8e53448c9ee1db5fbaf2bd5c05d27ceeacc37b674817c4cc1",
-            "tests/test_generation_defaults_contract.py": "2e97e653286641b87ad739c129a028866ea41626624498b0f699637676397fb0",
-            "tests/test_local_generation_metadata_audit.py": "a50acc4c18bd51f95e2ef94d515cd8f4e6e067d2ab49f504cee5c33fcfa3ee68"
-          },
-          "source_hashes_current": {
-            "vmlx_engine/server.py": "e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528",
-            "vmlx_engine/cli.py": "280432b41e3a34e9f68747ec4244739c2766f0bc77d6fc6891fd594986da22f7",
-            "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
-            "tests/test_reasoning_modes.py": "ee5ede8146d3311c5c96c64f24399897c32ab7fa3f00ad505a88068fac11ace2",
-            "panel/src/main/ipc/models.ts": "0a2723920bd1fd4d5761e0eda0abcba1b9a0ed23f1126da7ebcf99c4fdfbee5f",
-            "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
-            "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
-            "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
-            "panel/src/renderer/src/components/sessions/SessionSettings.tsx": "3a62ebb6c1c38a070518b523c063e0639d66e00a9bcd2c504e50bc89884b15f0",
-            "panel/src/renderer/src/components/chat/ChatSettings.tsx": "a9c3fbad9ba1baf5f60d0b90bf26a33f6b80e728cea2515917e684ee91825ad4",
-            "panel/src/main/database.ts": "617f5ab8131da45631515fe8ffee25dafb552934bc130b10a2c6baea5a8114cd",
-            "panel/src/main/ipc/chat.ts": "2c9f69e8893e16dc3057164872983ec177dd2b4e0150902befbaae2ddd42e777",
-            "panel/src/shared/sessionConfigMigrations.ts": "923dac3146e0fcedd4e00282700822f3048de6ebba76baf18cc9845e7655d8b2",
-            "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
-            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
-            "tests/test_panel_cli_flag_contract.py": "c505fb04b31b109a474f9726ba0defbb0a7564b50b3f71354fde07bdf5e55c65",
-            "tests/cross_matrix/run_generation_defaults_contract.py": "1487efb15550884c9ac32f6e8321fdd757de836e17d7d35202232fdf2df812c7",
-            "tests/cross_matrix/run_local_generation_metadata_audit.py": "b166705167c391e8e53448c9ee1db5fbaf2bd5c05d27ceeacc37b674817c4cc1",
-            "tests/test_generation_defaults_contract.py": "2e97e653286641b87ad739c129a028866ea41626624498b0f699637676397fb0",
-            "tests/test_local_generation_metadata_audit.py": "a50acc4c18bd51f95e2ef94d515cd8f4e6e067d2ab49f504cee5c33fcfa3ee68"
-          },
-          "missing_source_hashes": [],
-          "stale_source_hashes": [],
-          "missing_source_files": []
-        },
-        "native_mtp": {
-          "status": "pass",
-          "failed": [],
-          "missing_rows": [],
-          "missing_family_rows": [],
-          "failed_family_rows": [],
-          "missing_markers": [],
-          "contract_checks": {
-            "native_mtp_d3_default_policy": true,
-            "model_tuning_depth_policy": true,
-            "dropped_and_preserved_mtp_detection": true,
-            "config_only_mtp_never_activates": true,
-            "mxfp4_mxfp8_mtp_artifact_detection": true,
-            "mllm_native_mtp_decode_loop": true,
-            "native_mtp_telemetry_edge_cases": true,
-            "panel_native_mtp_controls_visible_when_supported": true,
-            "panel_native_mtp_suppressed_for_dsv4_or_unsupported": true,
-            "live_speed_equivalence_not_claimed": true
-          },
-          "source_hashes_recorded": {
-            "vmlx_engine/native_mtp.py": "374f023fc7e468f14c2a1bd20f0719195d9c3c8025572a2ce43539b71f5bee63",
-            "vmlx_engine/mllm_batch_generator.py": "6cd0f6e89612796cb5cdfe6f6fae8c14660fa8d54d0677dd5c47069ab0676e7c",
-            "vmlx_engine/server.py": "e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528",
-            "vmlx_engine/native_mtp_policy_suite.py": "774ba75e99ee473a0430310f84e707dc946b2cb238fd9f0444d2ee2d83d4d31c",
-            "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
-            "panel/src/main/model-config-registry.ts": "bff489ed15570239080afdd1661e65d497728d696c1fd6153de660d7d247c82e",
-            "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
-            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
-            "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "tests/cross_matrix/run_native_mtp_contract.py": "3f51b96b0242f265e793f60c0230d39c5c1e28cd8228ab10bb429e71faa32b68",
-            "tests/test_native_mtp_autodetect.py": "69c263af5f73c3fba9256eba6c3f90de098804342979c8b16b86e1394e51004c",
-            "tests/test_native_mtp_policy_suite.py": "7399bd4f83b2d23cd7a6e24842b4fd7c428680e936cf39891d0e8696a1104c7e",
-            "tests/test_native_mtp_bench_harness.py": "c474a206f6a044e00dac7fb1dfbb6c9428c58f371247cf9bc706c60e507d59e5",
-            "tests/test_mtp_telemetry_edge_cases.py": "a039e4366452f0bef159e848ec37251daf6d47f23b8ac0fc4622a001957efaed",
-            "tests/test_native_mtp_contract.py": "3a6a6eef8a297150acc493d5bcf88a6940ce2150e64276a2e156d62118edf268"
-          },
-          "source_hashes_current": {
-            "vmlx_engine/native_mtp.py": "374f023fc7e468f14c2a1bd20f0719195d9c3c8025572a2ce43539b71f5bee63",
-            "vmlx_engine/mllm_batch_generator.py": "6cd0f6e89612796cb5cdfe6f6fae8c14660fa8d54d0677dd5c47069ab0676e7c",
-            "vmlx_engine/server.py": "e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528",
-            "vmlx_engine/native_mtp_policy_suite.py": "774ba75e99ee473a0430310f84e707dc946b2cb238fd9f0444d2ee2d83d4d31c",
-            "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
-            "panel/src/main/model-config-registry.ts": "bff489ed15570239080afdd1661e65d497728d696c1fd6153de660d7d247c82e",
-            "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
-            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
-            "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "tests/cross_matrix/run_native_mtp_contract.py": "3f51b96b0242f265e793f60c0230d39c5c1e28cd8228ab10bb429e71faa32b68",
-            "tests/test_native_mtp_autodetect.py": "69c263af5f73c3fba9256eba6c3f90de098804342979c8b16b86e1394e51004c",
-            "tests/test_native_mtp_policy_suite.py": "7399bd4f83b2d23cd7a6e24842b4fd7c428680e936cf39891d0e8696a1104c7e",
-            "tests/test_native_mtp_bench_harness.py": "c474a206f6a044e00dac7fb1dfbb6c9428c58f371247cf9bc706c60e507d59e5",
-            "tests/test_mtp_telemetry_edge_cases.py": "a039e4366452f0bef159e848ec37251daf6d47f23b8ac0fc4622a001957efaed",
-            "tests/test_native_mtp_contract.py": "3a6a6eef8a297150acc493d5bcf88a6940ce2150e64276a2e156d62118edf268"
-          },
-          "missing_source_hashes": [],
-          "stale_source_hashes": [],
-          "missing_source_files": []
-        },
-        "vl_media": {
-          "status": "fail",
-          "failed": [
-            "panel_vl_media_followup_contracts"
-          ],
-          "missing_rows": [],
-          "missing_family_rows": [],
-          "failed_family_rows": [],
-          "missing_markers": [],
-          "contract_checks": {
-            "video_url_request_schema": false,
-            "video_fallback_processing": false,
-            "qwen36_vl_video_detection": false,
-            "media_cache_salt_separates_modal_inputs": false,
-            "hybrid_ssm_vlm_cache_contracts": false,
-            "mllm_tool_replay_preserves_effective_tools": false,
-            "panel_read_video_builtin_tool": false,
-            "panel_media_tool_followup_content_parts": false,
-            "panel_image_display_consistency": false,
-            "panel_vlm_launch_settings": false,
-            "all_required_panel_markers_present": false
-          },
-          "source_hashes_recorded": {
-            "vmlx_engine/models/mllm.py": "00d01a56afc83d0a108f7794254fcac6d0ca6329946e5a12fe89846feba1a622",
-            "vmlx_engine/mllm_batch_generator.py": "6cd0f6e89612796cb5cdfe6f6fae8c14660fa8d54d0677dd5c47069ab0676e7c",
-            "vmlx_engine/mllm_scheduler.py": "19d10924b9e240725d75cb329bae2cc8e5a074677af728b70fdd8dbbba500498",
-            "vmlx_engine/mllm_cache.py": "18e58f2725228115e499b2ceff04f4f34ae1f0bfa5fc58e6183be0215b84c7af",
-            "vmlx_engine/engine/batched.py": "a1bfcb4b787dc4879a7f1ebc603abc9c3741ba723da7c26819d9b975827aabda",
-            "vmlx_engine/api/models.py": "a6d4fd3e319582d8db9be0ca9cf7df3327bf497eefd5ff1fbd1025ce7b750a39",
-            "panel/src/main/ipc/chat.ts": "2c9f69e8893e16dc3057164872983ec177dd2b4e0150902befbaae2ddd42e777",
-            "panel/src/main/tools/executor.ts": "89f0869f819912d339aabbd2b3cd080f5a47b7ebb8c15fceeefc3b711b5b2fd5",
-            "panel/src/main/tools/registry.ts": "9462329165e45c8ad93ce15f995fd554b687c443073adeb12663f3e844a5bb95",
-            "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
-            "panel/tests/tool-media-followup.test.ts": "2463008be8fe96eda042d78d960035e8fff76b80156a5c781ef4798543fbb818",
-            "panel/tests/image-display-consistency.test.ts": "ca4e5e6e095072288139b0cd5e70d1f54ae968b0e8ed08e9c90380c6844662be",
-            "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
-            "tests/test_vl_video_regression.py": "9dbca204e78c43caab8eb1c2acd0b418e31070e3bd95bcbb76ce55a013556d06",
-            "tests/test_mllm_scheduler_cache.py": "a47b3b827f0f6d02061afc25ceaacef8681e72e658f925e3879f94e15aecac34",
-            "tests/test_mllm_tool_replay.py": "8590ebc9030ef54047d6921f175b42a9c7d0262d1f1b4ffe276bd0ddcda60246",
-            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
-            "tests/test_vl_media_cache_contract.py": "540c69c4c7a5f4082696645f3bfc1d287f0582031b6ba509e4c10fd329ba9de9"
-          },
-          "source_hashes_current": {
-            "vmlx_engine/models/mllm.py": "00d01a56afc83d0a108f7794254fcac6d0ca6329946e5a12fe89846feba1a622",
-            "vmlx_engine/mllm_batch_generator.py": "6cd0f6e89612796cb5cdfe6f6fae8c14660fa8d54d0677dd5c47069ab0676e7c",
-            "vmlx_engine/mllm_scheduler.py": "19d10924b9e240725d75cb329bae2cc8e5a074677af728b70fdd8dbbba500498",
-            "vmlx_engine/mllm_cache.py": "18e58f2725228115e499b2ceff04f4f34ae1f0bfa5fc58e6183be0215b84c7af",
-            "vmlx_engine/engine/batched.py": "a1bfcb4b787dc4879a7f1ebc603abc9c3741ba723da7c26819d9b975827aabda",
-            "vmlx_engine/api/models.py": "a6d4fd3e319582d8db9be0ca9cf7df3327bf497eefd5ff1fbd1025ce7b750a39",
-            "panel/src/main/ipc/chat.ts": "2c9f69e8893e16dc3057164872983ec177dd2b4e0150902befbaae2ddd42e777",
-            "panel/src/main/tools/executor.ts": "89f0869f819912d339aabbd2b3cd080f5a47b7ebb8c15fceeefc3b711b5b2fd5",
-            "panel/src/main/tools/registry.ts": "9462329165e45c8ad93ce15f995fd554b687c443073adeb12663f3e844a5bb95",
-            "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
-            "panel/tests/tool-media-followup.test.ts": "2463008be8fe96eda042d78d960035e8fff76b80156a5c781ef4798543fbb818",
-            "panel/tests/image-display-consistency.test.ts": "ca4e5e6e095072288139b0cd5e70d1f54ae968b0e8ed08e9c90380c6844662be",
-            "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
-            "tests/test_vl_video_regression.py": "9dbca204e78c43caab8eb1c2acd0b418e31070e3bd95bcbb76ce55a013556d06",
-            "tests/test_mllm_scheduler_cache.py": "a47b3b827f0f6d02061afc25ceaacef8681e72e658f925e3879f94e15aecac34",
-            "tests/test_mllm_tool_replay.py": "8590ebc9030ef54047d6921f175b42a9c7d0262d1f1b4ffe276bd0ddcda60246",
-            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
-            "tests/test_vl_media_cache_contract.py": "540c69c4c7a5f4082696645f3bfc1d287f0582031b6ba509e4c10fd329ba9de9"
-          },
-          "missing_source_hashes": [],
-          "stale_source_hashes": [],
-          "missing_source_files": []
-        },
-        "evidence_files_present": {
-          "build/current-generation-defaults-contract-after-pr-intake-matrix-refresh-20260609.json": true,
-          "build/current-native-mtp-contract-after-noheavy-contract-refresh-20260608.json": true,
-          "build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json": true
-        },
-        "missing_evidence": []
       }
     },
     "Qwen/JANG packaged MX matmul speed is release-cleared": {
@@ -1413,8 +1199,8 @@
           "indexed_payload_gb_decimal": 118.73,
           "indexed_payload_gib": 110.57,
           "required_available_gib": 118.57,
-          "available_gib": 104.13,
-          "memory_gap_gib": 14.44,
+          "available_gib": 106.83,
+          "memory_gap_gib": 11.74,
           "memory_preflight_decision": "do_not_launch",
           "launch_safe": false,
           "classification": "careful_ram_live_proof_pending",
@@ -1827,7 +1613,7 @@
             "reporter_server_hash_parity": {
               "failure": "reporter_installed_server_hash_drift",
               "latest_public_server_sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5",
-              "local_installed_server_sha256": "a93f5588c7334a0bf2f9d6eacc5ea31c054ec421b3285ea51326e551f3478bf1",
+              "local_installed_server_sha256": "9e8cfed83d00bba9b7e59a22a1e80b3f897577ebd4e2e75ac099173ef79ca146",
               "provenance": {
                 "checked_sources": [
                   "source_contract",
@@ -1854,23 +1640,33 @@
                 "local_app_bundle_checked": [
                   {
                     "matches_reporter": false,
+                    "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
+                    "sha256": "792a22c944e61bf1a8bade26302e4aae50c62a9dcc1828c3437481fce5501909"
+                  },
+                  {
+                    "matches_reporter": false,
+                    "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/mac-arm64/vMLX.app/Contents/Resources/vmlx-engine-source/vmlx_engine/server.py",
+                    "sha256": "792a22c944e61bf1a8bade26302e4aae50c62a9dcc1828c3437481fce5501909"
+                  },
+                  {
+                    "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/sequoia-app/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
-                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
+                    "sha256": "80b8c4f8ce0116f4fe8e6f7abdc3abb8a83e7c2adf3a5936457d73941ceb7117"
                   },
                   {
                     "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/sequoia-app/mac-arm64/vMLX.app/Contents/Resources/vmlx-engine-source/vmlx_engine/server.py",
-                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
+                    "sha256": "80b8c4f8ce0116f4fe8e6f7abdc3abb8a83e7c2adf3a5936457d73941ceb7117"
                   },
                   {
                     "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/tahoe-app/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
-                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
+                    "sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5"
                   },
                   {
                     "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/tahoe-app/mac-arm64/vMLX.app/Contents/Resources/vmlx-engine-source/vmlx_engine/server.py",
-                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
+                    "sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5"
                   },
                   {
                     "matches_reporter": false,
@@ -1973,7 +1769,7 @@
                     "sha256": "2d5733b3179eca7c74eb801026c2eb917482acfef36e89e9b44e154a1b7f9826"
                   }
                 ],
-                "local_app_bundle_checked_count": 24,
+                "local_app_bundle_checked_count": 26,
                 "local_app_bundle_matches": [],
                 "local_backup_checked_count": 0,
                 "local_backup_matches": [],
@@ -2039,7 +1835,7 @@
               "reporter_matches_public_v1549_tahoe": false,
               "reporter_matches_source": false,
               "route_markers_match": true,
-              "source_server_sha256": "e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528",
+              "source_server_sha256": "b1f56da8f1415ebdf1d9c9fd6895e213e66ea563d986aec3ebf9fd77c88f0452",
               "status": "open"
             },
             "reporter_parity_comparison": {
@@ -3984,8 +3780,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 71.23,
-              "memory_gap_gb": 66.17
+              "free_plus_speculative_purgeable_gb": 94.11,
+              "memory_gap_gb": 43.29
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -4514,7 +4310,7 @@
         "current_source_full_output_preflight": {
           "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
           "artifact_present": true,
-          "created_at": "2026-06-11T05:46:58-0700",
+          "created_at": "2026-06-11T05:55:48-0700",
           "status": "skipped",
           "reason": "insufficient_vm_stat_memory",
           "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -4535,23 +4331,23 @@
             "legacy_completion_raw"
           ],
           "case_count": 14,
-          "available_gb": 94.51,
+          "available_gb": 113.1,
           "total_gb": 128.0,
           "required_available_gb": 120.0,
           "required_free_gb": 120.0,
           "min_free_gb": 120.0,
-          "available_for_gate_gb": 71.28,
+          "available_for_gate_gb": 94.16,
           "required_model_margin_gb": 40.0,
           "model_size_gb": null,
           "safety_margin_gb": null,
           "floor_valid": true,
-          "memory_gap_gb": 48.72,
-          "strict_vm_stat_memory_gap_gb": 48.72,
-          "psutil_available_gap_gb": 25.49,
+          "memory_gap_gb": 25.84,
+          "strict_vm_stat_memory_gap_gb": 25.84,
+          "psutil_available_gap_gb": 6.9,
           "memory_pressure_free_percent": 94,
           "memory_pressure_error": null,
           "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-          "free_plus_speculative_purgeable_gb": 71.28,
+          "free_plus_speculative_purgeable_gb": 94.16,
           "launch_blockers": [
             "insufficient_memory"
           ],
@@ -4560,12 +4356,12 @@
           "top_memory_processes": [
             {
               "pid": 60802,
-              "rss_gb": 0.28,
+              "rss_gb": 0.29,
               "command": "codex --yolo resume"
             },
             {
               "pid": 438,
-              "rss_gb": 0.11,
+              "rss_gb": 0.13,
               "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
             },
             {
@@ -4574,14 +4370,24 @@
               "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
             },
             {
-              "pid": 67654,
+              "pid": 70642,
+              "rss_gb": 0.03,
+              "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
+            },
+            {
+              "pid": 70180,
               "rss_gb": 0.03,
               "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
             },
             {
-              "pid": 68135,
-              "rss_gb": 0.03,
-              "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
+              "pid": 146,
+              "rss_gb": 0.02,
+              "command": "/System/Library/CoreServices/launchservicesd"
+            },
+            {
+              "pid": 371,
+              "rss_gb": 0.02,
+              "command": "/usr/libexec/searchpartyd"
             },
             {
               "pid": 179,
@@ -4589,24 +4395,14 @@
               "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
             },
             {
-              "pid": 146,
+              "pid": 42839,
               "rss_gb": 0.01,
-              "command": "/System/Library/CoreServices/launchservicesd"
+              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
             },
             {
               "pid": 106,
               "rss_gb": 0.01,
               "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
-            },
-            {
-              "pid": 76122,
-              "rss_gb": 0.01,
-              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
-            },
-            {
-              "pid": 42839,
-              "rss_gb": 0.01,
-              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
             }
           ],
           "commands": {
@@ -4963,7 +4759,7 @@
           "source_full_output_preflight": {
             "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
             "artifact_present": true,
-            "created_at": "2026-06-11T05:46:58-0700",
+            "created_at": "2026-06-11T05:55:48-0700",
             "status": "skipped",
             "reason": "insufficient_vm_stat_memory",
             "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -4984,23 +4780,23 @@
               "legacy_completion_raw"
             ],
             "case_count": 14,
-            "available_gb": 94.51,
+            "available_gb": 113.1,
             "total_gb": 128.0,
             "required_available_gb": 120.0,
             "required_free_gb": 120.0,
             "min_free_gb": 120.0,
-            "available_for_gate_gb": 71.28,
+            "available_for_gate_gb": 94.16,
             "required_model_margin_gb": 40.0,
             "model_size_gb": null,
             "safety_margin_gb": null,
             "floor_valid": true,
-            "memory_gap_gb": 48.72,
-            "strict_vm_stat_memory_gap_gb": 48.72,
-            "psutil_available_gap_gb": 25.49,
+            "memory_gap_gb": 25.84,
+            "strict_vm_stat_memory_gap_gb": 25.84,
+            "psutil_available_gap_gb": 6.9,
             "memory_pressure_free_percent": 94,
             "memory_pressure_error": null,
             "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-            "free_plus_speculative_purgeable_gb": 71.28,
+            "free_plus_speculative_purgeable_gb": 94.16,
             "launch_blockers": [
               "insufficient_memory"
             ],
@@ -5009,12 +4805,12 @@
             "top_memory_processes": [
               {
                 "pid": 60802,
-                "rss_gb": 0.28,
+                "rss_gb": 0.29,
                 "command": "codex --yolo resume"
               },
               {
                 "pid": 438,
-                "rss_gb": 0.11,
+                "rss_gb": 0.13,
                 "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
               },
               {
@@ -5023,14 +4819,24 @@
                 "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
               },
               {
-                "pid": 67654,
+                "pid": 70642,
+                "rss_gb": 0.03,
+                "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
+              },
+              {
+                "pid": 70180,
                 "rss_gb": 0.03,
                 "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
               },
               {
-                "pid": 68135,
-                "rss_gb": 0.03,
-                "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
+                "pid": 146,
+                "rss_gb": 0.02,
+                "command": "/System/Library/CoreServices/launchservicesd"
+              },
+              {
+                "pid": 371,
+                "rss_gb": 0.02,
+                "command": "/usr/libexec/searchpartyd"
               },
               {
                 "pid": 179,
@@ -5038,24 +4844,14 @@
                 "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
               },
               {
-                "pid": 146,
+                "pid": 42839,
                 "rss_gb": 0.01,
-                "command": "/System/Library/CoreServices/launchservicesd"
+                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
               },
               {
                 "pid": 106,
                 "rss_gb": 0.01,
                 "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
-              },
-              {
-                "pid": 76122,
-                "rss_gb": 0.01,
-                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
-              },
-              {
-                "pid": 42839,
-                "rss_gb": 0.01,
-                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
               }
             ],
             "commands": {
@@ -5137,7 +4933,6 @@
     "DSV4 same-process cache hit improves latency/TTFT and records paged+dsv4 hit",
     "DSV4 block disk L2 stores and hits after restart",
     "DSV4 Responses one-tool call stops after tool result",
-    "Generation defaults, Native MTP, and VL media gates are current",
     "Qwen/JANG packaged MX matmul speed is release-cleared",
     "Qwen native MTP live decode speed and output equivalence are release-cleared",
     "Qwen 27B JANG_4M prompt-processing speed floor is release-cleared",
@@ -5388,7 +5183,6 @@
     "release_gate_skip_app"
   ],
   "failed_steps": [
-    "vl_media_cache_contracts",
     "packaged_integrity_contracts",
     "release_regression_manifest",
     "release_gate_skip_app"
@@ -5403,7 +5197,7 @@
         "build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 32.432,
+      "elapsed_sec": 33.208,
       "timed_out": false,
       "stdout_tail": [
         "build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json",
@@ -5432,7 +5226,7 @@
         "build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 46.041,
+      "elapsed_sec": 46.575,
       "timed_out": false,
       "stdout_tail": [
         "build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json",
@@ -5456,7 +5250,7 @@
         "build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 6.195,
+      "elapsed_sec": 6.294,
       "timed_out": false,
       "stdout_tail": [
         "build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json",
@@ -5478,7 +5272,7 @@
         "build/current-max-output-context-contract-after-jangtq2-objective-refresh-20260607.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 3.519,
+      "elapsed_sec": 3.726,
       "timed_out": false,
       "stdout_tail": [
         "build/current-max-output-context-contract-after-jangtq2-objective-refresh-20260607.json",
@@ -5498,7 +5292,7 @@
         "build/current-parser-registry-contract-after-jangtq2-objective-refresh-20260607.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 3.631,
+      "elapsed_sec": 3.647,
       "timed_out": false,
       "stdout_tail": [
         "build/current-parser-registry-contract-after-jangtq2-objective-refresh-20260607.json",
@@ -5518,7 +5312,7 @@
         "build/current-generation-defaults-contract-after-pr-intake-matrix-refresh-20260609.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 6.5,
+      "elapsed_sec": 6.526,
       "timed_out": false,
       "stdout_tail": [
         "build/current-generation-defaults-contract-after-pr-intake-matrix-refresh-20260609.json",
@@ -5540,7 +5334,7 @@
         "build/current-reasoning-template-contract-20260526-settings-audit.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 3.818,
+      "elapsed_sec": 3.923,
       "timed_out": false,
       "stdout_tail": [
         "build/current-reasoning-template-contract-20260526-settings-audit.json",
@@ -5560,7 +5354,7 @@
         "build/current-api-surface-contract-20260602-v1554-stream-cache-reuse-refresh.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 35.612,
+      "elapsed_sec": 36.126,
       "timed_out": false,
       "stdout_tail": [
         "build/current-api-surface-contract-20260602-v1554-stream-cache-reuse-refresh.json",
@@ -5582,7 +5376,7 @@
         "build/current-panel-tool-security-contract-20260528-tool-loop-security-matrix.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.488,
+      "elapsed_sec": 0.552,
       "timed_out": false,
       "stdout_tail": [
         "build/current-panel-tool-security-contract-20260528-tool-loop-security-matrix.json",
@@ -5599,7 +5393,7 @@
         "build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 6.019,
+      "elapsed_sec": 6.028,
       "timed_out": false,
       "stdout_tail": [
         "build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json",
@@ -5620,7 +5414,7 @@
         "build/current-mcp-policy-contract-20260531-post-step-lfm-refresh.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 3.377,
+      "elapsed_sec": 3.37,
       "timed_out": false,
       "stdout_tail": [
         "build/current-mcp-policy-contract-20260531-post-step-lfm-refresh.json",
@@ -5641,7 +5435,7 @@
         "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.083,
+      "elapsed_sec": 0.084,
       "timed_out": false,
       "stdout_tail": [
         "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json status=skipped"
@@ -5656,10 +5450,10 @@
         "build/current-real-ui-dsv4-memory-preflight-dsv4-jang-valid-floor-20260611.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.086,
+      "elapsed_sec": 0.09,
       "timed_out": false,
       "stdout_tail": [
-        "{\"free_plus_speculative_purgeable_gb\": 71.23, \"out\": \"build/current-real-ui-dsv4-memory-preflight-dsv4-jang-valid-floor-20260611.json\", \"required_available_gb\": 137.4, \"status\": \"skipped_insufficient_memory\"}"
+        "{\"free_plus_speculative_purgeable_gb\": 94.11, \"out\": \"build/current-real-ui-dsv4-memory-preflight-dsv4-jang-valid-floor-20260611.json\", \"required_available_gb\": 137.4, \"status\": \"skipped_insufficient_memory\"}"
       ]
     },
     "release_surface_contracts": {
@@ -5689,7 +5483,7 @@
         "tests/test_cli_commands.py::TestServeCommandSocketBinding"
       ],
       "returncode": 0,
-      "elapsed_sec": 2.569,
+      "elapsed_sec": 2.667,
       "timed_out": false,
       "stdout_tail": [
         "============================= test session starts ==============================",
@@ -5702,7 +5496,7 @@
         "",
         "tests/test_cli_commands.py ...                                           [100%]",
         "",
-        "============================== 3 passed in 1.85s ==============================="
+        "============================== 3 passed in 1.88s ==============================="
       ]
     },
     "jang_model_compat_contracts": {
@@ -5714,7 +5508,7 @@
         "build/current-jang-model-compat-contract-20260528-pr155-runtime-boundary.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 2.515,
+      "elapsed_sec": 2.691,
       "timed_out": false,
       "stdout_tail": [
         "build/current-jang-model-compat-contract-20260528-pr155-runtime-boundary.json",
@@ -5731,7 +5525,7 @@
         "build/current-model-artifact-format-contract-after-mllm-tight-memory-guard-20260607.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 5.29,
+      "elapsed_sec": 5.308,
       "timed_out": false,
       "stdout_tail": [
         "build/current-model-artifact-format-contract-after-mllm-tight-memory-guard-20260607.json",
@@ -5750,7 +5544,7 @@
         "build/current-model-family-detection-contract-after-n2-policy-row-20260609.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 3.705,
+      "elapsed_sec": 3.771,
       "timed_out": false,
       "stdout_tail": [
         "build/current-model-family-detection-contract-after-n2-policy-row-20260609.json",
@@ -5771,7 +5565,7 @@
         "build/current-native-mtp-contract-after-noheavy-contract-refresh-20260608.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 6.249,
+      "elapsed_sec": 6.6,
       "timed_out": false,
       "stdout_tail": [
         "build/current-native-mtp-contract-after-noheavy-contract-refresh-20260608.json",
@@ -5791,17 +5585,17 @@
         "--out",
         "build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json"
       ],
-      "returncode": 1,
-      "elapsed_sec": 7.407,
+      "returncode": 0,
+      "elapsed_sec": 7.132,
       "timed_out": false,
       "stdout_tail": [
         "build/current-vl-media-cache-contract-after-dsv4-preflight-refresh-20260608.json",
-        "status=fail",
-        "failed=[\"panel_vl_media_followup_contracts\"]",
+        "status=pass",
+        "failed=[]",
         "missing_engine_markers=[]",
         "missing_panel_markers=[]",
         "engine_vl_media_cache_contracts: rc=0 passed=45 skipped=5 deselected=745",
-        "panel_vl_media_followup_contracts: rc=1 passed=1 skipped=None deselected=None",
+        "panel_vl_media_followup_contracts: rc=0 passed=13 skipped=None deselected=None",
         "panel_vlm_settings_contracts: rc=0 passed=12 skipped=242 deselected=None",
         "panel_vlm_family_detection: rc=0 passed=14 skipped=58 deselected=None"
       ]
@@ -5815,7 +5609,7 @@
         "build/current-mimo-v2-local-bundle-metadata-contract-20260607.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.048,
+      "elapsed_sec": 0.084,
       "timed_out": false,
       "stdout_tail": [
         "build/current-mimo-v2-local-bundle-metadata-contract-20260607.json",
@@ -5843,7 +5637,7 @@
         "  \"architecture\": \"Qwen3_5MoeForConditionalGeneration\",",
         "  \"artifact\": \"build/current-n2-pro-jang1l-local-memory-preflight-20260609.json\",",
         "  \"artifact_profile\": \"JANG_1L\",",
-        "  \"available_gib\": 104.13,",
+        "  \"available_gib\": 106.83,",
         "  \"classification\": \"careful_ram_live_proof_pending\",",
         "  \"config_exists\": true,",
         "  \"decision\": \"do_not_launch\",",
@@ -5855,7 +5649,7 @@
         "  \"indexed_payload_gib\": 110.57,",
         "  \"jang_config_exists\": true,",
         "  \"launch_safe\": false,",
-        "  \"memory_gap_gib\": 14.44,",
+        "  \"memory_gap_gib\": 11.74,",
         "  \"model_exists\": true,",
         "  \"model_path\": \"/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L\",",
         "  \"model_type\": \"qwen3_5_moe\",",
@@ -5888,12 +5682,12 @@
         "  \"required_extra_headroom_gib\": 8.0,",
         "  \"status\": \"open\",",
         "  \"system_memory\": {",
-        "    \"available_gib\": 104.13,",
-        "    \"percent\": 18.6,",
+        "    \"available_gib\": 106.83,",
+        "    \"percent\": 16.5,",
         "    \"total_gib\": 128.0,",
         "    \"unit\": \"GiB\"",
         "  },",
-        "  \"timestamp_unix\": 1781182047.0716171,",
+        "  \"timestamp_unix\": 1781182577.234092,",
         "  \"unit\": \"GiB\",",
         "  \"weights\": {",
         "    \"audio_tensors\": 0,",
@@ -5932,7 +5726,7 @@
         "build/current-packaged-integrity-contract-after-checkpoint-app-parity-20260609.json"
       ],
       "returncode": 1,
-      "elapsed_sec": 31.326,
+      "elapsed_sec": 31.257,
       "timed_out": false,
       "stdout_tail": [
         "build/current-packaged-integrity-contract-after-checkpoint-app-parity-20260609.json",
@@ -5954,7 +5748,7 @@
         "build/current-installed-app-runtime-parity-audit-sequoia-checkpoint-dmg-20260609.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 15.678,
+      "elapsed_sec": 16.556,
       "timed_out": false,
       "stdout_tail": [
         "{\"out\": \"build/current-installed-app-runtime-parity-audit-sequoia-checkpoint-dmg-20260609.json\", \"status\": \"open\"}"
@@ -5971,7 +5765,7 @@
         "build/current-installed-app-runtime-parity-audit-tahoe-checkpoint-dmg-20260609.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 18.494,
+      "elapsed_sec": 14.473,
       "timed_out": false,
       "stdout_tail": [
         "{\"out\": \"build/current-installed-app-runtime-parity-audit-tahoe-checkpoint-dmg-20260609.json\", \"status\": \"open\"}"
@@ -5986,7 +5780,7 @@
         "build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 13.656,
+      "elapsed_sec": 13.559,
       "timed_out": false,
       "stdout_tail": [
         "{\"out\": \"build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json\", \"status\": \"open\"}"
@@ -6017,7 +5811,7 @@
         "build/current-issue175-179-release-boundary-audit-after-issue179-memory-preflight-20260607.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.207,
+      "elapsed_sec": 0.202,
       "timed_out": false,
       "stdout_tail": [
         "{\"out\": \"build/current-issue175-179-release-boundary-audit-after-issue179-memory-preflight-20260607.json\", \"status\": \"open\"}"
@@ -6032,7 +5826,7 @@
         "build/current-issue181-183-runtime-audit-20260602-v1554-installed-tahoe-refresh.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 18.84,
+      "elapsed_sec": 18.742,
       "timed_out": false,
       "stdout_tail": [
         "{\"out\": \"build/current-issue181-183-runtime-audit-20260602-v1554-installed-tahoe-refresh.json\", \"status\": \"pass\"}"
@@ -6047,11 +5841,11 @@
         "build/current-public-app-issue-audit-after-issue165-dsv4-cache-tool-loop-20260611.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 8.295,
+      "elapsed_sec": 8.165,
       "timed_out": false,
       "stdout_tail": [
-        "INFO:vmlx_engine:is_mllm_model(/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/tmp2ilt2kab): tier=config_json_vision_config result=True",
-        "INFO:vmlx_engine:is_mllm_model(/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/tmp2ilt2kab): tier=force_mllm result=True",
+        "INFO:vmlx_engine:is_mllm_model(/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/tmpofqzmoxx): tier=config_json_vision_config result=True",
+        "INFO:vmlx_engine:is_mllm_model(/var/folders/55/4db45j8d3sdblm_7mqz34b1c0000gn/T/tmpofqzmoxx): tier=force_mllm result=True",
         "{\"out\": \"build/current-public-app-issue-audit-after-issue165-dsv4-cache-tool-loop-20260611.json\", \"status\": \"open\"}"
       ]
     },
@@ -6064,7 +5858,7 @@
         "build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-sessionlogs-reasoning-proof-20260611.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.148,
+      "elapsed_sec": 0.145,
       "timed_out": false,
       "stdout_tail": [
         "build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-sessionlogs-reasoning-proof-20260611.json",
@@ -6099,7 +5893,7 @@
         "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-12b-mxfp8-crack-20260610.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.024,
+      "elapsed_sec": 0.047,
       "timed_out": false,
       "stdout_tail": [
         "build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-12b-mxfp8-crack-20260610.json",
@@ -6153,7 +5947,7 @@
         "objective_proof_digest or full_release_objective_checklist or default_cache_tool_loop or current_regression_suite or release_regression_manifest or remote_max2_dsv4 or issue179_reporter_parity_metadata or reporter_server_hash_parity or issue179_memory_preflight or issue181_183_runtime_audit or public_app_issue_audit or model_family_detection or mcp_policy_contract or decode_speed_gate or gemma4_speed_gate or gemma_qat_inventory_gate or vl_media_cache_contract or step37_crash_falsification or responses_raw_sse_parity or qwen35_raw_sse_capture or mlx_lm_runtime_patches or single_active_generator or dsv4_cache_hit_repetition_processor or generated_only_logits_processor or dsv4_repetition_penalty_uses_generated_only_prompt_context or dsv4_warmup or dsv4_code_exactness_probe or cache_vs_nocache or n2_chat_cache_gate or n2_jang1l_memory_preflight"
       ],
       "returncode": 0,
-      "elapsed_sec": 65.575,
+      "elapsed_sec": 64.608,
       "timed_out": false,
       "stdout_tail": [
         "============================= test session starts ==============================",
@@ -6205,7 +5999,7 @@
         "tests/test_mlx_lm_runtime_patches.py ...........                         [ 98%]",
         "tests/test_single_active_batch_generator.py .............                [100%]",
         "",
-        "========== 738 passed, 1 skipped, 244 deselected in 64.68s (0:01:04) ==========="
+        "========== 738 passed, 1 skipped, 244 deselected in 63.76s (0:01:03) ==========="
       ]
     },
     "objective_digest": {
@@ -6217,7 +6011,7 @@
         "build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json"
       ],
       "returncode": 0,
-      "elapsed_sec": 0.15,
+      "elapsed_sec": 0.146,
       "timed_out": false,
       "stdout_tail": [
         "build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json",
@@ -6233,7 +6027,7 @@
         "PASS    Panel settings keep DSV4 cache, max output, and max context controls unambiguous",
         "PASS    Cross-family cache architecture is classified per family",
         "PASS    High-risk model family parser, artifact, and launch policy gates are current",
-        "OPEN    Generation defaults, Native MTP, and VL media gates are current",
+        "PASS    Generation defaults, Native MTP, and VL media gates are current",
         "OPEN    Qwen/JANG packaged MX matmul speed is release-cleared",
         "OPEN    Qwen native MTP live decode speed and output equivalence are release-cleared",
         "OPEN    Qwen 27B JANG_4M prompt-processing speed floor is release-cleared",
@@ -6262,7 +6056,7 @@
         "build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json"
       ],
       "returncode": 1,
-      "elapsed_sec": 0.089,
+      "elapsed_sec": 0.09,
       "timed_out": false,
       "stdout_tail": [
         "build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json",
@@ -6282,7 +6076,7 @@
         "build/current-full-release-objective-checklist-after-qwen35-auto-tool-cache-proof-20260611.json"
       ],
       "returncode": 1,
-      "elapsed_sec": 0.09,
+      "elapsed_sec": 0.048,
       "timed_out": false,
       "stdout_tail": [
         "build/current-full-release-objective-checklist-after-qwen35-auto-tool-cache-proof-20260611.json",
@@ -6291,7 +6085,7 @@
         "OPEN prepackage_ready: False",
         "OPEN release_ready: False",
         "OPEN packaged_integrity_component: False",
-        "OPEN n2_pro_397b_release_clearance: {'status': 'open', 'requirement': 'N2 Pro 397B JANG1L/JANGTQ runtime/cache/API/UI quality is release-cleared', 'evidence': ['build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json', 'build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json', 'build/current-n2-pro-jang1l-local-memory-preflight-20260609.json', 'build/current-n2-jang1l-live-chat-cache-forced-after-gemma-video-20260610.json', 'build/current-real-ui-dev-app-n2-jang1l-one-turn-visible-proof-20260610.json', 'build/current-real-ui-dev-app-n2-jang1l-bounded-chat-proof-20260610.json', 'build/current-n2-jangtq2-live-chat-cache-responses-l2-20260610.json', 'build/current-n2-jangtq2-live-chat-cache-responses-l2-20260610.json', 'build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json', 'build/current-n2-jangtq2-responses-stream-boundary-20260610.json', 'build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json', 'build/current-cache-architecture-contract-after-mimo-n2-runtime-refresh-20260609.json', 'build/current-model-family-detection-contract-after-n2-policy-row-20260609.json'], 'local_artifact_probe': {'artifact_present': True, 'index_exists': True, 'model_path': '/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L', 'indexed_payload_gb_decimal': 118.73, 'indexed_payload_gib': 110.57, 'required_available_gib': 118.57, 'available_gib': 104.13, 'memory_gap_gib': 14.44, 'memory_preflight_decision': 'do_not_launch', 'launch_safe': False, 'classification': 'careful_ram_live_proof_pending', 'no_load': True, 'artifact_profile': 'JANG_1L', 'model_type': 'qwen3_5_moe', 'weights': {'audio_tensors': 0, 'expert_tensors': 720, 'gated_delta_tensors': 0, 'linear_attention_tensors': 855, 'mtp_tensors': 0, 'total_tensors': 2845, 'video_tensors': 0, 'vision_tensors': 333}, 'vm_free_plus_speculative_gib': None, 'required_extra_headroom_gib': 8.0, 'boundary': 'The local N2 JANG_1L artifact/index is registered, but the current memory preflight is only a launch-safety warning. JANG_1L should be treated as careful-RAM live-proof work, not permanent infeasibility; this is not live runtime proof.'}, 'jang1l_live_gate': {'artifact': 'build/current-n2-jang1l-live-chat-cache-forced-after-gemma-video-20260610.json', 'status': 'fail', 'reason': None, 'model': '/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L', 'available_gib': None, 'required_available_gib': None, 'memory_gap_gib': None, 'indexed_payload_gib': None, 'required_extra_headroom_gib': None, 'requested_probes': None, 'release_boundary': None, 'first_chat_status_code': 200, 'first_chat_visible_text': '', 'cache_warm_status_code': 503, 'cache_hit_status_code': 503, 'visible_quality_pass': False, 'cache_reuse_pass': False}, 'required_next_evidence': ['memory_safe_live_launch_or_smaller_runtime_strategy', 'JANG_1L runtime/cache/API/UI live proof', 'JANG1L local artifact metadata and structural verification', 'loader/model-family/generation-default/parser detection', 'visible text multi-turn output', 'required tool, auto tool, no-tool, and tool-result continuation', 'JSON/XML/code/whitespace exactness and raw-markup leak checks', 'typed native cache schema, prefix/paged hit telemetry, and L2 restart restore', 'Responses and Chat Completions streaming/non-streaming parity', 'MLXStudio settings/startup parity for parser, reasoning, cache, max output, and max context', 'media/VL/audio/video proof if the artifacts advertise those modalities']}",
+        "OPEN n2_pro_397b_release_clearance: {'status': 'open', 'requirement': 'N2 Pro 397B JANG1L/JANGTQ runtime/cache/API/UI quality is release-cleared', 'evidence': ['build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json', 'build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json', 'build/current-n2-pro-jang1l-local-memory-preflight-20260609.json', 'build/current-n2-jang1l-live-chat-cache-forced-after-gemma-video-20260610.json', 'build/current-real-ui-dev-app-n2-jang1l-one-turn-visible-proof-20260610.json', 'build/current-real-ui-dev-app-n2-jang1l-bounded-chat-proof-20260610.json', 'build/current-n2-jangtq2-live-chat-cache-responses-l2-20260610.json', 'build/current-n2-jangtq2-live-chat-cache-responses-l2-20260610.json', 'build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json', 'build/current-n2-jangtq2-responses-stream-boundary-20260610.json', 'build/current-noheavy-api-cache-contract-after-mimo-n2-runtime-refresh-20260609.json', 'build/current-cache-architecture-contract-after-mimo-n2-runtime-refresh-20260609.json', 'build/current-model-family-detection-contract-after-n2-policy-row-20260609.json'], 'local_artifact_probe': {'artifact_present': True, 'index_exists': True, 'model_path': '/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L', 'indexed_payload_gb_decimal': 118.73, 'indexed_payload_gib': 110.57, 'required_available_gib': 118.57, 'available_gib': 106.83, 'memory_gap_gib': 11.74, 'memory_preflight_decision': 'do_not_launch', 'launch_safe': False, 'classification': 'careful_ram_live_proof_pending', 'no_load': True, 'artifact_profile': 'JANG_1L', 'model_type': 'qwen3_5_moe', 'weights': {'audio_tensors': 0, 'expert_tensors': 720, 'gated_delta_tensors': 0, 'linear_attention_tensors': 855, 'mtp_tensors': 0, 'total_tensors': 2845, 'video_tensors': 0, 'vision_tensors': 333}, 'vm_free_plus_speculative_gib': None, 'required_extra_headroom_gib': 8.0, 'boundary': 'The local N2 JANG_1L artifact/index is registered, but the current memory preflight is only a launch-safety warning. JANG_1L should be treated as careful-RAM live-proof work, not permanent infeasibility; this is not live runtime proof.'}, 'jang1l_live_gate': {'artifact': 'build/current-n2-jang1l-live-chat-cache-forced-after-gemma-video-20260610.json', 'status': 'fail', 'reason': None, 'model': '/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L', 'available_gib': None, 'required_available_gib': None, 'memory_gap_gib': None, 'indexed_payload_gib': None, 'required_extra_headroom_gib': None, 'requested_probes': None, 'release_boundary': None, 'first_chat_status_code': 200, 'first_chat_visible_text': '', 'cache_warm_status_code': 503, 'cache_hit_status_code': 503, 'visible_quality_pass': False, 'cache_reuse_pass': False}, 'required_next_evidence': ['memory_safe_live_launch_or_smaller_runtime_strategy', 'JANG_1L runtime/cache/API/UI live proof', 'JANG1L local artifact metadata and structural verification', 'loader/model-family/generation-default/parser detection', 'visible text multi-turn output', 'required tool, auto tool, no-tool, and tool-result continuation', 'JSON/XML/code/whitespace exactness and raw-markup leak checks', 'typed native cache schema, prefix/paged hit telemetry, and L2 restart restore', 'Responses and Chat Completions streaming/non-streaming parity', 'MLXStudio settings/startup parity for parser, reasoning, cache, max output, and max context', 'media/VL/audio/video proof if the artifacts advertise those modalities']}",
         "OPEN mimo_local_release_clearance: ['mimo_jangtq2_artifact_exactness_blocked', 'mimo_decode_speed_below_release_target', 'mimo_vl_audio_video_unwired', 'mimo_image_video_live_e2e_missing', 'mimo_audio_waveform_live_e2e_missing', 'mimo_jangtq2_live_media_l2_missing', 'mimo_jang2l_live_media_l2_missing']",
         "OPEN mimo_decode_speed_target: build/current-mimo-v2-jang2l-current-audit-after-media-route-proof-20260610.json",
         "OPEN mimo_artifact_exactness: {'blockers': ['mimo_jangtq2_artifact_exactness_blocked', 'mimo_decode_speed_below_release_target', 'mimo_vl_audio_video_unwired', 'mimo_image_video_live_e2e_missing', 'mimo_audio_waveform_live_e2e_missing', 'mimo_jangtq2_live_media_l2_missing', 'mimo_jang2l_live_media_l2_missing'], 'jangtq2_boundary': {'classification': 'model_generated_literal_mutation_after_valid_parser_structure', 'empty_visible_output': False, 'examples': [{'actual': {'value': 'blue-1'}, 'content_head': '', 'expected': {'value': 'blue-cat'}, 'label': 'tool_required', 'parser_structure_valid': True, 'reason': 'expected_tool_argument_missing', 'structure_kind': 'openai_tool_call_json_arguments'}, {'actual': {'value': 'B7CAT-09'}, 'content_head': '', 'expected': {'value': 'B7-CAT-09'}, 'label': 'mimo_tool_required_sentinel', 'parser_structure_valid': True, 'reason': 'expected_tool_argument_missing', 'structure_kind': 'openai_tool_call_json_arguments'}, {'actual': None, 'content_head': 'STORED blue-cat', 'expected': 'STORED blue-cat.', 'label': 'tool_result_continuation', 'parser_structure_valid': True, 'reason': 'expected_tool_result_summary_missing', 'structure_kind': 'visible_tool_result_continuation_text'}, {'actual': {'count': 3, 'status': 'ok', 'value': 'bluecat'}, 'content_head': '{\"status\":\"ok\",\"value\":\"bluecat\",\"count\":3}', 'expected': {'count': 3, 'status': 'ok', 'value': 'blue-cat'}, 'label': 'structured_json_exact', 'parser_structure_valid': True, 'reason': 'json_exact_object_mismatch', 'structure_kind': 'visible_json_object'}, {'actual': {'count': 3, 'status': 'ok', 'value': 'B7CCAT-09'}, 'content_head': '{\"status\":\"ok\",\"value\":\"B7CCAT-09\",\"count\":3}', 'expected': {'count': 3, 'status': 'ok', 'value': 'B7-CAT-09'}, 'label': 'mimo_structured_json_sentinel', 'parser_structure_valid': True, 'reason': 'json_exact_object_mismatch', 'structure_kind': 'visible_json_object'}], 'failed_labels': ['tool_required', 'mimo_tool_required_sentinel', 'tool_result_continuation', 'structured_json_exact', 'mimo_structured_json_sentinel'], 'metal_oom_crash': False, 'model_generated_literal_mutation': True, 'parser_structure_valid_for_failed_rows': True, 'release_boundary': 'Do not clear MiMo exactness by rewriting parsed tool arguments, repairing generated JSON values, disabling cache, or hiding the failed rows. Valid parser structure plus wrong literal values means the remaining blocker is model/runtime decode quality or artifact quantization, not XML/JSON parser mutation.', 'server_died_mid_probe': False, 'typed_tight_memory_prompt_rejection': False}, 'jang2l_boundary': None, 'prompt_shape_first_token': {'blocked': False, 'classification': 'missing_prompt_shape_first_token_artifact'}, 'classifier': {'status': 'open', 'classification': 'jangtq2_plain_literal_copy_fails_before_parser_or_json_repair', 'secondary_classification': None, 'model_upload_action_required': True, 'model_upload_action_reasons': ['JANGTQ_2 current artifact fails plain, structured JSON, and parsed tool-argument literal exactness before parser or JSON repair; rebuild/reupload with a less lossy literal-safe profile unless source-vs-quant proves a runtime decode bug'], 'unresolved_surfaces': {'artifact_quantization_or_decode_logits_quality': True, 'continuous_batching_system_prompt_pressure': False, 'jang2l_chat_tool_quality': False, 'jang2l_json_sentinel_exactness': False, 'jang2l_tool_memory_or_protocol': False, 'jangtq2_compact_hyphen_decode_quality': False, 'jangtq2_compiled_router': True, 'jangtq2_conservative_no_cb_no_prefix_literal_mutation': False, 'jangtq2_current_all_local_literal_mutation': True, 'jangtq2_plain_literal_copy': True, 'jangtq2_raw_decode_or_artifact_quality': False, 'jangtq2_switchglu_fastpath': True, 'jangtq2_tq_gather_kernel': True, 'long_prompt_coherence': False, 'mimo_media_runtime': True, 'source_vs_quant_first_divergence': True}, 'required_next_evidence': ['do not repair semantic values in parser or JSON repair layer', 'either rerun source-vs-quant when RAM is authorized or provide a stronger artifact-only logits/quantization diagnosis', 'conservative live JANGTQ_2 proof with continuous batching off and prefix cache disabled still fails literal exactness; do not keep chasing cache/CB as the primary exactness cause without contrary logits evidence', 'if artifact/quantization is confirmed, rebuild or reupload MiMo with a corrected quantization contract', 'if runtime decode is confirmed, fix the decode/kernel path and rerun the exact tool/JSON sentinel rows', 'MiMo media remains unwired until real VL/audio/video runtime and cache proof exist']}}",
@@ -6338,20 +6132,20 @@
         "--skip-gui"
       ],
       "returncode": 1,
-      "elapsed_sec": 15.945,
+      "elapsed_sec": 15.994,
       "timed_out": false,
       "stdout_tail": [
         "[PASS] version triple: 1.5.57",
-        "[PASS] twine check dist: 0.5s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/twine_check_dist.log",
-        "[PASS] panel request/type tests: 0.4s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/panel_request_type_tests.log",
-        "[PASS] panel typecheck: 2.2s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/panel_typecheck.log",
-        "[FAIL] bundled python import gate: exit=1; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/bundled_python_import_gate.log",
-        "[PASS] objective proof digest refresh: 0.1s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/objective_proof_digest_refresh.log",
-        "[FAIL] objective proof digest: DSV4 same-process cache hit improves latency/TTFT and records paged+dsv4 hit; DSV4 block disk L2 stores and hits after restart; DSV4 Responses one-tool call stops after tool result; Generation defaults, Native MTP, and VL media gates are current; Qwen/JANG packaged MX matmul speed is release-cleared; Qwen native MTP live decode speed and output equivalence are release-cleared; Qwen 27B JANG_4M prompt-processing speed floor is release-cleared; Ling/Bailing multilingual output quality is release-cleared; Gemma4 26B CRACK Responses visible-content and language quality is release-cleared; Gemma4 26B CRACK mixed-SWA app-engine speed floor is release-cleared; Cross-family live multi-turn smoke matrix is release-cleared; MiMo V2.5 JANG_2L runtime/tool/long-prompt quality is release-cleared; N2 Pro 397B JANG1L/JANGTQ runtime/cache/API/UI quality is release-cleared; MiniMax-M2.7-JANGTQ_K reporter parity/root cause is release-cleared",
-        "[FAIL] release-ready manifest: exit=1; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/release_ready_manifest.log",
+        "[PASS] twine check dist: 0.5s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/twine_check_dist.log",
+        "[PASS] panel request/type tests: 0.4s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/panel_request_type_tests.log",
+        "[PASS] panel typecheck: 2.3s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/panel_typecheck.log",
+        "[FAIL] bundled python import gate: exit=1; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/bundled_python_import_gate.log",
+        "[PASS] objective proof digest refresh: 0.1s; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/objective_proof_digest_refresh.log",
+        "[FAIL] objective proof digest: DSV4 same-process cache hit improves latency/TTFT and records paged+dsv4 hit; DSV4 block disk L2 stores and hits after restart; DSV4 Responses one-tool call stops after tool result; Qwen/JANG packaged MX matmul speed is release-cleared; Qwen native MTP live decode speed and output equivalence are release-cleared; Qwen 27B JANG_4M prompt-processing speed floor is release-cleared; Ling/Bailing multilingual output quality is release-cleared; Gemma4 26B CRACK Responses visible-content and language quality is release-cleared; Gemma4 26B CRACK mixed-SWA app-engine speed floor is release-cleared; Cross-family live multi-turn smoke matrix is release-cleared; MiMo V2.5 JANG_2L runtime/tool/long-prompt quality is release-cleared; N2 Pro 397B JANG1L/JANGTQ runtime/cache/API/UI quality is release-cleared; MiniMax-M2.7-JANGTQ_K reporter parity/root cause is release-cleared",
+        "[FAIL] release-ready manifest: exit=1; log=/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/release_ready_manifest.log",
         "[WARN] packaged app checks: skipped by --skip-app",
         "",
-        "Summary: /Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055020/SUMMARY.md"
+        "Summary: /Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/release-gates/20260611_055905/SUMMARY.md"
       ]
     }
   }
