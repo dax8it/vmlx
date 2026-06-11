@@ -102,16 +102,24 @@
   `/Users/eric/jang/jang-tools` is clean or a clean JANG source is selected.
   The local bundled-python verifier pass after dirty-source override is only a
   smoke/parity refresh, not a release-grade bundle.
-- Clean JANG-source bundle probe:
+- Clean JANG-source bundle probe is now green:
   `build/current-bundled-python-clean-jang-source-probe-20260611.json` is
-  `status=open`. Exporting clean `/Users/eric/jang` HEAD to
-  `/tmp/vmlx-clean-jang-source-20260611/jang-tools` and bundling with
-  `VMLINUX_JANG_TOOLS_SOURCE` completed, but verifier failed because clean JANG
-  HEAD lacks `jang_tools/step37`. The dirty local JANG checkout has untracked
-  `jang-tools/jang_tools/step37/{__init__.py,nvfp4_codec.py,step3p7_mlx.py}`;
-  those runtime files need to be committed/release-sourced before a real
-  checkpoint bundle. Local `panel/bundled-python` was restored for smoke use
-  from the dirty checkout and verifies, but remains non-release-grade.
+  `status=pass`. JANG `main` now includes
+  `8e9d9c785ae053c4f244da65b0442a124f2bb59a`
+  (`Add Step3p7 JANG runtime bridge`), adding only
+  `jang_tools/step37/{__init__.py,nvfp4_codec.py,step3p7_mlx.py}`. Exporting
+  that clean JANG source and running
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools
+  ./panel/scripts/verify-bundled-python.sh` passes, including
+  `bundled critical jang_tools files match source content` and
+  `jang_tools.step37.step3p7_mlx`. This clears the clean-source JANG runtime
+  blocker, but not the stale installed app.
+- Important local-source caveat: plain `./panel/scripts/verify-bundled-python.sh`
+  still fails against default `/Users/eric/jang/jang-tools` because that checkout
+  is dirty/stale versus JANG `main` (`capabilities.py` hash drift). Use
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools`
+  or a fresh clean checkout of `jjang-ai/jangq` main for release-grade local
+  packaging until `/Users/eric/jang` is reconciled.
 - `n2_pro_397b_release_clearance`: dominated by N2 `JANG_1L`, which is
   Eric-owned/off-limits for this lane. Do not claim or launch it here.
   The N2 JANGTQ2 profile has explicit green rows; keep broad release clearance
@@ -156,8 +164,9 @@
   media/L2 rows.
 - For release packaging, first rerun the bundled Python parity gate and
   installed-app source-vs-bundle checks after source rows are worth packaging.
-  Current next release-surface work is: clean or explicitly select JANG tools
-  source, rebuild bundled Python without dirty-source override, rebuild/install
+  Current next release-surface work is: rebuild bundled Python from a clean
+  JANG source override or clean checkout if a full packaging rebuild is needed,
+  rebuild/install
   `/Applications/vMLX.app`, rerun
   `tests/cross_matrix/run_installed_app_runtime_parity_audit.py`, rerun the
   full release objective checklist, and only then run installed-app live UI/API

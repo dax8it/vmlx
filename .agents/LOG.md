@@ -19359,3 +19359,32 @@ Normal release-grade bundled Python remains blocked until JANG tools is clean
 or an explicit clean source is selected. Continue reducing source-side
 UI/API/cache/release-surface proof gaps that do not mutate JANG tools and do
 not perform signing/notarization/PyPI/site/updater/release upload actions.
+
+# 2026-06-11 JANG Step3.7 clean-source bundle blocker cleared
+
+Committed and pushed JANG `main`
+`8e9d9c785ae053c4f244da65b0442a124f2bb59a`
+(`Add Step3p7 JANG runtime bridge`) from a clean temporary worktree based on
+remote `origin/main` `f994144`. The commit adds only:
+
+- `jang_tools/step37/__init__.py`
+- `jang_tools/step37/nvfp4_codec.py`
+- `jang_tools/step37/step3p7_mlx.py`
+
+Verification in the clean JANG worktree: `python3 -m py_compile` passed for
+the three files, `git diff --cached --check` passed, and
+`python3 -m pip wheel --no-deps --no-cache-dir . -w dist` built
+`jang-2.5.31`; the wheel contains all three `jang_tools/step37` files.
+
+vMLX verification: exported clean JANG commit `8e9d9c7`, installed it into
+`panel/bundled-python`, rewrote 20 console-script shebangs, and ran
+`VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools
+./panel/scripts/verify-bundled-python.sh`. Result passed, including
+`bundled critical jang_tools files match source content` and
+`jang_tools.step37.step3p7_mlx`.
+
+Updated proof artifact:
+`build/current-bundled-python-clean-jang-source-probe-20260611.json` is now
+`status=pass`. Remaining release boundary: `/Applications/vMLX.app` is still
+stale and must be rebuilt/reinstalled before installed-app UI/API/cache proofs
+or release signing/notarization can clear.

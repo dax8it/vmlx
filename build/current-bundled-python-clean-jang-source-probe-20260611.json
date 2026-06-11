@@ -1,34 +1,35 @@
 {
   "artifact": "build/current-bundled-python-clean-jang-source-probe-20260611.json",
-  "status": "open",
+  "status": "pass",
   "probe": "bundled_python_clean_jang_source",
-  "created_at": "2026-06-11T15:25:24-0700",
-  "clean_jang_source": "/tmp/vmlx-clean-jang-source-20260611/jang-tools",
+  "created_at": "2026-06-11T15:30:21-0700",
+  "clean_jang_source": "/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools",
   "source_repo": "/Users/eric/jang",
   "source_subdir": "jang-tools",
-  "bundle_command": "VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-20260611/jang-tools ./scripts/bundle-python.sh",
+  "source_commit": "8e9d9c785ae053c4f244da65b0442a124f2bb59a",
+  "source_commit_subject": "Add Step3p7 JANG runtime bridge",
+  "bundle_command": "panel/bundled-python/python/bin/python3 -m pip install --force-reinstall --no-deps --no-cache-dir /tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools",
   "bundle_result": {
     "exit_code": 0,
-    "summary": "Clean exported JANG HEAD bundled successfully, but lacked Step3.7 runtime package files."
+    "summary": "Clean exported JANG main installed into bundled Python as jang==2.5.31 with Step3.7 runtime package files."
   },
-  "clean_source_verify_command": "VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-20260611/jang-tools ./panel/scripts/verify-bundled-python.sh",
+  "clean_source_verify_command": "VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools ./panel/scripts/verify-bundled-python.sh",
   "clean_source_verify_result": {
-    "exit_code": 1,
-    "failure": "RELEASE BLOCKED - cannot compare source and bundled jang_tools/step37/__init__.py",
-    "missing_source_package": "jang_tools/step37",
-    "missing_bundled_package": "jang_tools/step37"
+    "exit_code": 0,
+    "status": "pass",
+    "proven": [
+      "bundled critical vmlx_engine files match source content",
+      "bundled critical jang_tools files match clean JANG source content",
+      "jang_tools.step37.step3p7_mlx imports from bundled Python",
+      "console-script shebangs are relocatable",
+      "all critical bundled imports pass"
+    ]
   },
-  "dirty_local_jang_source": "/Users/eric/jang/jang-tools",
-  "dirty_local_jang_runtime_files_present": [
+  "release_sourced_jang_runtime_files": [
     "jang_tools/step37/__init__.py",
     "jang_tools/step37/nvfp4_codec.py",
     "jang_tools/step37/step3p7_mlx.py"
   ],
-  "local_smoke_restore": {
-    "command": "VMLINUX_ALLOW_DIRTY_JANG_SOURCE=1 panel/bundled-python/python/bin/python3 -m pip install --force-reinstall --no-deps --no-cache-dir /Users/eric/jang/jang-tools; rewrite console-script shebangs; ./panel/scripts/verify-bundled-python.sh",
-    "exit_code": 0,
-    "status": "pass",
-    "boundary": "Local bundled Python imports are restored for development, but this is not a release-grade bundle because it uses dirty/untracked local JANG source."
-  },
-  "release_blocker": "Commit or otherwise release-grade source the JANG Step3.7 runtime package files before building a signed checkpoint bundle, or deliberately change the vMLX verifier/source contract with proof."
+  "release_blocker": null,
+  "remaining_release_boundary": "This proves clean-source bundled-Python runtime parity only. It does not rebuild or install /Applications/vMLX.app, sign, notarize, tag, upload, or clear live installed-app UI/API/cache proofs."
 }

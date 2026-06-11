@@ -14517,3 +14517,45 @@ Other-agent action:
   usable again, but it is not a release-grade bundle until the Step3.7 JANG
   runtime files are present in clean JANG source and the dirty converter/source
   state is resolved.
+
+## CODEX
+- now: continuing the release-grade bundled-Python blocker from the clean JANG
+  source probe.
+- current movement scope: inspect and, if safe, source-control only the missing
+  `jang_tools/step37` runtime package in `/Users/eric/jang` so vMLX can build
+  from clean JANG source. Do not stage or modify dirty converter/allocation
+  files, do not publish PyPI, and do not run signing/notarization/release upload.
+- reason: vMLX verifier hash-gates `jang_tools/step37` and imports
+  `jang_tools.step37.step3p7_mlx`; clean JANG HEAD lacks that package while the
+  dirty local JANG checkout has it untracked.
+
+## CODEX
+- now: cleared the clean JANG-source bundled-Python blocker.
+- JANG action: committed and pushed `8e9d9c785ae053c4f244da65b0442a124f2bb59a`
+  (`Add Step3p7 JANG runtime bridge`) to `jjang-ai/jangq` `main` from a clean
+  temporary worktree based on remote `origin/main` `f994144`. The commit adds
+  only `jang_tools/step37/__init__.py`, `nvfp4_codec.py`, and
+  `step3p7_mlx.py`.
+- JANG verification: `python3 -m py_compile` passed for the three files;
+  `git diff --cached --check` passed; clean worktree `python3 -m pip wheel
+  --no-deps --no-cache-dir . -w dist` built `jang-2.5.31`; the wheel contains
+  all three `jang_tools/step37` files.
+- vMLX bundled-Python verification: exported clean JANG commit
+  `8e9d9c785ae053c4f244da65b0442a124f2bb59a`, installed it into
+  `panel/bundled-python`, rewrote 20 console-script shebangs, and ran
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools
+  ./panel/scripts/verify-bundled-python.sh`; result passed, including
+  `bundled critical jang_tools files match source content` and
+  `jang_tools.step37.step3p7_mlx`.
+- default local-source warning: running `./panel/scripts/verify-bundled-python.sh`
+  without `VMLINUX_JANG_TOOLS_SOURCE` still fails against
+  `/Users/eric/jang/jang-tools` because that checkout is dirty/stale versus
+  JANG `main` (`capabilities.py` hash drift). Until the local JANG checkout is
+  reconciled, release/package commands must use a clean JANG source override or
+  a clean checkout of `jjang-ai/jangq` main.
+- updated proof artifact:
+  `build/current-bundled-python-clean-jang-source-probe-20260611.json` is now
+  `status=pass`.
+- remaining boundary: `/Applications/vMLX.app` is still stale and must be
+  rebuilt/reinstalled before installed-app UI/API/cache proofs or release
+  signing/notarization can clear.
