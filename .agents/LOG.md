@@ -16357,3 +16357,43 @@ Next action:
   cause as artifact/logit/codebook/decode quality, not parser, template,
   tokenizer, cache, hidden sampling, or tool protocol. No release action, no
   N2 JANG_1L, no subagents, and no fake parser/cache/sampling repair.
+
+# 2026-06-11 02:30 PDT - moving to Nex/N2 JANGTQ non-JANG_1L proof
+
+- MiMo JANGTQ_2 exactness is now current-red on installed app and requires
+  artifact/logit/codebook/remake work before exactness can be green.
+- Next lane selected: Nex/N2 JANGTQ2 or other non-JANG_1L runtime/cache/API/UI
+  proof. This follows the active directive allowing N2 JANGTQ/non-JANG_1L rows
+  while keeping N2 JANG_1L off-limits.
+- Next action is inspection first: local N2 paths and current proof artifacts,
+  then only one focused live proof if it covers a missing current row.
+- Boundaries: no N2 JANG_1L, no release/sign/notarize/PyPI/updater/site action,
+  no subagents, no fake parser/tool/cache/media claims.
+
+# 2026-06-11 02:35 PDT - N2 JANGTQ2 current installed-app proof state classified
+
+- Inspected local models and current artifacts. N2 JANGTQ2 exists at
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` (~101G). N2
+  JANG_1L also exists (~111G) but remains off-limits.
+- Current installed-app bundled-Python green artifacts already cover N2
+  JANGTQ2 Responses tools/cache and reasoning/tools/cache:
+  `current-real-ui-installed-app-n2-jangtq2-responses-tools-cache-bundled-python-20260610-proof.json`
+  and
+  `current-real-ui-installed-app-n2-jangtq2-responses-reasoning-tools-cache-bundled-python-20260610-proof.json`.
+- Proven by existing artifacts: installed app UI, bundled Python, real N2
+  JANGTQ2 load, Responses API, auto tool loop, long tool loop, reasoning
+  display with thinking enabled, Responses delta/cache-detail usage, parser/
+  language leak checks, native hybrid SSM cache, attention-only TurboQuant KV,
+  q4 storage-boundary attention KV, async clean-prefill rederive, SSM companion
+  L2, and block-disk L2.
+- Metrics from reasoning/tools artifact: `7289` L2 block tokens, `26169` SSM
+  tokens on disk, `33458` total L2 tokens, `117` disk writes,
+  `reasoningDone=5`.
+- Media state: image and bundled video installed-app proofs are green; bundled
+  audio proof is an honest unsupported-audio failure. MTP is metadata-only /
+  dropped because the index has zero MTP tensors. No duplicate 101G launch was
+  run because it would repeat green rows.
+- Next useful N2 work is a genuinely missing row: direct/gateway/tunnel raw SSE
+  parity for N2 JANGTQ2, Responses media parity, or rerun after source/app
+  changes. This does not prove N2 JANG_1L, audio, MTP, tunnel parity, or
+  release readiness.

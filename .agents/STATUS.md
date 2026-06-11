@@ -10878,3 +10878,66 @@ Other-agent action:
   argument values) before asking the app/runtime lane to mark MiMo exactness
   green. Runtime lane can continue proving tool/cache/UI speed separately but
   must keep exactness red.
+
+# 2026-06-11 02:30 PDT next lane selected Nex/N2 JANGTQ non-JANG_1L
+
+- Continuation objective:
+  keep reducing production blockers for user-relevant large models with real
+  installed-app/API/tool/cache proof, not broad test-suite churn.
+- Selected blocker:
+  Nex/N2 JANGTQ2 or other non-JANG_1L runtime/cache/API/UI proof. This is
+  allowed by the active directives as long as it does not overlap Eric's
+  N2 JANG_1L lane.
+- Next action:
+  inspect current local N2 model paths and proof artifacts before launching a
+  model. If a current installed-app bundled-Python proof already exists, use it
+  to choose the missing row instead of repeating load-only proof.
+- Boundaries:
+  do not launch or claim N2 JANG_1L; no release/sign/notarize/PyPI/updater/site
+  action; no subagents; no fake parser/tool/cache/media claims.
+
+# 2026-06-11 02:35 PDT N2 JANGTQ2 current proof state classified from artifacts
+
+- Inspected local models:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` is present at
+  about `101G`; `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L`
+  is present at about `111G` but remains off-limits.
+- Current installed-app bundled-Python green artifacts:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-tools-cache-bundled-python-20260610-proof.json`
+  and
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-reasoning-tools-cache-bundled-python-20260610-proof.json`
+  are `status=pass`.
+- Proven by those artifacts:
+  installed app UI, bundled Python, real Nex/N2 JANGTQ2 load, `/v1/responses`,
+  built-in auto tool loop, long tool loop, tool/L2 cache integration,
+  reasoning display with `enable_thinking=true`, content/Responses delta
+  streaming, cache-detail usage, settings persistence, generation defaults,
+  parser/language leak checks, native hybrid SSM cache, attention-only
+  TurboQuant KV, q4 storage-boundary attention KV, async clean-prefill rederive
+  policy, SSM companion L2, and block-disk L2.
+- Runtime/cache details:
+  model health reports `turboquant_codebook`, `weight_format=mxtq`, profile
+  `JANGTQ2`, `540` prestacked routed-expert TQ targets, `2725` indexed tensors,
+  `hybrid_ssm_v1`, `attention_kv` plus `ssm_companion_state`, live attention
+  TQ KV enabled for attention layers only, and SSM state preserved native/full
+  precision. Reasoning/tools artifact recorded `7289` L2 block tokens,
+  `26169` SSM tokens on disk, `33458` total L2 tokens, `117` disk writes, and
+  `reasoningDone=5`.
+- Media artifacts:
+  installed-app N2 JANGTQ2 image proof is `status=pass` for `vl_image`; bundled
+  video proof is `status=pass` for video; bundled audio proof is
+  `status=fail`, `failureStage=audio_send_message`, which is an honest
+  unsupported-audio boundary for this artifact, not a runtime crash.
+- MTP boundary:
+  health reports config/JANG metadata declares one MTP layer but indexed
+  safetensors have zero MTP tensors. Current status is `dropped` /
+  `metadata_only_missing_weights`; do not claim N2 JANGTQ2 native MTP active.
+- No duplicate launch:
+  no new 101G model launch was run in this movement because current
+  installed-app bundled-Python proof already covers the selected runtime/tool/
+  cache rows. Next live N2 work should target a genuinely missing row:
+  direct/gateway/tunnel raw SSE parity for N2 JANGTQ2, Responses media parity,
+  or fresh installed-app proof only after source/app changes.
+- No-claims:
+  this does not prove N2 JANG_1L, audio, MTP, public tunnel parity, release
+  packaging, sign/notarize, PyPI, updater JSON, or website release rows.

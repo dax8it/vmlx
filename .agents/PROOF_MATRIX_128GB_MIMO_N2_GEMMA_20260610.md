@@ -3347,3 +3347,43 @@ Next implementation target:
   exactness probes (`ACK-CB-742`, `blue-cat`, JSON string values, tool argument
   values) before marking MiMo exactness release-clear. App/runtime proofs may
   continue for speed/tool/cache, but exactness stays red.
+
+## Nex/N2 Pro JANGTQ2 Installed-App Runtime/API/Cache - 2026-06-11
+
+- Local artifact:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`, about `101G`.
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANG_1L` exists but
+  remains off-limits for this lane.
+- Green installed-app bundled-Python proofs:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-tools-cache-bundled-python-20260610-proof.json`
+  and
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-reasoning-tools-cache-bundled-python-20260610-proof.json`.
+- Proven:
+  installed app UI, bundled Python, real N2 JANGTQ2 load, `/v1/responses`,
+  built-in auto tool loop, long tool loop, tool-result continuation,
+  `enable_thinking=true` reasoning display, content/Responses delta streaming,
+  cache-detail usage, settings persistence, generation defaults, parser/
+  language leak checks, native hybrid SSM cache, attention-only TurboQuant KV,
+  q4 storage-boundary attention KV, async clean-prefill rederive policy, SSM
+  companion L2, and block-disk L2.
+- Runtime/cache details:
+  health reports `turboquant_codebook`, `weight_format=mxtq`, profile
+  `JANGTQ2`, `540` prestacked routed-expert TQ targets, `2725` indexed tensors,
+  `hybrid_ssm_v1`, components `attention_kv`, `ssm_companion_state`, and
+  `async_rederive`. The reasoning/tools proof recorded `7289` L2 block tokens,
+  `26169` SSM tokens on disk, `33458` total L2 tokens, `117` disk writes, and
+  `reasoningDone=5`.
+- Media:
+  installed-app image proof is green for `vl_image`; bundled video proof is
+  green for video. Bundled audio proof fails at `audio_send_message`, which is
+  the honest unsupported-audio boundary for this artifact.
+- MTP:
+  config/JANG metadata declares one MTP layer, but indexed weights contain zero
+  MTP tensors. Current status is `dropped` /
+  `metadata_only_missing_weights`; do not claim native N2 JANGTQ2 MTP active.
+- Required next work:
+  do not rerun these green rows unless app/source changed. Target missing
+  proof instead: N2 JANGTQ2 direct/gateway/tunnel raw SSE parity, Responses
+  media parity, or a fresh installed-app rerun after runtime changes. This does
+  not clear N2 JANG_1L, audio, MTP, package/sign/notarize, PyPI, updater JSON,
+  website, or public release rows.
