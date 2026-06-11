@@ -12903,3 +12903,15 @@ Other-agent action:
   Hy3 remains missing because no current local model artifact was found; LFM,
   MiniMax, MiMo, Step3.7, ZAYA text, ZAYA-VL, real Electron UI parity, broad N2
   aggregate, DSV4 long-output/code, and installed-app packaging remain open.
+
+# 2026-06-11 continuation PDT - Ling/Nemotron smoke commit pushed
+
+- Commit:
+  `2ca489e11 Prove Ling Nemotron smoke gate`.
+- Pushed:
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Verification kept with the commit:
+  focused classifier tests passed, live bundled-Python Ling/Bailing + Nemotron
+  smoke passed, aggregate refreshed with `ling_bailing` and `nemotron` covered.
+- Release boundary:
+  no release/sign/notarize/PyPI/updater/site action was run in this lane.

@@ -18077,3 +18077,11 @@ Next action:
   `build/current-objective-proof-after-ling-nemotron-smoke-refresh-20260611.json`
   now covers `ling_bailing` and `nemotron`; Hy3 remains honestly open because no
   current model artifact was found locally.
+
+# 2026-06-11 continuation PDT - Ling/Nemotron smoke commit pushed
+
+- Commit:
+  `2ca489e11 Prove Ling Nemotron smoke gate`.
+- Pushed:
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- No release/sign/notarize/PyPI/updater/site action performed.
