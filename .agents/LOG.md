@@ -19046,3 +19046,14 @@ Next action:
 - Added responses_no_tool_invalid_markup_cleanup to the no-heavy API/cache checks and release manifest expectations.
 - Refreshed current no-heavy artifact with status=pass and missing_markers=[].
 - Verification: no-heavy contract passed; current-regression meta-tests passed (3); py_compile and git diff --check passed.
+
+## 2026-06-11 CODEX - Continuation after Responses no-tool proof
+- Continuing after pushed commit 71b2b4e55 with source-fix-first direction.
+- Same locks: active Python/Electron worktree only, no deprecated wrapper, no subagents, no N2 JANG_1L, no release/sign/notarize/PyPI/site/updater in this block.
+- Next action: inspect current artifacts and source for the next confirmed runtime/API/cache blocker, then patch/prove/push.
+
+## 2026-06-11 CODEX - Gemma video capability route fix
+- Fixed Gemma video detection to stop classifying explicit has_video=false artifacts as native video merely because processor_config has a video_processor.
+- Preserved usable video via sampled-frame fallback when Gemma has vision_config, image/video tokens, and a video processor.
+- Local helper proof on E2B QAT JANG_4M: native_video=False, frame_fallback=True, native_audio=True.
+- Verification: targeted engine audit media tests passed (6); Gemma inventory/release manifest/all-local probe tests passed (3).

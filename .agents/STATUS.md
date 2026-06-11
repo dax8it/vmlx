@@ -14053,3 +14053,13 @@ Other-agent action:
 - Wired the Responses no-tool invalid-markup regression into run_noheavy_api_cache_contract.py as responses_no_tool_invalid_markup_cleanup.
 - Refreshed build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json: status=pass, missing_markers=[], responses_history_contracts passed 4 tests.
 - Focused meta-tests passed: no-heavy Responses tool/history contract marker coverage and current artifact routing.
+
+## 2026-06-11 14:05 PDT - Continuation after Responses no-tool proof
+- Continuing after pushed commit 71b2b4e55. Scope remains active vMLX Python/Electron worktree only.
+- No deprecated /Users/eric/vmlx work, no subagents/recursive LLM delegation, no N2 JANG_1L, and no release/sign/notarize/PyPI/site/updater actions in this block.
+- Next pass: inspect current release objective/checklist artifacts for source-fixable gaps in N2 JANGTQ2/non-JANG_1L, Gemma JANG/MXFP/QAT, Qwen Responses/tool/reasoning/cache, or source-verifiable MiMo detection/cache/runtime.
+
+## 2026-06-11 14:17 PDT - Gemma video capability route fix
+- Patched Gemma video capability classification so explicit has_video=false / modalities.video=false prevents native video advertising, while Gemma video_processor + image/video token + vision_config still exposes video through sampled-frame fallback.
+- Local proof for /Users/eric/models/JANGQ-AI/gemma-4-E2B-it-qat-JANG_4M: native_video=False, frame_fallback=True, native_audio=True.
+- Focused proof passed: Gemma/Step3.7 video modality tests (6), Gemma QAT video proof-required inventory gate, release manifest effective runtime video capability, and all-local smoke video probe option test.
