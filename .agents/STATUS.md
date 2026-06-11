@@ -8369,3 +8369,44 @@ Other-agent action:
   no N2 JANG_1L, no media proof, no raw direct/gateway/tunnel SSE output-index
   parity from this artifact, and no reasoning-history persistence proof because
   `persistedReasoningCount=0`.
+
+# 2026-06-10 20:34 PDT N2 bundled video row selected
+
+- Existing N2 JANGTQ2 image/video installed-app artifacts were semantic passes,
+  but they used the repo `.venv` Python server rather than the bundled Python.
+- Existing N2 JANGTQ2 audio installed-app artifact is an honest fail:
+  server returned unsupported media modality audio; supported modalities were
+  text, vision, and video.
+- Next selected live row:
+  rerun N2 JANGTQ2 installed-app video with bundled Python and the existing
+  red 64x64 one-second MP4 fixture.
+- Boundary:
+  this is video/VL proof only, not audio proof, not N2 JANG_1L, and not a
+  release/sign/notarize/PyPI/updater/site action.
+
+# 2026-06-10 20:37 PDT N2 JANGTQ2 bundled video proof passed
+
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-bundled-python-20260610-proof.json`.
+- Installed-app UI `/Applications/vMLX.app` and bundled Python served real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`.
+- Video evidence:
+  `videoVerified=true`, `videoSemanticVerified=true`, persisted video
+  attachment, expected `red|solid` matched, base64 MP4 decoded, `25` frames at
+  `25 fps`, `4` frames extracted, and `num_images_processed=4`.
+- Runtime/cache evidence:
+  MXTQ/JANGTQ VLM native TurboQuant fast path, `bfloat16` expert path enabled
+  for overflow prevention, command-buffer split installed, full-model prefill
+  warmup completed, hybrid SSM cache, attention-only TurboQuant KV, q4
+  storage-boundary KV, block-disk L2, and SSM companion L2.
+- Media cache policy:
+  video prompt prefix/paged cache store was skipped because media embeddings
+  are path-dependent and must not be rebuilt from text-only tokens.
+- Metrics:
+  `stream=30`, `complete=3`, `ram_tokens_cached=50`,
+  `l2_block_tokens_on_disk=50`, `l2_ssm_tokens_on_disk=68`, `disk_writes=2`,
+  live speed samples `30.0`, `27.5`, and `29.4 tok/s`, generator peak memory
+  `110.4GB`.
+- Boundaries:
+  Chat Completions video/VL proof only, not Responses media proof, not audio
+  proof, not N2 JANG_1L, and not a release action.

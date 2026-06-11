@@ -14141,3 +14141,16 @@ Next action:
 - Runtime/cache: MXTQ/JANGTQ2 `turboquant_codebook`, 540 prestacked routed-expert TQ targets, hybrid SSM cache, attention-only TurboQuant KV, q4 storage-boundary KV, `7289` L2 block tokens, `26169` SSM tokens on disk, `33458` total L2 tokens, and `117` disk writes.
 - Performance/memory: live decode samples `45.5`, `23.7`, and `34.9 tok/s`; health memory about `103.8GB` active / `108.8GB` peak, generator peak `114.1GB`.
 - Boundary: this is not N2 JANG_1L, not media proof, not raw SSE direct/gateway/tunnel output-index parity, and not reasoning-history persistence proof (`persistedReasoningCount=0`).
+
+# 2026-06-10 20:34 PDT N2 bundled video row selected
+- Existing N2 installed-app image/video semantic passes used `.venv`; audio failed honestly with unsupported modality audio.
+- Selected N2 JANGTQ2 installed-app bundled-Python video proof using `build/media-fixtures/red-64x64-1s.mp4`.
+- Boundary: no release/sign/notarize/PyPI/updater/site and no N2 JANG_1L.
+
+# 2026-06-10 20:37 PDT N2 JANGTQ2 bundled video proof passed
+- Artifact `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-bundled-python-20260610-proof.json` passed using `/Applications/vMLX.app` and bundled Python.
+- Evidence: video attachment persisted, semantic `red|solid` match, base64 MP4 decoded, `25` frames at `25 fps`, `4` frames extracted, and `num_images_processed=4`.
+- Runtime/cache: MXTQ/JANGTQ VLM native TurboQuant fast path, bfloat16 expert path for overflow prevention, command-buffer split, full-model prefill warmup, hybrid SSM cache, attention-only TurboQuant KV, q4 storage-boundary KV, block-disk L2, and SSM companion L2.
+- Media cache boundary: video prompt prefix/paged cache store was skipped because media embeddings are path-dependent and must not be rebuilt from text-only tokens.
+- Metrics: `stream=30`, `complete=3`, `50` L2 block tokens, `68` SSM L2 tokens, `2` disk writes, live speeds `30.0`, `27.5`, `29.4 tok/s`, peak memory `110.4GB`.
+- Boundary: Chat Completions video/VL proof only, not Responses media proof, not audio proof, not N2 JANG_1L, and no release action.

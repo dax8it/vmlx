@@ -7,6 +7,64 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### Nex/N2 Pro JANGTQ2 Installed-App Bundled Video Proof
+
+Artifact:
+
+- `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-bundled-python-20260610-proof.json`
+- screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-video-bundled-python-20260610-chat.png`
+
+Live setup:
+
+- Installed app UI: `/Applications/vMLX.app`.
+- Bundled runtime:
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`.
+- Real model:
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`.
+- Chat Completions streaming, `enable_thinking=false`, deterministic
+  `temperature=0`, `top_p=1`, `top_k=1`.
+- Media fixture: `build/media-fixtures/red-64x64-1s.mp4`, sent as base64
+  `video_url`.
+
+Proven:
+
+- Status `pass`; app route used installed-app UI and bundled Python.
+- Video attachment persisted and semantic check passed:
+  `videoVerified=true`, `videoSemanticVerified=true`, expected regex
+  `red|solid`.
+- Server media evidence:
+  request had `types={"video_url":1}`, base64 MP4 decoded, `25` total frames at
+  `25.0 fps`, `4` frames extracted, and runtime processed
+  `num_images_processed=4`.
+- Runtime stayed on N2 JANGTQ2 VLM fast path:
+  MXTQ/JANGTQ VLM native TurboQuant fast path, `turboquant_codebook`,
+  `weight_format=mxtq`, `profile=JANGTQ2`, 2-bit routed experts, group size
+  64, `540` prestacked routed-expert TQ targets, `bfloat16` enabled for 512
+  experts to prevent overflow, command-buffer split installed, full-model
+  16-token prefill warmup complete.
+- Native cache proof:
+  hybrid SSM cache, attention-only TurboQuant KV, q4 storage-boundary KV,
+  block-disk L2, SSM companion state, and async rederive policy.
+- Media cache safety:
+  prefix/paged store was skipped for the video prompt because media embeddings
+  are path-dependent and must not be rebuilt from text-only tokens.
+- Cache/L2 metrics:
+  `ram_tokens_cached=50`, `l2_block_tokens_on_disk=50`,
+  `l2_ssm_tokens_on_disk=68`, `l2_tokens_on_disk=118`, `blocks_on_disk=2`,
+  `disk_writes=2`, `disk_hits=3`.
+- Live speed samples:
+  `30.0 tok/s`, `27.5 tok/s`, `29.4 tok/s`; video turn prompt path showed
+  `vision_encoding_time=0.0063s`, generator `generation_tps=31.8`, peak memory
+  `110.4GB`.
+
+Boundary:
+
+- This is a Chat Completions video/VL row, not a Responses API media row.
+- This does not prove audio. Existing N2 audio installed-app evidence remains
+  an honest unsupported-modality fail for this bundle/runtime path.
+- This is not N2 JANG_1L and not a release/sign/notarize/PyPI action.
+
 ### Nex/N2 Pro JANGTQ2 Installed-App Responses Reasoning/Tool/Cache Proof
 
 Artifact:
