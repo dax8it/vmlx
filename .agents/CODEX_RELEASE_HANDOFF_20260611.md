@@ -33,14 +33,16 @@
   audio, post-media text recovery, native hybrid SSM cache, paged+SSM reuse,
   block L2 writes/hits, and SSM L2 writes.
 - Qwen35 direct/gateway source proof remains good, but direct/gateway/tunnel
-  parity is not release-green because the fresh public tunnel recapture is
-  still stale:
-  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`
-- Qwen35 public tunnel still preserves model, authoritative
-  `{"value":"blue-cat"}` arguments, function-call argument deltas/done, final
-  response consistency, and valid message/function output indices, but it lacks
-  complete streamed reasoning output item lifecycle. Keep this row red until
-  the tunnel runtime is rebuilt and recaptured.
+  parity is not release-green because the strict public tunnel recapture still
+  lacks complete streamed reasoning output item lifecycle:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-strict-lifecycle-20260611.json`
+- Qwen35 strict tunnel now advertises and serves the expected model, preserves
+  authoritative `{"value":"blue-cat"}` arguments, function-call argument
+  deltas/done, final response consistency, and valid output indices, but it
+  streams reasoning summary deltas on the message item and only includes the
+  final reasoning object in `response.completed`. Keep this row red until the
+  tunnel runtime emits the same reasoning output item lifecycle as direct and
+  gateway, then recapture.
 - N2 JANGTQ2/non-JANG_1L checkpoint profile is now explicit in the checklist
   and green for source runtime/API/cache, fresh-process L2 restore, Electron UI
   previous_response_id/tool/cache, strict loopback `tool_choice=auto`,
@@ -113,7 +115,8 @@
 
 - If deploy/tunnel access exists, refresh exact-served-model raw SSE parity
   artifacts only when the served route really advertises and serves the target
-  model; do not pointer-refresh to a stale or partial capture.
+  model and emits complete streamed reasoning output item lifecycle; do not
+  pointer-refresh to a stale or partial capture.
 - For MiniMax issue179, collect reporter parity metadata/artifacts: reporter
   model shard/codebook hashes, installed app server hash, chat/session/settings
   DB state, response active-state at cancel time, raw SSE/cancel lifecycle, and

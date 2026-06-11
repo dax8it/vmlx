@@ -1,3 +1,39 @@
+# 2026-06-11 15:01 PDT - UI/API release-checklist continuation
+
+Boundary: active Python/Electron worktree only; no deprecated
+`/Users/eric/vmlx`; no subagents; no release/sign/notarize/PyPI/updater/site
+actions in this movement; no N2 JANG_1L; no MiMo lane unless Eric reopens it.
+
+Current target is to inspect release checklist wiring and consume only real
+Gemma/Qwen UI/API/cache evidence that matches the checker's row semantics.
+Candidate evidence includes the current Gemma4 26B QAT JANG4M real Electron
+dev UI Responses/reasoning/tool/cache pass after engine run-command guidance
+and current Qwen/Qwen-coder raw-SSE parser/API artifacts. Installed-app parity,
+public tunnel parity, and signed/notarized release remain separate gates unless
+the artifact explicitly proves them.
+
+Result:
+
+- Generated and classified
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-strict-lifecycle-20260611.json`
+  from existing direct/gateway captures and the 2026-06-11 strict public
+  tunnel recapture.
+- The artifact remains `status=fail`, with direct/gateway green and tunnel
+  still red for streamed reasoning output item lifecycle. Tunnel preserves
+  same model, final `{"value": "blue-cat"}` arguments, function-call
+  delta/done, final object consistency, and valid output indices, but it
+  emits reasoning summary deltas on the message item and only includes the
+  reasoning object in `response.completed`.
+- Updated the full release objective checker to point at the strict lifecycle
+  artifact and regenerated
+  `build/current-full-release-objective-checklist-after-qwen35-strict-lifecycle-recapture-20260611.json`.
+  Current state stays `status=open`, `failed_count=16`, with Qwen35 red on
+  `qwen35_raw_sse_status_pass`, `qwen35_raw_sse_reasoning_events`, and
+  `qwen35_raw_sse_reasoning_lifecycle`.
+- Verification: focused `tests/test_full_release_objective_checklist.py`
+  Qwen pointer/duplicate-index/missing-lifecycle tests passed; `py_compile`
+  passed for the edited checker/test; `git diff --check` passed.
+
 # 2026-06-11 01:40 PDT - Continuation goal re-anchored
 
 - Current user directive carried forward: move runtime/model/API/cache blockers

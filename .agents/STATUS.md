@@ -14293,3 +14293,43 @@ Other-agent action:
 - proof metrics: `eventCounts.stream=58`, `eventCounts.tool=651`, `reasoningDone=2`, `complete=2`, `persistedToolCount=651`, `toolResults=2`, `toolErrors=0`, `cacheHitTokens=3808`, scheduler `cache_hit_tokens=3584`, L2 block tokens on disk `3808`, disk writes `63`, disk hits `54`.
 - visual check: screenshot shows reasoning rows, valid shell commands without outer shell-literal quoting, visible assistant replies after each tool result, and `paged+mixed_swa cached` prompt metrics.
 - remaining boundary: source Electron dev-app proof only; still not installed-app parity, public tunnel, media/VL/audio/video, package/sign/notarize/PyPI/site/updater release action, N2, or MiMo.
+
+## CODEX
+- now: continuing the UI/API/release-readiness lane on 2026-06-11 15:01 PDT
+  without entering signing/notarization/PyPI/download/site actions.
+- current movement target: inspect the current release checklist wiring for
+  Gemma/Qwen UI/API/cache evidence and consume only artifacts that actually
+  prove their row. Prefer this over broad harness work or stale pointer churn.
+- active boundaries carried forward: no deprecated `/Users/eric/vmlx`; no
+  subagents; no N2 JANG_1L; no MiMo remake/proof lane unless Eric reopens it;
+  no fake parser/cache/media fixes; no release claims from source-only proof.
+- immediate proof candidates: Gemma4 26B QAT JANG4M real Electron dev UI
+  Responses/reasoning/tool/cache proof after engine run-command guidance, and
+  Qwen/Qwen-coder raw-SSE parser/API proof state. Installed-app parity and
+  public tunnel parity remain separate live gates unless the inspected artifact
+  explicitly proves them.
+
+## CODEX
+- now: Qwen35 raw-SSE release-checklist evidence is refreshed to the strict
+  public tunnel lifecycle recapture, not the older stale tunnel artifact.
+- new artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-strict-lifecycle-20260611.json`
+  is `status=fail` by design because it preserves the real remaining tunnel
+  gap instead of faking a pass.
+- proven by the refreshed artifact: direct and gateway preserve
+  `{"value": "blue-cat"}` arguments, function-call argument delta/done,
+  final object consistency, valid output indices, required reasoning events,
+  complete streamed reasoning lifecycle, same model identity, local
+  empty-required-args fail-closed guards, output-index guard, previous-response
+  history guard, and gateway request kwargs.
+- remaining Qwen35 blocker: tunnel now advertises and serves the expected
+  model and preserves final args/indices, but it streams reasoning summary
+  deltas on output item 0 and only includes the final reasoning object in the
+  `response.completed` payload. The tunnel does not emit a complete streamed
+  reasoning output item lifecycle, so `qwen35_raw_sse_status_pass`,
+  `qwen35_raw_sse_reasoning_events`, and
+  `qwen35_raw_sse_reasoning_lifecycle` remain red.
+- regenerated checklist:
+  `build/current-full-release-objective-checklist-after-qwen35-strict-lifecycle-recapture-20260611.json`
+  is `status=open`, `failed_count=16`; Qwen35 failures now cite the strict
+  lifecycle artifact. This did not enter release/sign/notarize actions.
