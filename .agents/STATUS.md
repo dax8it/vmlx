@@ -13274,3 +13274,16 @@ Other-agent action:
 ## CODEX
 - now: pushed `85945c821 Fix Gemma4 reasoning tool budget floor` to `origin/codex/pr-intake-manifest` and `origin/main`.
 - release boundary: this clears the Gemma4 E2B reasoning-on required-tool maxTokens=128 failure shape in source and bundled parity, but does not clear MiMo, ZAYA-VL, Hy3, MiniMax reporter parity, DSV4 exact-code, installed-app/release signing/notarization, or N2 JANG_1L.
+
+## CODEX
+- now: selected N2 JANGTQ2/non-JANG_1L as the next lane after Gemma4 budget fix.
+- constraints: no N2 JANG_1L, no subagents, no release/sign/notarize/PyPI/updater/site action, and no fake parser/cache/media fixes.
+- next movement: classify current N2 JANGTQ2 direct/gateway/tunnel, installed-app, media, cache, previous_response_id/tool-loop, and raw SSE artifacts to find an actual current gap before launching anything heavy.
+
+## CODEX
+- now: classified N2 JANGTQ2/non-JANG_1L media/API/cache proof state and patched a real installed-app audio capability leak.
+- proven current N2 JANGTQ2: source/direct chat+cache+Responses+L2 pass at `build/current-n2-jangtq2-live-chat-cache-responses-l2-20260610.json`; direct/gateway raw SSE Responses tool/tool-result continuation pass at `build/current-n2-jangtq2-responses-stream-boundary-20260610.json`; current Electron dev-app previous_response_id/tool loop/cache pass at `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`; installed-app tools/reasoning/cache pass at `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-reasoning-tools-cache-bundled-python-20260610-proof.json`; installed-app video pass at `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-responses-video-cache-bundled-python-20260611-proof.json`; installed-app image pass at `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-image-20260610-proof.json`.
+- classified open/unsupported: installed-app N2 JANGTQ2 audio proof failed at `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-bundled-python-20260610-proof.json` because the server correctly returned 400 unsupported media modality audio. Artifact inspection shows config has no audio_config/audio_token_id, processor/preprocessor have no audio processor/config, and `model.safetensors.index.json` has zero audio-weight keys. Supported runtime modalities are text, vision, video.
+- fix: panel model detection now sets `architectureHints.audioRuntimeAvailable=false` for local multimodal models with no audio declaration and no likely indexed audio weights; chat attachment routing now filters audio attachments for any local model with that false hint instead of only Gemma4. This prevents N2 JANGTQ2 installed-app chats from sending fake audio media to the model path while keeping image/video behavior intact.
+- verification: `npm --prefix panel test -- model-config-registry tool-media-followup` passed 80/80.
+- release boundary: this is a panel/runtime capability fix only. It does not claim N2 audio support, does not touch N2 JANG_1L, and does not run signing/notarization/PyPI/updater/site actions.

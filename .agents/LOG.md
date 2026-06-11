@@ -18276,3 +18276,19 @@ Next action:
 - Pushed commit `85945c821 Fix Gemma4 reasoning tool budget floor` to `origin/codex/pr-intake-manifest` and `origin/main`.
 - This commit contains the scoped Gemma4 reasoning required-tool output-budget floor in Python engine and panel request construction, focused tests, live proof status, and bundled parity notes.
 - Remaining release blockers are not cleared by this commit: MiMo artifact/remake/exactness/media, ZAYA-VL exact/no-media and MXFP4 gather_qmm, Hy3 missing local row, MiniMax reporter parity, DSV4 exact-code thinking-closed quality, installed-app/release signing/notarization gates, and N2 JANG_1L remains Eric-owned/off-limits.
+
+# 2026-06-11 continuation PDT - N2 JANGTQ2 lane selected after Gemma4 budget fix
+
+- Current continuation objective: keep fixing/building toward production quality without broad test-suite churn or recursive subagent behavior.
+- Active constraints rechecked: active Python worktree only, no subagents, no N2 JANG_1L, no release/sign/notarize/PyPI/updater/site action unless explicitly unlocked, and every movement written down.
+- Selected next lane: Nex/N2 JANGTQ2/non-JANG_1L proof-state classification for Responses/tool/reasoning/cache/UI/media. This does not reopen Eric-owned N2 JANG_1L.
+- Next action: inspect current N2 JANGTQ2 artifacts for direct/gateway/tunnel, installed app, media, cache, previous_response_id/tool loop, and raw SSE surfaces; only relaunch if a real current gap is found.
+
+# 2026-06-11 09:44 PDT - N2 JANGTQ2 audio gate fixed in panel
+
+- Inspected current N2 JANGTQ2/non-JANG_1L proofs. Green rows found for source chat/cache/Responses/L2, direct/gateway Responses raw SSE tool/tool-result continuation, Electron dev-app previous_response_id/tool loop/cache, installed-app reasoning/tools/cache, installed-app image, and installed-app video.
+- Inspected failed audio artifact `docs/internal/agent-notes/current-real-ui-installed-app-n2-jangtq2-audio-bundled-python-20260610-proof.json`: failure is server 400 `/v1/chat/completions received unsupported media modality audio. Supported modalities: text, vision, video.`
+- Root-cause evidence: `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2/config.json` has no `audio_config` or `audio_token_id`; `processor_config.json` and `preprocessor_config.json` have no audio processor/config; `model.safetensors.index.json` has zero audio/speech/whisper/mel/audio_tower/audio_encoder keys. Runtime server support is honestly text/vision/video, not audio.
+- Patch: `panel/src/main/model-config-registry.ts` now marks local multimodal models with no audio declaration and no likely indexed audio weights as `audioRuntimeAvailable=false`; `panel/src/main/ipc/chat.ts` now filters audio attachments for any local model with that false hint, not just Gemma4.
+- Focused verification: `npm --prefix panel test -- model-config-registry tool-media-followup` passed 80 tests.
+- Other-agent handoff: do not mark N2 JANGTQ2 audio green unless a new artifact has real audio config/token/runtime weights and live audio E2E passes. Current correct release behavior is to hide/filter model-chat audio for this artifact while preserving image/video/tool/cache support. Continue direct/gateway/tunnel raw SSE parity only if tunnel remains missing; do not touch N2 JANG_1L.
