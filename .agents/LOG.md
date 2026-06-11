@@ -15194,3 +15194,37 @@ Next action:
   needs source/dequant/logit comparison or replacement artifact A/B. No code
   fix, release, sign/notarize, PyPI, updater JSON, website, or N2 JANG_1L
   action was performed.
+
+# 2026-06-11 continuation - UI/API reasoning-auto code pass selected
+
+- Action:
+  continue from pushed commit `d7d530a69` with the UI/API reasoning-auto
+  blocker selected. Inspect the live code path for panel settings,
+  Chat/Responses request body construction, ApiGateway passthrough, server
+  kwargs, parser selection, and raw streaming events.
+- Boundary:
+  no public release/sign/notarize/PyPI/updater/site work, no N2 JANG_1L, no
+  recursive/subagent behavior.
+
+# 2026-06-10 23:27 PDT UI/API reasoning Auto source contract fixed
+
+- Root cause:
+  panel chat IPC treated remote `Auto` reasoning as
+  `enable_thinking=sessionHasReasoningParser`. That fabricated
+  `enable_thinking=true` for remote/gateway/loopback sessions whenever a parser
+  was present, even though parser presence is not a model-owned thinking
+  default.
+- Fix:
+  `panel/src/main/ipc/chat.ts` now omits `enable_thinking` when the UI setting
+  is Auto for both Responses and Chat Completions. Explicit on/off still
+  forwards `enable_thinking`; local explicit on/off still mirrors into
+  `chat_template_kwargs`; remote explicit on/off does not send
+  `chat_template_kwargs`. Strict third-party API suppression remains intact.
+- Verification:
+  `cd panel && npm exec vitest -- run tests/request-builder.test.ts` passed
+  `72/72`.
+- Proof artifact:
+  `build/current-ui-api-reasoning-auto-contract-20260610.json`.
+- Still open:
+  live direct/gateway/tunnel raw SSE for same-model Responses tool/reasoning
+  streams, installed-app UI proof, media/VL/audio/video, and release gates.

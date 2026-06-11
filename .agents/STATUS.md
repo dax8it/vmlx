@@ -9337,3 +9337,42 @@ Other-agent action:
   needs source/dequant/logit comparison or replacement artifact A/B. It also
   does not clear current installed-app speed after rebuild, media, audio/video,
   full tool loops, or release readiness.
+
+# 2026-06-11 continuation - UI/API reasoning-auto code pass selected
+
+- Current continuation:
+  reduce the active cross-family UI/API reasoning-control blocker before more
+  model launches. Trace panel request assembly, generated launch config,
+  gateway passthrough, server sampling kwargs, parser selection, and streaming
+  event emission for reasoning `auto`/on/off and tool choice
+  `auto`/required/no-tool across MiMo/N2/Gemma/Qwen.
+- Time discipline:
+  inspect and patch concrete runtime code paths first. Avoid broad test-suite
+  churn and avoid synthetic proof unless it directly verifies a changed
+  behavior.
+- Boundaries:
+  no release DMG, sign/notarize, tag/upload, PyPI, updater JSON, website,
+  N2 JANG_1L, or subagent delegation.
+
+# 2026-06-10 23:27 PDT UI/API reasoning Auto source contract
+
+- Fixed:
+  remote/gateway UI Auto reasoning no longer injects `enable_thinking=true`
+  from `sessionHasReasoningParser` in `panel/src/main/ipc/chat.ts`.
+- Contract now:
+  Auto omits `enable_thinking`; explicit on/off forwards it. Local explicit
+  on/off also sets `chat_template_kwargs.enable_thinking`; remote never sends
+  `chat_template_kwargs`.
+- Verified:
+  `cd panel && npm exec vitest -- run tests/request-builder.test.ts` passed
+  `72/72`.
+- Artifact:
+  `build/current-ui-api-reasoning-auto-contract-20260610.json`.
+- Other-agent next proof:
+  run live same-model direct/gateway/tunnel raw SSE captures and confirm Auto
+  request bodies omit `enable_thinking`, explicit on/off work, streaming
+  content/reasoning/function-call argument delta/done and final object indices
+  stay consistent, and no raw XML/thinking markup leaks.
+- Boundaries:
+  no release/sign/notarize, PyPI, updater/site, N2 JANG_1L, or subagent action
+  in this pass.
