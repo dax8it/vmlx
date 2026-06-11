@@ -7817,3 +7817,73 @@ Other-agent action:
   - this is source/parser proof, not a fresh live direct/gateway/tunnel capture;
   - no synthetic missing arguments were added;
   - no reasoning/tool mode was disabled as a workaround.
+
+# 2026-06-11 continuation - MiMo media honesty lane
+
+- Active lane:
+  - MiMo V2.5 JANG/JANGTQ media capability honesty across model detection,
+    server routing, UI/API request assembly, and installed-app proof.
+- Why now:
+  - deterministic no-media MiMo JANG_2L and JANGTQ_2 installed-app
+    Responses/tool/cache rows are green;
+  - user-provided live logs show `OsaurusAI/MiMo-V2.5-JANG_2L` reporting
+    preserved media weights but runtime text-only routing, while the UI/session
+    still used a multimodal chat route.
+- Constraints:
+  - do not claim MiMo image/video/audio support from preserved metadata alone;
+  - do not force MLLM mode if runtime says preserved media weights are
+    unwired/text-runtime-only;
+  - patch only if the code path proves the UI/API can mis-advertise media or
+    send media into a text-only route.
+- Next action:
+  - inspect model/capability detection, panel family detection, attachment
+    route logic, and current MiMo proof artifacts for preserved-media versus
+    weight-backed media handling.
+
+# 2026-06-11 MiMo panel media capability honesty fix
+
+- Reproduced/current proof:
+  - current installed-app bundled-Python MiMo JANGTQ_2 image proof failed:
+    `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-bundled-python-current-20260611-proof.json`;
+  - server command used bundled Python, `--is-mllm`, and real
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`;
+  - server explicitly demoted runtime to text-only:
+    `MiMo V2 preserved media weights override force_mllm ... weights_preserved_text_runtime; routing text-only`;
+  - UI/session still forced media:
+    `Forcing multimodal=true ... user attached 1 image`;
+  - server returned HTTP 400:
+    `unsupported media modality image because the loaded runtime is text-only`.
+- Root cause:
+  - real local MiMo JANG_2L/JANGTQ_2 `config.json` contains
+    `capabilities.modalities=["text"]`,
+    `capabilities.multimodal_status="weights_preserved_text_runtime"`,
+    `capabilities.unwired_modalities=["vision","audio"]`, and
+    `runtime.multimodal_mode="weights_preserved_text_runtime"`;
+  - panel model detection only applied this preserved/text-runtime policy from
+    `jang_config.json`, so these real bundles fell back to `vision_config` and
+    appeared multimodal to UI request assembly.
+- Fix:
+  - `panel/src/main/model-config-registry.ts` now applies a narrow
+    `config.json` MiMo media policy:
+    if `config.json.capabilities` or `runtime` marks MiMo as text-runtime or
+    has unwired media, detection returns `isMultimodal=false` and
+    `forceTextOnly=true`;
+  - the helper is intentionally narrow and does not re-run full JANG capability
+    parser/reasoning overrides from `config.json`;
+  - existing MiMo panel contract keeps XML tools and no advertised thinking
+    surface from stale capability stamps.
+- Verification:
+  - real local detection now reports both local bundles as
+    `family=mimo_v2`, `isMultimodal=false`, `forceTextOnly=true`,
+    `toolParser=xml_function`;
+  - `cd panel && npm test -- --run tests/model-config-registry.test.ts`:
+    `67 passed`;
+  - `cd panel && npm test -- --run tests/settings-flow.test.ts -t "forceTextOnly|multimodal|video sampling"`:
+    `7 passed`, `247 skipped`;
+  - `git diff --check` passed.
+- Boundaries:
+  - this is not a MiMo media-success claim;
+  - MiMo JANGTQ_2 source media overlay artifacts remain transport-positive but
+    visual semantics are still not release-green;
+  - default installed app should now be honest for these text-runtime stamped
+    local bundles instead of silently forcing media into a text-only runtime.
