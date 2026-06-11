@@ -14228,3 +14228,20 @@ Next action:
   changed-file `py_compile` and `git diff --check` passed.
 - Boundary: source/API fix only; live same-model direct/gateway/tunnel raw SSE
   recapture and output-index parity remain separate rows.
+
+# 2026-06-10 20:56 PDT Qwen35 raw-SSE parity passed after XML scalar trim
+- Live recapture showed direct/gateway current source had valid output indices
+  but emitted `{"value":"\nblue-cat\n"}` from generic XML fallback parsing.
+- Patched `_coerce_xml_tool_value` in `vmlx_engine/api/tool_calling.py` and
+  mirrored the policy in `XMLFunctionToolParser`: trim only pretty wrapper
+  newlines around scalar values; preserve same-line spaces, escaped special
+  characters, and true multiline payloads.
+- Artifact `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-generic-xml-scalar-trim-current-tunnel-20260610.json`
+  passed.
+- Evidence: direct/gateway authoritative args exactly `{"value": "blue-cat"}`;
+  direct/gateway output indices message `0`, reasoning `1`, function_call `2`;
+  current tunnel output indices message `0`, function_call `1`; no conflicts;
+  reasoning events present on all surfaces.
+- Verification: parser/Responses/Qwen35 harness slice passed `25 passed`;
+  changed-file `py_compile` and `git diff --check` passed.
+- Boundary: no release/sign/notarize/PyPI/updater/site and no N2 JANG_1L claim.

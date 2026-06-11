@@ -7,6 +7,73 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### Qwen35 Responses Raw-SSE Direct/Gateway/Tunnel Proof After XML Scalar Trim
+
+Source fixes:
+
+- `vmlx_engine/server.py`
+  - invalid marker-bearing tool XML is stripped from fallback visible text when
+    no parser/repair path yields a valid call.
+- `vmlx_engine/api/tool_calling.py`
+  - `_coerce_xml_tool_value` trims only pretty-wrapper newlines around one-line
+    scalar XML parameter values.
+- `vmlx_engine/tool_parsers/xml_function_tool_parser.py`
+  - mirrors the same XML scalar-wrapper policy.
+
+What this fixes:
+
+- Required empty XML function calls do not become executable `{}` arguments.
+- Invalid tool markup does not leak as visible fallback text after parser
+  fallback.
+- Pretty XML like `<parameter=value>\nblue-cat\n</parameter>` becomes
+  `"blue-cat"` for scalar tool arguments, while same-line spaces, escaped
+  entities, Unicode, and true multiline payloads are preserved.
+
+Live proof:
+
+- `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-generic-xml-scalar-trim-current-tunnel-20260610.json`
+- Status: `pass`.
+- Model:
+  `/Users/eric/models/JANGQ/Qwen3.6-35B-A3B-MXFP8-MTP`.
+- Direct/gateway current-source captures plus current tunnel SSE.
+
+Evidence:
+
+- All surfaces parsed cleanly and advertised the same model.
+- Authoritative function arguments matched across direct, gateway, and tunnel:
+  `{"value": "blue-cat"}`.
+- Direct and gateway output indices:
+  message `0`, reasoning `1`, function_call `2`.
+- Tunnel output indices:
+  message `0`, function_call `1`.
+- No conflicting output indices on any present surface.
+- Reasoning events were present and not disabled:
+  direct `5`, gateway `5`, tunnel `8`.
+- Gateway argument stream passthrough guard passed.
+- Local empty-XML fail-closed guard passed.
+
+Verification:
+
+- Parser/Responses/Qwen35 harness slice:
+  `25 passed`.
+- Changed-file `py_compile` and `git diff --check` passed.
+
+Other-agent note:
+
+- Do not revert the scalar-wrapper policy into blanket `.strip()` or blanket
+  raw preservation. The contract is: trim only wrapper newlines for one-line
+  scalar XML parameters, preserve same-line whitespace, escaped entities,
+  Unicode, and true multiline strings.
+- If recapturing public tunnel again, use a current tunnel SSE with valid
+  indices; the older `20260609` tunnel file still demonstrates the historical
+  duplicate-output-index failure.
+
+Boundary:
+
+- This is Qwen35 MXFP8 MTP Responses raw-SSE parser/API proof. It is not N2
+  JANG_1L, MiMo media/exactness, Gemma MXFP, installed-app rebuild, DMG,
+  notarization, PyPI, updater, website, or GitHub release work.
+
 ### Responses Empty-Args / Invalid XML Cleanup Fix
 
 Source fix:

@@ -8555,3 +8555,33 @@ Other-agent action:
 - Boundary:
   source/API parser fix only. Same-model live direct/gateway/tunnel raw SSE
   parity and output-index recapture remain separate proof rows.
+
+# 2026-06-10 20:56 PDT Qwen35 raw-SSE parity passed after XML scalar trim
+
+- Root cause found during live recapture:
+  direct/gateway current source had valid output indices but produced
+  `{"value":"\nblue-cat\n"}` because the generic `parse_tool_calls` XML
+  fallback preserved pretty-wrapper newlines as scalar argument bytes.
+- Fix:
+  `vmlx_engine/api/tool_calling.py::_coerce_xml_tool_value` now matches the
+  XML/Nemotron policy: trim only wrapper newlines for one-line scalar values,
+  while preserving same-line spacing, escaped special characters, and true
+  multiline payloads. `XMLFunctionToolParser` received the same explicit guard.
+- Live proof:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-generic-xml-scalar-trim-current-tunnel-20260610.json`
+  passed.
+- Direct/gateway evidence:
+  authoritative args exactly `{"value": "blue-cat"}`; output indices valid with
+  message `0`, reasoning `1`, function_call `2`; reasoning events present; no
+  reasoning-disable workaround; gateway capture run passed.
+- Tunnel evidence:
+  current tunnel capture had authoritative args `{"value": "blue-cat"}`,
+  output indices valid with message `0`, function_call `1`, no conflicting
+  indices, and reasoning events present.
+- Verification:
+  parser/Responses/Qwen35 harness slice passed `25 passed`; changed-file
+  `py_compile` and `git diff --check` passed.
+- Boundary:
+  This closes the current-source direct/gateway plus current tunnel raw-SSE
+  proof row for Qwen35 MXFP8 MTP. It does not claim N2 JANG_1L, MiMo media, or
+  a release/sign/notarize/PyPI/updater/site action.
