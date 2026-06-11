@@ -158,6 +158,23 @@
   empty-XML fail-closed guards; the checklist pointer and test expectation now
   use that artifact.
 - Regenerated
+
+# 2026-06-11 12:27 PDT - MiMo media/color engine inspection selected
+
+- Re-read `AGENTS.md`, `.agents/STATUS.md`, `.agents/LOG.md`, and
+  `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md`.
+- Active boundaries confirmed: work only in the active Python/Electron
+  worktree, no deprecated `/Users/eric/vmlx`, no N2 JANG_1L, no subagents, and
+  no release/sign/notarize/PyPI/updater/site actions in this movement.
+- Selected blocker: MiMo V2.5 JANGTQ/JANG media color/vision preprocessing and
+  release-checklist state. Prior proof shows source overlay can process an icon
+  image, while installed-app/default red-image and video semantic rows remain
+  red; next step is to inspect whether this is an engine preprocessing/runtime
+  bug or an artifact/model-quality boundary.
+- No-claims: overlay-only MiMo media is not default media support; parser/JSON
+  rewrite must not be used to hide MiMo literal exactness; release readiness is
+  still blocked until remaining checklist rows are green or explicitly
+  overridden.
   `build/current-full-release-objective-checklist-after-nemotron-qwen35-proof-20260611.json`.
   Result: `status=open`, `failed_count=13`, with no Nemotron or Qwen35 failed
   rows. Remaining rows are prepackage/release readiness, N2 JANG_1L release
@@ -18739,3 +18756,62 @@ Next action:
   completed-response reasoning as streamed lifecycle. Rebuild/recapture the
   public tunnel runtime so it emits reasoning output item lifecycle events, then
   rerun the raw SSE parity artifact.
+
+## 2026-06-11 CODEX - Next Local Blocker Selection
+
+- Scope: active vMLX Python engine/panel only; no release/sign/notarize/PyPI/
+  site/updater action, no subagents, no N2 JANG_1L.
+- Current checklist:
+  `build/current-full-release-objective-checklist-after-qwen35-reasoning-lifecycle-row-20260611.json`
+  is `status=open`, `failed_count=16`.
+- Current model-family state from that checklist: Gemma groups are green; N2
+  JANGTQ2/non-JANG_1L rows are green; Qwen35 local direct/gateway source rows
+  are clean and the remaining Qwen red is public tunnel lifecycle/deploy drift.
+- Selected next local blocker: MiMo V2.5 JANGTQ/JANG decode/exactness/media
+  quality. This is the largest remaining local blocker in Eric's requested
+  model set that is not off-limits or external tunnel-only.
+- Boundary: inspect existing MiMo runtime/artifact evidence first. Do not fake
+  exactness by parser/JSON/tool-argument repair, do not lower speed targets, and
+  do not claim metadata-preserved media as wired media runtime.
+
+## 2026-06-11 CODEX - Current Correction Recorded
+
+- Eric's current correction was recorded before further work: focus on active
+  vMLX Python engine/panel fixes that move a working checkpoint release toward
+  signing/notarization readiness.
+- Active constraints remain: do not work in deprecated `/Users/eric/vmlx`; do
+  not use subagents; do not work N2 JANG_1L; do not run release/sign/notarize/
+  PyPI/site/updater actions without an explicit current-turn unlock.
+- Latest model-lane pivot: Eric says he will remake MiMo and this lane should
+  stop spending effort on MiMo source-vs-quant. Focus N2 JANGTQ/non-JANG_1L and
+  Gemma rows, plus source-fixable Responses/tool/reasoning/API/cache blockers
+  that affect those checkpoint surfaces.
+- Current non-local/off-limits boundaries remain Qwen35 public tunnel lifecycle/
+  deploy drift and N2 JANG_1L unless Eric explicitly reopens that lane.
+
+## 2026-06-11 CODEX - N2/Gemma/Qwen Source-Fixable Boundary
+
+- Inspected current checklist artifact:
+  `build/current-full-release-objective-checklist-after-qwen35-reasoning-lifecycle-row-20260611.json`.
+- Gemma current rows: no red rows in `gemma4_12b` or
+  `gemma_qat_native_mxfp4`.
+- N2 current rows: JANGTQ2/non-JANG_1L proof rows are green for source runtime/
+  API/cache, fresh-process L2 restart, real UI previous_response_id tool/cache,
+  strict loopback tool_choice auto, direct/gateway stream boundary, and
+  hybrid-SSM/cache policy contracts.
+- N2 remaining red: `n2_pro_397b_release_clearance` is blocked by the N2
+  JANG_1L lane, which remains off-limits for this agent.
+- Qwen35 source/gateway inspection: `vmlx_engine/server.py` currently emits
+  reasoning `response.output_item.added`, reasoning deltas, reasoning done, and
+  reasoning `response.output_item.done`; `panel/src/main/api-gateway.ts`
+  forwards backend SSE chunks verbatim. Direct and gateway captures in
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`
+  have complete reasoning lifecycle.
+- Qwen35 remaining red is tunnel-only: the public tunnel capture has valid tool
+  arguments and final response consistency but lacks streamed reasoning output
+  item lifecycle. Do not clear by counting final completed-response reasoning
+  as streamed lifecycle; rebuild/recapture tunnel runtime.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_responses_raw_sse_parity_contract.py tests/test_qwen35_responses_raw_sse_capture.py tests/test_tool_parser_required_args_fail_closed.py tests/test_full_release_objective_checklist.py`
+  -> `65 passed`; py_compile for the inspected Responses/checklist Python
+  files passed; `git diff --check` passed.

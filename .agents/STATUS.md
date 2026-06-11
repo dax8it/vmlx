@@ -220,6 +220,21 @@
   `.agents/CODEX_RELEASE_HANDOFF_20260611.md`.
 
 ## CODEX
+- now: continuing source/runtime fixes after re-reading the active worktree
+  guard and `CODEX_ACTIVE_DIRECTIVES_20260610.md`.
+- current-turn instruction: focus on vMLX Python engine/panel blockers that
+  move a future signed checkpoint release closer; do not work in deprecated
+  `/Users/eric/vmlx`, do not touch N2 JANG_1L, do not spawn subagents, and do
+  not run release/sign/notarize/PyPI/updater/site actions in this movement.
+- selected movement: inspect MiMo V2.5 JANGTQ/JANG media color/vision
+  preprocessing and current release-checklist blockers. Patch only if a real
+  engine/runtime bug is found; otherwise record exact proof boundary and handoff
+  requirements for remade MiMo artifacts or installed-app overlay proof.
+- no-claim boundary: do not claim MiMo default media support from overlay-only
+  evidence, do not mask MiMo exactness with parser/JSON repair, and do not
+  claim release readiness while checklist blockers remain.
+
+## CODEX
 - now: continuing the active Python engine lane on one concrete source blocker,
   not release/sign/notarize/PyPI/site/updater work.
 - current-turn boundaries: no deprecated `/Users/eric/vmlx`; no subagents; no
@@ -13764,3 +13779,64 @@ Other-agent action:
   green from final-object-only reasoning.
 - verification passed: focused Qwen/raw-SSE/parser/full-checklist tests
   (`65 passed`) plus py_compile and `git diff --check`.
+
+## CODEX
+- now: continuing the same checkpoint-release goal from commit `7ec0af966`.
+- current checklist inspected:
+  `build/current-full-release-objective-checklist-after-qwen35-reasoning-lifecycle-row-20260611.json`
+  is `status=open`, `failed_count=16`.
+- current scope classification: Gemma groups are green in the current checklist;
+  N2 JANGTQ2/non-JANG_1L rows are green; N2's remaining red is the off-limits
+  JANG_1L combined objective; Qwen35 local direct/gateway source rows are clean
+  and the remaining Qwen red is public tunnel lifecycle/deploy drift.
+- selected next blocker: MiMo V2.5 JANGTQ/JANG decode/exactness/media quality,
+  because it is the largest local blocker still in the requested model set and
+  not an off-limits or external deploy-only row.
+- no-claim boundary: do not repair MiMo exactness by rewriting parser outputs,
+  JSON values, or generated tool arguments. Do not lower speed thresholds. Do
+  not treat metadata-preserved media as media runtime. Inspect runtime/artifact
+  evidence first and patch only a real source-side decode/cache/loader bug.
+
+## CODEX
+- now: Eric corrected the lane again to focus only on the active vMLX Python
+  engine/panel and the fixes needed for a working signed/notarized checkpoint
+  release. This note records the correction before further action.
+- scope retained: `/Users/eric/mlx/vllm-mlx-finite-launch-guard` only; no
+  deprecated `/Users/eric/vmlx` implementation work; no subagents; no N2
+  JANG_1L; no release/sign/notarize/PyPI/site/updater action unless explicitly
+  unlocked in the current turn.
+- release pressure retained: reduce real runtime/API/UI/cache/model blockers
+  directly so the checkpoint DMG can be cut once source proof is sufficient.
+- latest model-lane pivot: Eric says he will remake MiMo and this lane should
+  stop spending effort on MiMo source-vs-quant. Focus N2 JANGTQ/non-JANG_1L and
+  Gemma rows, plus source-fixable Responses/tool/reasoning/API/cache blockers
+  that affect those checkpoint surfaces.
+- boundary: do not claim MiMo fixed or release-cleared from the older handoff;
+  leave it as remade-artifact pending unless Eric reopens it.
+
+## CODEX
+- now: current N2 JANGTQ/non-JANG_1L and Gemma checklist groups were inspected
+  from `build/current-full-release-objective-checklist-after-qwen35-reasoning-lifecycle-row-20260611.json`.
+- result: Gemma `gemma4_12b` and `gemma_qat_native_mxfp4` groups have no red
+  rows in that checklist. N2 JANGTQ2 rows are green for source runtime/API/cache,
+  fresh-process L2 restart, real UI previous_response_id tool/cache, strict
+  loopback tool_choice auto, direct/gateway Responses stream boundary, and
+  no-heavy hybrid-cache policy contracts.
+- remaining N2 red is only `n2_pro_397b_release_clearance`, dominated by N2
+  JANG_1L live proof. That lane remains off-limits here.
+- Qwen35 Responses raw SSE source inspection: current Python server emits a
+  separate reasoning output item before reasoning-summary deltas and closes it
+  with `response.output_item.done`; Electron gateway forwards backend SSE bytes
+  verbatim. Current direct and local gateway captures have complete reasoning
+  lifecycle. The red Qwen35 row is the public tunnel recapture/deploy surface:
+  tunnel has arguments, final consistency, and valid indices, but no streamed
+  reasoning output item lifecycle.
+- no source patch applied for this classification because patching the local
+  server or gateway would not address the observed tunnel-only stale runtime
+  shape and would risk a fake green.
+- verification after classification:
+  `.venv/bin/python -m pytest -q tests/test_responses_raw_sse_parity_contract.py tests/test_qwen35_responses_raw_sse_capture.py tests/test_tool_parser_required_args_fail_closed.py tests/test_full_release_objective_checklist.py`
+  passed with `65 passed`; py_compile for `vmlx_engine/server.py`,
+  `tests/cross_matrix/run_responses_raw_sse_parity_contract.py`, and
+  `tests/cross_matrix/run_full_release_objective_checklist.py` passed; `git
+  diff --check` passed.
