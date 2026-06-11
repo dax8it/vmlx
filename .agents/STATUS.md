@@ -10812,3 +10812,69 @@ Other-agent action:
   parity for this exact 12B QAT MXFP4 row, or 26B/31B Responses video if the
   goal is larger-row media parity. Do not reopen Gemma audio unless the model
   bundle has real `audio_tower.*` weights and live audio E2E is run.
+
+# 2026-06-11 02:14 PDT next lane selected MiMo JANGTQ_2 exactness/logit diagnosis
+
+- Continuation objective:
+  keep reducing real production blockers in efficient blocks, with live
+  runtime/API/UI/cache proof where it moves release readiness, not broad
+  harness construction.
+- Current allowed lane rechecked:
+  `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md` ranks MiMo V2.5 JANGTQ_2
+  exactness/logit/artifact diagnosis first. N2 JANG_1L remains off-limits.
+- Selected blocker:
+  MiMo V2.5 JANGTQ_2 exactness/literal-output reliability and artifact-vs-
+  runtime boundary. Existing deterministic installed-app tool/cache proof is
+  positive, but release clearance still needs exactness/logit/artifact evidence
+  and the red exact-output row must not be hidden by parser/JSON repair.
+- Next action:
+  inspect current MiMo exactness artifacts and model metadata, then run only a
+  focused live proof or source comparison that distinguishes model artifact
+  behavior from runtime/parser/cache behavior.
+- Boundaries:
+  no release/sign/notarize/PyPI/updater/site action, no N2 JANG_1L, no
+  subagents, no parser/JSON/string repair to fake MiMo exactness, and no cache
+  or sampling claim without direct evidence.
+
+# 2026-06-11 02:22 PDT MiMo JANGTQ_2 installed-app exactness current proof red
+
+- Command/proof:
+  ran `node panel/scripts/live-real-ui-model-proof.mjs` with installed
+  `/Applications/vMLX.app`, bundled Python
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`,
+  model `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`,
+  `wireApi=chat`, deterministic sampling, no tools, no thinking, server cache
+  controls, and strict expected assistant outputs for `ACK-CB-742` plus
+  `{"status":"ok","value":"blue-cat"}`. `VMLINUX_REAL_UI_ALLOW_FAIL=1` was set
+  only so the failing proof artifact would be written.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-harness-current-bundled-python-20260611-proof.json`
+  is `status=fail`, `failureStage=release_assertions`.
+- Current failure:
+  first assistant expected `ACK-CB-742` and produced `ACKCB-742`; second
+  assistant expected `{"status":"ok","value":"blue-cat"}` and produced
+  `{"status":"ok","value":"blue"}`.
+- Positive runtime evidence:
+  installed app UI and bundled Python loaded the real 79GB JANGTQ_2 artifact in
+  about `8.4s`; native MiMo `mixed_swa_kv_v1` / `mimo_v2_asymmetric_swa` cache
+  was active; block-disk L2 wrote `117` tokens across `3` blocks; JANGTQ
+  runtime detected `turboquant_codebook`, profile `JANGTQ_2`, `423` routed
+  expert TQ targets, `141` prestacked TQ groups, and custom TurboQuant kernels;
+  live decode was about `42-43 tok/s` with TTFT `0.41s` and `0.62s`.
+- Root-cause boundary:
+  this confirms the current installed-app exactness red row after the proof
+  harness fix. Existing A/B artifacts still classify the primary remaining
+  cause as artifact/logit/codebook/decode quality, not parser JSON repair,
+  chat-template corruption, tokenizer roundtrip, cache/L2, hidden sampling, or
+  tool protocol shape.
+- No-claims:
+  MiMo JANGTQ_2 is not exactness-release-clear. Do not patch parser/JSON/string
+  repair, prompts, cache, or sampling to hide this failure. The next real
+  improvement is a source-vs-quant/logit/codebook investigation or a remade
+  artifact with a literal-safe quantization contract.
+- Other-agent handoff:
+  artifact lane should remake or A/B a MiMo V2.5 JANGTQ_2 replacement against
+  exact literals (`ACK-CB-742`, `blue-cat`, JSON string values, and tool
+  argument values) before asking the app/runtime lane to mark MiMo exactness
+  green. Runtime lane can continue proving tool/cache/UI speed separately but
+  must keep exactness red.

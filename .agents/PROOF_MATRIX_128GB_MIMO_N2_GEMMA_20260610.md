@@ -3317,3 +3317,33 @@ Next implementation target:
   Responses video, 26B/31B Responses video, Qwen/N2/MiMo media, tunnel parity,
   full reasoning/tool stress, release packaging, sign/notarize, PyPI, updater
   JSON, or website release rows.
+
+## MiMo V2.5 JANGTQ_2 Installed-App Exactness - 2026-06-11
+
+- Proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-harness-current-bundled-python-20260611-proof.json`.
+- Status:
+  failed honestly with installed `/Applications/vMLX.app`, bundled Python,
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`,
+  Chat Completions, deterministic sampling, no tools, no thinking, and strict
+  exact-output assertions.
+- Current failures:
+  `ACK-CB-742` -> `ACKCB-742`; `{"status":"ok","value":"blue-cat"}` ->
+  `{"status":"ok","value":"blue"}`.
+- Positive runtime evidence:
+  installed app and bundled runtime loaded the 79GB JANGTQ_2 artifact; runtime
+  detected `turboquant_codebook`, profile `JANGTQ_2`, `423` routed-expert TQ
+  targets, `141` prestacked TQ groups, native MiMo `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa` cache, and custom TurboQuant kernels. Block-disk L2
+  wrote `117` tokens across `3` blocks. Live decode was about `42-43 tok/s`.
+- Root-cause boundary:
+  this replaces the older false-green installed exactness row after the proof
+  harness fix. Existing A/B artifacts still exclude parser/JSON repair,
+  tokenizer roundtrip, chat-template corruption, cache/L2, hidden sampling,
+  and tool protocol shape as primary causes. The remaining primary class is
+  artifact/logit/codebook/decode quality.
+- Required next work:
+  remake or A/B a replacement MiMo V2.5 JANGTQ_2 artifact against literal
+  exactness probes (`ACK-CB-742`, `blue-cat`, JSON string values, tool argument
+  values) before marking MiMo exactness release-clear. App/runtime proofs may
+  continue for speed/tool/cache, but exactness stays red.

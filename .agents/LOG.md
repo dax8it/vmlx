@@ -16326,3 +16326,34 @@ Next action:
   Responses video, not cross-family reasoning/tool stress, not tunnel parity,
   and not release readiness. No release/sign/notarize/PyPI/updater/site action,
   no N2 JANG_1L work, no fake media claim, and no subagent action.
+
+# 2026-06-11 02:14 PDT - moving to MiMo JANGTQ_2 exactness/logit blocker
+
+- Rechecked active directives after the Gemma Responses video proof. The first
+  allowed lane is MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis.
+- Next action is evidence-first: inspect current MiMo exactness artifacts and
+  metadata, then run a focused live proof/source comparison only if it
+  distinguishes artifact behavior from runtime/parser/cache behavior.
+- Boundaries: no release/sign/notarize/PyPI/updater/site action, no N2
+  JANG_1L, no subagents, no parser/JSON/string repair to hide MiMo exactness,
+  and no cache/sampling claim without direct evidence.
+
+# 2026-06-11 02:22 PDT - MiMo JANGTQ_2 installed-app exactness red confirmed
+
+- Ran installed-app bundled-Python exact-output proof for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` with
+  deterministic sampling, no tools, no thinking, Chat Completions, server cache
+  controls, and strict expected outputs.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-harness-current-bundled-python-20260611-proof.json`.
+- Result: `status=fail`, `failureStage=release_assertions`.
+  `ACK-CB-742` became `ACKCB-742`; JSON value `blue-cat` became `blue`.
+- Positive evidence still recorded: installed app UI, bundled Python, real
+  JANGTQ_2 load, native MiMo mixed-SWA cache, block-disk L2 writes, generation
+  defaults, server cache controls, parser/language leak checks, and fast
+  JANGTQ decode around `42-43 tok/s`.
+- Boundary: current installed MiMo JANGTQ_2 exactness remains red after the
+  proof-harness fix. Existing A/B artifacts classify the remaining primary
+  cause as artifact/logit/codebook/decode quality, not parser, template,
+  tokenizer, cache, hidden sampling, or tool protocol. No release action, no
+  N2 JANG_1L, no subagents, and no fake parser/cache/sampling repair.
