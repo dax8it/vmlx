@@ -12567,3 +12567,45 @@ Other-agent action:
   Qwen staged Tahoe packaged checkpoint speed is green; Sequoia Qwen PP remains
   red diagnostic evidence. No release/sign/notarize/upload/PyPI/updater/site
   action.
+
+# 2026-06-11 continuation PDT MiMo blocker selection
+
+- Selected next blocker:
+  `MiMo V2.5 JANG_2L runtime/tool/long-prompt quality is release-cleared`.
+- Reason:
+  Qwen speed rows are now green for the staged Tahoe packaged checkpoint path,
+  while MiMo remains a named user priority and a current aggregate release
+  blocker.
+- Boundary:
+  focus on existing runtime/proof evidence and the smallest live proof or
+  source fix that honestly reduces MiMo. Do not build broad new harnesses, do
+  not fake parser/tool repairs, do not claim unwired media as supported, and do
+  not perform release/sign/notarize/upload/PyPI/updater/site actions.
+- Next movement:
+  inspect the current MiMo objective details, existing proof artifacts, and
+  model paths to decide whether the row is blocked by artifact exactness,
+  runtime decode, tool dialect, long-prompt quality, or media wiring.
+
+# 2026-06-11 07:41 PDT MiMo proof-pointer refresh
+
+- Changed:
+  objective digest now consumes the current MiMo JANG_2L evidence paths already
+  used by the release manifest for text/cache, selected-expert parity, long
+  prompt, tool boundary, and metadata truth.
+- New aggregate artifact:
+  `build/current-objective-proof-after-mimo-proof-pointer-refresh-20260611.json`.
+- Proven in the refreshed MiMo row:
+  metadata truth, JANG_2L text/cache repeat, selected-expert SwitchGLU parity,
+  long-prompt blocker not active in current audit, direct Chat required/auto
+  tool calls, exact CB cache prompt following, prefix/paged/L2 repro, no stale
+  local state, manifest integrity, and source-vs-quant/no-source boundary.
+- Still not proven/release-blocking:
+  decode speed target, artifact exactness, local release clearance, and MiMo
+  media wiring. Current classifier remains
+  `jangtq2_plain_literal_copy_fails_before_parser_or_json_repair`; do not hide
+  this with parser repair, JSON repair, sampling clamps, or cache changes.
+- Current open aggregate rows after refresh:
+  DSV4 same-process cache hit/TTFT, DSV4 L2 restart, DSV4 one-tool stop,
+  Ling/Bailing quality, cross-family live multi-turn smoke, MiMo, N2 broad
+  non-JANG_1L/JANGTQ work, MiniMax reporter parity, real Electron UI
+  cross-family matrix, and DSV4 long-output/code quality.

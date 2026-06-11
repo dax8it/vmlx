@@ -17817,3 +17817,28 @@ Next action:
   DSV4 cache/L2/tool and long-output/code quality, Ling/Bailing quality,
   cross-family live multi-turn, MiMo, broad N2, MiniMax reporter parity, and
   real Electron UI cross-family matrix.
+
+# 2026-06-11 continuation PDT - MiMo blocker selection
+
+- Action:
+  selected the MiMo V2.5 runtime/tool/long-prompt release row as the next
+  blocker after Qwen speed rows cleared.
+- Boundary:
+  use existing evidence and focused live proof/source fixes only. Do not create
+  broad harnesses, do not claim unwired MiMo media support, and do not perform
+  release/sign/notarize/upload/PyPI/updater/site actions.
+
+# 2026-06-11 07:41 PDT - MiMo proof-pointer correction
+
+- Action:
+  aligned `tests/cross_matrix/summarize_objective_proof.py` MiMo evidence with
+  the current release manifest artifacts and refreshed the aggregate objective
+  proof at `build/current-objective-proof-after-mimo-proof-pointer-refresh-20260611.json`.
+- Verification:
+  `pytest tests/test_objective_proof_digest.py::test_objective_proof_digest_surfaces_current_mimo_model_upload_boundary tests/test_objective_proof_digest.py::test_objective_proof_digest_uses_current_mimo_no_source_classifier_artifact tests/test_objective_proof_digest.py::test_objective_proof_digest_tracks_current_mimo_evidence_without_stale_missing -q`
+  passed, 3 tests.
+- Result:
+  MiMo JANG_2L metadata, text/cache, SwitchGLU parity, direct required/auto
+  tools, exact CB cache, prefix/paged/L2, and source-vs-quant boundary are
+  accounted green. MiMo remains open on decode speed, artifact exactness, media
+  wiring, and local release clearance.
