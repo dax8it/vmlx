@@ -14642,3 +14642,71 @@ Next action:
   quality by itself; it proves the current source launch policy will avoid the
   stale app's bad `--is-mllm` path for this text-runtime bundle. Installed-app
   rebuild/replacement and live UI proof are still required before release.
+
+# 2026-06-11 installed-app parity blocker selected
+- Current objective carried forward: reduce real release blockers for MiMo
+  JANG/JANGTQ, Gemma JANG/MXFP/QAT, Qwen/Qwen-coder Responses/tool/reasoning,
+  and N2 JANGTQ/non-JANG_1L with honest runtime/API/UI/cache evidence. Do not
+  spend this lane on broad test-suite churn or recursive subagent behavior.
+- Selected blocker: installed-app parity. Current source has MiMo launch,
+  tool-contract, XML scalar, shutdown, and envelope fixes, but
+  `/Applications/vMLX.app` is stale. A checkpoint DMG cannot be credible until
+  a rebuilt app/bundled runtime contains current source and at least one focused
+  real UI/API/cache proof runs from that app surface.
+- Boundary: inspect and run the existing non-release build/parity workflow only.
+  Do not sign, notarize, tag, upload, publish PyPI, update updater JSON, or
+  touch websites from this movement.
+
+# 2026-06-11 installed-app parity rebuilt and MiMo JANG_2L UI proof green
+- Ran the repo-owned non-release local install path:
+  `panel/scripts/build-and-install.sh`.
+- Build/install result: TypeScript check passed, Python syntax check passed,
+  bundled Python was rebuilt, bundled verifier passed, Electron packaged
+  `release/mac-arm64/vMLX.app`, and the app was copied to
+  `/Applications/vMLX.app`. The local app is ad-hoc sealed and
+  `codesign --verify --deep --strict` passes. `spctl` rejects it because this
+  is not a notarized Developer ID release artifact; do not claim notarization
+  or release publication.
+- Installed runtime parity result:
+  `build/current-installed-app-runtime-parity-audit-after-mimo-source-rebuild-20260611.json`
+  is `status=pass`, `missing_or_stale=[]`,
+  `installed_bundled_engine_hash_parity=true`, and
+  `installed_packaged_engine_source_hash_parity=true`. The installed bundled
+  runtime imports `vmlx_engine 1.5.57` and `jang_tools 2.5.30`.
+- Direct hash proof: current source and `/Applications/vMLX.app/Contents/
+  Resources/vmlx-engine-source` match for `vmlx_engine/server.py`,
+  `vmlx_engine/cli.py`, `vmlx_engine/api/tool_calling.py`, and
+  `vmlx_engine/scheduler.py`; this clears the stale-app drift found in the
+  screenshot investigation.
+- Focused live installed-app proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-after-rebuild-pass-20260611-proof.json`
+  is `status=pass`; screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-after-rebuild-pass-20260611-chat.png`.
+- Proven by the MiMo proof: real `/Applications/vMLX.app` UI, installed bundled
+  Python, real `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`,
+  `/v1/responses`, two streamed UI turns, exact visible `SPEED_OK` on both
+  turns, no parser/reasoning/tool markup leak, generation defaults applied,
+  settings persistence, native MiMo `mixed_swa_kv_v1` /
+  `mimo_v2_asymmetric_swa`, generic TurboQuant KV disabled by design,
+  cache endpoint stats, scheduler cache hits, and block-disk L2 writes.
+- Critical launch proof: server command did not include `--is-mllm`; server log
+  reported `is_mllm_model(...): tier=mimo_v2_preserved_text_runtime result=False`
+  and loaded `mllm=False`. UI request logs recorded
+  `chatIsMultimodal=false`, `detectedFamily=mimo_v2`, `wireApi=responses`,
+  `enable_thinking=false`.
+- Cache proof: after two turns, scheduler cache `hits=1`, `misses=1`,
+  `tokens_saved=30`, `ram_tokens_cached=78`, block disk
+  `blocks_on_disk=2`, `disk_writes=2`, and `l2_block_tokens_on_disk=78`.
+- Speed boundary: installed-app short exact generation still only recorded
+  live decode about `2.0 t/s` then `1.7 t/s` with TTFT `1.52s` and `1.76s`.
+  This clears the stale bad-output/forced-MLLM path, not MiMo JANG_2L
+  throughput as a release-quality speed row.
+- One diagnostic run with `VMLINUX_REAL_UI_CHECK_SERVER_CACHE_CONTROLS=1`
+  failed only because the proof harness did not record the optional
+  `responses_cache_detail_usage` surface; the generated failed proof still had
+  exact `SPEED_OK` turns and the same health/cache evidence. The passing proof
+  above is the installed-app text/cache artifact to cite.
+- Boundary: no DMG, sign/notarize, tag, upload, PyPI, updater JSON, website,
+  or public release action was run. MiMo JANGTQ_2 exactness/media, Gemma
+  media/UI rows, Qwen tunnel/deployed parity, and N2 JANGTQ/non-JANG_1L rows
+  remain open.

@@ -43,6 +43,47 @@ Red / not proven:
 - Installed app replacement/rebuild and real UI proof remain open before any
   checkpoint DMG/sign/notarize claim.
 
+### MiMo JANG_2L Installed-App Rebuild + Text/Cache Proof
+
+Artifacts:
+
+- `build/current-installed-app-runtime-parity-audit-after-mimo-source-rebuild-20260611.json`
+- `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-after-rebuild-pass-20260611-proof.json`
+- `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-after-rebuild-pass-20260611-chat.png`
+
+Proven:
+
+- `/Applications/vMLX.app` was rebuilt and installed from current source using
+  `panel/scripts/build-and-install.sh`.
+- Installed-app runtime parity is green: `status=pass`, `missing_or_stale=[]`,
+  bundled engine hash parity true, packaged engine-source hash parity true,
+  installed `vmlx_engine 1.5.57`, and installed `jang_tools 2.5.30`.
+- Current source and installed packaged mirrors match for `server.py`,
+  `cli.py`, `api/tool_calling.py`, and `scheduler.py`; the stale-app drift from
+  the screenshot investigation is cleared.
+- Real installed-app UI proof passed on
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` using installed
+  bundled Python and `/v1/responses`.
+- The server command did not include `--is-mllm`; server logs classified the
+  bundle as `mimo_v2_preserved_text_runtime result=False`, and the UI request
+  logged `chatIsMultimodal=false`.
+- Visible output was exact twice: `SPEED_OK` then `SPEED_OK`; no raw parser,
+  reasoning, or tool markup leaked into UI content.
+- Native cache evidence: `mimo_v2_asymmetric_swa` / `mixed_swa_kv_v1`, generic
+  TurboQuant KV disabled, scheduler cache `hits=1`, `tokens_saved=30`,
+  `ram_tokens_cached=78`, block disk `blocks_on_disk=2`,
+  `disk_writes=2`, and `l2_block_tokens_on_disk=78`.
+
+Boundary:
+
+- The locally installed app is ad-hoc signed/sealed; `codesign --verify --deep
+  --strict` passes, but `spctl` rejects it because this is not a notarized
+  Developer ID release artifact.
+- MiMo JANG_2L speed remains open: short exact installed-app decode recorded
+  about `2.0 t/s` then `1.7 t/s` with TTFT `1.52s` and `1.76s`.
+- This does not clear MiMo JANGTQ_2 exactness/media, Gemma media/UI, Qwen
+  deployed tunnel parity, N2 JANGTQ/non-JANG_1L, or any public release step.
+
 ### MiMo Panel `think_xml` Launch Parity Fix
 
 Proven:

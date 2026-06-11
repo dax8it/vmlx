@@ -1,4 +1,48 @@
 ## CODEX
+- now: rebuilt and reinstalled `/Applications/vMLX.app` from current source
+  with the repo-owned non-release path `panel/scripts/build-and-install.sh`.
+- parity proof: `build/current-installed-app-runtime-parity-audit-after-mimo-source-rebuild-20260611.json`
+  is `status=pass`, `missing_or_stale=[]`,
+  `installed_bundled_engine_hash_parity=true`, and
+  `installed_packaged_engine_source_hash_parity=true`. The installed bundled
+  runtime imports `vmlx_engine 1.5.57` and `jang_tools 2.5.30`; source and
+  installed packaged mirrors now match for `server.py`, `cli.py`,
+  `tool_calling.py`, and `scheduler.py`.
+- local signing boundary: `/Applications/vMLX.app` is ad-hoc sealed and
+  `codesign --verify --deep --strict` passes; `spctl` rejects it because this
+  is not a notarized Developer ID release artifact.
+- installed-app MiMo proof:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-after-rebuild-pass-20260611-proof.json`
+  is `status=pass`; screenshot:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-text-cache-after-rebuild-pass-20260611-chat.png`.
+- proven by MiMo proof: real installed app UI, installed bundled Python, real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, Responses
+  streaming, two completed turns, exact `SPEED_OK` visible output both turns,
+  no parser/reasoning/tool markup leak, no forced MLLM (`--is-mllm` absent),
+  `chatIsMultimodal=false`, native `mimo_v2_asymmetric_swa` cache, RAM cache
+  hit telemetry, and block-disk L2 writes.
+- cache/speed evidence: scheduler cache `hits=1`, `tokens_saved=30`,
+  `ram_tokens_cached=78`, block disk `blocks_on_disk=2`,
+  `l2_block_tokens_on_disk=78`; short exact decode was still slow at about
+  `2.0 t/s` then `1.7 t/s` with TTFT `1.52s` and `1.76s`.
+- boundary: this clears installed-app parity plus a narrow MiMo JANG_2L
+  text/cache/UI Responses row after the rebuild. It does not clear MiMo
+  JANG_2L speed, MiMo JANGTQ_2 exactness/media, Gemma media/UI, Qwen tunnel/
+  deployed parity, N2 JANGTQ/non-JANG_1L, or any release/sign/notarize/PyPI/
+  updater/site step.
+
+## CODEX
+- now: selected installed-app parity as the next blocker because
+  `/Applications/vMLX.app` is stale versus current source while current source
+  already contains MiMo launch/tool/shutdown/envelope fixes.
+- planned movement: inspect the existing non-release rebuild/parity scripts,
+  run the proper current-source app/bundled-runtime sync if available, and then
+  prove whether the installed-app surface contains current source before any
+  MiMo UI/API/cache claim.
+- boundary: no sign/notarize/tag/upload/PyPI/updater/website release action;
+  no N2 JANG_1L; no subagents; no broad test-suite churn.
+
+## CODEX
 - now: investigated Eric's MiMo JANG_2L screenshot regression directly against
   current source and the installed app copy.
 - finding: `/Applications/vMLX.app/Contents/Resources/vmlx-engine-source` is
