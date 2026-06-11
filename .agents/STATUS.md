@@ -14271,3 +14271,25 @@ Other-agent action:
 - control metrics: `eventCounts.stream=43`, `eventCounts.tool=92`, `reasoningDone=0`, `complete=2`, `persistedToolCount=92`, `toolResults=2`, `toolErrors=0`, `cacheHitTokens=3726`, scheduler `cache_hit_tokens=3584`, L2 block tokens on disk `3726`, disk writes `61`, disk hits `54`, native Gemma `mixed_swa_kv_v1`.
 - classification: 26B JANG_4M app/API/cache/tool execution path is usable in thinking-off mode, but the release-critical thinking-on auto-tool loop remains red because the model emits an invalid outer-quoted shell command under reasoning. Do not claim 26B JANG_4M reasoning-on auto-tool release clearance.
 - verification: `npm run typecheck` in `panel` passed; `git diff --check` passed before artifact staging. No source fix is included because the attempted schema-description fix did not clear the failure.
+
+## CODEX
+- now: investigating the actual tool-schema/prompt path used by the Gemma4 26B JANG_4M reasoning-on Responses required-tool retry.
+- target: trace why panel-side `run_command.command` schema wording did not affect the bad outer-quoted command and inspect engine fallback tool schema injection / Gemma4 retry guidance before any further fix.
+- boundary: do not repair command strings after parsing, do not strip shell quotes in the executor, do not disable reasoning as a fix, and do not claim release clearance from the thinking-off control.
+
+## CODEX
+- now: patched the engine-side Gemma4 fallback tool prompt, not the panel schema or executor.
+- source change: `vmlx_engine/api/tool_calling.py` now tells Gemma4 fallback/retry prompts that `run_command.command` is the raw shell line and must not be wrapped in outer shell quotes; it also shows a Gemma4 native valid/invalid command example.
+- regression: added `test_gemma4_run_command_fallback_warns_against_outer_shell_quotes` in `tests/test_tool_fallback_injection.py`.
+- verification so far: `.venv/bin/python -m pytest tests/test_tool_fallback_injection.py -q` passed (`13 passed`); `git diff --check` passed.
+- next proof: rerun Gemma4 26B QAT JANG_4M real Electron dev-app Responses auto-tool/cache proof with `enable_thinking=true` under a new after-engine-guidance artifact name.
+
+## CODEX
+- now: Gemma4 26B QAT JANG_4M Electron dev-app Responses auto-tool/cache proof is green with `enable_thinking=true` after the engine-side Gemma4 fallback run-command guidance patch.
+- source fix: `vmlx_engine/api/tool_calling.py` Gemma4 fallback prompt now teaches `run_command.command` as a raw shell line and explicitly forbids outer-quoting the full command; no executor repair, parser arg rewrite, or reasoning-disable workaround.
+- regression: `tests/test_tool_fallback_injection.py::test_gemma4_run_command_fallback_warns_against_outer_shell_quotes`.
+- artifact: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-after-engine-run-command-guidance-20260611-proof.json`, `status=pass`; screenshot: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-after-engine-run-command-guidance-20260611-chat.png`.
+- proven: real loaded 26B QAT JANG_4M model, Electron dev app UI, `wireApi=responses`, `enable_thinking=true`, built-in tools enabled, Gemma4 tool/reasoning parsers, two clean `run_command` results, zero `run_command` tool errors, reasoning display, Responses delta streaming, `long_tool_loop`, `tool_l2_cache_integrated`, cache detail usage, server cache controls, no raw parser/reasoning tag leak, visible assistant turns complete, and native Gemma `mixed_swa_kv_v1`.
+- proof metrics: `eventCounts.stream=58`, `eventCounts.tool=651`, `reasoningDone=2`, `complete=2`, `persistedToolCount=651`, `toolResults=2`, `toolErrors=0`, `cacheHitTokens=3808`, scheduler `cache_hit_tokens=3584`, L2 block tokens on disk `3808`, disk writes `63`, disk hits `54`.
+- visual check: screenshot shows reasoning rows, valid shell commands without outer shell-literal quoting, visible assistant replies after each tool result, and `paged+mixed_swa cached` prompt metrics.
+- remaining boundary: source Electron dev-app proof only; still not installed-app parity, public tunnel, media/VL/audio/video, package/sign/notarize/PyPI/site/updater release action, N2, or MiMo.
