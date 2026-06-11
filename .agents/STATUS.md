@@ -14559,3 +14559,51 @@ Other-agent action:
 - remaining boundary: `/Applications/vMLX.app` is still stale and must be
   rebuilt/reinstalled before installed-app UI/API/cache proofs or release
   signing/notarization can clear.
+
+## CODEX
+- now: starting local installed-app rebuild/reinstall to reduce the stale
+  `/Applications/vMLX.app` parity blocker.
+- command boundary: use `panel/scripts/build-and-install.sh`, which builds a
+  local app-dir and ad-hoc signs for smoke testing; it does not notarize, tag,
+  upload, update PyPI, or mutate release feeds. Pass
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools`
+  so nested bundled-Python rebuild/verify uses clean JANG 2.5.31 source instead
+  of dirty default `/Users/eric/jang/jang-tools`.
+- expected next proof after install: rerun
+  `tests/cross_matrix/run_installed_app_runtime_parity_audit.py` against
+  `/Applications/vMLX.app` and regenerate the full objective checklist.
+
+## CODEX
+- now: local installed-app runtime parity blocker cleared.
+- command: from `panel/`, ran
+  `VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools
+  ./scripts/build-and-install.sh`.
+- result: rebuilt bundled Python from clean JANG source, built the Electron app,
+  installed `/Applications/vMLX.app`, ad-hoc signed local native files/app seal,
+  and verified `/Applications/vMLX.app` is valid on disk. This was a local
+  installed-app smoke/parity install only; no notarization, release upload,
+  tag, updater feed, PyPI, or site action was run.
+- installed-app parity proof:
+  `build/current-installed-app-runtime-parity-audit-after-clean-jang-app-rebuild-20260611.json`
+  is `status=pass`, `missing_or_stale=[]`; bundled site-packages and packaged
+  `vmlx-engine-source` hashes match the active source.
+- clean installed runtime import proof: from `/tmp`, bundled Python imports
+  `vmlx_engine`, `vmlx_engine.server`, `vmlx_engine.api.tool_calling`,
+  `vmlx_engine.tool_parsers.qwen_tool_parser`,
+  `vmlx_engine.reasoning.gemma4_parser`, `jang_tools`, and
+  `jang_tools.step37.step3p7_mlx` from
+  `/Applications/vMLX.app/Contents/Resources/bundled-python/...`.
+- checklist proof:
+  `build/current-full-release-objective-checklist-after-clean-jang-installed-app-rebuild-20260611.json`
+  is still `status=open`, now `failed_count=16`; the four stale installed-app
+  runtime parity rows were removed by the rebuild.
+- current open rows are real release/model proof gaps, not stale app parity:
+  N2 Pro broad release row remains open but N2 JANG_1L is Eric-owned/off-limits
+  in this lane; MiMo exactness/media/speed rows remain open; Qwen35 raw SSE
+  lifecycle remains open; MiniMax issue179 reporter parity remains open; DSV4
+  memory/exactness remains skipped/open.
+- live UI boundary: `/Applications/vMLX.app` process launches
+  (`net.vmlx.app`), but Computer Use is blocked by macOS automation permission
+  (`Apple event error -1743`) and `screencapture` could not create an image from
+  the display in this session. Use shell/app logs and explicit user-visible
+  screenshots, or grant automation/screen permissions, for direct UI proof.

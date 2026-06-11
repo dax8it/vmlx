@@ -164,11 +164,23 @@
   media/L2 rows.
 - For release packaging, first rerun the bundled Python parity gate and
   installed-app source-vs-bundle checks after source rows are worth packaging.
-  Current next release-surface work is: rebuild bundled Python from a clean
-  JANG source override or clean checkout if a full packaging rebuild is needed,
-  rebuild/install
-  `/Applications/vMLX.app`, rerun
-  `tests/cross_matrix/run_installed_app_runtime_parity_audit.py`, rerun the
-  full release objective checklist, and only then run installed-app live UI/API
-  proofs for content/reasoning/tool deltas/cache/L2. Follow the documented
-  signing/notarization workflow only after Eric unlocks release actions.
+  Current local installed app has now been rebuilt from clean JANG source and
+  `/Applications/vMLX.app` passes installed-app runtime parity:
+  `build/current-installed-app-runtime-parity-audit-after-clean-jang-app-rebuild-20260611.json`
+  is `status=pass`, `missing_or_stale=[]`. The full checklist artifact is
+  `build/current-full-release-objective-checklist-after-clean-jang-installed-app-rebuild-20260611.json`
+  with `status=open`, `failed_count=16`; stale installed-app parity rows are
+  gone.
+- Next useful release-surface work is direct installed-app UI/API proof using
+  the current `/Applications/vMLX.app`: launch app, load real target model,
+  confirm settings-to-launch wiring, parser/reasoning/cache/max-token/max-context
+  controls, Responses streaming content/reasoning/tool deltas, function-call
+  args delta/done, required/auto/no-tool modes, tool-result continuation, final
+  object consistency, cache hit/L2 telemetry, and screenshot-visible chat/server
+  logs. Computer Use is currently blocked by macOS automation permission
+  (`Apple event error -1743`) and `screencapture` failed in this session, so
+  another lane should either obtain UI/screen permission or provide manual UI
+  screenshots alongside API/log artifacts.
+- Follow the documented signing/notarization workflow only after Eric explicitly
+  unlocks release actions in the current turn. The latest local build/install
+  was ad-hoc signed for smoke/parity only; it is not a notarized release.

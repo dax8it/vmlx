@@ -19388,3 +19388,38 @@ Updated proof artifact:
 `status=pass`. Remaining release boundary: `/Applications/vMLX.app` is still
 stale and must be rebuilt/reinstalled before installed-app UI/API/cache proofs
 or release signing/notarization can clear.
+
+# 2026-06-11 installed-app runtime parity cleared after clean JANG rebuild
+
+Ran local installed-app rebuild/install from `panel/` with
+`VMLINUX_JANG_TOOLS_SOURCE=/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools
+./scripts/build-and-install.sh`. The command rebuilt bundled Python from clean
+JANG source, verified bundled imports, built the Electron app, copied it to
+`/Applications/vMLX.app`, ad-hoc signed native files/app seal, and verified the
+local app is valid on disk. No notarization, release upload, tag, updater feed,
+PyPI, or site action was run.
+
+New installed-app parity artifact
+`build/current-installed-app-runtime-parity-audit-after-clean-jang-app-rebuild-20260611.json`
+is `status=pass` with `missing_or_stale=[]`; bundled site-packages and packaged
+`vmlx-engine-source` hashes now match the active source. Clean bundled import
+probe from `/tmp` confirmed `vmlx_engine`, `server.py`, `api/tool_calling.py`,
+Qwen tool parser, Gemma4 reasoning parser, `jang_tools`, and
+`jang_tools.step37.step3p7_mlx` import from `/Applications/vMLX.app`, not from
+the repo checkout.
+
+Updated the full release objective checklist pointer to this current
+installed-app artifact and reran focused tests:
+`.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py
+tests/test_installed_app_runtime_parity_audit.py` passed (`41 passed`).
+Regenerated
+`build/current-full-release-objective-checklist-after-clean-jang-installed-app-rebuild-20260611.json`;
+status remains `open`, `failed_count=16`, with stale installed-app parity rows
+cleared.
+
+Live UI check boundary: `/Applications/vMLX.app` launches as bundle id
+`net.vmlx.app`, but direct Computer Use inspection is blocked by macOS
+automation permission (`Apple event error -1743`), and `screencapture` could
+not capture the display in this session. Direct UI screenshots/click-through
+proof still need either permissions or manual visible screenshots. Do not
+misrepresent shell parity as full live UI proof.
