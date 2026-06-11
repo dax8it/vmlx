@@ -9174,3 +9174,42 @@ Other-agent action:
   broader parser families, or release readiness. No release DMG, Developer ID
   signing, notarization, tag, upload, PyPI, updater JSON, website, or N2
   JANG_1L action was performed.
+
+# 2026-06-11 00:00 PDT Qwen-coder-next tunnel availability check selected
+
+- Current movement:
+  after committing local gateway proof `c89ea50b9`, check the public tunnel
+  surface before attempting a Qwen-coder-next tunnel raw SSE capture. The
+  target is same-model parity for `qwen3-coder-next`; if the tunnel does not
+  advertise that served model, record it as a deployed tunnel availability gap
+  instead of pretending same-model tunnel parity is proven.
+- Boundary:
+  this is a model-list/tunnel availability probe only unless the same served
+  model is advertised. No release DMG, sign, notarize, tag, upload, PyPI,
+  updater JSON, website, installed-app model proof, or N2 JANG_1L action.
+
+# 2026-06-11 00:05 PDT Qwen-coder-next tunnel availability classified open
+
+- Proof artifact:
+  `build/current-qwen-coder-next-tunnel-availability-20260611/SUMMARY.json`
+  is `status=open`.
+- Raw artifacts:
+  - `build/current-qwen-coder-next-tunnel-availability-20260611/models.json`
+  - `build/current-qwen-coder-next-tunnel-availability-20260611/models.headers`
+- Finding:
+  public tunnel `/v1/models` is reachable and advertises 11 model IDs, but it
+  does not advertise the exact local served model `qwen3-coder-next`.
+- Classification:
+  Qwen-coder-next public tunnel parity remains open as a deployed
+  tunnel/session-routing availability gap. Do not close it from Qwen27/Qwen35
+  MXFP8 MTP aliases unless the alias mapping is intentionally deployed and
+  documented.
+- Other-agent next:
+  deploy or route the public tunnel to the same current-source
+  `qwen3-coder-next` served surface, then recapture raw SSE with reasoning
+  enabled and the same required `exec_command` request. Preserve direct/local
+  gateway proof `c89ea50b9` as green but do not call tunnel green.
+- Boundary:
+  no tunnel raw SSE capture for `qwen3-coder-next` was attempted because the
+  exact model is unavailable. No release DMG, sign, notarize, tag, upload,
+  PyPI, updater JSON, website, installed-app model proof, or N2 JANG_1L action.

@@ -15027,3 +15027,47 @@ Next action:
   media, and release readiness remain open. No release DMG, sign, notarize,
   tag, upload, PyPI, updater JSON, website, or N2 JANG_1L action was
   performed.
+
+# 2026-06-11 00:00 PDT Qwen-coder-next tunnel availability check selected
+
+- Action plan:
+  query the public tunnel model list and compare advertised IDs against the
+  local served model `qwen3-coder-next`. Only attempt same-model raw SSE if the
+  tunnel advertises the same served model. If not, write the deployed-surface
+  gap explicitly and leave public tunnel parity open.
+- Boundary:
+  no public release action, no signing/notarization, no PyPI/updater/site
+  update, no installed-app UI proof, and no N2 JANG_1L work in this movement.
+
+# 2026-06-11 00:05 PDT Qwen-coder-next tunnel availability classified open
+
+- Command:
+  queried `https://testapi.adlabus.dev/v1/models` and saved response headers
+  plus body under
+  `build/current-qwen-coder-next-tunnel-availability-20260611/`.
+- Proof artifact:
+  `build/current-qwen-coder-next-tunnel-availability-20260611/SUMMARY.json`
+  is `status=open`.
+- Result:
+  public tunnel returned 11 advertised model IDs:
+  `models/Qwen3.6-27B-MXFP8-CRACK-MTP`,
+  `models/Gemma-4-12B-it-MXFP8-CRACK`,
+  `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`,
+  `Qwen3.6-27B-MXFP8-CRACK-MTP`,
+  `dealignai/Qwen3.6-27B-MXFP8-CRACK-MTP`,
+  `models/Step-3.7-Flash-JANG_2L-CRACK`,
+  `models/Nemotron-3-Nano-Omni-30B-A3B-MXFP4-CRACK`,
+  `models/LFM2.5-8B-A1B-MXFP8-CRACK`,
+  `Step-3.7-Flash-JANG_K-CRACK`,
+  `Gemma-4-12B-it-MXFP8-CRACK`, and
+  `Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`.
+- Classification:
+  exact `qwen3-coder-next` same-model tunnel parity cannot be captured from
+  this public tunnel state because that served model is not advertised. Treat
+  this as deployed tunnel availability/routing work, not a local parser
+  regression.
+- Boundary:
+  do not claim Qwen-coder-next public tunnel parity green from this. Direct
+  source and local gateway are green for the required-tool request; tunnel,
+  installed app UI, release readiness, signing, notarization, PyPI, updater
+  JSON, website, and N2 JANG_1L remain untouched/open.

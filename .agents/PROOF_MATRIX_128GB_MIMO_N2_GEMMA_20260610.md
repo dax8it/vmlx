@@ -3187,3 +3187,33 @@ Next implementation target:
   every Qwen/Qwen-coder size, native MTP, calibrated TurboQuant speed, media,
   cross-family parser coverage, release packaging, sign/notarize, PyPI,
   updater JSON, website, or N2 JANG_1L.
+
+## Qwen-Coder-Next Public Tunnel Availability - 2026-06-11
+
+- Open tunnel row:
+  `build/current-qwen-coder-next-tunnel-availability-20260611/SUMMARY.json`
+  is `status=open`.
+- Finding:
+  `https://testapi.adlabus.dev/v1/models` is reachable and advertises 11 model
+  IDs, but not the exact current-source served model `qwen3-coder-next`.
+- Advertised Qwen-family IDs:
+  `models/Qwen3.6-27B-MXFP8-CRACK-MTP`,
+  `Qwen3.6-27B-MXFP8-CRACK-MTP`,
+  `dealignai/Qwen3.6-27B-MXFP8-CRACK-MTP`,
+  `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, and
+  `Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`.
+- Classification:
+  same-model public tunnel raw SSE for `qwen3-coder-next` is a deployed
+  tunnel/session-routing availability gap, not a local parser proof gap. Do
+  not close this row from Qwen27/Qwen35 aliases unless an intentional alias
+  mapping is deployed and documented.
+- Other-agent next:
+  route/deploy the public tunnel to the current-source `qwen3-coder-next`
+  served surface, then recapture reasoning-enabled required-tool raw SSE with
+  the same `exec_command`/`{"cmd":"ls /tmp"}` request and compare against the
+  direct plus local-gateway artifacts.
+- Red/open:
+  public tunnel parity remains open. Installed-app UI, every-family parser
+  coverage, native MTP, calibrated TurboQuant speed, media, release packaging,
+  sign/notarize, PyPI, updater JSON, website, and N2 JANG_1L remain open or
+  untouched here.
