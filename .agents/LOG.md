@@ -15439,3 +15439,47 @@ Next action:
   no release/sign/notarize/PyPI/updater/site work was performed. This does not
   clear MiMo, N2 JANG_1L, package readiness, Step3.7, LFM, Nemotron, MiniMax,
   or DSV4.
+
+# 2026-06-11 00:03 PDT MiMo speed/exactness diagnosis selected
+
+- Request:
+  continue one lane at a time, keep proof honest, and focus on MiMo/N2/Gemma/Qwen
+  runtime issues rather than release actions or broad harness churn.
+- Action:
+  Qwen proof trace has been committed and pushed as `6fb64b3ce`; next lane is
+  MiMo V2.5 JANG/JANGTQ decode speed and exactness diagnosis.
+- What will be checked:
+  existing MiMo proof artifacts, current runtime decode/upcast/dtype paths,
+  JANG/JANGTQ dispatch decisions, SwitchGLU/router fast paths, cache policy,
+  and whether the observed literal mutations/speed come from runtime code or
+  likely require artifact/model rebuild.
+- Boundary:
+  no parser/JSON repair for semantic exactness, no N2 JANG_1L relaunch, no
+  release/sign/notarize/PyPI/updater/site action, and no source-vs-quant claim
+  unless the required endpoints are actually up.
+
+# 2026-06-11 00:14 PDT MiMo speed/exactness handoff written
+
+- Action:
+  inspected current MiMo audit, installed-app proof artifacts, speed samples,
+  runtime quant/acceleration metadata, and SwitchGLU fast-path source.
+- Result:
+  wrote `.agents/MIMO_V25_RUNTIME_RELEASE_HANDOFF_20260611.md` so the parallel
+  lane has one explicit current MiMo release split.
+- Proven:
+  JANGTQ_2 bundled-Python installed-app no-media Responses/tools/cache proof is
+  pass, with TurboQuant codebook dispatch, 423 routed-expert TQ targets,
+  prestacked switch layout, native mixed-SWA cache, cache/L2 proof, about
+  76.6GB active / 81.5GB peak, and live speed samples 34.2/40.0 tok/s.
+- Proven but red for speed:
+  JANG_2L installed-app no-media Responses/tools/cache proof is pass for
+  behavior/cache/L2, but live speed remains 1.6-1.7 tok/s at about 105GB active
+  / 109GB peak despite affine quantized matmul and Metal affine availability.
+- Not proven:
+  JANGTQ_2 literal exactness, source-vs-quant root cause, semantic media E2E,
+  media L2/restart, and release readiness remain open.
+- Other-agent next action:
+  bring up the MiMo source and quant endpoints, run first-divergence, and then
+  choose artifact rebuild/reupload versus runtime decode/logit fix. For a
+  checkpoint release, prefer JANGTQ_2 over JANG_2L unless deeper affine fusion
+  is implemented and live-proven.
