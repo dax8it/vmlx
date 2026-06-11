@@ -7135,3 +7135,45 @@ Other-agent action:
     direct/gateway/tunnel same-model recapture;
   - this does not clear Gemma installed-app reasoning display, MiMo media or
     exactness, N2 rows, installed-app parity, or release readiness.
+
+# 2026-06-11 continuation - remaining parser required-schema audit
+
+- Request:
+  - do not stop at the first parser fix; keep checking the remaining model
+    tool/reasoning parser families for spacing/special-character and
+    empty-args behavior that can break opencode/Codex-style harness loops.
+- Current action:
+  - audit parser families that still do not visibly call the shared
+    required-argument schema helper or that keep raw argument strings after
+    stripping.
+- Boundaries:
+  - no release/sign/notarize/PyPI/updater/site action;
+  - no N2 JANG_1L work;
+  - no subagents;
+  - no broad harness rewrite, no fake argument repair, and no reasoning-off
+    workaround.
+- Reproduced issue:
+  - additional parser families still emitted tool calls without checking
+    request-schema required arguments, so `{}` or incomplete parsed args could
+    reach agent clients for required tools.
+- Source change:
+  - added required-argument fail-closed validation to Functionary, Llama,
+    Hermes, Granite, Mistral, xLAM, LFM2, MiniMax, and canonical DSML parser
+    paths;
+  - expanded the shared required-argument matrix to cover Qwen, Mistral,
+    Hermes, Functionary, Llama, Granite, xLAM, LFM2, Kimi, Hunyuan, Zaya,
+    Gemma4, Gemma3, DeepSeek, MiniMax, DSML, and GLM.
+- Verification:
+  - shared required-argument matrix passed `17/17`;
+  - combined parser/reasoning suite passed `191/191`;
+  - Responses streaming guards for special XML args, empty required XML calls,
+    buffered final arguments, and preamble+empty XML tool calls passed `4/4`;
+  - `py_compile` and `git diff --check` passed.
+- Proven:
+  - source parser coverage now fail-closes missing required args across the
+    listed parser families instead of emitting executable `{}` payloads.
+- Not proven:
+  - no fresh live same-model direct/gateway/tunnel recapture was run in this
+    block;
+  - this does not clear cache reuse, UI, installed-app, media, MiMo/N2/Gemma
+    live rows, or release readiness.

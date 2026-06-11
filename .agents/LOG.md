@@ -13855,3 +13855,9 @@ Next action:
 
 # 2026-06-11 DeepSeek parser required-args and exact payload fix
 - Reproduced DeepSeek V3/R1 tool parser gap: valid JSON was returned as `func_args.strip()` and required schema validation was missing; rejected full-dialect calls could fall through to the simple pattern and emit a bogus name like `function<｜tool▁sep｜>exec_command` with `{}`. Patched parser to validate required args, preserve accepted raw invalid payloads exactly, serialize valid dict JSON with `ensure_ascii=False`, and only run simple fallback when no full-dialect match occurred. Verification passed: DeepSeek/shared required slice `15/15`, parser-family suite `182/182`, Responses streaming guards `3/3`, `py_compile`, and `git diff --check`. Not a live direct/gateway/tunnel recapture and not a release action.
+
+# 2026-06-11 remaining parser required-schema audit
+- Commit `494bc8655` pushed to `origin/codex/pr-intake-manifest` and `origin/main`. Continuing the parser/API exactness lane instead of declaring it complete: next pass checks parser families that still do not visibly enforce request-schema required arguments or that preserve raw argument strings only after trimming.
+
+# 2026-06-11 expanded parser-family fail-closed hardening
+- Added request-schema required-argument validation to Functionary, Llama, Hermes, Granite, Mistral, xLAM, LFM2, MiniMax, and canonical DSML parser paths. Expanded the shared fail-closed matrix to cover 17 parser families. Verification passed: matrix `17/17`, combined parser/reasoning suite `191/191`, Responses SSE guards `4/4`, `py_compile`, and `git diff --check`. This is source/API parser proof only, not live direct/gateway/tunnel recapture or release readiness.
