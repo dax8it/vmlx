@@ -1,3 +1,76 @@
+# 2026-06-10 19:45 PDT - Codex MiMo runtime/API continuation
+
+- Boundary: active Python/Electron worktree
+  `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; deprecated
+  `/Users/eric/vmlx` is not used for implementation, build, launch, or proof
+  work.
+- User instruction carried forward: focus on MiMo/Gemma/Qwen runtime fixes and
+  live proofs for checkpoint-release readiness; write every movement down; no
+  release/sign/notarize/PyPI/updater/site action; no N2 JANG_1L work; no fake
+  parser repairs, synthesized tool args, hidden reasoning disablement, or
+  raw-markup stripping as correctness; no subagent delegation.
+- Current movement: reducing MiMo V2.5 JANG/JANGTQ runtime/kernel and
+  parser/template blockers: slow/odd visible output,
+  spacing/special-token/raw-delimiter behavior, Responses/content/reasoning/tool
+  delta usability, and honest media gating.
+- Current source state: `codex/pr-intake-manifest` at `4b785cffe`; only known
+  dirty panel proof JSON and untracked `node_modules/` are present.
+- Next action: evidence-first inspection of latest MiMo proof artifacts and
+  runtime code paths before editing. The latest JANGTQ_2 installed-app media row
+  is a force-text/honest-gating proof, not a MiMo vision/audio/video proof.
+
+# 2026-06-10 19:58 PDT - MiMo JANG_2L lm_head speed evidence
+
+- Inspected latest MiMo installed-app and direct-server artifacts. JANG_2L and
+  JANGTQ_2 installed-app text/tool/cache rows pass, but neither is a MiMo media
+  success. JANGTQ_2 media row is force-text/honest gating only.
+- Root-cause direction from logs: `build/current-mimo-jang2l-*` traces show
+  MiMo MoE/router model forward at a few milliseconds, while full-vocab logits
+  realization is seconds to tens of seconds. Cache/L2/prefix is not the primary
+  speed cause for these short turns.
+- Sidecar shape check: `lm_head.weight=(152576,1024)` uint32 and
+  `lm_head.scales/biases=(152576,64)` float16, matching affine 8-bit group-64
+  hidden-size 4096. Current evidence does not prove an lm_head upcast or loader
+  shape bug.
+- Next proof: run one direct source server without `VMLINUX_DECODE_TRACE` to
+  distinguish normal user-mode speed from trace/full-logits instrumentation and
+  first-compile cost.
+
+# 2026-06-10 20:04 PDT - MiMo JANG/JANGTQ post-warm speed proof
+
+- Ran direct source server for MiMo JANG_2L and JANGTQ_2, one at a time, with
+  Responses API, `max_num_seqs=1`, continuous batching, `xml_function`,
+  `think_xml`, native MiMo mixed full/SWA cache, paged cache, block-disk L2,
+  no `VMLINUX_DECODE_TRACE`, and deterministic exact prompt
+  `Reply with exactly: SPEED_OK`.
+- JANG_2L artifacts:
+  - `build/current-mimo-jang2l-postwarm-normal-no-trace-20260610.response.json`
+  - `build/current-mimo-jang2l-postwarm-cachehit-normal-no-trace-20260610.response.json`
+- JANGTQ_2 artifacts:
+  - `build/current-mimo-jangtq2-postwarm-normal-no-trace-20260610.response.json`
+  - `build/current-mimo-jangtq2-postwarm-cachehit-normal-no-trace-20260610.response.json`
+- Proven JANG_2L: real 112GB model, native mixed-SWA cache/L2, exact
+  `SPEED_OK`; startup decode warmup `45.71s`; post-warm `4` tokens in `5.39s`
+  (`0.7 tok/s`); repeat found short mixed-SWA cache hit then correct tiny-hit
+  bypass, `4` tokens in `5.35s` (`0.7 tok/s`).
+- Proven JANGTQ_2: real 83GB model, native TurboQuant path with 141 TQ
+  groups/replacements and fused gate+up, native mixed-SWA cache/L2, exact
+  `SPEED_OK`; startup MiMo warmup `0.05s`; post-warm `4` tokens in `1.39s`
+  (`2.9 tok/s`); repeat found short mixed-SWA cache hit then correct tiny-hit
+  bypass, `4` tokens in `1.32s` (`3.0 tok/s`).
+- Classification: JANG_2L speed remains a real affine full-vocab lm_head/decode
+  throughput blocker. Cache/L2 is not the primary short-turn cause and current
+  sidecar evidence does not prove loader upcast/mis-shape. JANGTQ_2 is the
+  viable fast MiMo checkpoint lane today, but this short row does not prove
+  long-run throughput, media semantics, exactness, or release readiness.
+- Process cleanup: both servers stopped; no matching `vmlx_engine.cli serve` or
+  `uvicorn` process remained after checks.
+- Additional issue: JANG_2L source server emitted a Python 3.13 finalization/GIL
+  fatal after clean app-layer shutdown. JANGTQ_2 shutdown was clean. Track if it
+  repeats.
+- Matrix updated:
+  `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md`.
+
 # 2026-06-10 - MiMo local runtime/cache lane selected
 
 - Request: continue toward production readiness for the named model families

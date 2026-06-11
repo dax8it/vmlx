@@ -7,6 +7,67 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### MiMo JANG_2L vs JANGTQ_2 Post-Warm Direct Speed Boundary
+
+Artifacts:
+
+- `build/current-mimo-jang2l-postwarm-normal-no-trace-20260610.response.json`
+- `build/current-mimo-jang2l-postwarm-cachehit-normal-no-trace-20260610.response.json`
+- `build/current-mimo-jangtq2-postwarm-normal-no-trace-20260610.response.json`
+- `build/current-mimo-jangtq2-postwarm-cachehit-normal-no-trace-20260610.response.json`
+
+Live setup:
+
+- Source server, not release/package work.
+- Same port/settings per run: Responses API, `max_num_seqs=1`, continuous
+  batching, `xml_function` tool parser, `think_xml` reasoning parser, paged
+  cache, native MiMo mixed full/SWA cache, block-disk L2 enabled, no
+  `VMLINUX_DECODE_TRACE`.
+- Prompt: `Reply with exactly: SPEED_OK`, deterministic
+  `temperature=0`, `top_p=1`, `max_output_tokens=8`.
+
+Proven:
+
+- MiMo JANG_2L loaded real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, 112GB model,
+  native mixed full/SWA cache, L2 enabled, `lm_head=True`, qkv `48/48`,
+  switch proj `141/141`, dense MLP `3/3`. Sidecar inspection showed
+  `lm_head.weight=(152576,1024)` uint32 and
+  `lm_head.scales/biases=(152576,64)` float16, matching affine 8-bit group-64
+  for hidden size 4096.
+- JANG_2L startup paid the single-active MiMo decode graph warmup:
+  `45.71s`. Post-warm exact response was `SPEED_OK`, 4 output tokens in
+  `5.39s` server time (`0.7 tok/s`). Repeated same prompt found the expected
+  short mixed-SWA cache hit and deliberate tiny-hit bypass, then exact
+  `SPEED_OK`, 4 output tokens in `5.35s` (`0.7 tok/s`).
+- MiMo JANGTQ_2 loaded real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`, 83GB model,
+  native TurboQuant path, 141 TQ groups/replacements, fused gate+up,
+  native mixed full/SWA cache, L2 enabled, and single-active MiMo warmup
+  `0.05s`.
+- JANGTQ_2 post-warm exact response was `SPEED_OK`, 4 output tokens in
+  `1.39s` server time (`2.9 tok/s`). Repeated same prompt found the expected
+  short mixed-SWA cache hit and deliberate tiny-hit bypass, then exact
+  `SPEED_OK`, 4 output tokens in `1.32s` (`3.0 tok/s`).
+- Cache behavior is architecture-honest: generic TurboQuant KV stayed off for
+  MiMo; native full/SWA/RotatingKVCache plus paged/L2 remained active. Short
+  31-token hits are intentionally bypassed because reconstructing tiny
+  mixed-SWA prefixes is slower than full prefill.
+
+Boundary:
+
+- This classifies the reported MiMo 0.3 tok/s-style issue as a real JANG_2L
+  affine full-vocab lm_head/decode throughput blocker, not a prefix/L2 cache
+  bug and not a loader upcast/mis-shape bug by current evidence.
+- JANGTQ_2 is the viable fast MiMo checkpoint lane today; JANG_2L remains slow
+  after warmup and should not be advertised as a high-throughput MiMo path.
+- These short exact rows do not prove long-run 40 tok/s throughput, required
+  tools, tool-result continuation, media semantics, source-vs-quant exactness,
+  installed-app parity, package/sign/notarize, or release readiness.
+- The JANG_2L shutdown emitted a Python 3.13 finalization/GIL fatal after clean
+  app-layer shutdown; JANGTQ_2 shutdown did not. Track separately as a
+  shutdown-runtime issue if it repeats.
+
 ### Qwen/Qwen-Coder Empty Required Tool Args Fail-Closed Guard
 
 Source update:

@@ -1,4 +1,67 @@
 ## CODEX
+- now: completed direct source MiMo post-warm speed boundary proof, no release
+  action and no server left running.
+- JANG_2L result: real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`, native
+  mixed-SWA cache/L2, exact `SPEED_OK`; startup decode warmup `45.71s`;
+  post-warm response `4` tokens in `5.39s` (`0.7 tok/s`); repeated same prompt
+  hit the short mixed-SWA cache path then correctly bypassed tiny hit and
+  returned `4` tokens in `5.35s` (`0.7 tok/s`).
+- JANGTQ_2 result: real
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`, native
+  TurboQuant with `141` TQ groups/replacements and fused gate+up, native
+  mixed-SWA cache/L2, exact `SPEED_OK`; startup MiMo warmup `0.05s`;
+  post-warm response `4` tokens in `1.39s` (`2.9 tok/s`); repeated same prompt
+  returned `4` tokens in `1.32s` (`3.0 tok/s`).
+- classification: MiMo JANG_2L speed remains a real affine full-vocab
+  lm_head/decode throughput blocker, not a prefix/L2 cache issue and not a
+  proven loader upcast/shape bug. JANGTQ_2 is the viable fast MiMo checkpoint
+  lane today, but short exact rows do not prove long-run throughput or media.
+- artifact/proof matrix update:
+  `.agents/PROOF_MATRIX_128GB_MIMO_N2_GEMMA_20260610.md` now includes the
+  side-by-side boundary and artifact paths.
+- additional issue observed: JANG_2L source server emitted a Python 3.13
+  finalization/GIL fatal after clean app-layer shutdown; JANGTQ_2 shutdown did
+  not repeat it. Track as a shutdown-runtime issue if it appears again.
+
+## CODEX
+- now: MiMo JANG_2L evidence inspection found the slow path is isolated to
+  full-vocab `lm_head` logits realization, not MoE/router forward, sampler,
+  prefix cache, or L2. Existing logs show model forward at a few ms while
+  diagnostic `avg_logits_ms` is seconds to tens of seconds.
+- artifact check: local JANG_2L sidecars have `lm_head.weight` shape
+  `(152576, 1024)` uint32 and `lm_head.scales/biases` shape `(152576, 64)`
+  float16, matching 8-bit group-64 for hidden size 4096. Loader coverage
+  `lm_head=True` is credible; no upcast/mis-shape fix is currently proven.
+- next proof: launch one direct source server for MiMo JANG_2L without
+  `VMLINUX_DECODE_TRACE` to determine whether 0.3 tok/s remains in normal
+  user mode or was inflated by trace/full-logits materialization and first
+  compile. This is a live runtime proof only; no release/sign/package action.
+
+## CODEX
+- now: continuation resumed from deprecated `/Users/eric/vmlx` context but active
+  work is `/Users/eric/mlx/vllm-mlx-finite-launch-guard` per repo guard.
+- current-turn blocker being reduced: MiMo V2.5 JANG/JANGTQ runtime/kernel and
+  parser/template quality, specifically slow/odd visible output, spacing and
+  special-token/raw-delimiter behavior, Responses/content/reasoning/tool delta
+  usability, and honest media gating. This follows Eric's latest instruction to
+  stop drifting and focus on live proofs/fixes for MiMo/Gemma/Qwen release
+  blockers.
+- active constraints rechecked: no release/sign/notarize/PyPI/updater/site
+  action; no N2 JANG_1L work; no fake parser fixes; no synthetic tool args; no
+  reasoning-disable workaround; no subagent delegation. Direct shell/Python is
+  allowed only for local proof/artifact inspection/tests, not for spawning
+  agents.
+- current source state: branch `codex/pr-intake-manifest` at `4b785cffe`
+  pushed to `origin/main` and `origin/codex/pr-intake-manifest`; only known
+  dirty `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  and untracked `node_modules/` remain.
+- immediate next movement: inspect latest MiMo JANG_2L/JANGTQ_2 live artifacts
+  and runtime code paths for the reported bad visible text/speed behavior
+  before editing. Do not claim MiMo media support from the current JANGTQ_2
+  force-text proof; it proves honest text-runtime gating only.
+
+## CODEX
 - now: second 26B VL bundled installed-app proof also failed only on
   `reasoning_display`. The row remains open; no gate registration was made.
 - failed proof:
