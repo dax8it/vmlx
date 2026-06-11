@@ -13816,3 +13816,12 @@ Next action:
 
 # 2026-06-11 parser exactness verification refresh
 - Focused parser/API guards passed after the renewed spacing/special-character instruction: XML-family/compact XML spacing/entity slice `9/9`, Responses SSE special argument plus DSML plain-param whitespace/entities/newlines `2/2`, required-args fail-closed `7/7`, and `git diff --check`. This is current source/unit/API regression proof for exact provided-argument preservation and fail-closed missing args; it is not a fresh live gateway/tunnel recapture or release proof.
+
+# 2026-06-11 MiMo speed/upcast blocker selected
+- Switching to MiMo V2.5 JANG_2L unacceptable throughput/upcast/runtime blocker. Need evidence before edits: inspect live artifacts/logs and source for dtype/upcast, sampler compile, quant/dequant, native mixed-SWA cache reconstruction, and artifact/quant contract. No release, N2 JANG_1L, PyPI, updater, site, synthetic parser args, or subagent action.
+
+# 2026-06-11 MiMo JANG_2L speed trace root cause
+- Added gated decode trace split and ran two tiny live MiMo JANG_2L requests. Evidence: first unsplit trace reproduced `avg_sample_ms=46266.02`; split trace showed first token `model_ms=2.62`, `logits_ms=34124.88`, `sample_ms=9.43`, second token `model_ms=2.71`, `logits_ms=563.58`, `sample_ms=1.10`. Visible output was `OK`, quant coverage included `lm_head=True`, and both servers were stopped. Classification: the 30s-class first-token stall is quantized `lm_head`/logits materialization compile, not sampler or routed model forward. Next: add MiMo load-time decode-logits/lm_head warmup; steady `~0.56s` logits remains not fully release-clear.
+
+# 2026-06-11 MiMo standalone lm_head warmup rejected
+- Tried MiMo standalone quantized `lm_head` warmup. First attempt exposed packed-width inference bug (`1024` packed vs `4096` expanded); corrected attempt warmed in `0.07s` but did not fix the real decode graph. Live proof still returned `OK` but first token `logits_ms=72395.20`, second token `logits_ms=518.24`. Removed the ineffective warmup code. Keep only gated decode trace split. Next real fix must warm the full decode/cache graph or reduce quantized lm_head/logits materialization itself; do not claim MiMo speed fixed.

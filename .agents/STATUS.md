@@ -6799,3 +6799,88 @@ Other-agent action:
 - Not proven:
   - this is source/unit/API regression proof, not a fresh same-model live
     gateway/tunnel recapture and not a release/notarization proof.
+
+# 2026-06-11 MiMo speed/upcast blocker selected
+
+- Request:
+  - address the live MiMo V2.5 JANG_2L unacceptable throughput seen in UI
+    (`~0.3 t/s` class behavior), with attention to bf16/upcast, sampler,
+    runtime decode, cache, and quant path correctness.
+- Current boundary:
+  - do not guess or add fake guards;
+  - trace existing live logs/artifacts and source first;
+  - no release/sign/notarize/PyPI/updater/site action;
+  - no N2 JANG_1L work;
+  - no subagents.
+- Initial hypothesis set to test against evidence:
+  - dtype/upcast or mixed quant dequant path may be forcing slow operations;
+  - sampler first-sample/compile path may dominate despite fast forward;
+  - MiMo native asymmetric mixed-SWA cache reconstruction may still affect
+    some paths;
+  - artifact/quant contract may be the real issue instead of cache/parser.
+- Next action:
+  - inspect current MiMo JANG_2L/JANGTQ_2 proof artifacts, server logs, source
+    patches, dtype casts, sampler timing, and cache timing before editing.
+
+# 2026-06-11 MiMo JANG_2L speed root-cause trace
+
+- Action:
+  - added temporary/permanent gated decode trace split for MLLM and
+    SingleBatchGenerator paths under `VMLINUX_DECODE_TRACE`;
+  - launched MiMo JANG_2L source server twice on ports `59941` and `59942` with
+    `VMLINUX_DECODE_TRACE=1` and `VMLINUX_DECODE_TRACE_EVERY=1`;
+  - sent the same 2-token Responses request and stopped both servers.
+- Artifact/logs:
+  - `build/current-mimo-jang2l-trace-split-20260611.server.log`;
+  - `build/current-mimo-jang2l-trace-split-20260611.response.json`;
+  - `build/current-mimo-jang2l-trace-split-v2-20260611.server.log`;
+  - `build/current-mimo-jang2l-trace-split-v2-20260611.response.json`.
+- Evidence:
+  - request returned visible `OK`;
+  - first unsplit trace reproduced first-token stall:
+    `avg_model_ms=2.68`, `avg_sample_ms=46266.02`;
+  - split trace shows the stall is logits/lm_head materialization, not sampler:
+    first token `model_ms=2.62`, `logits_ms=34124.88`, `sample_ms=9.43`;
+    second token `model_ms=2.71`, `logits_ms=563.58`, `sample_ms=1.10`;
+  - MiMo quant coverage was present: `lm_head=True embed_tokens=True
+    qkv=48/48 switch_proj=141/141 dense_mlp=3/3`;
+  - native MiMo mixed-SWA cache and deferred L2 store remained active.
+- Root-cause classification:
+  - the unacceptable initial TTFT/speed is primarily first-use quantized
+    `lm_head`/logits materialization compile, with steady per-token logits
+    still around `~0.56s`; sampler itself is not the main bottleneck in this
+    proof.
+- Next action:
+  - add a MiMo-specific decode-logits/lm_head warmup at load time so the
+    first user request does not pay the 30s-class compile cost. This does not
+    claim steady-state throughput is fully release-clear.
+
+# 2026-06-11 MiMo standalone lm_head warmup rejected
+
+- Action:
+  - attempted a MiMo-specific standalone quantized `lm_head` warmup after
+    hotspot quantization.
+- Result:
+  - first attempt failed safely because hidden-size fallback used packed
+    quantized width `1024` instead of expanded width `4096`;
+  - after correcting the width inference, warmup completed in `0.07s`, but the
+    next live 2-token request still paid the first decode logits compile.
+- Artifact/logs:
+  - `build/current-mimo-jang2l-lmhead-warmup-20260611.server.log` shows the
+    rejected shape mismatch;
+  - `build/current-mimo-jang2l-lmhead-warmup-v2-20260611.server.log` and
+    `.response.json` show visible `OK` but first-token `logits_ms=72395.20`,
+    second-token `logits_ms=518.24`.
+- Classification:
+  - standalone `lm_head(probe)` does not compile the same lazy decode graph
+    that the first real token materializes, so keeping that warmup would be a
+    fake fix. The attempted warmup code was removed.
+- Remaining source change:
+  - keep the gated decode trace split for SingleBatch and MLLM generators so
+    future live proofs can separate model, logits/materialization, processor,
+    and sampler time.
+- Next real fix target:
+  - either warm the full MiMo decode graph with a real cache/input path during
+    startup/background readiness, or reduce the quantized lm_head/logits
+    materialization cost itself. Do not claim MiMo speed fixed from the rejected
+    standalone warmup.
