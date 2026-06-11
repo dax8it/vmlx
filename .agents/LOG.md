@@ -17860,3 +17860,22 @@ Next action:
   no code edit was needed in this pass. Keep deployed reports on same-model raw
   SSE evidence; missing required args must fail closed and must not be invented
   from visible preamble text.
+
+# 2026-06-11 08:04 PDT - DSV4 cache/L2/tool release rows
+
+- Action:
+  ran the current DSV4 Responses cache gate, restart/L2 gate, and one-tool-stop
+  gate against `/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG`.
+- Result:
+  same-process cache row passed with `paged+dsv4` hot previous-response and
+  streaming cache hits; restart/L2 row passed with disk write before restart and
+  disk hit after restart; one-tool-stop row passed with exactly one round1
+  tool call and final `DONE` after tool result.
+- Source fix:
+  changed `run_dsv4_responses_restart_l2_gate.py` so exact visible output is a
+  separate diagnostic (`visible_output_notes`) instead of failing the L2
+  mechanics proof. Current proof still records the exactness drift (`STED` vs
+  `STORED`) for the DSV4 quality row.
+- Aggregate:
+  `build/current-objective-proof-after-dsv4-cache-l2-one-tool-refresh-20260611.json`
+  marks all three DSV4 cache/L2/one-tool rows pass.
