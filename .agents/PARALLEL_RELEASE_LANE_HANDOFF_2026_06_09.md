@@ -146,7 +146,26 @@ panel/scripts/verify-release-dmgs.sh
    tunnel. Required proof: reasoning enabled without workaround, visible stream,
    `response.function_call_arguments.delta`, `.done`, final object consistency,
    valid output indices, and tool-result continuation.
-2. Fix or recapture the Qwen35 tunnel output-index path. Current failing proof:
+2. N2 JANGTQ2 tunnel/deployment parity:
+   current local direct/gateway raw SSE classification is
+   `build/current-responses-raw-sse-parity-n2-jangtq2-direct-gateway-missing-tunnel-corrected-20260611.json`.
+   It is `status=open` only because public tunnel capture is missing and the
+   reused local capture had `enable_thinking=false`. Direct and gateway both
+   preserve `lookup` arguments `{"query":"alpha"}`, emit argument delta/done,
+   keep final object arguments consistent, parse cleanly, and use valid indices
+   (`message=[0]`, `function_call=[1]`). Public tunnel model list
+   `build/current-n2-jangtq2-tunnel-availability-20260611/models.json` does
+   not advertise any Nex/N2 model. Parallel lane should either deploy/advertise
+   the same N2 JANGTQ2 served model on the tunnel and recapture direct/gateway/
+   tunnel with reasoning enabled, or keep this row explicitly open as tunnel
+   availability rather than a local parser/runtime failure. Do not touch N2
+   JANG_1L from this lane.
+3. Qwen35 tunnel output-index path is now superseded by later green Qwen35
+   direct/gateway/tunnel parity in the 2026-06-10 logs, but stale artifacts
+   still exist. If revisiting Qwen35, use
+   `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
+   as the current green reference, not the older June 9 failing recapture.
+   Older context follows for provenance only. Current failing proof:
    `build/current-responses-raw-sse-parity-qwen35-direct-source-vs-tunnel-20260609.json`.
    Current-source direct raw SSE:
    `build/responses-sse-captures-20260609/direct-qwen35-mxfp8-mtp-tool-current-source-20260609.sse`.
@@ -173,13 +192,14 @@ panel/scripts/verify-release-dmgs.sh
    If gateway emits function calls at `output_index=1`, rebuild/redeploy the
    tunnel backend from current source and recapture. If gateway/source also reuse
    `0`, reopen the source streaming path.
-3. Run Gemma4 media/UI proof from current source or the rebuilt installed app.
+4. Run Gemma4 media/UI proof from current source or the rebuilt installed app.
    Installed-app runtime parity is now green, so the next useful Gemma work is
    real model/media/API/UI behavior, not another parity hash audit.
-4. Continue MiMo on artifact/logit/quant contract or runtime decode. Keep media
+5. Continue MiMo on artifact/logit/quant contract or runtime decode. Keep media
    runtime truth separate from preserved-but-unwired media weights.
-5. Recheck N2 `JANG_1L` memory preflight before any launch. If still below the
-   guard, update status with the skip artifact rather than forcing a load.
+6. N2 `JANG_1L` is currently Eric-owned/off-limits in this lane. Do not launch,
+   fix, prove, classify, or re-preflight it unless Eric explicitly reopens that
+   lane in the current turn. Older provenance below is historical only.
    Latest continuation refresh:
    `build/current-n2-pro-jang1l-local-memory-preflight-continuation-20260609.json`
    is `decision=do_not_launch`, indexed payload `110.57 GiB`, required
@@ -192,7 +212,7 @@ panel/scripts/verify-release-dmgs.sh
    available `112.56 GiB`, gap `6.01 GiB`.
    `build/current-n2-jang1l-chat-cache-proof-after-release-gate-20260609.json`
    is `status=skipped`, `reason=n2_jang1l_insufficient_available_memory`.
-6. For MiniMax #179, do not rerun the already-green MiniMax Small source smoke
+7. For MiniMax #179, do not rerun the already-green MiniMax Small source smoke
    unless source changes. Best help is reporter-machine K parity: model file
    manifest/hash, rendered prompt/template flags, resolved sampling kwargs, raw
    SSE visible/reasoning capture, and cancel lifecycle for the same response id.

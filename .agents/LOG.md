@@ -16975,3 +16975,42 @@ Next action:
   `build/current-release-regression-manifest-after-gemma26-crack-live-smoke-20260611.json`.
   Gemma26 is no longer in `live_smoke_missing` or `live_tool_missing`; overall
   manifest remains `release_ready=false`.
+
+# 2026-06-11 04:03 PDT - N2 JANGTQ2 SSE tunnel boundary recorded
+
+- Captured public tunnel model availability in
+  `build/current-n2-jangtq2-tunnel-availability-20260611/models.json`.
+  The tunnel currently advertises MiMo, Qwen3.6, Gemma, Step, Nemotron, and
+  LFM rows, but no Nex/N2 row.
+- Classification boundary:
+  missing N2 tunnel raw SSE is a deployment availability gap for this proof,
+  not evidence that the local N2 parser/runtime failed.
+- Corrected expected values for existing direct/gateway N2 captures before
+  rerun:
+  model `n2-jangtq2-stream-boundary-20260610`, tool `lookup`, arguments
+  `{"query":"alpha"}`.
+- No claim yet:
+  direct/gateway consistency must be rerun with the corrected expected values;
+  the previous classifier output used the wrong expected function/args/model.
+
+# 2026-06-11 04:05 PDT - N2 JANGTQ2 corrected SSE classifier result
+
+- Ran:
+  `.venv/bin/python tests/cross_matrix/run_responses_raw_sse_parity_contract.py --direct-sse build/responses-sse-captures-20260610/direct-n2-jangtq2-first-tool-20260610.sse --gateway-sse build/responses-sse-captures-20260610/gateway-n2-jangtq2-first-tool-20260610.sse --direct-log build/responses-sse-captures-20260610/direct-n2-jangtq2-stream-boundary.server.log --gateway-log build/responses-sse-captures-20260610/gateway-n2-jangtq2-first-tool-20260610.log --expected-model n2-jangtq2-stream-boundary-20260610 --expected-function lookup --expected-arguments '{"query":"alpha"}' --out build/current-responses-raw-sse-parity-n2-jangtq2-direct-gateway-missing-tunnel-corrected-20260611.json`.
+- Result:
+  artifact `status=open`, `missing_captures=["tunnel"]`.
+- Direct/gateway proof:
+  both present surfaces have `argument_delta_count=2`,
+  `argument_done_count=1`, authoritative/final/done arguments
+  `{"query": "alpha"}`, clean parse, expected model/function/args, final
+  response consistency, and valid output indices
+  `message=[0]`, `function_call=[1]`.
+- Open boundaries:
+  public tunnel lacks a Nex/N2 model in
+  `build/current-n2-jangtq2-tunnel-availability-20260611/models.json`, and the
+  reused local capture has `enable_thinking=false`, so this does not clear
+  same-model direct/gateway/tunnel or reasoning-enabled N2 Responses parity.
+- Updated:
+  `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and
+  `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the corrected
+  split and other-agent action.

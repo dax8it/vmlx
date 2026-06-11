@@ -420,6 +420,18 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   `cache_detail=paged+ssm`, block L2, and SSM companion disk stores. This does
   not clear N2 audio support, N2 JANG_1L, public tunnel SSE, or Developer ID DMG
   package/sign/notarize/release readiness.
+- 2026-06-11 N2 JANGTQ2 raw SSE classification update:
+  `build/current-responses-raw-sse-parity-n2-jangtq2-direct-gateway-missing-tunnel-corrected-20260611.json`
+  is `status=open`, not pass. With the corrected capture identity
+  (`n2-jangtq2-stream-boundary-20260610`, `lookup`, `{"query":"alpha"}`),
+  direct local server and panel gateway both parse cleanly, preserve
+  authoritative arguments through `response.function_call_arguments.delta` and
+  `.done`, match final object arguments, and use valid output item indices
+  (`message=[0]`, `function_call=[1]`). The public tunnel availability probe
+  `build/current-n2-jangtq2-tunnel-availability-20260611/models.json` does not
+  advertise a Nex/N2 model, so exact N2 tunnel raw SSE remains a deployment
+  availability gap. This capture also used `enable_thinking=false`, so it does
+  not clear reasoning-enabled N2 Responses parity.
 - 2026-06-10 Gemma installed-app update:
   `build/current-real-ui-installed-app-gemma4-12b-mxfp4-responses-tools-cache-20260610.json`
   is `status=pass` for the local rebuilt `/Applications/vMLX.app` plus

@@ -11615,3 +11615,43 @@ Other-agent action:
   `live_tool_missing` with no `not_pass` entries added. Overall release remains
   not ready because other live-smoke families, MiMo, MiniMax issue179, and
   real-UI matrix blockers remain.
+
+# 2026-06-11 04:03 PDT N2 JANGTQ2 Responses SSE tunnel boundary
+
+- Current lane:
+  continue Python engine/API proof only; no release/sign/notarize/PyPI/site
+  action in this movement, no subagents, no deprecated `/Users/eric/vmlx`, and
+  no N2 JANG_1L.
+- Public tunnel availability probe:
+  `build/current-n2-jangtq2-tunnel-availability-20260611/models.json` was
+  captured from `https://testapi.adlabus.dev/v1/models`. It does not advertise
+  a Nex/N2 model, so exact N2 JANGTQ2 tunnel raw SSE cannot be captured from
+  the current public tunnel deployment.
+- Direct/gateway SSE classifier correction:
+  the first local classification of existing N2 direct/gateway captures used
+  wrong expected tool/model values. The correct expected values for those
+  captures are model `n2-jangtq2-stream-boundary-20260610`, function `lookup`,
+  and arguments `{"query":"alpha"}`. Next action is to rerun the classifier
+  with those expected values and classify direct/gateway separately from the
+  missing tunnel deployment surface.
+
+# 2026-06-11 04:05 PDT N2 JANGTQ2 direct/gateway SSE classified, tunnel open
+
+- Corrected classifier artifact:
+  `build/current-responses-raw-sse-parity-n2-jangtq2-direct-gateway-missing-tunnel-corrected-20260611.json`
+  has `status=open`, `missing_captures=["tunnel"]`.
+- Proven for present surfaces:
+  direct local server and panel gateway both parse cleanly, preserve
+  authoritative `lookup` arguments `{"query":"alpha"}`, emit
+  `response.function_call_arguments.delta` and `.done`, match final object
+  arguments, report the expected model, and use valid output indices
+  (`message=[0]`, `function_call=[1]`).
+- Not proven:
+  same-model tunnel SSE is absent because the public tunnel does not advertise
+  a Nex/N2 model; reasoning-enabled parity is also not cleared because the
+  reused direct/gateway capture resolved `enable_thinking=false`.
+- Other-agent handoff:
+  either deploy/advertise the same N2 JANGTQ2 served model on the public tunnel
+  and recapture direct/gateway/tunnel with reasoning enabled, or keep N2 tunnel
+  parity open as deployment availability. Do not classify this as a local
+  parser failure and do not touch N2 JANG_1L from this lane.
