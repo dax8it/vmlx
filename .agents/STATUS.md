@@ -1,4 +1,30 @@
 ## CODEX
+- now: reverted the attempted XML-function required prompt injection source
+  change after live MiMo JANGTQ_2 proof made the exactness failure worse.
+- failed-after-fix artifact:
+  `build/current-mimo-jangtq2-required-tool-after-toolchoice-propagation-20260610.sse`.
+- result: propagation changed prompt length from `289` to `364` tokens and
+  confirmed fallback injection ran, but final tool argument became
+  `{"value":"bluecat\n"}` instead of `blue-cat`. Therefore this prompt
+  injection is not a valid fix and must not ship.
+- current source state after manual revert: no runtime source fix remains from
+  the failed prompt-injection hypothesis. MiMo JANGTQ_2 tool exactness remains
+  red and should be treated as model/artifact/logit/template contract work,
+  not parser transport repair.
+
+## CODEX
+- now: root-cause trace for MiMo tool exactness found the engine's fallback
+  tool prompt is skipped for `xml_function` when the native template already
+  contains `<tools>` plus the tool name. That means `tool_choice=required`
+  MiMo turns do not receive the stronger source-owned required-turn reminder
+  or concrete `<function=record_fact>` exemplar.
+- planned source fix: for XML-function native prompts, do not early-return on
+  schema presence when `tool_choice=required`; inject the existing concrete
+  fallback prompt and strengthen it to preserve punctuation/hyphens/underscores
+  exactly. This is a prompt/template fix before generation, not post-parse
+  argument repair or synthesis.
+
+## CODEX
 - now: completed MiMo JANGTQ_2 direct raw Responses SSE required-tool capture.
 - artifact: `build/current-mimo-jangtq2-required-tool-raw-sse-20260610.sse`.
 - proven green surfaces: real JANGTQ_2 source server, native TurboQuant,

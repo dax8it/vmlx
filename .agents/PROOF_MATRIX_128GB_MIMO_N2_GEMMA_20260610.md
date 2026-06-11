@@ -12,6 +12,8 @@ separates what was actually loaded and proven from what remains red.
 Artifact:
 
 - `build/current-mimo-jangtq2-required-tool-raw-sse-20260610.sse`
+- rejected follow-up:
+  `build/current-mimo-jangtq2-required-tool-after-toolchoice-propagation-20260610.sse`
 
 Live setup:
 
@@ -51,6 +53,11 @@ Boundary:
 
 - Do not clear this row by post-parse string repair, schema coercion, prompt
   wording only, or synthetic argument reconstruction.
+- A temporary source prompt-injection hypothesis was tested and rejected:
+  forcing XML-function required turns through the concrete fallback prompt
+  changed the prompt (`289` to `364` tokens) but worsened the final argument to
+  `{"value":"bluecat\n"}`. That source change was reverted and must not be
+  used as release evidence.
 - Still open: tool-result continuation, auto-tool/no-tool comparison,
   gateway/tunnel parity, installed-app parity, media semantics, and release
   readiness.

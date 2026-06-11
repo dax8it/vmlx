@@ -99,6 +99,26 @@
 - No-claim: this does not clear tool-result continuation, gateway/tunnel parity,
   installed-app parity, media semantics, or release readiness.
 
+# 2026-06-10 20:29 PDT - MiMo prompt-injection hypothesis rejected
+
+- Hypothesis tested: maybe MiMo JANGTQ_2 exactness failed because
+  `tool_choice=required` was not propagated into the XML-function fallback
+  prompt checker, so the stronger concrete tool prompt was skipped.
+- Temporary source change: passed `tool_choice` into batched prompt template
+  kwargs and forced XML-function required turns through fallback prompt
+  injection with stronger punctuation/hyphen preservation wording.
+- Live artifact:
+  `build/current-mimo-jangtq2-required-tool-after-toolchoice-propagation-20260610.sse`.
+- Result: the prompt changed, proving the hypothesis was actually exercised.
+  Prompt input grew from 289 tokens to 364 tokens and logs showed
+  `Chat template needs fallback tool schema injection.`
+- Failure: exactness got worse. Expected `blue-cat`; final tool argument was
+  `{"value":"bluecat\n"}`.
+- Action: reverted the temporary source changes. Do not ship this prompt
+  injection as a fix. MiMo JANGTQ_2 tool-argument exactness remains red and
+  should be investigated as model/artifact/logit/template contract behavior,
+  not as Responses transport or parser repair.
+
 # 2026-06-10 - MiMo local runtime/cache lane selected
 
 - Request: continue toward production readiness for the named model families
