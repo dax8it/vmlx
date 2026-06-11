@@ -13317,3 +13317,18 @@ Other-agent action:
 - proven in row: text cache repeat first/second with second-hit `paged+zaya_cca` 36 cached tokens, multiturn recall, required tool call, tool-result continuation, structured JSON exactness, exact code whitespace, blue image, no-media-after-image, blue repeat image, and red changed image.
 - source pointer updates: objective digest and release-regression manifest current covered live smoke/tool smoke maps now reference the new passing ZAYA-VL JANGTQ4 artifact.
 - still not release-green overall: Qwen35 public tunnel raw SSE remains red/stale; MiMo is still Eric/remake-bound unless reopened; N2 JANG_1L remains off-limits; release/sign/notarize remains locked.
+
+## CODEX
+- now: selecting `hy3` as the next non-MiMo live-smoke gap because regenerated objective digest `build/current-objective-proof-after-zaya-vl-jangtq4-smoke-prompt-fix-20260611.json` reports `non_mimo_missing_required_family_keys=["hy3"]` and no non-MiMo not-pass artifacts.
+- next movement: inspect current Hy3 local artifacts/model availability and only run a single targeted Hy3 row if present; do not run broad matrix or release/sign/notarize actions.
+
+## CODEX
+- now: Hy3 cannot be run from this machine in the current lane because `find /Users/eric/models /Users/eric/.mlxstudio/models -maxdepth 4 -iname '*hy3*'` returned no model paths. Existing `build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606/summary.json` has only Ling and Nemotron rows, no Hy3 row.
+- boundary: keep Hy3 honestly missing unless a current local artifact appears; do not claim Hy3 from old notes. Moving next to a source-fixable API/tool-loop gate.
+
+## CODEX
+- now: refreshed stale no-heavy contract artifacts after recent source changes.
+- new pass artifacts: `build/current-tool-call-contract-after-zaya-vl-prompt-fix-20260611.json`, `build/current-max-output-context-contract-after-zaya-vl-prompt-fix-20260611.json`, `build/current-cache-architecture-contract-after-zaya-vl-prompt-fix-20260611.json`, `build/current-noheavy-api-cache-contract-after-zaya-vl-prompt-fix-20260611.json`.
+- regenerated digest: `build/current-objective-proof-after-noheavy-cache-api-refresh-20260611.json`.
+- newly green in digest: app `maxToolIterations` cap, server max output/context CLI mapping, cross-family cache architecture, and current-source API/cache no-heavy contracts.
+- remaining open digest rows: high-risk parser/artifact launch policy, generation defaults/MTP/VL media gates, cross-family live smoke (`hy3`, `mimo_v2`), MiMo, N2 broad row with JANG_1L boundary, MiniMax reporter parity, Real Electron cross-family (`hy3`, `mimo_v2`), and DSV4 long-output/code proof files.

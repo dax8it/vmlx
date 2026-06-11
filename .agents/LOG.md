@@ -18328,3 +18328,25 @@ Next action:
 - Single bundled row rerun passed: `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --only ZAYA1-VL-8B-JANGTQ4 --max-models 1 --no-reasoning --include-tools --no-video --no-audio --port 8840 --load-timeout-s 420 --request-timeout-s 240 --out build/current-all-local-model-smoke-zaya-vl-jangtq4-bundled-after-smoke-prompt-fix2-20260611`.
 - Artifact status: `build/current-all-local-model-smoke-zaya-vl-jangtq4-bundled-after-smoke-prompt-fix2-20260611/summary.json` is `pass`, failures=0. The second text cache repeat records `prompt_tokens_details.cached_tokens=36` and `cache_detail=paged+zaya_cca`.
 - Source pointers updated so the objective digest and release-regression manifest consume this current passing artifact instead of the older red/stale ZAYA rows.
+
+# 2026-06-11 10:18 PDT - Hy3 selected as next live-smoke gap
+
+- Regenerated digest `build/current-objective-proof-after-zaya-vl-jangtq4-smoke-prompt-fix-20260611.json` now shows cross-family non-MiMo status open only because `hy3` is missing. ZAYA-VL is no longer in `non_mimo_not_pass_artifacts`.
+- Next action is artifact/model availability inspection for Hy3, then a single-row proof if local model state allows. No broad suite, no release action, no N2 JANG_1L.
+
+# 2026-06-11 10:20 PDT - Hy3 unavailable locally
+
+- `find /Users/eric/models /Users/eric/.mlxstudio/models -maxdepth 4 -iname '*hy3*'` found no Hy3 model path.
+- `build/current-all-local-model-smoke-ling-hy3-nemotron-tools-media-20260606/summary.json` is `pass` but contains only `Ling-2.6-flash-JANGTQ` and `Nemotron-Omni-Nano-JANGTQ-CRACK`; no Hy3 row is present.
+- Current boundary: Hy3 remains a missing-artifact cross-family live-smoke gap, not a source regression proven in this lane. Continue with source-fixable API/tool-loop gate instead.
+
+# 2026-06-11 10:28 PDT - no-heavy cache/API/tool/max-context contracts refreshed
+
+- Refreshed contract artifacts after recent `server.py`, panel chat, request-budget, and audit-source hash changes:
+  - `build/current-tool-call-contract-after-zaya-vl-prompt-fix-20260611.json` pass.
+  - `build/current-max-output-context-contract-after-zaya-vl-prompt-fix-20260611.json` pass.
+  - `build/current-cache-architecture-contract-after-zaya-vl-prompt-fix-20260611.json` pass.
+  - `build/current-noheavy-api-cache-contract-after-zaya-vl-prompt-fix-20260611.json` pass.
+- Regenerated objective digest `build/current-objective-proof-after-noheavy-cache-api-refresh-20260611.json`.
+- Rows newly green in digest: DSV4 app `maxToolIterations` cap, max-output/max-context separation, cross-family cache architecture, and current-source API/cache contracts.
+- Remaining digest open rows are not cleared by no-heavy refresh: high-risk parser/artifact launch policy, generation defaults/MTP/VL gates, Hy3 missing model artifact, MiMo, N2 broad row with JANG_1L off-limits, MiniMax reporter parity, Real Electron cross-family, and DSV4 long-output/code proof artifacts.
