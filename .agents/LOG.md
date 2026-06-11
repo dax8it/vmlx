@@ -16928,3 +16928,50 @@ Next action:
   `focused_source_slice=pass`. `build/current-release-regression-manifest-after-issue165-dsv4-cache-tool-loop-20260611.json`
   remains `release_ready=false`; blockers now exclude issue119 and issue165 and
   are MiMo runtime quality, MiniMax issue179, and real-UI unblocked matrix gaps.
+
+# 2026-06-11 03:56 PDT - continuation scope for next runtime block
+
+- Continue from `f18c77241` on `codex/pr-intake-manifest`; pushed to
+  `origin/main` and branch.
+- Do not reopen release/sign/notarize/PyPI/site work in this block.
+- Do not touch N2 JANG_1L; do not spend this lane on MiMo unless Eric reopens it.
+- Next selection rule:
+  use current artifacts to pick a real non-MiMo runtime/API/cache gap, preferably
+  N2 JANGTQ2 or Gemma/API streaming/cache; run live proof first, patch only real
+  runtime defects, and keep test changes limited to proof pointers or focused
+  guards when needed.
+
+# 2026-06-11 03:58 PDT - Gemma26 live-smoke pointer rejected; exact CRACK run selected
+
+- Inspected
+  `build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-fullmedia-tools-l2-20260610/summary.json`.
+  It is a strong Gemma QAT/JANG4M full-media/tools/L2 proof, but it is not the
+  exact missing CRACK model row.
+- Tried a local manifest regeneration with that pointer; the validator rejected
+  it as identity mismatch:
+  expected `Gemma-4-26B-A4B-it-JANG_4M-CRACK`, actual
+  `gemma-4-26B-A4B-it-qat-JANG_4M`.
+- Reverted the pointer. Next movement is a real run of the exact CRACK artifact
+  into the currently expected live-smoke path.
+
+# 2026-06-11 03:59 PDT - Gemma26 CRACK bundled tools/media smoke passed
+
+- Ran:
+  `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --only Gemma-4-26B-A4B-it-JANG_4M-CRACK --max-models 1 --include-tools --port 8892 --load-timeout-s 600 --request-timeout-s 300 --out build/current-all-local-model-smoke-gemma26-jang4m-bundled-tools-media-20260607`.
+- Result:
+  `build/current-all-local-model-smoke-gemma26-jang4m-bundled-tools-media-20260607/summary.json`
+  has `status=pass`, `row_count=1`, `completed=1`, `failed=0` for the exact
+  CRACK model path.
+- Passed surfaces:
+  text cache repeat, `paged+mixed_swa` cache hit, multi-turn recall,
+  reasoning-on separation, required `record_fact` tool call with
+  `{"value":"blue-cat"}`, tool-result continuation, exact JSON, exact code,
+  blue/red image semantics, blue video semantics, and post-media text recovery.
+- Cache/runtime evidence:
+  native Gemma4 `mixed_swa_kv_v1`, full/sliding/rotating components,
+  prefix/paged/block-disk L2 true, q4 storage-boundary KV quantization, generic
+  TurboQuant KV off.
+- Regenerated:
+  `build/current-release-regression-manifest-after-gemma26-crack-live-smoke-20260611.json`.
+  Gemma26 is no longer in `live_smoke_missing` or `live_tool_missing`; overall
+  manifest remains `release_ready=false`.

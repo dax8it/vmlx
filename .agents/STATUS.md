@@ -11555,3 +11555,63 @@ Other-agent action:
   removes issue165 and issue119 from blockers. Remaining blockers are
   `mimo_v2_jang2l_runtime_quality_open`, `issue179_minimax_k_root_cause_audit`,
   `real_ui_unblocked_non_mimo_missing`, and `real_ui_unblocked_non_mimo_partial`.
+
+# 2026-06-11 03:56 PDT continuation scope for next runtime block
+
+- Active objective continues:
+  make runtime/model/API/cache/tool/reasoning behavior production-quality across
+  prioritized lanes, in broad build/proof blocks, without release-surface churn
+  or test-suite-only work.
+- Current lane boundaries:
+  N2 JANG_1L remains off-limits; MiMo remains outside this lane after Eric said
+  he will remake it; do not sign/notarize/release/PyPI unless explicitly
+  reopened in the current turn.
+- Current proven reductions:
+  Gemma26 mixed-SWA memory/cache and issue165 DSV4 DSML cache/tool-loop are on
+  `origin/main` at `f18c77241`.
+- Next candidate work:
+  inspect current real-UI/non-MiMo and N2 JANGTQ2/Gemma/API streaming artifacts,
+  then run one live proof block that can reduce a real blocker without changing
+  validators first. Parser/API emphasis remains content deltas, reasoning
+  deltas, function-call argument delta/done, output indices, tool continuation,
+  request kwargs, and cache reuse telemetry.
+
+# 2026-06-11 03:58 PDT Gemma26 live-smoke pointer rejected; exact CRACK run selected
+
+- Inspected newer artifact
+  `build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-fullmedia-tools-l2-20260610/summary.json`.
+  It passes tools/media/cache/L2 for
+  `gemma-4-26B-A4B-it-qat-JANG_4M`, but it is not the missing
+  `Gemma-4-26B-A4B-it-JANG_4M-CRACK` row.
+- The release manifest correctly flags that substitution as an identity
+  mismatch, so the pointer was not kept. Do not use adjacent QAT proof to clear
+  the CRACK row.
+- Next action:
+  run the actual Gemma26 CRACK bundled tools/media smoke into
+  `build/current-all-local-model-smoke-gemma26-jang4m-bundled-tools-media-20260607/summary.json`
+  using current bundled Python and then classify the real result.
+
+# 2026-06-11 03:59 PDT Gemma26 CRACK bundled tools/media smoke passed
+
+- Ran exact row:
+  `VMLINUX_BENCH_ISOLATED=1 VMLINUX_BENCH_PYTHON=panel/bundled-python/python/bin/python3.12 .venv/bin/python bench/all_local_model_smoke.py --models-root /Users/eric/models --only Gemma-4-26B-A4B-it-JANG_4M-CRACK --max-models 1 --include-tools --port 8892 --load-timeout-s 600 --request-timeout-s 300 --out build/current-all-local-model-smoke-gemma26-jang4m-bundled-tools-media-20260607`.
+- Result:
+  `summary.json` is `status=pass`, `row_count=1`, `completed=1`,
+  `failed=0`, exact model
+  `/Users/eric/models/dealign.ai/Gemma-4-26B-A4B-it-JANG_4M-CRACK`.
+- Covered:
+  ACK cache repeat with `paged+mixed_swa` cached tokens, multi-turn recall,
+  reasoning separation (`FINAL=OK` with hidden reasoning), required
+  `record_fact {"value":"blue-cat"}`, tool-result continuation,
+  exact structured JSON, exact code whitespace, image blue/red semantics,
+  video blue semantics, and post-image/post-video text recovery.
+- Runtime/cache evidence:
+  native cache reports Gemma4 `mixed_swa_kv_v1`, full/sliding/rotating
+  components, prefix/paged/block-disk L2 true, generic TurboQuant KV off, q4
+  storage-boundary quantization for full-attention KV only.
+- Manifest impact:
+  `build/current-release-regression-manifest-after-gemma26-crack-live-smoke-20260611.json`
+  removes the Gemma26 CRACK path from both `live_smoke_missing` and
+  `live_tool_missing` with no `not_pass` entries added. Overall release remains
+  not ready because other live-smoke families, MiMo, MiniMax issue179, and
+  real-UI matrix blockers remain.
