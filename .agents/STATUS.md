@@ -6408,3 +6408,29 @@ Other-agent action:
     in this movement.
   - This does not clear broader MiMo speed/exactness, Gemma media/UI,
     installed-app, release, or N2 rows.
+
+# 2026-06-10 Responses API special-argument streaming proof
+
+- Added an API-level streaming regression for XML-function tool calls:
+  `tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_xml_tool_call_preserves_special_arguments`.
+- The unit engine emits a three-chunk Responses stream with visible preamble
+  plus:
+  `<tool_call><function=exec_command><parameter=cmd>  printf '&lt;日本語&gt;' &amp;&amp; pwd  </parameter></function></tool_call>`.
+- Proven by the test:
+  - `response.function_call_arguments.delta` concatenates to
+    `{"cmd": "  printf '<日本語>' && pwd  "}`;
+  - `response.function_call_arguments.done` carries the same JSON arguments;
+  - final `response.output_item.done` function-call item carries the same JSON
+    arguments;
+  - visible preamble buffering does not replace final arguments.
+- Verification:
+  - targeted server proof with neighboring buffering/index tests passed `3/3`;
+  - expanded focused guard set passed `87/87`:
+    `tests/test_reasoning_tool_interaction.py`, six focused
+    `tests/test_server.py` streaming/empty-args cases, and
+    `tests/test_tool_parser_required_args_fail_closed.py`;
+  - `py_compile tests/test_server.py` passed;
+  - `git diff --check` passed.
+- Not proven:
+  - This is source/unit API proof, not a new live direct/gateway/tunnel
+    same-model recapture.

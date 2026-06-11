@@ -13775,3 +13775,8 @@ Next action:
 - Fixed shared XML argument serialization plus Nemotron, Auto/Nemotron fallback, Zaya, GLM, Hunyuan, MiniMax, Step3.5, and XMLFunction/Zaya `<value>` wrappers so non-JSON string arguments preserve leading/trailing spacing and decode XML entities while JSON-looking values still parse from trimmed syntax.
 - Verification passed: `tests/test_reasoning_tool_interaction.py` `74/74`; existing server empty-args/streaming required-tool guards `12/12`; parser `py_compile`; `git diff --check`.
 - No live gateway/tunnel recapture, release, notarization, PyPI, N2 JANG_1L, or subagent action was performed. Broader MiMo/Gemma/UI/installed-app rows remain open.
+
+# 2026-06-10 Responses API special-argument stream proof
+- Added source/unit Responses SSE regression proving XML-function `exec_command.cmd` with leading/trailing spaces, Unicode, and XML entities survives `response.function_call_arguments.delta`, `.done`, and final function-call item.
+- Verification passed: targeted server proof `3/3`; expanded focused guard set `87/87`; `py_compile tests/test_server.py`; `git diff --check`.
+- This is not a live direct/gateway/tunnel same-model recapture and does not clear MiMo/Gemma/UI/installed-app/release rows.
