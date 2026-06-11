@@ -19465,3 +19465,109 @@ reasoning output item. Updated the full checklist pointer and regenerated
 status remains `open`, `failed_count=16`. Boundary: do not weaken the strict
 lifecycle check or mark Qwen35 green without a fresh same-model tunnel capture
 that emits completed reasoning output items.
+
+# 2026-06-11 Wiring and live UI release-proof checklist
+
+Use this definition for remaining release readiness proof, so source/API/app
+work does not drift into unrelated tests or fake guard rails.
+
+Wiring checks:
+- model registry and autodetect classify the same family/capabilities the UI
+  presents;
+- runtime loader chooses the expected JANG/JANGTQ/MXFP/native quant path and
+  rejects only real unsupported combinations;
+- tool parser, reasoning parser, thinking kwargs, and generation kwargs match
+  the model family and requested mode;
+- Responses/OpenAI streaming emits stable content deltas, reasoning deltas,
+  function-call argument delta/done events, output indices, tool-result
+  continuation, and final object consistency;
+- cache wiring uses the correct prefix/paged/L2/TurboQuant/native cache policy
+  for the model, with honest first-miss/second-hit telemetry;
+- gateway and tunnel preserve the same event lifecycle as direct source;
+- bundled installed-app Python imports the same patched engine/runtime files
+  as the source checkout.
+
+Live UI checks:
+- launch `/Applications/vMLX.app` visibly and confirm the model row/settings
+  used by the user match the generated server command;
+- load the model from the UI and capture server logs showing detected family,
+  parser selection, reasoning mode, cache mode, block-disk cache directory, and
+  memory headroom;
+- run chat non-stream and stream visible text from the UI-owned server;
+- run no-tool, auto-tool, required-tool, and tool-result continuation from the
+  UI-owned server and compare with direct API;
+- run reasoning off/on/auto or model-supported equivalents and verify no hidden
+  reasoning leaks into visible text;
+- run first and second turns with the same prompt to prove prefix/cache hit
+  telemetry and, where applicable, L2 write/restore;
+- run media only when the artifact has weight-backed media runtime, not just
+  metadata tokens;
+- capture logs/screenshots or permission-enabled Computer Use proof. Current
+  session cannot claim full click-through UI proof because macOS automation and
+  screen capture are blocked.
+
+Active scope after Eric's correction: focus on Gemma and Qwen/vMLX Python
+engine/panel release blockers. N2 JANG_1L and MiMo are not to be loaded,
+patched, classified, or claimed from this lane unless Eric explicitly reopens
+them in the current turn.
+
+# 2026-06-11 Eric instruction - finish release/UI/API lane before N2/MiMo
+
+Eric asked to be told when the vMLX Python engine, UI/API, installed-app, and
+release-readiness parts are actually done so the work can move back to N2 and
+MiMo V2.5. Current handling:
+
+- Keep N2 JANG_1L and MiMo V2.5 parked in this lane until the current release
+  checkpoint work is honestly cleared or Eric explicitly reopens them.
+- Coordinate with the active `./jang` lane through written handoff/status
+  notes and current runtime/package facts, not subagent spawning or hidden
+  delegation.
+- Continue reducing Gemma/Qwen/API/UI/app parity blockers first, especially
+  stale release manifest evidence and Qwen35 direct/gateway/tunnel stream
+  lifecycle parity.
+
+# 2026-06-11 Release manifest/current checklist pointer refresh
+
+Refreshed the release evidence pointers after the clean installed-app parity
+rebuild and Qwen35 reasoning/tool lifecycle guard. This was not a release,
+notarization, tag, upload, PyPI publish, updater, or site action.
+
+Changed source pointers:
+
+- `tests/cross_matrix/run_release_regression_manifest.py` default output is
+  now
+  `build/current-release-regression-manifest-after-installed-app-qwen35-lifecycle-guard-20260611.json`.
+- `tests/cross_matrix/release_regression_manifest.py` current no-heavy
+  API/cache proof now points to
+  `build/current-noheavy-api-cache-contract-after-reasoning-tool-lifecycle-guard-20260611.json`.
+- `tests/cross_matrix/run_full_release_objective_checklist.py` now points to
+  the same current no-heavy proof and current release manifest, and its default
+  output is
+  `build/current-full-release-objective-checklist-after-release-manifest-current-proof-refresh-20260611.json`.
+
+Regenerated artifacts:
+
+- `build/current-release-regression-manifest-after-installed-app-qwen35-lifecycle-guard-20260611.json`
+  reports `status=fail`, `current_proof_sweep=fail`,
+  `prepackage_ready=false`, `release_ready=false`.
+- `build/current-full-release-objective-checklist-after-release-manifest-current-proof-refresh-20260611.json`
+  reports `status=open`, `failed_count=16`, `release_ready=false`.
+
+Verification:
+
+```sh
+.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py tests/test_release_regression_manifest.py -q
+# 350 passed
+```
+
+Current not-done boundary:
+
+- Do not tell Eric this lane is done yet. Current artifacts still keep
+  `prepackage_ready=false` and `release_ready=false`.
+- Remaining blocker classes visible in the current checklist: Qwen35 tunnel
+  reasoning lifecycle, MiniMax issue179 reporter parity/hash evidence, DSV4
+  memory/exactness rows, and parked broad N2/MiMo rows.
+- `/Users/eric/jang` is dirty with active tracked/untracked runtime work. For
+  release-grade bundling, do not package the dirty JANG checkout by accident;
+  use the clean JANG source override or a clean checkout until the JANG lane
+  reconciles.

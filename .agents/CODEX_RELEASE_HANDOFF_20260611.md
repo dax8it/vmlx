@@ -198,3 +198,69 @@
 - Follow the documented signing/notarization workflow only after Eric explicitly
   unlocks release actions in the current turn. The latest local build/install
   was ad-hoc signed for smoke/parity only; it is not a notarized release.
+
+## 2026-06-11 Addendum - current manifest/checklist pointers refreshed
+
+Latest committed baseline before this addendum:
+
+- `12f30761c Clear installed app runtime parity`
+- `d3c2c6a3c Guard Qwen35 reasoning tool lifecycle`
+
+Current proof pointers after the refresh:
+
+- Release manifest:
+  `build/current-release-regression-manifest-after-installed-app-qwen35-lifecycle-guard-20260611.json`
+  is `status=fail`, `prepackage_ready=false`, `release_ready=false`.
+- Full objective checklist:
+  `build/current-full-release-objective-checklist-after-release-manifest-current-proof-refresh-20260611.json`
+  is `status=open`, `failed_count=16`, `release_ready=false`.
+- No-heavy API/cache:
+  `build/current-noheavy-api-cache-contract-after-reasoning-tool-lifecycle-guard-20260611.json`
+  is the current no-heavy API/cache artifact and is `status=pass`.
+- Installed app parity:
+  `build/current-installed-app-runtime-parity-audit-after-clean-jang-app-rebuild-20260611.json`
+  is still the current installed-app runtime parity proof and is `status=pass`.
+
+Verification just run:
+
+```sh
+.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py tests/test_release_regression_manifest.py -q
+# 350 passed
+```
+
+What is now fixed in the board:
+
+- The release manifest runner default output now writes the current
+  installed-app/Qwen35 lifecycle artifact instead of the older Step3.7 label.
+- The release manifest current proof sweep now consumes the current
+  Qwen35-lifecycle no-heavy API/cache artifact instead of the older DSV4
+  preflight label.
+- The full objective checklist now points at the current release manifest and
+  current no-heavy API/cache artifact.
+
+What is still not done:
+
+- Do not tell Eric this lane is done yet. `prepackage_ready=false` and
+  `release_ready=false` remain real.
+- Qwen35 public/tunnel raw SSE reasoning lifecycle remains red until a fresh
+  same-model tunnel capture emits completed reasoning output items matching
+  direct/gateway.
+- MiniMax issue179 reporter parity remains red without reporter artifact/server
+  hash/session proof.
+- DSV4 exactness/memory rows remain open/skipped.
+- N2 JANG_1L and MiMo V2.5 are parked for this lane until Eric explicitly
+  reopens them after the current Gemma/Qwen/API/UI/app release checkpoint work.
+
+JANG lane coordination:
+
+- `/Users/eric/jang` is currently dirty with active tracked and untracked
+  runtime/converter edits. Do not package those uncommitted JANG files into a
+  release by accident.
+- Until JANG is reconciled, release-grade vMLX bundling should keep using a
+  clean JANG source override such as
+  `/tmp/vmlx-clean-jang-source-after-step37-20260611/jang-tools`, or a fresh
+  clean checkout of `jjang-ai/jangq` main that includes the Step3.7 runtime
+  bridge.
+- Coordination with the JANG agent should happen through explicit status notes
+  and current artifact paths. Do not spawn subagents or ask hidden helper
+  processes to summarize JANG work for this lane.

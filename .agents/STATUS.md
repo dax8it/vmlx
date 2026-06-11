@@ -14643,3 +14643,66 @@ Other-agent action:
   public/tunnel deployed stream is not current-source lifecycle clean; do not
   mark this row green without a fresh same-model tunnel capture that emits a
   completed reasoning output item.
+
+## CODEX
+- now: checking the release packaging/UI manifest rows for stale evidence after
+  the installed-app parity and Qwen35 API lifecycle guard updates.
+- blocker being reduced: top-level `prepackage_ready` / `release_ready` rows
+  currently point at
+  `build/current-release-regression-manifest-after-mimo-speed-root-cause-classification-20260611.json`,
+  which predates the installed-app parity rebuild and Qwen35 local lifecycle
+  guard. The goal is to regenerate or update manifest evidence honestly so it
+  reflects current app/API state without running notarization, signing release
+  workflows, PyPI/site/updater actions, or touching N2 JANG_1L.
+- wiring/live UI checklist now being used for release readiness:
+  - wiring means model registry/autodetect, runtime loader/quant path,
+    parser/reasoning selection, request kwargs, Responses/OpenAI stream event
+    lifecycle, cache/prefix/L2 configuration, gateway/tunnel passthrough, and
+    bundled installed-app Python source all agree for the same model.
+  - live UI means a user-visible `/Applications/vMLX.app` launch, model row
+    selection, generated server command/settings parity, chat request shape,
+    streaming visible text, tool mode behavior, reasoning on/off/auto behavior,
+    cache telemetry after first/second turns, logs, and API parity from the
+    same running UI-owned server.
+  - current boundary: Gemma/Qwen source and installed-app parity have current
+    proof; direct UI click/screenshot proof is still blocked by macOS
+    automation/screen-capture permissions in this session; N2 JANG_1L and MiMo
+    are off this lane unless Eric reopens them.
+
+## CODEX
+- current Eric instruction: finish the vMLX Python engine, UI/API, installed-app,
+  and release-readiness work before returning to N2 and MiMo V2.5. Tell Eric
+  when those parts are actually done so the lane can move back to N2/MiMo.
+- coordination boundary: work comprehensively with the active `./jang` lane by
+  writing explicit status/handoff notes and consuming current runtime/package
+  facts, but do not spawn or manage subagents from this lane.
+- active scope now: Gemma/Qwen/API/UI/app parity and release checkpoint
+  readiness. N2 JANG_1L and MiMo remain parked until this checkpoint work is
+  honestly cleared or Eric explicitly changes the scope.
+
+## CODEX
+- now: refreshed release-manifest/full-checklist proof pointers after the
+  installed-app parity rebuild and Qwen35 reasoning/tool lifecycle guard.
+- updated source pointers:
+  `tests/cross_matrix/run_release_regression_manifest.py`,
+  `tests/cross_matrix/release_regression_manifest.py`, and
+  `tests/cross_matrix/run_full_release_objective_checklist.py` now point at:
+  - `build/current-release-regression-manifest-after-installed-app-qwen35-lifecycle-guard-20260611.json`
+  - `build/current-noheavy-api-cache-contract-after-reasoning-tool-lifecycle-guard-20260611.json`
+  - `build/current-full-release-objective-checklist-after-release-manifest-current-proof-refresh-20260611.json`
+- regenerated artifacts:
+  - release manifest: `status=fail`, `prepackage_ready=false`,
+    `release_ready=false`.
+  - full checklist: `status=open`, `failed_count=16`,
+    `release_ready=false`.
+- verification:
+  `.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py
+  tests/test_release_regression_manifest.py -q` passed (`350 passed`).
+- JANG coordination note: `/Users/eric/jang` is dirty with active edits; do not
+  package that dirty tree into release builds. Continue using a clean JANG
+  source override or clean checkout for release-grade bundling until the JANG
+  lane is reconciled.
+- not done yet: the lane cannot move back to N2/MiMo as "done" because
+  Qwen35 tunnel reasoning lifecycle, MiniMax #179 reporter parity, DSV4
+  memory/exactness, and the broader open objective rows still keep
+  `prepackage_ready=false` and `release_ready=false`.
