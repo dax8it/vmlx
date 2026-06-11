@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-11T06:15:59-0700",
+  "created_at": "2026-06-11T06:32:12-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
@@ -678,7 +678,7 @@
               "tests/load-progress-honesty.test.ts"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.561,
+            "elapsed_sec": 0.558,
             "counts": {
               "test_files_passed": 6,
               "tests_passed": 315,
@@ -688,17 +688,17 @@
               "",
               " RUN  v4.0.18 /Users/eric/mlx/vllm-mlx-finite-launch-guard/panel",
               "",
-              " ✓ tests/load-progress-honesty.test.ts (5 tests) 3ms",
+              " ✓ tests/load-progress-honesty.test.ts (5 tests) 2ms",
               " ✓ tests/cache-control-policy.test.ts (12 tests) 2ms",
               " ✓ tests/dsv4-env.test.ts (25 tests) 5ms",
-              " ✓ tests/i18n-consistency.test.ts (7 tests) 24ms",
-              " ✓ tests/settings-flow.test.ts (254 tests) 29ms",
-              " ✓ tests/generation-defaults.test.ts (12 tests) 12ms",
+              " ✓ tests/i18n-consistency.test.ts (7 tests) 23ms",
+              " ✓ tests/settings-flow.test.ts (254 tests) 30ms",
+              " ✓ tests/generation-defaults.test.ts (12 tests) 11ms",
               "",
               " Test Files  6 passed (6)",
               "      Tests  315 passed (315)",
-              "   Start at  06:10:45",
-              "   Duration  267ms (transform 425ms, setup 0ms, import 491ms, tests 76ms, environment 0ms)",
+              "   Start at  05:45:49",
+              "   Duration  266ms (transform 319ms, setup 0ms, import 457ms, tests 74ms, environment 0ms)",
               ""
             ]
           },
@@ -732,7 +732,7 @@
               "tests/model-config-registry.test.ts"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.469,
+            "elapsed_sec": 0.463,
             "counts": {
               "test_files_passed": 1,
               "tests_passed": 72,
@@ -746,8 +746,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  72 passed (72)",
-              "   Start at  06:10:48",
-              "   Duration  140ms (transform 49ms, setup 0ms, import 58ms, tests 31ms, environment 0ms)",
+              "   Start at  05:45:52",
+              "   Duration  202ms (transform 47ms, setup 0ms, import 55ms, tests 31ms, environment 0ms)",
               ""
             ]
           },
@@ -761,7 +761,7 @@
               "../tests/test_model_config_registry.py"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.708,
+            "elapsed_sec": 2.696,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 140,
@@ -4589,8 +4589,8 @@
           "indexed_payload_gb_decimal": 118.73,
           "indexed_payload_gib": 110.57,
           "required_available_gib": 118.57,
-          "available_gib": 117.41,
-          "memory_gap_gib": 1.16,
+          "available_gib": 111.12,
+          "memory_gap_gib": 7.45,
           "memory_preflight_decision": "do_not_launch",
           "launch_safe": false,
           "classification": "careful_ram_live_proof_pending",
@@ -7176,8 +7176,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 73.55,
-              "memory_gap_gb": 63.85
+              "free_plus_speculative_purgeable_gb": 89.15,
+              "memory_gap_gb": 48.25
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -9106,8 +9106,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 73.55,
-              "memory_gap_gb": 63.85
+              "free_plus_speculative_purgeable_gb": 89.15,
+              "memory_gap_gb": 48.25
             }
           },
           "unblocked_non_mimo_status": "pass",

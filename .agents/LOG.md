@@ -17506,3 +17506,28 @@ Next action:
   `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-cache-thinking-off-pass-20260611-proof.json`;
   reasoning-on should stay red until a real native tool call is produced under
   `enable_thinking=true`.
+
+# 2026-06-11 continuation PDT - packaged integrity gate rerun
+
+- Action:
+  reran packaged integrity as a non-publishing gate check:
+  `.venv/bin/python tests/cross_matrix/run_packaged_integrity_contract.py --out build/current-packaged-integrity-contract-after-n2-qwen-gemma-notes-20260611.json`.
+- Result:
+  `status=fail`, with `release_gate_unit_contracts` passing `49/49`, bundled
+  Python verifier passing, bundled `vmlx_engine` and `jang_tools` hash parity
+  true, and dry release gate failure limited to known objective rows.
+- Remaining package blocker:
+  staged packaged app parity is still false:
+  `staged_app_engine_hash_parity=false` and
+  `staged_app_engine_source_hash_parity=false`. This points to rebuilding the
+  staged packaged app from current bundled Python/source before packaged
+  integrity can go green.
+- Remaining objective blockers:
+  gate reports 13 open rows: DSV4 cache/tool/L2, packaged Qwen/JANG
+  speed/MTP, Ling/Bailing quality, Gemma4 26B CRACK quality/speed,
+  cross-family live multi-turn smoke, MiMo runtime/tool/long-prompt, N2 Pro
+  JANG1L/JANGTQ runtime/cache/API/UI, and MiniMax reporter parity.
+- Side effect:
+  `build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json`
+  was refreshed with current timestamps/RAM preflight values by the gate. This
+  is not a new runtime proof and should not be overclaimed.
