@@ -8025,6 +8025,46 @@ Other-agent action:
     has current source, then rerun the MiMo JANGTQ_2 installed-app image proof
     to confirm it no longer forces multimodal routing from the UI.
 
+# 2026-06-10 20:04 PDT parser spacing/special-character deep audit continuation
+
+- current user correction: deep-look spacing, special characters, Unicode,
+  XML/JSON escaping, paths, newlines, raw delimiters, visible preambles,
+  argument deltas, and final object consistency across parser/API paths.
+- active blocker being reduced: parser/API exactness for accepted string
+  payloads and fail-closed behavior for missing required args, especially for
+  agentic tool loops.
+- constraints: no release/sign/notarize/PyPI/updater/site action; no N2
+  JANG_1L; no subagents; no synthetic missing-arg repair; no reasoning-disable
+  workaround; no parser strip/postprocessing presented as a fake model fix.
+- next movement: inspect remaining parser family trim/serialization paths and
+  focused tests; patch only if a concrete reproducible exactness gap is found.
+
+# 2026-06-10 20:04 PDT DSML HTML-ish repair spacing fix
+
+- reproduced remaining concrete parser risk by inspection and regression:
+  DSV4/DSML's degraded HTML-ish invoke repair was schema-gated but used
+  `.strip()` on accepted string parameters, so it could rewrite command/file
+  payload spacing in recovered tool calls.
+- fix:
+  `vmlx_engine/tool_parsers/dsml_tool_parser.py` now routes HTML-ish repair
+  parameters through the same schema-aware `_coerce_plain_param_value` and
+  `_plain_param_value_present` helpers used by the plain-param repair path.
+  String values preserve spaces/newlines/special text; numeric/object/bool
+  schema values still coerce from trimmed JSON-like text.
+- regression:
+  `tests/test_tool_format.py::TestFallbackToolPromptFormat::test_dsml_parser_htmlish_repair_preserves_string_spacing`
+  covers a degraded `<invoke_write_file>` block with path spaces and content
+  containing leading/trailing spaces, XML-entity-like text, shell punctuation,
+  and a newline.
+- verification:
+  focused DSV4/DSML repair run passed `4 passed`;
+  broad parser/Responses exactness run passed `252 passed`;
+  `py_compile` passed for the changed files; `git diff --check` passed.
+- boundary:
+  this is source/parser exactness proof only. It is not a fresh live
+  direct/gateway/tunnel recapture, not a MiMo JANGTQ model-exactness fix, and
+  not a release/sign/notarize/PyPI/updater action.
+
 # 2026-06-11 local installed-app rebuild complete
 
 - Result:

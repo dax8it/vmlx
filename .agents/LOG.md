@@ -13935,6 +13935,17 @@ Next action:
 # 2026-06-11 Gemma4 26B forced bundled-Python proof
 - Forced-bundled rerun used `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3` and real installed app UI, but failed the gate on missing `reasoning_display`: `eventCounts.reasoningDone=0`, `persistedReasoningCount=0`. Positive evidence in the failed artifact: exact visible two-turn output, 120 persisted built-in tool items, Responses delta streaming, verified server cache controls, native Gemma4 mixed-SWA cache, `paged+mixed_swa` cache hit tokens `3609`, block-disk L2 `3337` tokens / 54 blocks, parser/language leak checks. Artifact: `docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-vl-mxfp4-responses-tools-cachecontrols-bundled-python-forced-20260611-proof.json`. Do not register it as pass; no live process remained afterward.
 
+# 2026-06-10 20:04 PDT - Parser spacing/special-character deep audit continuation
+- Recorded current correction: continue the deep parser/API audit for spacing, special characters, Unicode, XML entities, JSON escaping, paths, newlines, raw delimiters, visible preambles, streaming argument deltas, and final object consistency.
+- Current lane remains parser/API exactness only: no release/sign/notarize/PyPI/updater/site, no N2 JANG_1L, no subagents, no synthetic argument repair, and no reasoning-disable workaround.
+- Next action: inspect remaining parser trim/serialization paths and focused regressions; patch only a reproduced concrete exactness gap.
+
+# 2026-06-10 20:04 PDT - DSML HTML-ish repair spacing fix
+- Found and fixed a concrete remaining parser exactness gap: DSV4/DSML's degraded HTML-ish invoke repair stripped accepted string parameter payloads after schema-gating the tool. The parser now reuses `_coerce_plain_param_value` / `_plain_param_value_present`, preserving string spacing/newlines while keeping schema coercion for non-string values.
+- Added regression `test_dsml_parser_htmlish_repair_preserves_string_spacing` for a degraded `<invoke_write_file>` with path spaces, shell punctuation, XML-entity-like text, leading/trailing spaces, and a newline.
+- Verification passed: focused DSV4/DSML repair slice `4 passed`; broad parser/Responses exactness slice `252 passed`; changed-file `py_compile`; `git diff --check`.
+- Boundary: source/parser proof only; no live direct/gateway/tunnel recapture, no MiMo JANGTQ exactness claim, and no release/sign/notarize/PyPI/updater action.
+
 # 2026-06-11 parser exactness verification refresh
 - Focused parser/API guards passed after the renewed spacing/special-character instruction: XML-family/compact XML spacing/entity slice `9/9`, Responses SSE special argument plus DSML plain-param whitespace/entities/newlines `2/2`, required-args fail-closed `7/7`, and `git diff --check`. This is current source/unit/API regression proof for exact provided-argument preservation and fail-closed missing args; it is not a fresh live gateway/tunnel recapture or release proof.
 

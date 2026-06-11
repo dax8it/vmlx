@@ -7,6 +7,24 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### DSML HTML-ish Repair Spacing Fix
+
+- Source fix:
+  `vmlx_engine/tool_parsers/dsml_tool_parser.py` no longer strips accepted
+  string parameters in the DSV4/DSML degraded HTML-ish invoke repair path.
+  The path now uses the schema-aware plain-param coercion/presence helpers.
+- Regression:
+  `tests/test_tool_format.py::TestFallbackToolPromptFormat::test_dsml_parser_htmlish_repair_preserves_string_spacing`
+  covers a degraded `<invoke_write_file>` with path spaces, shell punctuation,
+  XML-entity-like text, leading/trailing spaces, and a newline.
+- Verification:
+  focused DSV4/DSML repair slice passed `4 passed`; broad parser/Responses
+  exactness slice passed `252 passed`; changed-file `py_compile` and
+  `git diff --check` passed.
+- Boundary:
+  source/parser proof only. This is not a fresh live direct/gateway/tunnel raw
+  SSE capture, not a MiMo JANGTQ model-exactness fix, and not release proof.
+
 ### MiMo JANGTQ_2 Required Tool Raw SSE Exactness Red
 
 Artifact:
