@@ -11914,3 +11914,64 @@ Other-agent action:
   now has no manifest validation failures after restoring unrelated installed
   hash drift, but installed/staged app parity remains stale against current
   source and must be handled in the package/parity lane.
+
+# 2026-06-11 continuation PDT cache-architecture blocker lane
+
+- Current blocker:
+  `cache_architecture_contracts` is the next engine/runtime-cache blocker from
+  the current regression suite. The runner currently fails
+  `cache_family_pytest` and `panel_cache_launch_policy`.
+- Scope:
+  isolate real cache-policy/runtime source failures first, especially TurboQuant
+  KV boundaries, mixed/SWA/native cache routing, hybrid SSM cache policy, and
+  JANG/JANGTQ/MXFP capability detection. Prefer source fixes over artifact
+  churn.
+- Boundaries:
+  no release/sign/notarize/PyPI/site action, no N2 JANG_1L load/proof, no
+  subagents, and do not stage the pre-existing dirty
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  unless this lane intentionally owns a panel settings fix.
+
+# 2026-06-11 continuation PDT cache-architecture blocker result
+
+- Fix/proof boundary:
+  source cache policy was already suppressing generic stored-KV quantization for
+  both DSV4 and native-owned MiMo asymmetric SWA cache. The cache gate was stale
+  and only pinned the older DSV4-only condition.
+- Test/proof fixes:
+  updated DSV4 cache contract expectations to require
+  `dsv4Active || nativeStoredKvQuantization` and matching launch-preview/runtime
+  guards. Made the plain MLX 4-bit Qwen3.6 fixture use a temp `config.json`
+  directory so local stamped artifacts cannot leak into the no-JANG/no-MXFP
+  classification proof.
+- Verification:
+  focused failed rows now pass (`3 passed`), the panel cache launch selection
+  passes (`102 passed, 189 skipped`), and
+  `run_cache_architecture_contract.py --out build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json`
+  now reports `status=pass`, `failed=[]`, no missing markers/checks, with
+  `cache_family_pytest rc=0 passed=437`.
+- Boundaries:
+  no live model load, no N2 JANG_1L proof/load, and no release/sign/notarize/
+  PyPI/site action in this lane.
+
+# 2026-06-11 continuation PDT cache/panel aggregate refresh
+
+- Additional stale contract cleanup:
+  the panel settings gate still had three engine registry expectations pinned to
+  old MiMo `reasoning_parser=None`; current runtime policy is
+  `reasoning_parser="think_xml"` while `supports_thinking=False` and
+  `think_in_template=False` remain the honest no-thinking defaults.
+- Verification:
+  `tests/test_model_config_registry.py` now passes `140 passed`.
+  `run_noheavy_panel_settings_contract.py --out build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  now reports `status=pass`, panel settings `315 passed`, panel model registry
+  `72 passed`, engine model registry `140 passed`, and panel CLI flag contract
+  `9 passed`.
+- Aggregate current suite:
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  remains `status=open`, but failed steps are reduced to
+  `vl_media_cache_contracts`, `packaged_integrity_contracts`,
+  `release_regression_manifest`, and `release_gate_skip_app`.
+- Still not ready:
+  no release/sign/notarize/PyPI/site action was run; release manifest/gate remain
+  red because VL media and packaged integrity are still open.

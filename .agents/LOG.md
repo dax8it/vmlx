@@ -17254,3 +17254,61 @@ Next action:
   regenerated after restoring unrelated public-app installed-hash drift;
   `public_app_issue_audit.failures=[]`, while installed/staged app parity
   remains stale and release/prepackage stay false.
+
+# 2026-06-11 continuation PDT - cache-architecture blocker lane start
+
+- Request carried forward:
+  keep working one blocker at a time toward a signed checkpoint release, but do
+  not run release/sign/notarize/PyPI/site actions in this lane without a fresh
+  explicit release override.
+- Current failing proof:
+  `run_cache_architecture_contract.py` in
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  failed with `cache_family_pytest` and `panel_cache_launch_policy`.
+- Action plan:
+  inspect the exact failing assertions, patch real engine/runtime or panel launch
+  policy only where source behavior is wrong, then rerun the focused cache
+  contract and update proof state.
+- Boundaries:
+  N2 JANG_1L stays off-limits; existing dirty panel-settings proof artifact is
+  not owned by this lane unless a deliberate panel-cache source fix requires it.
+
+# 2026-06-11 continuation PDT - cache-architecture blocker result
+
+- Exact failure isolated:
+  two Python DSV4 cache UI literal checks, one Qwen3.6 plain-4bit registry test,
+  and one panel settings literal had drifted behind current source policy.
+- Applied changes:
+  DSV4 cache tests now pin generic stored-KV suppression for both
+  `dsv4Active` and `nativeStoredKvQuantization`; the Qwen3.6 plain-MLX test now
+  uses a temp `config.json` fixture so resolver-local stamped artifacts cannot
+  override the no-JANG/no-MXFP scenario.
+- Verification:
+  targeted Python rows passed `3 passed`; Vitest cache launch selection passed
+  `102 passed, 189 skipped`; cache architecture runner passed with
+  `status=pass`, `failed=[]`, `cache_family_pytest rc=0 passed=437`, and
+  `panel_cache_launch_policy rc=0 passed=102`.
+- Next action:
+  refresh current regression suite/release board so this blocker is removed
+  from the aggregate failed-step list.
+
+# 2026-06-11 continuation PDT - cache/panel aggregate refresh result
+
+- Panel settings contract follow-up:
+  after cache contract fixes, `run_noheavy_panel_settings_contract.py` exposed
+  remaining stale MiMo registry assertions. Updated them to the current runtime
+  split: `reasoning_parser="think_xml"` with `supports_thinking=False` and
+  `think_in_template=False`.
+- Verification:
+  `tests/test_model_config_registry.py` passed `140 passed`.
+  `run_noheavy_panel_settings_contract.py` passed with panel settings
+  `315 passed`, panel registry `72 passed`, engine registry `140 passed`, and
+  panel CLI flag contract `9 passed`.
+  `run_current_regression_suite.py` still exits open, but now failed steps are
+  only `vl_media_cache_contracts`, `packaged_integrity_contracts`,
+  `release_regression_manifest`, and `release_gate_skip_app`.
+- No-claim boundary:
+  cache architecture, panel settings, model artifact format, native MTP, parser,
+  generation defaults, reasoning template, API/tool/MCP, installed parity, and
+  staged parity are green in this source aggregate run; VL media, packaged
+  integrity, release manifest, and release gate are not green.

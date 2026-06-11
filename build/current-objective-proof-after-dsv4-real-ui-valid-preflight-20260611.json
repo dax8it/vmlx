@@ -1,12 +1,12 @@
 {
-  "created_at": "2026-06-11T05:26:41-0700",
+  "created_at": "2026-06-11T05:50:19-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
-      "status": "open",
+      "status": "pass",
       "evidence": [
-        "build/current-dsv4-cache-proof-digest-20260521.json",
-        "build/dev-ui-smoke-20260521/summary.json"
+        "build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json",
+        "build/current-dsv4-default-cache-tool-loop/result.json"
       ],
       "details": {
         "persistedDefaultOn": null,
@@ -14,9 +14,9 @@
         "launchHasUsePagedCache": null,
         "launchHasBlockDisk": null,
         "launchNoDisablePrefix": null,
-        "current_panel_settings_status": "open",
-        "current_panel_settings_dsv4_default_native_prefix_on": false,
-        "current_panel_settings_dsv4_generic_kv_flags_suppressed": false,
+        "current_panel_settings_status": "pass",
+        "current_panel_settings_dsv4_default_native_prefix_on": true,
+        "current_panel_settings_dsv4_generic_kv_flags_suppressed": true,
         "current_default_cache_launch_has_dsv4_enable_prefix_cache": true,
         "current_default_cache_launch_has_use_paged_cache": true,
         "current_default_cache_launch_has_block_disk_cache": true,
@@ -30,15 +30,12 @@
           "reason": "native_dsv4_composite"
         },
         "current_default_native_cache_ok": true,
-        "current_app_launch_default_cache_ok": false,
+        "current_app_launch_default_cache_ok": true,
         "evidence_files_present": {
-          "build/current-dsv4-cache-proof-digest-20260521.json": false,
-          "build/dev-ui-smoke-20260521/summary.json": false
+          "build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json": true,
+          "build/current-dsv4-default-cache-tool-loop/result.json": true
         },
-        "missing_evidence": [
-          "build/current-dsv4-cache-proof-digest-20260521.json",
-          "build/dev-ui-smoke-20260521/summary.json"
-        ]
+        "missing_evidence": []
       }
     },
     {
@@ -593,7 +590,7 @@
           "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
           "panel/src/renderer/src/components/chat/ChatSettings.tsx": "a9c3fbad9ba1baf5f60d0b90bf26a33f6b80e728cea2515917e684ee91825ad4",
           "panel/src/renderer/src/i18n/locales/en.json": "c79c242e7c85937af2ede036c40f26c9ecedb168cde5bc76bbcabf1c3df617b6",
-          "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+          "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
           "panel/tests/chat-settings-compatibility.test.ts": "15b9ba4dec4a01fc0137e7c32175731b58868912be6587eed1686270ac2acea3",
           "panel/tests/database-migrations.test.ts": "8527407aaaf32c5b5c1eb733d3ba90997026117b62b93795316820d01d58db9b",
           "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
@@ -626,7 +623,7 @@
           "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
           "panel/src/renderer/src/components/chat/ChatSettings.tsx": "a9c3fbad9ba1baf5f60d0b90bf26a33f6b80e728cea2515917e684ee91825ad4",
           "panel/src/renderer/src/i18n/locales/en.json": "c79c242e7c85937af2ede036c40f26c9ecedb168cde5bc76bbcabf1c3df617b6",
-          "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+          "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
           "panel/tests/chat-settings-compatibility.test.ts": "15b9ba4dec4a01fc0137e7c32175731b58868912be6587eed1686270ac2acea3",
           "panel/tests/database-migrations.test.ts": "8527407aaaf32c5b5c1eb733d3ba90997026117b62b93795316820d01d58db9b",
           "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
@@ -649,22 +646,21 @@
     },
     {
       "requirement": "Panel settings keep DSV4 cache, max output, and max context controls unambiguous",
-      "status": "open",
+      "status": "pass",
       "evidence": [
         "build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json"
       ],
-      "caveat": "Run the no-heavy panel settings contract before claiming settings/UI coverage.",
       "details": {
-        "contract_status": "open",
+        "contract_status": "pass",
         "contract_checks": {
-          "dsv4_default_native_prefix_on": false,
-          "dsv4_explicit_prefix_off_disables_native_flags": false,
-          "dsv4_l2_explicit_off_preserves_prefix": false,
-          "dsv4_generic_kv_flags_suppressed": false,
-          "max_output_context_cli_split": false,
-          "chat_max_output_is_per_chat_override": false,
-          "non_dsv4_cache_toggles_preserved": false,
-          "i18n_max_output_context_copy": false,
+          "dsv4_default_native_prefix_on": true,
+          "dsv4_explicit_prefix_off_disables_native_flags": true,
+          "dsv4_l2_explicit_off_preserves_prefix": true,
+          "dsv4_generic_kv_flags_suppressed": true,
+          "max_output_context_cli_split": true,
+          "chat_max_output_is_per_chat_override": true,
+          "non_dsv4_cache_toggles_preserved": true,
+          "i18n_max_output_context_copy": true,
           "panel_typecheck": true
         },
         "commands": {
@@ -681,53 +677,28 @@
               "tests/i18n-consistency.test.ts",
               "tests/load-progress-honesty.test.ts"
             ],
-            "returncode": 1,
-            "elapsed_sec": 0.565,
+            "returncode": 0,
+            "elapsed_sec": 0.558,
             "counts": {
-              "test_files_passed": null,
-              "tests_passed": 5,
+              "test_files_passed": 6,
+              "tests_passed": 315,
               "tests_skipped": null
             },
             "stdout_tail": [
-              "+           max={max}",
-              "+           step={step}",
-              "+           value={sliderValue}",
-              "+           onChange={handleSliderChange}",
-              "+           disabled={disabled || isUnlimited}",
-              "+         />",
-              "+         <input",
-              "+           type=\"number\"",
-              "+           className=\"w-20 px-2 py-1 bg-background border border-input rounded text-sm text-right tabular-nums\"",
-              "+           value={displayValue}",
-              "+           onChange={handleInputChange}",
-              "+           onFocus={handleInputFocus}",
-              "+           onBlur={handleInputBlur}",
-              "+           placeholder={isUnlimited ? unlimitedLabel : undefined}",
-              "+           disabled={disabled}",
-              "+           min={min}",
-              "+           step={step}",
-              "+         />",
-              "+       </div>",
-              "+     </div>",
-              "+   )",
-              "+ }",
-              "+",
               "",
-              " ❯ tests/settings-flow.test.ts:2741:22",
-              "    2739|         expect(form).toContain('{!dsv4Active && <CheckField label=\"Use…",
-              "    2740|         expect(form).toContain('disabled={dsv4CompositeRequiresPaged}')",
-              "    2741|         expect(form).toContain('disabled={effectivelyNoBatching || pre…",
-              "       |                      ^",
-              "    2742|         expect(form).not.toContain('DSV4 Native Cache')",
-              "    2743|         expect(form).not.toContain('DSV4 Composite Prefix Cache')",
+              " RUN  v4.0.18 /Users/eric/mlx/vllm-mlx-finite-launch-guard/panel",
               "",
-              "⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯",
+              " ✓ tests/load-progress-honesty.test.ts (5 tests) 2ms",
+              " ✓ tests/cache-control-policy.test.ts (12 tests) 2ms",
+              " ✓ tests/dsv4-env.test.ts (25 tests) 5ms",
+              " ✓ tests/i18n-consistency.test.ts (7 tests) 23ms",
+              " ✓ tests/settings-flow.test.ts (254 tests) 30ms",
+              " ✓ tests/generation-defaults.test.ts (12 tests) 11ms",
               "",
-              "",
-              " Test Files  1 failed | 5 passed (6)",
-              "      Tests  1 failed | 314 passed (315)",
-              "   Start at  05:22:06",
-              "   Duration  270ms (transform 315ms, setup 0ms, import 454ms, tests 82ms, environment 0ms)",
+              " Test Files  6 passed (6)",
+              "      Tests  315 passed (315)",
+              "   Start at  05:45:49",
+              "   Duration  266ms (transform 319ms, setup 0ms, import 457ms, tests 74ms, environment 0ms)",
               ""
             ]
           },
@@ -739,7 +710,7 @@
               "typecheck"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.297,
+            "elapsed_sec": 2.272,
             "counts": {
               "test_files_passed": null,
               "tests_passed": null,
@@ -761,7 +732,7 @@
               "tests/model-config-registry.test.ts"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.466,
+            "elapsed_sec": 0.463,
             "counts": {
               "test_files_passed": 1,
               "tests_passed": 72,
@@ -771,12 +742,12 @@
               "",
               " RUN  v4.0.18 /Users/eric/mlx/vllm-mlx-finite-launch-guard/panel",
               "",
-              " ✓ tests/model-config-registry.test.ts (72 tests) 32ms",
+              " ✓ tests/model-config-registry.test.ts (72 tests) 31ms",
               "",
               " Test Files  1 passed (1)",
               "      Tests  72 passed (72)",
-              "   Start at  05:22:09",
-              "   Duration  138ms (transform 47ms, setup 0ms, import 56ms, tests 32ms, environment 0ms)",
+              "   Start at  05:45:52",
+              "   Duration  202ms (transform 47ms, setup 0ms, import 55ms, tests 31ms, environment 0ms)",
               ""
             ]
           },
@@ -789,14 +760,16 @@
               "-q",
               "../tests/test_model_config_registry.py"
             ],
-            "returncode": 1,
-            "elapsed_sec": 2.745,
+            "returncode": 0,
+            "elapsed_sec": 2.696,
             "counts": {
               "test_files_passed": null,
-              "tests_passed": 136,
+              "tests_passed": 140,
               "tests_skipped": null
             },
             "stdout_tail": [
+              "============================= test session starts ==============================",
+              "platform darwin -- Python 3.13.11, pytest-9.0.2, pluggy-1.6.0",
               "rootdir: /Users/eric/mlx/vllm-mlx-finite-launch-guard",
               "configfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)",
               "plugins: asyncio-1.3.0, anyio-4.13.0",
@@ -804,39 +777,10 @@
               "collected 140 items",
               "",
               "../tests/test_model_config_registry.py ................................. [ 23%]",
-              "......................................F................................. [ 75%]",
-              "F.........................FF.......                                      [100%]",
+              "........................................................................ [ 75%]",
+              "...................................                                      [100%]",
               "",
-              "=================================== FAILURES ===================================",
-              "_ TestModelConfigs.test_qwen36_plain_mlx_4bit_keeps_hybrid_cache_without_jang_or_mxfp _",
-              "../tests/test_model_config_registry.py:1351: in test_qwen36_plain_mlx_4bit_keeps_hybrid_cache_without_jang_or_mxfp",
-              "    assert config.family_name == \"qwen3_5\"",
-              "E   AssertionError: assert 'qwen3_5_moe' == 'qwen3_5'",
-              "E     ",
-              "E     - qwen3_5",
-              "E     + qwen3_5_moe",
-              "E     ?        ++++",
-              "____________ TestModelConfigs.test_mimo_v2_jang2l_registry_contract ____________",
-              "../tests/test_model_config_registry.py:1771: in test_mimo_v2_jang2l_registry_contract",
-              "    assert config.reasoning_parser is None",
-              "E   AssertionError: assert 'think_xml' is None",
-              "E    +  where 'think_xml' = ModelConfig(family_name='mimo_v2', model_types=['mimo_v2'], cache_type='kv', cache_subtype='mimo_v2_asymmetric_swa', e...: 8, 'attention_value_scale': 0.707, 'swa_window': 128, 'swa_attention_sink_bias': True}, description=None, priority=4).reasoning_parser",
-              "_ TestModelConfigComprehensiveChecks.test_mimo_v2_registered_with_jang2l_contract _",
-              "../tests/test_model_config_registry.py:2126: in test_mimo_v2_registered_with_jang2l_contract",
-              "    assert config.reasoning_parser is None",
-              "E   AssertionError: assert 'think_xml' is None",
-              "E    +  where 'think_xml' = ModelConfig(family_name='mimo_v2', model_types=['mimo_v2'], cache_type='kv', cache_subtype='mimo_v2_asymmetric_swa', e...: 8, 'attention_value_scale': 0.707, 'swa_window': 128, 'swa_attention_sink_bias': True}, description=None, priority=4).reasoning_parser",
-              "_ TestModelConfigComprehensiveChecks.test_mimo_v2_jang_stamp_enables_xml_function_tools_only _",
-              "../tests/test_model_config_registry.py:2174: in test_mimo_v2_jang_stamp_enables_xml_function_tools_only",
-              "    assert config.reasoning_parser is None",
-              "E   AssertionError: assert 'think_xml' is None",
-              "E    +  where 'think_xml' = ModelConfig(family_name='mimo_v2', model_types=['mimo_v2'], cache_type='kv', cache_subtype='mimo_v2_asymmetric_swa', e...: 8, 'attention_value_scale': 0.707, 'swa_window': 128, 'swa_attention_sink_bias': True}, description=None, priority=4).reasoning_parser",
-              "=========================== short test summary info ============================",
-              "FAILED ../tests/test_model_config_registry.py::TestModelConfigs::test_qwen36_plain_mlx_4bit_keeps_hybrid_cache_without_jang_or_mxfp",
-              "FAILED ../tests/test_model_config_registry.py::TestModelConfigs::test_mimo_v2_jang2l_registry_contract",
-              "FAILED ../tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_mimo_v2_registered_with_jang2l_contract",
-              "FAILED ../tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_mimo_v2_jang_stamp_enables_xml_function_tools_only",
-              "======================== 4 failed, 136 passed in 2.04s ========================="
+              "============================= 140 passed in 2.00s =============================="
             ]
           },
           "engine_panel_cli_flag_contract": {
@@ -890,14 +834,14 @@
           "panel/src/renderer/src/i18n/locales/ja.json": "8170cd0ba7270bebb033dc8abe0a31b43d8bc2f502051219e9a2af89ccbedddf",
           "panel/src/renderer/src/i18n/locales/ko.json": "6e7e1e8dfbb1278a417fdf8bbaa312a6495d5c8dfd4e2d7daedb8f11e8c687a8",
           "panel/src/renderer/src/i18n/locales/zh.json": "8eb62e1bae82024f22b491958b15aaed7a62b7d2489b9146f126e8f7869ee393",
-          "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+          "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
           "panel/tests/dsv4-env.test.ts": "f1e724f3da968f622b6fedc706c0e34c2b84d4e493abb3588f86820f696807c7",
           "panel/tests/cache-control-policy.test.ts": "91169afdcd88c2b3aa14bac6649da65e45a7d26ce60551525b89d71963976d6d",
           "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
           "panel/tests/i18n-consistency.test.ts": "693fef9d322e7f837f5c89d427ef1a73464e15db4b71143a80ec645798390a18",
           "panel/tests/load-progress-honesty.test.ts": "e3de012583c7e95ccf25cf676207994c5ca6160a985307d34cb7c7611b768de9",
           "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-          "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+          "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
           "tests/test_panel_cli_flag_contract.py": "c505fb04b31b109a474f9726ba0defbb0a7564b50b3f71354fde07bdf5e55c65"
         },
         "source_hashes_current": {
@@ -907,7 +851,7 @@
           "panel/src/renderer/src/components/chat/ChatSettings.tsx": "a9c3fbad9ba1baf5f60d0b90bf26a33f6b80e728cea2515917e684ee91825ad4",
           "panel/src/shared/dsv4Env.ts": "f3d5c1a45a6a608d562eeae0238435b7547ae0941695003af525583c48630453",
           "panel/src/shared/cacheControlPolicy.ts": "6d1d2f0f4baa06814215c01b89b13809a29c855f02497313cd8d0ff913170d82",
-          "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+          "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
           "panel/tests/dsv4-env.test.ts": "f1e724f3da968f622b6fedc706c0e34c2b84d4e493abb3588f86820f696807c7",
           "panel/tests/cache-control-policy.test.ts": "91169afdcd88c2b3aa14bac6649da65e45a7d26ce60551525b89d71963976d6d"
         },
@@ -922,69 +866,46 @@
     },
     {
       "requirement": "Cross-family cache architecture is classified per family",
-      "status": "open",
+      "status": "pass",
       "evidence": [
         "build/current-cache-architecture-contract-after-noheavy-contract-refresh-20260608.json"
       ],
       "caveat": "Static architecture proof only; broad live generation still requires per-family live rows.",
       "details": {
-        "contract_status": "fail",
+        "contract_status": "pass",
         "contract_checks": {
-          "dsv4_native_composite_cache_status": false,
-          "zaya_typed_cca_status": false,
-          "plain_attention_kv_status": false,
-          "hybrid_ssm_partial_reuse": false,
-          "generic_tq_not_applied_to_hybrid_ssm": false,
-          "turboquant_kv_runtime_contract": false,
-          "turboquant_disk_roundtrip": false,
-          "gemma4_mixed_swa_kv_status": false,
-          "mimo_v2_asymmetric_swa_kv_status": false,
-          "named_family_registry_cache_parser_contracts": false,
-          "dsv4_terminal_composite_contracts": false,
-          "dsv4_swa_hca_csa_component_contracts": false,
-          "hybrid_ssm_companion_l2_contracts": false,
-          "prompt_disk_l2_backfill_contracts": false,
-          "cache_detail_telemetry_contracts": false,
-          "panel_cache_launch_policy": false,
-          "legacy_count_floor_still_nontrivial": false,
-          "cache_family_matrix_complete": false
+          "dsv4_native_composite_cache_status": true,
+          "zaya_typed_cca_status": true,
+          "plain_attention_kv_status": true,
+          "hybrid_ssm_partial_reuse": true,
+          "generic_tq_not_applied_to_hybrid_ssm": true,
+          "turboquant_kv_runtime_contract": true,
+          "turboquant_disk_roundtrip": true,
+          "gemma4_mixed_swa_kv_status": true,
+          "mimo_v2_asymmetric_swa_kv_status": true,
+          "named_family_registry_cache_parser_contracts": true,
+          "dsv4_terminal_composite_contracts": true,
+          "dsv4_swa_hca_csa_component_contracts": true,
+          "hybrid_ssm_companion_l2_contracts": true,
+          "prompt_disk_l2_backfill_contracts": true,
+          "cache_detail_telemetry_contracts": true,
+          "panel_cache_launch_policy": true,
+          "legacy_count_floor_still_nontrivial": true,
+          "cache_family_matrix_complete": true
         },
         "missing_family_rows": [],
-        "failed_family_rows": [
-          "dsv4_native_composite",
-          "dsv4_swa_hca_csa_components",
-          "zaya_typed_cca",
-          "zaya_vl_hybrid_registry",
-          "plain_attention_kv",
-          "hybrid_ssm",
-          "ling_bailing_hybrid_registry",
-          "nemotron_h_hybrid_registry",
-          "qwen36_hybrid_tq",
-          "qwen36_registry_hybrid_parser",
-          "gemma4_mixed_swa_kv",
-          "mimo_v2_asymmetric_swa_kv",
-          "step37_full_sliding_kv_registry",
-          "lfm25_moe_hybrid_registry",
-          "hy_v3_kv_registry",
-          "minimax_parser_boundary_registry",
-          "prompt_disk_l2",
-          "turboquant_disk",
-          "mllm_media_cache"
-        ],
-        "failed": [
-          "cache_family_pytest",
-          "panel_cache_launch_policy"
-        ],
+        "failed_family_rows": [],
+        "failed": [],
         "missing_markers": [],
         "missing_api_checks": [],
         "missing_api_command_markers": [],
         "missing_panel_markers": [],
         "cache_family_matrix": {
           "dsv4_native_composite": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "dsv4_native_composite_cache_status": false,
-              "dsv4_terminal_composite_contracts": false
+              "dsv4_native_composite_cache_status": true,
+              "dsv4_terminal_composite_contracts": true
             },
             "required_markers": [
               "test_memory_pressure_reuses_shorter_dsv4_terminal_composite_prefix",
@@ -1008,9 +929,9 @@
             "missing_panel_markers": []
           },
           "dsv4_swa_hca_csa_components": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "dsv4_swa_hca_csa_component_contracts": false
+              "dsv4_swa_hca_csa_component_contracts": true
             },
             "required_markers": [
               "test_memory_pressure_reuses_shorter_dsv4_terminal_composite_prefix",
@@ -1032,9 +953,9 @@
             "missing_panel_markers": []
           },
           "zaya_typed_cca": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "zaya_typed_cca_status": false
+              "zaya_typed_cca_status": true
             },
             "required_markers": [],
             "missing_markers": [],
@@ -1050,9 +971,9 @@
             "missing_panel_markers": []
           },
           "zaya_vl_hybrid_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_zaya1_vl_registered_with_full_contract"
@@ -1066,9 +987,9 @@
             "missing_panel_markers": []
           },
           "plain_attention_kv": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "plain_attention_kv_status": false
+              "plain_attention_kv_status": true
             },
             "required_markers": [],
             "missing_markers": [],
@@ -1084,11 +1005,11 @@
             "missing_panel_markers": []
           },
           "hybrid_ssm": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "hybrid_ssm_partial_reuse": false,
-              "hybrid_ssm_companion_l2_contracts": false,
-              "generic_tq_not_applied_to_hybrid_ssm": false
+              "hybrid_ssm_partial_reuse": true,
+              "hybrid_ssm_companion_l2_contracts": true,
+              "generic_tq_not_applied_to_hybrid_ssm": true
             },
             "required_markers": [
               "test_memory_pressure_partially_reuses_hybrid_ssm_with_aligned_checkpoint",
@@ -1115,9 +1036,9 @@
             "missing_panel_markers": []
           },
           "ling_bailing_hybrid_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_jang_stamp_model_type_alias_preserves_registered_family_fields"
@@ -1131,9 +1052,9 @@
             "missing_panel_markers": []
           },
           "nemotron_h_hybrid_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_nemotron_h_config",
@@ -1149,9 +1070,9 @@
             "missing_panel_markers": []
           },
           "qwen36_hybrid_tq": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "turboquant_kv_runtime_contract": false
+              "turboquant_kv_runtime_contract": true
             },
             "required_markers": [
               "test_qwen3_5_moe_linear_attention_keeps_selective_live_tq_and_stored_kv_q4"
@@ -1169,9 +1090,9 @@
             "missing_panel_markers": []
           },
           "qwen36_registry_hybrid_parser": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_qwen36_release_rows_intentionally_use_qwen3_5_family_alias",
@@ -1186,9 +1107,9 @@
             "missing_panel_markers": []
           },
           "gemma4_mixed_swa_kv": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "gemma4_mixed_swa_kv_status": false
+              "gemma4_mixed_swa_kv_status": true
             },
             "required_markers": [
               "test_native_cache_status_reports_mixed_swa_kv",
@@ -1207,9 +1128,9 @@
             "missing_panel_markers": []
           },
           "mimo_v2_asymmetric_swa_kv": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "mimo_v2_asymmetric_swa_kv_status": false
+              "mimo_v2_asymmetric_swa_kv_status": true
             },
             "required_markers": [
               "test_mimo_v2_jang_loader_skips_generic_turboquant_kv_auto_mode",
@@ -1225,9 +1146,9 @@
             "missing_panel_markers": []
           },
           "step37_full_sliding_kv_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_step37_flash_jang_config",
@@ -1243,9 +1164,9 @@
             "missing_panel_markers": []
           },
           "lfm25_moe_hybrid_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_lfm2_moe_config",
@@ -1261,9 +1182,9 @@
             "missing_panel_markers": []
           },
           "hy_v3_kv_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_hy_v3_provisional_contract"
@@ -1277,9 +1198,9 @@
             "missing_panel_markers": []
           },
           "minimax_parser_boundary_registry": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "named_family_registry_cache_parser_contracts": false
+              "named_family_registry_cache_parser_contracts": true
             },
             "required_markers": [
               "test_minimax_config",
@@ -1294,9 +1215,9 @@
             "missing_panel_markers": []
           },
           "prompt_disk_l2": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "prompt_disk_l2_backfill_contracts": false
+              "prompt_disk_l2_backfill_contracts": true
             },
             "required_markers": [
               "test_prompt_disk_l2_hit_backfills_paged_cache_for_partial_reuse"
@@ -1310,9 +1231,9 @@
             "missing_panel_markers": []
           },
           "turboquant_disk": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "turboquant_disk_roundtrip": false
+              "turboquant_disk_roundtrip": true
             },
             "required_markers": [
               "test_serialize_tq_cache_mixed_hybrid",
@@ -1329,9 +1250,9 @@
             "missing_panel_markers": []
           },
           "mllm_media_cache": {
-            "status": "fail",
+            "status": "pass",
             "checks": {
-              "cache_detail_telemetry_contracts": false
+              "cache_detail_telemetry_contracts": true
             },
             "required_markers": [
               "test_mllm_stats_include_cache_fields"
@@ -1361,12 +1282,12 @@
           "tests/test_batching.py": "56fa5cb4d01cc64e9ab2d4f599e7e7f06a84dd42ed1607f352f27f77eedb6b38",
           "tests/test_hybrid_batching.py": "c55c4b78201dbfec4a5ee353cecb4cf8561b769ef382e57d3191548033071663",
           "tests/test_hybrid_prefix_cache.py": "9feda129f63acca197dac1b735fc207bef6cf9667c97a5182ba1e36d113b8afa",
-          "tests/test_dsv4_paged_cache.py": "2f3a20d92a41d54d08c0a96d213412db4b436cd758260f842816f3988a7b81a0",
+          "tests/test_dsv4_paged_cache.py": "50cd78e0ae8be00169b49c23786e8c40a87e0eb1397f7ec12ef3bac56a4ca704",
           "tests/test_kimi_k25_mla_patch.py": "d5edc41ec3d461da756bf601c18a7ce878c11be0c98c6662b529d337fabd3bdc",
           "tests/test_mllm_scheduler_cache.py": "a47b3b827f0f6d02061afc25ceaacef8681e72e658f925e3879f94e15aecac34",
           "tests/test_turboquant_cache_contract.py": "0086bd6da947c7dd99a4098f5253b00e4095b7f499e708b27541b1621ea04963",
           "tests/test_tq_disk_cache.py": "3a9138e972d247867191b9f1e42aeb25ddb6182aa9b6a29debbd107d374746b0",
-          "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+          "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
           "tests/test_cache_architecture_contract.py": "ac215ed8b8d05e92dc38fbecc2b2b91e90f6e36ac18e753deda5603d92897f94",
           "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
           "panel/src/shared/dsv4Env.ts": "f3d5c1a45a6a608d562eeae0238435b7547ae0941695003af525583c48630453",
@@ -1374,7 +1295,7 @@
           "panel/src/renderer/src/components/sessions/CachePanel.tsx": "1a7ceb1e541e6d39aa6076decc39d1f760e5b8b7d0a8bf8f794f792ce2e5e51a",
           "panel/src/renderer/src/components/sessions/PerformancePanel.tsx": "1be27b40c8211e661c7bc26bb835594a8a2222f87cdf2f015e14108dd75d1f03",
           "panel/tests/dsv4-env.test.ts": "f1e724f3da968f622b6fedc706c0e34c2b84d4e493abb3588f86820f696807c7",
-          "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+          "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
           "panel/tests/cache-control-policy.test.ts": "91169afdcd88c2b3aa14bac6649da65e45a7d26ce60551525b89d71963976d6d"
         },
         "source_hashes_current": {
@@ -1393,12 +1314,12 @@
           "tests/test_batching.py": "56fa5cb4d01cc64e9ab2d4f599e7e7f06a84dd42ed1607f352f27f77eedb6b38",
           "tests/test_hybrid_batching.py": "c55c4b78201dbfec4a5ee353cecb4cf8561b769ef382e57d3191548033071663",
           "tests/test_hybrid_prefix_cache.py": "9feda129f63acca197dac1b735fc207bef6cf9667c97a5182ba1e36d113b8afa",
-          "tests/test_dsv4_paged_cache.py": "2f3a20d92a41d54d08c0a96d213412db4b436cd758260f842816f3988a7b81a0",
+          "tests/test_dsv4_paged_cache.py": "50cd78e0ae8be00169b49c23786e8c40a87e0eb1397f7ec12ef3bac56a4ca704",
           "tests/test_kimi_k25_mla_patch.py": "d5edc41ec3d461da756bf601c18a7ce878c11be0c98c6662b529d337fabd3bdc",
           "tests/test_mllm_scheduler_cache.py": "a47b3b827f0f6d02061afc25ceaacef8681e72e658f925e3879f94e15aecac34",
           "tests/test_turboquant_cache_contract.py": "0086bd6da947c7dd99a4098f5253b00e4095b7f499e708b27541b1621ea04963",
           "tests/test_tq_disk_cache.py": "3a9138e972d247867191b9f1e42aeb25ddb6182aa9b6a29debbd107d374746b0",
-          "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+          "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
           "tests/test_cache_architecture_contract.py": "ac215ed8b8d05e92dc38fbecc2b2b91e90f6e36ac18e753deda5603d92897f94",
           "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
           "panel/src/shared/dsv4Env.ts": "f3d5c1a45a6a608d562eeae0238435b7547ae0941695003af525583c48630453",
@@ -1406,7 +1327,7 @@
           "panel/src/renderer/src/components/sessions/CachePanel.tsx": "1a7ceb1e541e6d39aa6076decc39d1f760e5b8b7d0a8bf8f794f792ce2e5e51a",
           "panel/src/renderer/src/components/sessions/PerformancePanel.tsx": "1be27b40c8211e661c7bc26bb835594a8a2222f87cdf2f015e14108dd75d1f03",
           "panel/tests/dsv4-env.test.ts": "f1e724f3da968f622b6fedc706c0e34c2b84d4e493abb3588f86820f696807c7",
-          "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+          "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
           "panel/tests/cache-control-policy.test.ts": "91169afdcd88c2b3aa14bac6649da65e45a7d26ce60551525b89d71963976d6d"
         },
         "missing_source_hashes": [],
@@ -1420,7 +1341,7 @@
     },
     {
       "requirement": "High-risk model family parser, artifact, and launch policy gates are current",
-      "status": "open",
+      "status": "pass",
       "evidence": [
         "build/current-model-family-detection-contract-after-n2-policy-row-20260609.json",
         "build/current-parser-registry-contract-after-jangtq2-objective-refresh-20260607.json",
@@ -1488,11 +1409,11 @@
             "panel/src/shared/reasoningParserAliases.ts": "d400d714e7b521fa14a8f8cb7c9c4de0cb3dde1f3b9e1caccf08d012f1a6f92c",
             "panel/src/shared/toolParserAliases.ts": "45d1dfc4bd42a540471d94e9117b3282f3a69a9ab24407dd7b32db9555260973",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_dsv4_long_context_gate.py": "1ecb976f1a2f98a468275dcbac4906f59eff19e6a713a391827d1f3419819933",
             "tests/cross_matrix/run_dsv4_responses_cache_gate.py": "3c59a537fd451983bfccd90fa7191c27090c246240644372e97786b893f3a18d",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_model_family_detection_contract.py": "319c268ce5f4f4eb32b4136df48667079d1bc03e7e1313f19b25f31fe9d6919a"
           },
           "source_hashes_current": {
@@ -1504,11 +1425,11 @@
             "panel/src/shared/reasoningParserAliases.ts": "d400d714e7b521fa14a8f8cb7c9c4de0cb3dde1f3b9e1caccf08d012f1a6f92c",
             "panel/src/shared/toolParserAliases.ts": "45d1dfc4bd42a540471d94e9117b3282f3a69a9ab24407dd7b32db9555260973",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_dsv4_long_context_gate.py": "1ecb976f1a2f98a468275dcbac4906f59eff19e6a713a391827d1f3419819933",
             "tests/cross_matrix/run_dsv4_responses_cache_gate.py": "3c59a537fd451983bfccd90fa7191c27090c246240644372e97786b893f3a18d",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_model_family_detection_contract.py": "319c268ce5f4f4eb32b4136df48667079d1bc03e7e1313f19b25f31fe9d6919a"
           },
           "missing_source_hashes": [],
@@ -1544,11 +1465,11 @@
             "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
             "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_parser_registry_contract.py": "aa4947a7c85be548fe77656e9aee6a8147ee5749da532e600d3cef391888d774",
             "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_parser_registry_contract.py": "0288a672c0efdb993d9d39dd0053e94e1fa00d1f7d15410bdc5ce51463f8f3a2"
           },
           "source_hashes_current": {
@@ -1562,11 +1483,11 @@
             "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
             "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_parser_registry_contract.py": "aa4947a7c85be548fe77656e9aee6a8147ee5749da532e600d3cef391888d774",
             "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_parser_registry_contract.py": "0288a672c0efdb993d9d39dd0053e94e1fa00d1f7d15410bdc5ce51463f8f3a2"
           },
           "missing_source_hashes": [],
@@ -1574,24 +1495,22 @@
           "missing_source_files": []
         },
         "model_artifact_format": {
-          "status": "fail",
-          "failed": [
-            "model_artifact_format_pytest"
-          ],
+          "status": "pass",
+          "failed": [],
           "missing_rows": [],
           "missing_family_rows": [],
           "failed_family_rows": [],
           "missing_markers": [],
           "contract_checks": {
-            "jang_and_jangtq_detection": false,
-            "ling_bailing_hybrid_loader_repairs": false,
-            "mxfp4_detection": false,
-            "mxfp8_detection": false,
-            "plain_mlx_4bit_detection": false,
-            "dropped_mtp_detection": false,
-            "preserved_mtp_detection": false,
-            "cache_profile_detection": false,
-            "not_path_name_only": false
+            "jang_and_jangtq_detection": true,
+            "ling_bailing_hybrid_loader_repairs": true,
+            "mxfp4_detection": true,
+            "mxfp8_detection": true,
+            "plain_mlx_4bit_detection": true,
+            "dropped_mtp_detection": true,
+            "preserved_mtp_detection": true,
+            "cache_profile_detection": true,
+            "not_path_name_only": true
           },
           "source_hashes_recorded": {
             "vmlx_engine/model_config_registry.py": "47b67d23e4bf61450feb33a299bba2a9d6ae2d2962a6718bb27c33bda306c317",
@@ -1606,7 +1525,7 @@
             "vmlx_engine/loaders/load_zaya.py": "a8f6e64fa33c8d42b85a4f56d470dba49ba2ee7e17abf9f9520943633ef09b88",
             "vmlx_engine/loaders/load_laguna.py": "f23cf6e47ba9ae55964aa95a4ec681afcf8f993f6dd7ab5da94d051d3f033920",
             "vmlx_engine/loaders/load_mistral3.py": "6539be7c0f6bd898547c1980c36b240112ce7bfcddba4218299e4a85ffa1cd8b",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_jang_loader.py": "8b9a54ba6059323583607ccbd2dcc63407c8e827771c4e0aa83ec91ee3dc1f3b",
             "tests/test_native_mtp_autodetect.py": "69c263af5f73c3fba9256eba6c3f90de098804342979c8b16b86e1394e51004c",
             "tests/test_cross_matrix_audit_runner.py": "7032fef23e9962ea3d5d8590bc3215e89db8f44af7c883748fe6ac7640dea7a4"
@@ -1624,7 +1543,7 @@
             "vmlx_engine/loaders/load_zaya.py": "a8f6e64fa33c8d42b85a4f56d470dba49ba2ee7e17abf9f9520943633ef09b88",
             "vmlx_engine/loaders/load_laguna.py": "f23cf6e47ba9ae55964aa95a4ec681afcf8f993f6dd7ab5da94d051d3f033920",
             "vmlx_engine/loaders/load_mistral3.py": "6539be7c0f6bd898547c1980c36b240112ce7bfcddba4218299e4a85ffa1cd8b",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_jang_loader.py": "8b9a54ba6059323583607ccbd2dcc63407c8e827771c4e0aa83ec91ee3dc1f3b",
             "tests/test_native_mtp_autodetect.py": "69c263af5f73c3fba9256eba6c3f90de098804342979c8b16b86e1394e51004c",
             "tests/test_cross_matrix_audit_runner.py": "7032fef23e9962ea3d5d8590bc3215e89db8f44af7c883748fe6ac7640dea7a4"
@@ -1689,7 +1608,7 @@
             "panel/src/main/ipc/chat.ts": "2c9f69e8893e16dc3057164872983ec177dd2b4e0150902befbaae2ddd42e777",
             "panel/src/shared/sessionConfigMigrations.ts": "923dac3146e0fcedd4e00282700822f3048de6ebba76baf18cc9845e7655d8b2",
             "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/test_panel_cli_flag_contract.py": "c505fb04b31b109a474f9726ba0defbb0a7564b50b3f71354fde07bdf5e55c65",
             "tests/cross_matrix/run_generation_defaults_contract.py": "1487efb15550884c9ac32f6e8321fdd757de836e17d7d35202232fdf2df812c7",
             "tests/cross_matrix/run_local_generation_metadata_audit.py": "b166705167c391e8e53448c9ee1db5fbaf2bd5c05d27ceeacc37b674817c4cc1",
@@ -1711,7 +1630,7 @@
             "panel/src/main/ipc/chat.ts": "2c9f69e8893e16dc3057164872983ec177dd2b4e0150902befbaae2ddd42e777",
             "panel/src/shared/sessionConfigMigrations.ts": "923dac3146e0fcedd4e00282700822f3048de6ebba76baf18cc9845e7655d8b2",
             "panel/tests/generation-defaults.test.ts": "43e1d2e21106e2567f1a595be7d861a5ec159896de19207d2bae46e1dd708be9",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/test_panel_cli_flag_contract.py": "c505fb04b31b109a474f9726ba0defbb0a7564b50b3f71354fde07bdf5e55c65",
             "tests/cross_matrix/run_generation_defaults_contract.py": "1487efb15550884c9ac32f6e8321fdd757de836e17d7d35202232fdf2df812c7",
             "tests/cross_matrix/run_local_generation_metadata_audit.py": "b166705167c391e8e53448c9ee1db5fbaf2bd5c05d27ceeacc37b674817c4cc1",
@@ -1723,24 +1642,22 @@
           "missing_source_files": []
         },
         "native_mtp": {
-          "status": "fail",
-          "failed": [
-            "panel_native_mtp_controls"
-          ],
+          "status": "pass",
+          "failed": [],
           "missing_rows": [],
           "missing_family_rows": [],
           "failed_family_rows": [],
           "missing_markers": [],
           "contract_checks": {
-            "native_mtp_d3_default_policy": false,
-            "model_tuning_depth_policy": false,
-            "dropped_and_preserved_mtp_detection": false,
-            "config_only_mtp_never_activates": false,
-            "mxfp4_mxfp8_mtp_artifact_detection": false,
-            "mllm_native_mtp_decode_loop": false,
-            "native_mtp_telemetry_edge_cases": false,
-            "panel_native_mtp_controls_visible_when_supported": false,
-            "panel_native_mtp_suppressed_for_dsv4_or_unsupported": false,
+            "native_mtp_d3_default_policy": true,
+            "model_tuning_depth_policy": true,
+            "dropped_and_preserved_mtp_detection": true,
+            "config_only_mtp_never_activates": true,
+            "mxfp4_mxfp8_mtp_artifact_detection": true,
+            "mllm_native_mtp_decode_loop": true,
+            "native_mtp_telemetry_edge_cases": true,
+            "panel_native_mtp_controls_visible_when_supported": true,
+            "panel_native_mtp_suppressed_for_dsv4_or_unsupported": true,
             "live_speed_equivalence_not_claimed": true
           },
           "source_hashes_recorded": {
@@ -1751,7 +1668,7 @@
             "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
             "panel/src/main/model-config-registry.ts": "bff489ed15570239080afdd1661e65d497728d696c1fd6153de660d7d247c82e",
             "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
             "tests/cross_matrix/run_native_mtp_contract.py": "3f51b96b0242f265e793f60c0230d39c5c1e28cd8228ab10bb429e71faa32b68",
             "tests/test_native_mtp_autodetect.py": "69c263af5f73c3fba9256eba6c3f90de098804342979c8b16b86e1394e51004c",
@@ -1768,7 +1685,7 @@
             "panel/src/main/sessions.ts": "f55bf89e878b680768ea92d676c678a7a39873ab55f98554876e0d5ce18b1df8",
             "panel/src/main/model-config-registry.ts": "bff489ed15570239080afdd1661e65d497728d696c1fd6153de660d7d247c82e",
             "panel/src/renderer/src/components/sessions/SessionConfigForm.tsx": "10a81b8b9098a1d881b3fb65f449d0cb49616093fb58f3d355d50d6841ae2d5f",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
             "tests/cross_matrix/run_native_mtp_contract.py": "3f51b96b0242f265e793f60c0230d39c5c1e28cd8228ab10bb429e71faa32b68",
             "tests/test_native_mtp_autodetect.py": "69c263af5f73c3fba9256eba6c3f90de098804342979c8b16b86e1394e51004c",
@@ -1784,7 +1701,6 @@
         "vl_media": {
           "status": "fail",
           "failed": [
-            "engine_vl_media_cache_contracts",
             "panel_vl_media_followup_contracts"
           ],
           "missing_rows": [],
@@ -1818,11 +1734,11 @@
             "panel/tests/tool-media-followup.test.ts": "2463008be8fe96eda042d78d960035e8fff76b80156a5c781ef4798543fbb818",
             "panel/tests/image-display-consistency.test.ts": "ca4e5e6e095072288139b0cd5e70d1f54ae968b0e8ed08e9c90380c6844662be",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/test_vl_video_regression.py": "9dbca204e78c43caab8eb1c2acd0b418e31070e3bd95bcbb76ce55a013556d06",
             "tests/test_mllm_scheduler_cache.py": "a47b3b827f0f6d02061afc25ceaacef8681e72e658f925e3879f94e15aecac34",
             "tests/test_mllm_tool_replay.py": "8590ebc9030ef54047d6921f175b42a9c7d0262d1f1b4ffe276bd0ddcda60246",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_vl_media_cache_contract.py": "540c69c4c7a5f4082696645f3bfc1d287f0582031b6ba509e4c10fd329ba9de9"
           },
           "source_hashes_current": {
@@ -1839,11 +1755,11 @@
             "panel/tests/tool-media-followup.test.ts": "2463008be8fe96eda042d78d960035e8fff76b80156a5c781ef4798543fbb818",
             "panel/tests/image-display-consistency.test.ts": "ca4e5e6e095072288139b0cd5e70d1f54ae968b0e8ed08e9c90380c6844662be",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
-            "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
+            "panel/tests/settings-flow.test.ts": "1a6da951898b623061dc250613d71d7e32755b43b88ee3146ff08601303d6592",
             "tests/test_vl_video_regression.py": "9dbca204e78c43caab8eb1c2acd0b418e31070e3bd95bcbb76ce55a013556d06",
             "tests/test_mllm_scheduler_cache.py": "a47b3b827f0f6d02061afc25ceaacef8681e72e658f925e3879f94e15aecac34",
             "tests/test_mllm_tool_replay.py": "8590ebc9030ef54047d6921f175b42a9c7d0262d1f1b4ffe276bd0ddcda60246",
-            "tests/test_model_config_registry.py": "333348e0f7e6e4918d1539948c3165dc0ca02f8faf6852f53865c1217fe18682",
+            "tests/test_model_config_registry.py": "619a8df7e66fa80362e4a36cc54e767669eff349969eb246b7cf302a0eb742f7",
             "tests/test_vl_media_cache_contract.py": "540c69c4c7a5f4082696645f3bfc1d287f0582031b6ba509e4c10fd329ba9de9"
           },
           "missing_source_hashes": [],
@@ -2054,7 +1970,7 @@
               "chat_and_responses_log_and_forward_supported_sampling_kwargs or anthropic_messages_omitted_max_tokens_uses_bundle_default or request_output_caps_override_server_default_without_touching_context_cap or chat_and_responses_streaming_output_caps_override_server_default_without_touching_context_cap or legacy_completions_output_cap_overrides_server_default_without_touching_context_cap or legacy_completions_streaming_output_cap_overrides_server_default_without_touching_context_cap or anthropic_messages_streaming_max_tokens_overrides_server_default_without_touching_context_cap or prompt_context_aliases_clamp_without_rewriting_output_caps or ollama_streaming_num_predict_overrides_server_default_without_touching_context_cap or responses_request_has_sampling_fields or media_diag_hooks_cover_anthropic_and_ollama_streaming_ingress or responses_nonstreaming_forwards_tc_id or chat_completion_streaming_validates_json or responses_api_streaming_validates_json or streaming_emits_error_on_strict_failure or server_docs_state_response_format_is_not_constrained_decoding or text_format_has_json_schema_field or text_format_preserves_schema_data or chat_completions_nonstreaming or responses_nonstreaming or chat_completions_streaming or responses_streaming or chat_stream_tracks_cache_detail_alongside_cached_tokens or chat_stream_finish_chunks_emit_cache_detail or responses_stream_tracks_cache_detail_alongside_cached or responses_stream_finish_emits_cache_detail or usage_builders_preserve_cache_detail_without_cached_tokens or chat_stream_usage_preserves_cache_detail_without_cached_tokens or responses_stream_usage_preserves_cache_detail_without_cached_tokens or generic_turboquant_patcher_skips_hybrid_ssm or ollama_streaming_suppresses_duplicate_done_chunks or cache_stats_endpoint_projects_cache_reuse_skip_telemetry or cache_entries_endpoint_lists_paged_prefix_blocks or cache_warm_endpoint_prefills_and_stores_block_cache or clear_cache_prefix_clears_prefix_l2_without_multimodal or native_cache_status_reports_dsv4_separately_from_tq_kv or native_cache_status_reports_zaya_typed_cca or native_cache_status_reports_plain_attention_kv or acceleration_status_reports_internal_jangtq_acceleration_when_enabled"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.937,
+            "elapsed_sec": 2.933,
             "counts": {
               "passed": 42,
               "deselected": 539
@@ -2115,7 +2031,7 @@
               "dsv4 or hybrid_ssm or cache_detail or prompt_disk_l2"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.63,
+            "elapsed_sec": 2.638,
             "counts": {
               "passed": 8,
               "deselected": 63
@@ -2139,7 +2055,7 @@
               "tests/test_batching.py::TestSchedulerBasic::test_hybrid_ssm_checkpoint_alignment_rejects_misaligned_state_without_exact PASSED [ 87%]",
               "tests/test_batching.py::TestSchedulerCacheResilience::test_dsv4_cache_hit_repetition_processor_sees_generated_context_only PASSED [100%]",
               "",
-              "======================= 8 passed, 63 deselected in 1.92s ======================="
+              "======================= 8 passed, 63 deselected in 1.93s ======================="
             ]
           },
           "tq_and_mllm_cache_contracts": {
@@ -2156,7 +2072,7 @@
               "TurboQuant or turboquant or hybrid_ssm or TQ"
             ],
             "returncode": 0,
-            "elapsed_sec": 8.211,
+            "elapsed_sec": 8.691,
             "counts": {
               "passed": 32,
               "deselected": 94
@@ -2201,7 +2117,7 @@
               "tests/test_tq_disk_cache.py::TestErrorHandling::test_is_tq_compressed_with_empty_list PASSED [ 96%]",
               "tests/test_tq_disk_cache.py::TestErrorHandling::test_is_tq_compressed_with_none_elements PASSED [100%]",
               "",
-              "====================== 32 passed, 94 deselected in 7.48s ======================="
+              "====================== 32 passed, 94 deselected in 8.00s ======================="
             ]
           },
           "dsv4_dsml_tool_contracts": {
@@ -2219,7 +2135,7 @@
               "visible_text_around_invoke_preserved_no_dsml_leak or tools_called_implies_no_dsml_in_content or repairs_dsml_invoke_with_plain_param_tags or repairs_dsml_tool_calls_wrapper_with_truncated_plain_param_invokes or streaming_buffers_dsml_tool_calls_wrapper_before_invoke or server_buffers_dsml_wrapper_marker_before_invoke or dsml_parser_repairs_schema_gated_malformed_old_dsv4_tool_call or dsml_parser_repairs_partial_canonical_invoke or dsml_parser_repairs_dsv4_live_degraded_dsml_params or dsml_parser_repairs_partial_invoke_with_malformed_value_attr or dsml_parser_repairs_htmlish_invoke_degradation or server_repairs_dsv4_partial_tool_intent_from_request_args or dsv4_encoder_keeps_function_arguments_as_dsml_params or dsv4_encoder_preserves_code_identifiers_on_direct_chat_rail or dsml_issue_165_server_tool_call_arguments_are_not_empty_or_raw or dsv4_fallback_tool_prompt_uses_canonical_tool_calls_wrapper or dsv4_native_schema_prompt_with_only_generic_examples_gets_concrete_fallback or tool_markup_residue_strips_all_registered_marker_families or tool_markup_residue_strips_interrupted_non_dsml_fragments or responses_api_no_fallback_on_suppressed_reasoning or responses_extracts_suppressed_reasoning_tool_calls_before_finalize"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.827,
+            "elapsed_sec": 2.797,
             "counts": {
               "passed": 21,
               "deselected": 701
@@ -2256,7 +2172,7 @@
               "tests/test_engine_audit.py::TestV3SuppressReasoningNoFallback::test_responses_api_no_fallback_on_suppressed_reasoning PASSED [ 95%]",
               "tests/test_engine_audit.py::TestResponsesSuppressedReasoningToolCalls::test_responses_extracts_suppressed_reasoning_tool_calls_before_finalize PASSED [100%]",
               "",
-              "====================== 21 passed, 701 deselected in 2.05s ======================"
+              "====================== 21 passed, 701 deselected in 2.04s ======================"
             ]
           },
           "responses_history_contracts": {
@@ -2272,7 +2188,7 @@
               "responses_streaming_stores_history_for_previous_response_id or responses_streaming_reasoning_only_stores_placeholder_and_marker or chained_response_helper_emits_warning_for_reasoning_only_predecessor"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.679,
+            "elapsed_sec": 2.703,
             "counts": {
               "passed": 3,
               "deselected": 25
@@ -2291,7 +2207,7 @@
               "tests/test_responses_history.py::test_responses_streaming_reasoning_only_stores_placeholder_and_marker PASSED [ 66%]",
               "tests/test_responses_history.py::test_chained_response_helper_emits_warning_for_reasoning_only_predecessor PASSED [100%]",
               "",
-              "======================= 3 passed, 25 deselected in 1.94s ======================="
+              "======================= 3 passed, 25 deselected in 1.96s ======================="
             ]
           },
           "structured_output_repair_contracts": {
@@ -2308,7 +2224,7 @@
               "json_schema_decodes_nested_object_string or reports_nested_object_json_string_schema_decode or json_schema_repairs_qwen_adjacent_string_array or json_schema_coerces_string_to_array or chat_completion_repairs_and_canonicalizes_schema_json or repair_records_preserves_raw_vs_repaired_counts or repair_records_reports_raw_and_repaired_rates or reports_markdown_extraction_as_repair_with_required_fields or repair_records_supports_xml_root_and_required_fields"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.698,
+            "elapsed_sec": 2.725,
             "counts": {
               "passed": 9,
               "deselected": 49
@@ -2333,7 +2249,7 @@
               "tests/test_structured_output_repair_report.py::test_repair_records_reports_raw_and_repaired_rates PASSED [ 88%]",
               "tests/test_structured_output_repair_report.py::test_repair_records_supports_xml_root_and_required_fields PASSED [100%]",
               "",
-              "======================= 9 passed, 49 deselected in 1.96s ======================="
+              "======================= 9 passed, 49 deselected in 1.98s ======================="
             ]
           },
           "structured_output_retry_contracts": {
@@ -2349,7 +2265,7 @@
               "chat_response_format_strict_retries_failed_json_only or responses_text_format_strict_retries_failed_json_only or chat_response_format_strict_retries_failed_xml_only or responses_text_format_strict_retries_failed_xml_only or streaming_chat_strict_xml_validates_final_text or streaming_responses_strict_xml_validates_final_text"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.694,
+            "elapsed_sec": 2.741,
             "counts": {
               "passed": 6,
               "deselected": 97
@@ -2371,7 +2287,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_strict_xml_validates_final_text PASSED [ 83%]",
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_strict_xml_validates_final_text PASSED [100%]",
               "",
-              "======================= 6 passed, 97 deselected in 1.96s ======================="
+              "======================= 6 passed, 97 deselected in 2.00s ======================="
             ]
           },
           "responses_streaming_tool_contracts": {
@@ -2387,7 +2303,7 @@
               "streaming_responses_tool_call_arguments_survive_buffering or streaming_responses_reasoning_tool_call_keeps_arguments or streaming_responses_tool_call_uses_next_output_index_without_text or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths or streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.706,
+            "elapsed_sec": 2.731,
             "counts": {
               "passed": 7,
               "deselected": 96
@@ -2410,7 +2326,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments PASSED [ 85%]",
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_reasoning_tool_call_keeps_arguments PASSED [100%]",
               "",
-              "======================= 7 passed, 96 deselected in 1.96s ======================="
+              "======================= 7 passed, 96 deselected in 1.99s ======================="
             ]
           },
           "structured_guided_decoding_contracts": {
@@ -2428,7 +2344,7 @@
               "json_schema_processor_masks_non_json_start_token or chat_response_format_forwards_guided_json_hint or responses_text_format_forwards_guided_json_hint or generate_installs_guided_json_logits_processor"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.756,
+            "elapsed_sec": 2.829,
             "counts": {
               "passed": 4,
               "deselected": 159
@@ -2448,7 +2364,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_responses_text_format_forwards_guided_json_hint PASSED [ 75%]",
               "tests/test_llm.py::test_generate_installs_guided_json_logits_processor PASSED [100%]",
               "",
-              "====================== 4 passed, 159 deselected in 2.00s ======================="
+              "====================== 4 passed, 159 deselected in 2.03s ======================="
             ]
           },
           "structured_smoke_response_format_contracts": {
@@ -2464,7 +2380,7 @@
               "structured_json_probes_request_json_schema_response_format or mimo_structured_json_sentinel_requests_literal_schema_response_format"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.171,
+            "elapsed_sec": 0.156,
             "counts": {
               "passed": 2,
               "deselected": 73
@@ -2502,21 +2418,24 @@
               "allows gateway startup on ports used only by stopped or remote saved sessions|auto-switches to a standby model by waking it before direct OpenAI streaming|passes Responses function-call argument SSE through unchanged|passes Responses argument SSE with reasoning and empty final item arguments|returns backend-unavailable for stale Responses session ports"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.896,
+            "elapsed_sec": 0.883,
             "counts": {
               "passed": 5,
               "deselected": null
             },
             "stdout_tail": [
               "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Listening on 127.0.0.1:55676",
+              "[gateway] Listening on 127.0.0.1:56380",
               "",
               "stderr | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Proxy error → 127.0.0.1:55675/v1/responses: connect ECONNREFUSED 127.0.0.1:55675",
+              "[gateway] Proxy error → 127.0.0.1:56379/v1/responses: connect ECONNREFUSED 127.0.0.1:56379",
+              "",
+              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Stopped",
               "",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > stops other active local sessions before routing to the requested model",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > does nothing when single-model mode is disabled",
-              " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > allows gateway startup on ports used only by stopped or remote saved sessions 79ms",
+              " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > allows gateway startup on ports used only by stopped or remote saved sessions 78ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > reports failure when another active local session cannot be unloaded",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > writes each streamed gateway response chunk once and treats EPIPE as disconnect",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > does not write gateway response chunks after the client socket is destroyed",
@@ -2534,9 +2453,6 @@
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches Responses API streaming by model id while preserving output text deltas",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses function-call argument SSE through unchanged 4ms",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses argument SSE with reasoning and empty final item arguments 3ms",
-              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Stopped",
-              "",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports 2ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches model capability requests by path model before proxying",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches cache endpoints by query model before proxying cache stats",
@@ -2545,8 +2461,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  5 passed | 20 skipped (25)",
-              "   Start at  05:21:18",
-              "   Duration  214ms (transform 121ms, setup 0ms, import 65ms, tests 101ms, environment 0ms)",
+              "   Start at  05:45:02",
+              "   Duration  213ms (transform 120ms, setup 0ms, import 64ms, tests 100ms, environment 0ms)",
               ""
             ]
           },
@@ -2567,7 +2483,7 @@
               "recovers Responses function-call arguments from argument delta and done events"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.567,
+            "elapsed_sec": 0.568,
             "counts": {
               "passed": 1,
               "deselected": null
@@ -2587,7 +2503,7 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  1 passed | 7 skipped (8)",
-              "   Start at  05:21:19",
+              "   Start at  05:45:03",
               "   Duration  71ms (transform 17ms, setup 0ms, import 21ms, tests 1ms, environment 0ms)",
               ""
             ]
@@ -4675,8 +4591,8 @@
           "indexed_payload_gb_decimal": 118.73,
           "indexed_payload_gib": 110.57,
           "required_available_gib": 118.57,
-          "available_gib": 104.06,
-          "memory_gap_gib": 14.51,
+          "available_gib": 104.13,
+          "memory_gap_gib": 14.44,
           "memory_preflight_decision": "do_not_launch",
           "launch_safe": false,
           "classification": "careful_ram_live_proof_pending",
@@ -5090,7 +5006,7 @@
             "reporter_server_hash_parity": {
               "failure": "reporter_installed_server_hash_drift",
               "latest_public_server_sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5",
-              "local_installed_server_sha256": "9e8cfed83d00bba9b7e59a22a1e80b3f897577ebd4e2e75ac099173ef79ca146",
+              "local_installed_server_sha256": "a93f5588c7334a0bf2f9d6eacc5ea31c054ec421b3285ea51326e551f3478bf1",
               "provenance": {
                 "checked_sources": [
                   "source_contract",
@@ -5117,33 +5033,23 @@
                 "local_app_bundle_checked": [
                   {
                     "matches_reporter": false,
-                    "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
-                    "sha256": "792a22c944e61bf1a8bade26302e4aae50c62a9dcc1828c3437481fce5501909"
-                  },
-                  {
-                    "matches_reporter": false,
-                    "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/mac-arm64/vMLX.app/Contents/Resources/vmlx-engine-source/vmlx_engine/server.py",
-                    "sha256": "792a22c944e61bf1a8bade26302e4aae50c62a9dcc1828c3437481fce5501909"
-                  },
-                  {
-                    "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/sequoia-app/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
-                    "sha256": "80b8c4f8ce0116f4fe8e6f7abdc3abb8a83e7c2adf3a5936457d73941ceb7117"
+                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
                   },
                   {
                     "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/sequoia-app/mac-arm64/vMLX.app/Contents/Resources/vmlx-engine-source/vmlx_engine/server.py",
-                    "sha256": "80b8c4f8ce0116f4fe8e6f7abdc3abb8a83e7c2adf3a5936457d73941ceb7117"
+                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
                   },
                   {
                     "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/tahoe-app/mac-arm64/vMLX.app/Contents/Resources/bundled-python/python/lib/python3.12/site-packages/vmlx_engine/server.py",
-                    "sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5"
+                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
                   },
                   {
                     "matches_reporter": false,
                     "path": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/panel/release/tahoe-app/mac-arm64/vMLX.app/Contents/Resources/vmlx-engine-source/vmlx_engine/server.py",
-                    "sha256": "0be1c30c44da2a57e4a3e89bf87c803d2ae00a86140ff81f7c39e58f5bc3c4f5"
+                    "sha256": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f"
                   },
                   {
                     "matches_reporter": false,
@@ -5246,7 +5152,7 @@
                     "sha256": "2d5733b3179eca7c74eb801026c2eb917482acfef36e89e9b44e154a1b7f9826"
                   }
                 ],
-                "local_app_bundle_checked_count": 26,
+                "local_app_bundle_checked_count": 24,
                 "local_app_bundle_matches": [],
                 "local_backup_checked_count": 0,
                 "local_backup_matches": [],
@@ -5312,7 +5218,7 @@
               "reporter_matches_public_v1549_tahoe": false,
               "reporter_matches_source": false,
               "route_markers_match": true,
-              "source_server_sha256": "b1f56da8f1415ebdf1d9c9fd6895e213e66ea563d986aec3ebf9fd77c88f0452",
+              "source_server_sha256": "e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528",
               "status": "open"
             },
             "reporter_parity_comparison": {
@@ -7272,8 +7178,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 110.5,
-              "memory_gap_gb": 26.9
+              "free_plus_speculative_purgeable_gb": 71.23,
+              "memory_gap_gb": 66.17
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -9202,8 +9108,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 110.5,
-              "memory_gap_gb": 26.9
+              "free_plus_speculative_purgeable_gb": 71.23,
+              "memory_gap_gb": 66.17
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -9733,7 +9639,7 @@
         "current_source_full_output_preflight": {
           "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
           "artifact_present": true,
-          "created_at": "2026-06-11T05:23:14-0700",
+          "created_at": "2026-06-11T05:46:58-0700",
           "status": "skipped",
           "reason": "insufficient_vm_stat_memory",
           "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -9754,23 +9660,23 @@
             "legacy_completion_raw"
           ],
           "case_count": 14,
-          "available_gb": 119.46,
+          "available_gb": 94.51,
           "total_gb": 128.0,
           "required_available_gb": 120.0,
           "required_free_gb": 120.0,
           "min_free_gb": 120.0,
-          "available_for_gate_gb": 110.55,
+          "available_for_gate_gb": 71.28,
           "required_model_margin_gb": 40.0,
           "model_size_gb": null,
           "safety_margin_gb": null,
           "floor_valid": true,
-          "memory_gap_gb": 9.45,
-          "strict_vm_stat_memory_gap_gb": 9.45,
-          "psutil_available_gap_gb": 0.54,
+          "memory_gap_gb": 48.72,
+          "strict_vm_stat_memory_gap_gb": 48.72,
+          "psutil_available_gap_gb": 25.49,
           "memory_pressure_free_percent": 94,
           "memory_pressure_error": null,
           "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-          "free_plus_speculative_purgeable_gb": 110.55,
+          "free_plus_speculative_purgeable_gb": 71.28,
           "launch_blockers": [
             "insufficient_memory"
           ],
@@ -9778,18 +9684,13 @@
           "active_heavy_process_count": 0,
           "top_memory_processes": [
             {
-              "pid": 55134,
-              "rss_gb": 0.3,
-              "command": "/Users/eric/.local/node/bin/node /Users/eric/.local/node/lib/node_modules/openclaw/dist/index.js gateway --port 18789"
-            },
-            {
               "pid": 60802,
-              "rss_gb": 0.26,
+              "rss_gb": 0.28,
               "command": "codex --yolo resume"
             },
             {
               "pid": 438,
-              "rss_gb": 0.14,
+              "rss_gb": 0.11,
               "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
             },
             {
@@ -9798,24 +9699,24 @@
               "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
             },
             {
-              "pid": 404,
-              "rss_gb": 0.04,
-              "command": "/System/Library/DriverExtensions/AppleCentauriAlpha.dext/AppleCentauriAlpha com.apple.driver.AppleCentauriAlpha 0x100001323 com.apple.driver.AppleCentauriAlpha"
+              "pid": 67654,
+              "rss_gb": 0.03,
+              "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
+            },
+            {
+              "pid": 68135,
+              "rss_gb": 0.03,
+              "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
+            },
+            {
+              "pid": 179,
+              "rss_gb": 0.01,
+              "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
             },
             {
               "pid": 146,
-              "rss_gb": 0.02,
-              "command": "/System/Library/CoreServices/launchservicesd"
-            },
-            {
-              "pid": 16738,
-              "rss_gb": 0.02,
-              "command": "/usr/sbin/bluetoothd"
-            },
-            {
-              "pid": 76122,
               "rss_gb": 0.01,
-              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+              "command": "/System/Library/CoreServices/launchservicesd"
             },
             {
               "pid": 106,
@@ -9823,9 +9724,14 @@
               "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
             },
             {
-              "pid": 191,
+              "pid": 76122,
               "rss_gb": 0.01,
-              "command": "/usr/sbin/mDNSResponder"
+              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+            },
+            {
+              "pid": 42839,
+              "rss_gb": 0.01,
+              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
             }
           ],
           "commands": {
@@ -10182,7 +10088,7 @@
           "source_full_output_preflight": {
             "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
             "artifact_present": true,
-            "created_at": "2026-06-11T05:23:14-0700",
+            "created_at": "2026-06-11T05:46:58-0700",
             "status": "skipped",
             "reason": "insufficient_vm_stat_memory",
             "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -10203,23 +10109,23 @@
               "legacy_completion_raw"
             ],
             "case_count": 14,
-            "available_gb": 119.46,
+            "available_gb": 94.51,
             "total_gb": 128.0,
             "required_available_gb": 120.0,
             "required_free_gb": 120.0,
             "min_free_gb": 120.0,
-            "available_for_gate_gb": 110.55,
+            "available_for_gate_gb": 71.28,
             "required_model_margin_gb": 40.0,
             "model_size_gb": null,
             "safety_margin_gb": null,
             "floor_valid": true,
-            "memory_gap_gb": 9.45,
-            "strict_vm_stat_memory_gap_gb": 9.45,
-            "psutil_available_gap_gb": 0.54,
+            "memory_gap_gb": 48.72,
+            "strict_vm_stat_memory_gap_gb": 48.72,
+            "psutil_available_gap_gb": 25.49,
             "memory_pressure_free_percent": 94,
             "memory_pressure_error": null,
             "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-            "free_plus_speculative_purgeable_gb": 110.55,
+            "free_plus_speculative_purgeable_gb": 71.28,
             "launch_blockers": [
               "insufficient_memory"
             ],
@@ -10227,18 +10133,13 @@
             "active_heavy_process_count": 0,
             "top_memory_processes": [
               {
-                "pid": 55134,
-                "rss_gb": 0.3,
-                "command": "/Users/eric/.local/node/bin/node /Users/eric/.local/node/lib/node_modules/openclaw/dist/index.js gateway --port 18789"
-              },
-              {
                 "pid": 60802,
-                "rss_gb": 0.26,
+                "rss_gb": 0.28,
                 "command": "codex --yolo resume"
               },
               {
                 "pid": 438,
-                "rss_gb": 0.14,
+                "rss_gb": 0.11,
                 "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
               },
               {
@@ -10247,24 +10148,24 @@
                 "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
               },
               {
-                "pid": 404,
-                "rss_gb": 0.04,
-                "command": "/System/Library/DriverExtensions/AppleCentauriAlpha.dext/AppleCentauriAlpha com.apple.driver.AppleCentauriAlpha 0x100001323 com.apple.driver.AppleCentauriAlpha"
+                "pid": 67654,
+                "rss_gb": 0.03,
+                "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
+              },
+              {
+                "pid": 68135,
+                "rss_gb": 0.03,
+                "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
+              },
+              {
+                "pid": 179,
+                "rss_gb": 0.01,
+                "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
               },
               {
                 "pid": 146,
-                "rss_gb": 0.02,
-                "command": "/System/Library/CoreServices/launchservicesd"
-              },
-              {
-                "pid": 16738,
-                "rss_gb": 0.02,
-                "command": "/usr/sbin/bluetoothd"
-              },
-              {
-                "pid": 76122,
                 "rss_gb": 0.01,
-                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+                "command": "/System/Library/CoreServices/launchservicesd"
               },
               {
                 "pid": 106,
@@ -10272,9 +10173,14 @@
                 "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
               },
               {
-                "pid": 191,
+                "pid": 76122,
                 "rss_gb": 0.01,
-                "command": "/usr/sbin/mDNSResponder"
+                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+              },
+              {
+                "pid": 42839,
+                "rss_gb": 0.01,
+                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
               }
             ],
             "commands": {
