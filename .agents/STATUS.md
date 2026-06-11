@@ -13540,3 +13540,19 @@ Other-agent action:
 - now: selecting Nemotron Omni as the next local blocker from `build/current-full-release-objective-checklist-after-step37-bundled-vlm-proof-20260611.json` (`status=open`, `failed_count=32`).
 - reason: Nemotron accounts for 17 current failed rows with stale/missing no-media and media artifacts; local Nemotron artifacts exist. Qwen35 is a public tunnel deploy divergence, N2 broad is JANG_1L/off-limits, MiMo is artifact/remake-bound, and DSV4 is memory-preflight blocked.
 - boundary: inspect existing Nemotron proof first and consume only real current evidence. Do not infer audio/video/media support from metadata, do not fake hybrid-SSM/L2 cache rows, do not run release/sign/notarize/PyPI/site actions, and do not touch N2 JANG_1L.
+
+## CODEX
+- now: resumed under Eric's latest correction to focus only on the active vMLX Python engine/panel lane and checkpoint-release blockers; no deprecated `/Users/eric/vmlx` work and no release/sign/notarize/PyPI/site/updater actions in this turn.
+- current branch: `codex/pr-intake-manifest` at pushed commit `478025a4a`; worktree clean except untracked `node_modules/`.
+- current checklist: `build/current-full-release-objective-checklist-after-n2-jangtq2-status-split-20260611.json`, `status=open`, `failed_count=15`.
+- selected local blocker to inspect: MiMo current proof accounting, because broad MiMo rows remain red for exactness/media/speed while N2 JANGTQ2 has explicit green checkpoint rows, N2 JANG_1L remains off-limits, Qwen35 public tunnel is deployed/stale, MiniMax needs reporter parity, and DSV4 is memory-preflight blocked.
+- boundary: do not clear MiMo by parser/JSON repair, synthetic tool args, metadata-only media claims, or cache-only assumptions. Inspect the newer 2026-06-11 MiMo artifacts before source edits.
+
+## CODEX
+- now: MiMo proof accounting source change is implemented and verified. No release/sign/notarize/PyPI/site/updater action was run.
+- source changes: release manifest and full objective checklist now validate current MiMo installed-app proof files for JANGTQ2 Responses tool/cache, JANG_2L Responses tool/cache, and JANGTQ2 installed-app media transport/L2.
+- proof separation: JANGTQ2 installed-app media transport/L2 is green even though the proof status is `fail` at `release_assertions`; this is intentionally preserved as a media semantic quality blocker, not hidden as a pass.
+- regenerated artifacts: `build/current-release-regression-manifest-after-mimo-installed-proof-accounting-20260611.json` and `build/current-full-release-objective-checklist-after-mimo-installed-proof-accounting-20260611.json`.
+- current checklist remains `status=open`, `failed_count=15`; stale `mimo_jangtq2_live_media_l2_missing` is removed from MiMo local-release detail, while MiMo remains red for exact literal quality, decode speed, media semantics/release quality, and JANG_2L live media L2.
+- verification passed: focused manifest/checklist pytest (`29 passed, 315 deselected`), full checklist pytest (`20 passed` earlier in the same edit loop), `py_compile` for touched Python files, and `git diff --check`.
+- other-agent handoff: do not spend time claiming MiMo JANGTQ2 tools/cache/L2 are missing; the current proof says they are present. Next useful MiMo work is artifact/logit/quant/decode diagnosis, visual semantics, audio/video semantics, and JANG_2L media L2 if that lane remains required.

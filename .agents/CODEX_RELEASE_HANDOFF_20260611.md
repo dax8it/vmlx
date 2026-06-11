@@ -2,10 +2,10 @@
 
 ## Current Commit
 
-- Latest pushed commit: `207c1e47d Refresh release handoff commit pointer`
+- Latest pushed commit: `478025a4a Expose N2 JANGTQ2 checkpoint proof`
 - Pushed to: `origin/codex/pr-intake-manifest` and `origin/main`
 - Latest checklist artifact:
-  `build/current-full-release-objective-checklist-after-n2-jangtq2-status-split-20260611.json`
+  `build/current-full-release-objective-checklist-after-mimo-installed-proof-accounting-20260611.json`
 - Latest checklist state: `status=open`, `failed_count=15`
 
 ## Hard Boundaries
@@ -45,6 +45,12 @@
   previous_response_id/tool/cache, strict loopback `tool_choice=auto`,
   direct/gateway Responses stream boundary, and no-heavy policy/cache
   contracts. This does not clear N2 JANG_1L.
+- MiMo installed-app proof accounting is now explicit and green for:
+  JANGTQ2 Responses tool/cache with block L2, JANG_2L Responses tool/cache with
+  block L2, and JANGTQ2 installed-app media transport with block L2. The
+  checklist intentionally keeps MiMo red for exact literal quality, decode
+  speed, media semantics, audio/video release quality, and JANG_2L live media
+  L2.
 
 ## Still Open
 
@@ -54,9 +60,13 @@
   Eric-owned/off-limits for this lane. Do not claim or launch it here.
   The N2 JANGTQ2 profile has explicit green rows; keep broad release clearance
   red until JANG_1L is reopened and proven.
-- MiMo: exactness/media/speed remain open. Current classification says
-  JANGTQ_2 literal mutations happen after valid parser structure; do not clear
-  by rewriting parsed tool arguments or repairing generated JSON.
+- MiMo: exactness/media semantics/speed remain open. Current classification
+  says JANGTQ_2 literal mutations happen after valid parser structure; do not
+  clear by rewriting parsed tool arguments or repairing generated JSON. Do not
+  keep chasing JANGTQ2 missing tool/cache/L2 as the primary blocker: the current
+  installed-app rows prove those surfaces separately. The remaining useful MiMo
+  work is artifact/logit/quant/decode quality, visual semantics, audio/video
+  release semantics, and JANG_2L media L2 if still needed.
 - Qwen35 raw SSE direct/gateway/tunnel parity remains open on public tunnel
   reasoning lifecycle, even though current direct/gateway source proof is
   green.

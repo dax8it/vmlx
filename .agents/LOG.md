@@ -18571,3 +18571,18 @@ Next action:
 - Selected Nemotron Omni because rows 10-26 are local stale/missing no-media and media artifacts, and local artifacts exist under `/Users/eric/models/dealign.ai/`.
 - Not selected: Qwen35 public tunnel (deploy/runtime divergence), N2 broad row (JANG_1L off-limits), MiMo (artifact/remake-bound), DSV4 (memory-preflight blocked).
 - Next action: inspect current Nemotron artifacts and available local model paths, then either consume existing current proof or run one focused bundled proof. No release action, no fake modality/cache claims, no N2 JANG_1L.
+## 2026-06-11 CODEX - MiMo Installed-App Proof Accounting
+
+- Scope: vMLX Python engine/panel proof accounting only; no release/sign/notarize/PyPI/site/updater action.
+- Added strict validation for current MiMo installed-app proof files:
+  - JANGTQ2 Responses tool/cache with block L2:
+    `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-responses-tools-cache-deterministic-printf-bundled-python-20260611-proof.json`
+  - JANG_2L Responses tool/cache with block L2:
+    `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-responses-tools-cache-deterministic-printf-bundled-python-20260611-proof.json`
+  - JANGTQ2 installed-app media transport plus block L2:
+    `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-overlay-after-rebuild-pass-20260611-proof.json`
+- Regenerated board artifacts:
+  - `build/current-release-regression-manifest-after-mimo-installed-proof-accounting-20260611.json`
+  - `build/current-full-release-objective-checklist-after-mimo-installed-proof-accounting-20260611.json`
+- Current board remains open (`failed_count=15`). MiMo JANGTQ2 tool/cache/L2 is no longer a missing-proof blocker, but MiMo exact literal quality, decode speed, visual/media semantics, audio/video release quality, and JANG_2L live media L2 remain open.
+- Verification: focused pytest `29 passed, 315 deselected`; full checklist pytest `20 passed`; touched-file `py_compile`; `git diff --check`.
