@@ -18159,3 +18159,23 @@ Next action:
 
 - Pushed `91d20408f Fix Step3.7 tool argument newlines` to branch and main.
 - This is a source/runtime parser fix plus source smoke proof only; installed-app parity remains open.
+
+# 2026-06-11 continuation PDT - bundled Python parity check selected
+
+- Next movement is `panel/scripts/verify-bundled-python.sh` to classify whether
+  the app-bundled runtime is stale after the source parser fix.
+- Release/sign/notarize/PyPI/updater/site actions remain locked.
+
+# 2026-06-11 continuation PDT - bundled Python parity failed
+
+- `panel/scripts/verify-bundled-python.sh` failed on bundled
+  `vmlx_engine/tool_parsers/step3p5_tool_parser.py` drift.
+- Proceeding to the documented bundle sync only; release publishing remains
+  locked.
+
+# 2026-06-11 continuation PDT - bundled Python synced
+
+- `panel/scripts/bundle-python.sh` completed.
+- `panel/scripts/verify-bundled-python.sh` passed, including source/bundled
+  hash parity for `vmlx_engine` and `jang_tools`.
+- Next proof is isolated bundled Step3.7 smoke.

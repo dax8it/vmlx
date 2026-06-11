@@ -13037,3 +13037,54 @@ Other-agent action:
   bundled Python, installed app, signed/notarized DMG, PyPI, updater JSON, website, or release parity.
 - Next work:
   continue runtime/API proof gaps from the aggregate; keep N2 JANG_1L off-limits and no release/sign/notarize actions unless Eric explicitly unlocks them in the current turn.
+
+# 2026-06-11 continuation PDT - bundled Python parity check selected
+
+- Current blocker being reduced:
+  source fixes are pushed, but users will not get them in the app until
+  `panel/bundled-python` is synced and verified.
+- Allowed action:
+  run bundled-Python verification and, if needed, the documented bundle sync
+  path. This is release-prep parity work, not signing/notarization/publishing.
+- Forbidden in this movement:
+  no DMG build, codesign, notarization, tag, GitHub release, PyPI upload,
+  updater JSON, download, or website update.
+- Specific no-claim:
+  Step3.7 is source-proven only until isolated bundled-Python proof passes.
+
+# 2026-06-11 continuation PDT - bundled Python parity failed on Step parser drift
+
+- Command:
+  `panel/scripts/verify-bundled-python.sh`.
+- Result:
+  failed.
+- Exact blocker:
+  bundled `vmlx_engine/tool_parsers/step3p5_tool_parser.py` does not match
+  source; source sha256 `d7a64cbc4a76ad871f13b2708646e03681c8bab30c35ebcf4ec05a3350c22e3f`,
+  bundled sha256 `510a4ddaa00974d76ddc384d6b0201956d78b156d3f3e219a3461bf2abccab2b`.
+- Next movement:
+  run documented `panel/scripts/bundle-python.sh` from this checkout, then
+  rerun bundled verification and isolated Step3.7 proof.
+- Still forbidden:
+  no DMG build/sign/notarize/tag/PyPI/updater/site action.
+
+# 2026-06-11 continuation PDT - bundled Python synced and verified
+
+- Command:
+  `panel/scripts/bundle-python.sh`.
+- Result:
+  passed; bundle reports `vmlx_engine 1.5.57 imported OK`, no editable
+  installs, `ENABLE_USER_SITE=False` with `-s`, relocatable console scripts,
+  and bundle size `1.3G`.
+- Verification command:
+  `panel/scripts/verify-bundled-python.sh`.
+- Verification result:
+  passed; bundled critical `vmlx_engine` files match source content, bundled
+  critical `jang_tools` files match source content, and critical MLX/VLM/Gemma4
+  /Step3p7/MiMo/TurboQuant imports/registers pass.
+- Next movement:
+  run isolated bundled-Python Step3.7 smoke to prove the parser fix through
+  the same runtime path users get from the app bundle.
+- Still not done:
+  no packaged app, DMG, signing, notarization, PyPI, updater, website, or
+  public release action has been run.
