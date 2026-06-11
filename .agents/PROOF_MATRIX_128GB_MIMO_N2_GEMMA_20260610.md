@@ -3453,3 +3453,35 @@ Next implementation target:
   weights contain zero MTP tensors. This does not clear direct/gateway/tunnel
   raw SSE parity, package/sign/notarize, PyPI, updater JSON, website, or public
   release rows.
+
+## Nex/N2 Pro JANGTQ2 Responses Raw SSE Direct/Gateway - 2026-06-11
+
+- Proof artifacts:
+  `build/current-n2-jangtq2-responses-stream-boundary-20260610.json` plus
+  `build/responses-sse-captures-20260610/direct-n2-jangtq2-first-tool-20260610.sse`,
+  `direct-n2-jangtq2-followup-20260610.sse`,
+  `gateway-n2-jangtq2-first-tool-20260610.sse`, and
+  `gateway-n2-jangtq2-followup-20260610.sse`.
+- Status:
+  direct and gateway raw SSE are green in current artifacts.
+- Proven direct:
+  first-tool capture emits message item `output_index=0`, function_call item
+  `output_index=1`, `response.function_call_arguments.delta`,
+  `response.function_call_arguments.done`, final function-call item with
+  `{"query":"alpha"}`, and completed final object preserving the same output
+  order. Followup capture streams `response.output_text.delta` events and
+  completes the requested marker text.
+- Proven gateway:
+  first-tool and followup captures preserve the same output-index, argument
+  delta/done, final-object, and content-delta shapes. Gateway usage records
+  `cached_tokens` and `cache_detail=paged+ssm`.
+- Remaining open:
+  no N2 JANGTQ2 public tunnel SSE artifact exists in the current capture set.
+  `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`
+  remains `status=open` for the strict long-delta/tool-adherence row because
+  the model did not call the second tool and did not satisfy requested visible
+  markers. The default/auto N2 JANGTQ2 tool/cache/delta row remains green.
+- No-claims:
+  this does not prove public tunnel parity, strict long-delta required-tool
+  adherence, N2 JANG_1L, audio, MTP, package/sign/notarize, PyPI, updater JSON,
+  website, or public release rows.

@@ -11061,3 +11061,66 @@ Other-agent action:
 - Process hygiene:
   proof runner cleaned up the server/app; post-run process check showed only
   the Codex crashpad helper from the matched PID list.
+
+# 2026-06-11 02:13 PDT next lane selected N2 JANGTQ2 raw SSE parity inspection
+
+- Continuation objective:
+  reduce the API/tool/reasoning proof gap without relaunching large models when
+  current direct/gateway artifacts already exist.
+- Selected blocker:
+  Nex/N2 Pro JANGTQ2 direct/gateway/tunnel raw SSE parity for Responses tool
+  calls and tool-result continuation. Installed-app UI/API/cache/media rows
+  are now strong, but public API harness readiness still needs raw SSE event
+  shape evidence.
+- Next action:
+  inspect existing `build/responses-sse-captures-20260610/*n2-jangtq2*.sse`
+  plus related JSON summaries for content deltas, function-call argument
+  delta/done, final object consistency, output-index ordering, gateway parity,
+  and whether tunnel evidence exists.
+- Boundaries:
+  no source edit until a concrete API defect is found; no N2 JANG_1L; no
+  release/sign/notarize/PyPI/updater/site action; no synthetic tool args or
+  reasoning-disable workaround.
+
+# 2026-06-11 02:15 PDT N2 JANGTQ2 raw SSE direct/gateway classified
+
+- Inspected:
+  `build/current-n2-jangtq2-responses-stream-boundary-20260610.json`,
+  `build/current-n2-jangtq2-loopback-toolchoice-auto-longdelta-pass-20260611.json`,
+  `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`,
+  and `build/responses-sse-captures-20260610/*n2-jangtq2*.sse`.
+- Proven direct raw SSE:
+  `direct-n2-jangtq2-first-tool-20260610.sse` emits message item
+  `output_index=0`, function_call item `output_index=1`,
+  `response.function_call_arguments.delta`, `response.function_call_arguments.done`,
+  final function-call item with `{"query":"alpha"}`, and completed final object
+  preserving the same output order. `direct-n2-jangtq2-followup-20260610.sse`
+  emits content deltas and completed text with the requested markers.
+- Proven gateway raw SSE:
+  `gateway-n2-jangtq2-first-tool-20260610.sse` preserves the same message
+  `output_index=0`, function_call `output_index=1`, arguments delta/done, and
+  final object consistency. `gateway-n2-jangtq2-followup-20260610.sse` emits
+  content deltas and completed tool-result continuation text. Gateway usage
+  includes `cached_tokens` and `cache_detail=paged+ssm`.
+- Summary artifact:
+  `build/current-n2-jangtq2-responses-stream-boundary-20260610.json` is
+  `status=pass` with checks for direct first output-index cleanliness, direct
+  followup completion/content-delta streaming, first tool-call presence,
+  gateway followup completion/content-delta streaming, and direct/gateway raw
+  SSE coverage.
+- Remaining red/open:
+  no N2 JANGTQ2 public tunnel SSE artifact exists in the current capture set.
+  `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`
+  remains `status=open`: the strict long-delta row is still red because N2 did
+  not call the second tool and did not satisfy requested visible markers. The
+  default/auto N2 JANGTQ2 tool/cache/delta proof remains the green checkpoint
+  row.
+- No source fix:
+  no source edit made because current artifacts show direct/gateway raw SSE
+  event shape is green and the remaining strict-row issue is model/tool
+  adherence under a harder prompt/schema, not a reproduced parser/indexing
+  defect.
+- No-claims:
+  this does not prove public tunnel parity, strict long-delta required-tool
+  adherence, N2 JANG_1L, audio, MTP, release packaging, sign/notarize, PyPI,
+  updater JSON, or website release rows.

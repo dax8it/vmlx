@@ -16466,3 +16466,34 @@ Next action:
   `27-29 tok/s`; video prefill about `125 prompt tok/s`.
 - Boundary: not audio, not native MTP, not N2 JANG_1L, not direct/gateway/
   tunnel raw SSE parity, and not release/sign/notarize readiness.
+
+# 2026-06-11 02:13 PDT - selected N2 JANGTQ2 raw SSE parity inspection
+
+- Next lane: inspect existing N2 JANGTQ2 direct/gateway/tunnel raw SSE
+  artifacts before relaunching the 101GB model.
+- Target evidence: content deltas, function-call argument delta/done,
+  final-object consistency, output-index ordering, gateway parity, tool-result
+  continuation, and whether public tunnel evidence exists.
+- Boundary: no N2 JANG_1L, no release/sign/notarize/PyPI/updater/site action,
+  no source edit until a concrete API defect is found, no synthetic tool args,
+  and no reasoning-disable workaround.
+
+# 2026-06-11 02:15 PDT - N2 JANGTQ2 raw SSE direct/gateway classified
+
+- Inspected current N2 JANGTQ2 SSE artifacts and summaries.
+- Direct raw SSE is green: first-tool capture uses message `output_index=0`,
+  function_call `output_index=1`, emits function-call argument delta/done, and
+  final object preserves `{"query":"alpha"}`. Followup capture streams content
+  deltas and completes the requested marker text.
+- Gateway raw SSE is green for the same first-tool and followup shapes, with
+  gateway usage showing `cached_tokens` and `cache_detail=paged+ssm`.
+- Summary artifact
+  `build/current-n2-jangtq2-responses-stream-boundary-20260610.json` is
+  `status=pass`.
+- Remaining open: no N2 public tunnel SSE artifact exists, and
+  `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`
+  remains `status=open` for strict long-delta/tool-adherence because the model
+  did not call the second tool or satisfy requested visible markers.
+- No source edit made: current evidence does not show a parser/output-index
+  defect in direct/gateway. No N2 JANG_1L, no release action, no synthetic tool
+  args, and no reasoning-disable workaround.
