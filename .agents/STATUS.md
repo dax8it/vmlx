@@ -1,3 +1,16 @@
+## HARD CURRENT DIRECTIVE - EXTERNAL LANE OFF LIMITS
+
+- Do not touch EXTERNAL_OFF_LIMITS_LANE or any EXTERNAL_OFF_LIMITS_LANE-derived external endpoint, model path,
+  transport lane, helper, proof artifact, or stale continuation summary for
+  this work.
+- Do not probe, curl, open, refresh, route through, plan around, or use that
+  lane as current proof unless Eric explicitly names it in the current turn.
+- If old notes, memory, build artifacts, release checklists, or continuation
+  summaries mention that lane, treat them as historical/off-limits and do not
+  act on them.
+- Active work is only the local vMLX Python engine / MLXStudio app worktree and
+  local proof surfaces that Eric has not placed off-limits.
+
 ## CODEX
 - now: continuing the active production-readiness goal after Gemma4
   thinking-off tool/cache proof. Current user directive is to stop drifting
@@ -1367,7 +1380,7 @@
   `/Users/eric/models/JANGQ/Qwen3.6-27B-MXFP8-MTP` exists. No local
   Qwen-coder-next artifact was found under `/Users/eric/models`.
 - planned command shape: capture public tunnel required-tool raw SSE at
-  `https://testapi.adlabus.dev/v1/responses`, then launch local current-source
+  `[external endpoint removed - off limits]/v1/responses`, then launch local current-source
   Qwen27 MXFP8 as the same served model name and use the existing real gateway
   capture path plus parity classifier.
 - no-claims: this is not Qwen-coder-next proof, not tool-result continuation
@@ -1667,7 +1680,7 @@
 - constraints: check memory/ports/repo paths before loading; no N2 JANG_1L; no release/sign/notarize/package/PyPI/updater work; no subagents; stop any server this lane starts before final response.
 - action: launched local MiMo JANGTQ_2 quant endpoint on `127.0.0.1:8897`, ran the updated first-divergence harness with source still absent, captured current quant outputs/cache health, and stopped the server cleanly; port `8897` is clear.
 - proof: `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-quant-only-exact-probes-20260610.json` and `build/current-mimo-v25-jangtq2-source-vs-quant-quant-only-health-after-20260610.json`. Quant endpoint returned HTTP `200` for all 8 rows; exact failures remain `blue-cat -> blue`, `B7-CAT-09 -> B7CAT-09`, JSON value mutation, and required tool args `{"value":"blue cat"}`.
-- boundary: source TP4 endpoint is still absent. The valid source baseline is documented as an AdLab Swift TP4 relaunch through `adlab-pair`, not a casual Python source load; no source-vs-quant conclusion can be claimed until that endpoint is up.
+- boundary: source TP4 endpoint is still absent. The valid source baseline is documented as an EXTERNAL_OFF_LIMITS_LANE Swift TP4 relaunch through `[external relaunch helper removed - off limits]`, not a casual Python source load; no source-vs-quant conclusion can be claimed until that endpoint is up.
 - now: continuing the active goal in the MiMo V2.5 JANG/JANGTQ exactness lane. Current turn is restricted to source/dequant reference availability, MiMo runtime/quant-path inspection, and a root-cause-backed fix only if evidence points at current source.
 - constraints: no release/sign/notarize/package/PyPI/updater/download/website action; no N2 JANG_1L; no subagents; no parser/JSON/string repair masking; no sampling clamp or cache change presented as a MiMo exactness fix.
 - action: fixed the existing MiMo source-vs-quant first-divergence harness to default to `mimo-v2-jangtq2` and include the exact failing `blue-cat`, `B7-CAT-09`, JSON, and tool rows instead of only ACK proxies.
@@ -1963,7 +1976,7 @@
 - now: TQ-native disk cache package parity coverage is source/test green. `vmlx_engine/tq_disk_store.py` is the compressed `TurboQuantKVCache` L2 disk encode/decode path, and `vmlx_engine/cache_record_validator.py` guards TQ-native metadata plus live/prefix/block/SSM/JANGTQ cache restores before unsafe allocations. Both were covered by focused runtime tests but missing from bundled-python/release-gate/packaged-integrity/installed-app parity hash lists. Focused package/parity tests failed before wiring on missing `cache_record_validator.py` / `tq_disk_store.py`, then passed `4/4` after the manifest fix. Boundary: package/parity coverage only, not live N2/MiMo/Gemma cache/UI release clearance.
 - now: Qwen/N2 hybrid TurboQuant package parity coverage is source/test green. `vmlx_engine/utils/hybrid_tq_cache.py` controls selective live TurboQuant KV for Qwen3.6/N2 attention layers while preserving SSM companion caches, but was missing from bundled-python/release-gate/packaged-integrity/installed-app parity hash lists. Focused package/parity tests failed before wiring on missing `utils/hybrid_tq_cache.py`, then passed `6/6` after the manifest fix, with `py_compile` and `git diff --check` clean. Boundary: package/parity coverage only, not live N2 cache/tool/UI clearance.
 - now: Gemma4 Unified packaged parity hash coverage is source/test green. Source already resolves `mlx_vlm.models.gemma4_unified` after `import vmlx_engine`, and `verify-bundled-python.sh` already import-gates it; the missing piece was installed-app/package parity hash coverage. Added `models/gemma4_unified_register.py` plus `models/gemma4_unified/{__init__.py,config.py,gemma4_unified.py,processing_gemma4_unified.py}` to the release gate, installed-app parity audit, and packaged-integrity hash lists. Red/green focused proof: failed on missing `models/gemma4_unified_register.py`, then passed `4/4`. Boundary: no rebuild, no signing, no installed-app green claim; Gemma media/cache/UI/tunnel rows remain open.
-- now: release blocker ledger written to `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md`. Active focus is Python vMLX engine + MLXStudio app only, not deprecated `/Users/eric/vmlx`, ADLab, Max2 transport, or old Swift lanes.
+- now: release blocker ledger written to `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md`. Active focus is Python vMLX engine + MLXStudio app only, not deprecated `/Users/eric/vmlx`, EXTERNAL_OFF_LIMITS_LANE, Max2 transport, or old Swift lanes.
 - now: single-active cache `max_kv_size` hybrid guard is source/test green. Checked upstream `ml-explore/mlx-lm` PR #1343 and did not blindly backport generic KV rotation for Gemma/MiMo/N2/Qwen hybrid or mixed sliding/full cache paths because it can evict global/full-attention state. `vmlx_engine/utils/single_batch_generator.py` now suppresses generic `max_kv_size` for Gemma4/Gemma4 Unified, MiMo V2, Qwen3.6/N2, explicit hybrid cache, hybrid/mixed/SWA/SSM/Mamba subtypes, or mixed sliding+full/global layer configs, while plain KV models still receive the cap. Focused verification passed `20/20`, plus `py_compile` and `git diff --check`. Boundary: no-heavy cache-policy guard only; live model/UI/release rows remain open.
 - current hard boundaries: no fake fixes, no forced sampling/parser/cache/reasoning behavior to hide bugs, no source-vs-quant heavy comparisons if RAM-blocked, no package/sign/notarize/tag/download release until runtime/model/UI/cache/installed-app rows are green or Eric explicitly overrides.
 - JANG_1L RAM note: N2/JANG_1L should fit with careful RAM handling; treat it as a careful live-proof scheduling/memory-discipline blocker, not permanent infeasibility. Do not launch below the preflight headroom gate after the Metal OOM evidence.
@@ -1977,7 +1990,7 @@
 - now: Step3.7 VLM audit proof refreshed without fake media clearance. Regenerated `build/current-step37-vlm-runtime-audit-after-source-live-media-proof-20260607.json` is `status=pass`, `release_clearance=audit_does_not_block_release`, and `mlx_vlm_step3p7_runtime_available=true`; the audit still records `source_owned_runtime_progress.release_clearance=source_runtime_surface_present_needs_live_proof`, with `live_media_proof.exists=false` and `live_media_proof.pass=false`. Refreshed full checklist `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=121`; stale Step3.7 missing-audit rows are gone, but release remains blocked by Responses tunnel/reasoning, N2, MiMo, Gemma full matrix, Qwen proof gaps, DSV4, and packaging/UI rows.
 - now: MiniMax #179 local generation-config fallback is source/test green. The audit now falls back to direct local metadata when `build/current-issue179-minimax-k-local-model-manifest-20260527.json` is absent, hashes only config/generation_config/jang_config/tokenizer/index metadata, and intentionally leaves 67 safetensor shard parity open. Refreshed `build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json` remains `status=open`; `generation_config_and_sampling` is only `partial`, with reporter-machine generation-config hash parity, resolved sampling kwargs parity, raw SSE/session/cancel lifecycle, and full model shard/codebook parity still required.
 - now: Responses raw-SSE parity now separates missing reasoning events from a reasoning-disable workaround. Refreshed `build/current-responses-raw-sse-parity-direct-gateway-tunnel-gemma4-e2b-after-parser-20260609.json` is still `status=fail`: direct/gateway preserve `record_fact` args `{"value": "blue-cat"}`, parse cleanly, use valid output indices, match `gemma4-e2b-sse`, and server logs prove `Reasoning: ENABLED` plus `enable_thinking=True`; current tunnel capture is present but returns `model_not_found` for `gemma4-e2b-sse` instead of streaming args. Direct/gateway still emit `reasoning_events=0`. Full checklist `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=121` after the Step3.7 source-runtime audit refresh. Boundary: not release clearance; next proof is same-model tunnel raw SSE plus actual reasoning events without disabling/hiding reasoning.
-- live tunnel model-list check: `https://testapi.adlabus.dev/v1/models` currently returns 11 models and does not advertise `gemma4-e2b-sse`; advertised Gemma entries are `Gemma-4-12B-it-MXFP8-CRACK` and `models/Gemma-4-12B-it-MXFP8-CRACK`. This makes the same-model Gemma4 E2B tunnel failure a deployed tunnel/session routing availability blocker, not a local parser-only bug.
+- live tunnel model-list check: `[external endpoint removed - off limits]/v1/models` currently returns 11 models and does not advertise `gemma4-e2b-sse`; advertised Gemma entries are `Gemma-4-12B-it-MXFP8-CRACK` and `models/Gemma-4-12B-it-MXFP8-CRACK`. This makes the same-model Gemma4 E2B tunnel failure a deployed tunnel/session routing availability blocker, not a local parser-only bug.
 - now: MiniMax #179 audit now uses direct local artifact metadata when the old local manifest JSON is absent. Refreshed `build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json` remains `status=open`, but local metadata proves `/Users/eric/models/dealign.ai/MiniMax-M2.7-JANGTQ_K-CRACK` has `generation_config.json` (`sha256=2c24fe5507e260bb081727e2a14693d9a982942e721b28720c184d201bffb9dd`), `jang_config.json`, tokenizer/config/index metadata, JANGTQ runtime files, and 67 shards. `generation_config_and_sampling` is now `partial`, not `open`; shard hashes were intentionally not computed by the fallback, and reporter-machine generation config/sampling parity remains open.
 - now: MiniMax #179 wrong-language/planning audit has an explicit `language_planning_leak_isolation` matrix in `build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json`. Axes tracked: reporter exact prompt reproduction, generation config/sampling, parser/template/reasoning, paged prefix cache, block-disk L2, and TurboQuant KV. Status remains `open`; the local same-request fallback probe is clean, generation config/sampling is partial, parser/cache/L2/TQ are only partial from local/current-path evidence, and reporter-machine raw SSE/session/cancel lifecycle proof is still required. Boundary: do not clear by disabling cache/TQ/L2/reasoning or changing sampling without same-prompt single-axis A/B proof.
 - now: Gemma QAT/native MXFP4 inventory gate separates metadata-advertised media from weight-backed/runtime-proven media and now accepts 12B audio only as honestly gated, not native-audio-proven. Current artifact `build/current-gemma-qat-native-mxfp4-local-inventory-after-source-smoke-map-20260609.json` remains `status=open`; E2B/E4B have audio tower and vision weights, 12B has image weights but only `embed_audio.embedding_projection.weight` for audio, and 12B/26B/31B video-token metadata still requires live frame-through-vision proof. Full checklist `build/current-full-release-objective-checklist-after-responses-raw-sse-gemma-surface-20260609.json` remains `status=open`, `failed_count=121`, with explicit Gemma media rows still open. Boundary: no release/sign/package; Gemma still needs live Responses/tool/media/cache/UI/installed-app/tunnel proof.
@@ -2010,7 +2023,7 @@
 - now: Responses raw-SSE parity contract commit `50923a7d` tracks duplicate function/message output-index bugs. Current source passes output-index separation and reasoning-tool-argument rows `2/2`; public tunnel Qwen35 still shows stale/deployed duplicate-index behavior, so same-model deployed parity remains open.
 - now: Responses raw SSE parity classifier now also requires same-model direct/gateway/tunnel metadata and valid output item indices by default in the current-suite command. Diagnostic artifact `build/current-responses-raw-sse-parity-mixed-model-tunnel-output-index-20260609.json` is `status=fail`: public tunnel Qwen35 MXFP8 MTP preserves `{"value":"blue-cat"}` args, but it is not the same model as direct/gateway Gemma4 E2B and it reuses `output_index=0` for message and function_call.
 - now: Responses finalization source patch prefers real parsed tool calls with non-empty arguments across content/reasoning/full-text candidates; no argument synthesis. Focused server Responses streaming tests passed `2/2`; py_compile and diff-check passed.
-- now: Responses public tunnel available-model proof is captured: Qwen35 MXFP8 MTP over `https://testapi.adlabus.dev/v1/responses` streamed `response.function_call_arguments.delta/done` with authoritative args `{"value": "blue-cat"}` and `parse_errors=0`. Same-model Gemma4 E2B parity remains open because the tunnel does not serve `gemma4-e2b-sse`; Gemma4 12B tunnel capture hit `model_load_timeout`.
+- now: Responses public tunnel available-model proof is captured: Qwen35 MXFP8 MTP over `[external endpoint removed - off limits]/v1/responses` streamed `response.function_call_arguments.delta/done` with authoritative args `{"value": "blue-cat"}` and `parse_errors=0`. Same-model Gemma4 E2B parity remains open because the tunnel does not serve `gemma4-e2b-sse`; Gemma4 12B tunnel capture hit `model_load_timeout`.
 - now: upstream MLX runtime intake added Gemma4 Unified/shared-KV source shims. `mlx-lm` PR #1349 is locally backported via `gemma4_unified -> gemma4` remapping plus `vision_embedder.*` sanitize filtering; `mlx-vlm` PR #1301 is backported by marking Gemma4 shared-KV layers `kv_shared_only`, removing unused K/V modules, and filtering stale shared K/V weights. Proof: `tests/test_mlx_lm_runtime_patches.py` passed `8/8`; current-suite source-hash mirror slice passed `2/2`; `py_compile` and `git diff --check` passed. Boundary: source/no-heavy only; no Gemma live row, installed app, package, signing, notarization, tag, download, or release action.
 - now: MiniMax Small JANGTQ current-source bare-invoke parser fix is live-proven. Artifact `build/current-all-local-model-smoke-minimax-small-jangtq-cache-language-after-bare-invoke-tool-20260609/summary.json` has `status=pass`, `failures=0`; parser subset passed `20/20`. Boundary: reporter parity/random Chinese/visible planning and installed-app parity remain open.
 - now: Gemma4 QAT/native MXFP4 E2B/E4B/12B/26B/31B source smoke rows are green after the quoted tool-result harness fix and Gemma4 audio capability gate; other-agent `mlx_vlm` Gemma4 video kwargs compat is inspected and verified with focused tests.
@@ -3125,7 +3138,7 @@
 # 2026-06-10 - Qwen35 public tunnel raw SSE recapture green
 
 - Reduced blocker: #190/#192 same-model direct/gateway/tunnel Responses raw SSE parity for Qwen35/Qwen3.6 MXFP8-MTP.
-- Public tunnel recapture: `build/responses-sse-captures-20260610/tunnel-qwen35-mxfp8-mtp-tool-recapture-after-strict-source-20260610.sse` from `https://testapi.adlabus.dev/v1/responses`.
+- Public tunnel recapture: `build/responses-sse-captures-20260610/tunnel-qwen35-mxfp8-mtp-tool-recapture-after-strict-source-20260610.sse` from `[external endpoint removed - off limits]/v1/responses`.
 - Parity proof: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`, `status=pass`, `missing_captures=[]`.
 - Proven: direct, panel gateway, and public tunnel all report the same model `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`, preserve required `record_fact` args `{"value":"blue-cat"}`, include reasoning events with no reasoning-disable workaround, parse cleanly, have consistent final output, and have valid output item indices. Current direct/gateway use `message=[0]`, `reasoning=[1]`, `function_call=[2]`; fresh tunnel uses `message=[0]`, `function_call=[1]` with no conflict.
 - Boundary: this clears the stale Qwen35 public tunnel duplicate-index blocker for this request/model. It does not prove all Qwen3-coder/N2/MiMo/Gemma parser families, tool-result continuation, installed-app parity, media, or full release readiness.
@@ -5341,7 +5354,7 @@
   the Gemma family.
 - Live source model: `/Users/eric/models/dealignai/Gemma-4-12B-it-MXFP8-CRACK`
   served as `models/Gemma-4-12B-it-MXFP8-CRACK` on port `8896`.
-- Public tunnel target: `https://testapi.adlabus.dev/v1/responses` with the
+- Public tunnel target: `[external endpoint removed - off limits]/v1/responses` with the
   same advertised model id. Live `/v1/models` advertised
   `models/Gemma-4-12B-it-MXFP8-CRACK`; it still does not advertise the old
   `gemma4-e2b-sse` alias.
@@ -6200,8 +6213,8 @@ Other-agent action:
 # 2026-06-10 13:23 PDT - N2 JANGTQ2 public tunnel availability checked
 
 - Current public tunnel endpoint checked directly:
-  - `curl -fsS --max-time 30 https://testapi.adlabus.dev/v1/models`
-  - `curl -fsS --max-time 30 https://testapi.adlabus.dev/health`
+  - `curl -fsS --max-time 30 [external endpoint removed - off limits]/v1/models`
+  - `curl -fsS --max-time 30 [external endpoint removed - off limits]/health`
 - Result: no `Nex-N2-Pro-JANGTQ2`, `N2`, or equivalent N2 JANGTQ2 model alias is advertised by the tunnel. `/health` reports single-model gateway mode with Qwen27 standby and Qwen/Gemma/Step/Nemotron/LFM model set.
 - Classification: N2 JANGTQ2 public tunnel parity remains open because the deployed tunnel does not currently serve the N2 model. This is not a local source/runtime/cache blocker; local direct/gateway N2 JANGTQ2 SSE/tool/cache/media evidence is already green in the cited artifacts.
 - No local 101 GiB N2 relaunch was run for this row because it cannot prove a missing public tunnel model. Other agent should deploy/advertise N2 JANGTQ2 on the tunnel first, then recapture same-model raw SSE with required tool args, content deltas, final consistency, output indices, and cache telemetry.
@@ -6814,7 +6827,7 @@ Other-agent action:
 # 2026-06-10 15:32 PDT - MiMo installed-app chat residue blocker added
 
 - User-provided installed-app evidence for
-  `/opt/adlab/models/dealignai/OsaurusAI/MiMo-V2.5-JANG_2L` on port 8010:
+  `[external model path removed - off limits]/dealignai/OsaurusAI/MiMo-V2.5-JANG_2L` on port 8010:
   prompt `what are u`, then `speak`, produced visible residue
   `The user is a question mark.The user`.
 - Launch/log evidence from the pasted app session:
@@ -9999,7 +10012,7 @@ Other-agent action:
   quant-only evidence still shows JANGTQ_2 mutates `blue-cat`, `B7-CAT-09`,
   JSON values, and required tool args, but that does not prove whether source
   also fails. Prior notes say the source endpoint should be a deliberate
-  AdLab/TP4 relaunch through `adlab-pair`; this lane did not start that
+  EXTERNAL_OFF_LIMITS_LANE/TP4 relaunch through `[external relaunch helper removed - off limits]`; this lane did not start that
   orchestration.
 
 # 2026-06-11 continuation - Qwen Responses raw SSE/tool lane selected
@@ -11857,7 +11870,7 @@ Other-agent action:
   no N2 JANG_1L.
 - Public tunnel availability probe:
   `build/current-n2-jangtq2-tunnel-availability-20260611/models.json` was
-  captured from `https://testapi.adlabus.dev/v1/models`. It does not advertise
+  captured from `[external endpoint removed - off limits]/v1/models`. It does not advertise
   a Nex/N2 model, so exact N2 JANGTQ2 tunnel raw SSE cannot be captured from
   the current public tunnel deployment.
 - Direct/gateway SSE classifier correction:
@@ -13088,7 +13101,7 @@ Other-agent action:
   found `/Users/eric/models/JANGQ/Ling-2.6-flash-JANGTQ` and
   `/Users/eric/models/dealign.ai/Nemotron-Omni-Nano-JANGTQ-CRACK`; no current
   local `Hy3-preview-JANGTQ2` model artifact was found under `/Users/eric/models`,
-  `/Users/eric/.mlxstudio/models`, `/opt/adlab/models`, or
+  `/Users/eric/.mlxstudio/models`, `[external model path removed - off limits]`, or
   `/Volumes/EricsLLMDrive`.
 - Boundary:
   do not claim Hy3 coverage from old notes or source files. Run the available
@@ -13599,7 +13612,7 @@ Other-agent action:
 - constraints: no argument synthesis from preambles, no disabling reasoning, no silently dropping tool calls, no release/sign/notarize/PyPI/site/updater action, and no N2 JANG_1L work.
 
 ## CODEX
-- now: recaptured the public tunnel live from `https://testapi.adlabus.dev/v1/responses` for the same Qwen35 model/request with reasoning enabled and required `record_fact`.
+- now: recaptured the public tunnel live from `[external endpoint removed - off limits]/v1/responses` for the same Qwen35 model/request with reasoning enabled and required `record_fact`.
 - fresh raw capture: `build/responses-sse-captures-20260611/tunnel-qwen35-mxfp8-mtp-tool-strict-lifecycle-recapture-20260611.sse`.
 - fresh classifier artifact: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`, `status=fail`.
 - result: public tunnel still preserves model, authoritative args `{"value":"blue-cat"}`, argument deltas/done, final response consistency, and valid message/function output indices, but it still emits reasoning summary deltas against the message item at `output_index=0` and never emits a streamed reasoning output item lifecycle (`reasoning_output_item_count=0`, `reasoning_lifecycle_complete=false`).
@@ -14125,7 +14138,7 @@ Other-agent action:
 - next movement: inspect current artifacts for source-fixable Qwen/Gemma API/UI/cache gaps, then run or fix one focused proof for reasoning high/auto, required/auto tools, SSE deltas/final object, and cache reuse.
 
 ## CODEX
-- now: fresh Qwen35 public tunnel raw SSE recapture completed against `https://testapi.adlabus.dev/v1/responses` for `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP` with reasoning enabled and required `record_fact`.
+- now: fresh Qwen35 public tunnel raw SSE recapture completed against `[external endpoint removed - off limits]/v1/responses` for `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP` with reasoning enabled and required `record_fact`.
 - raw capture: `build/responses-sse-captures-20260611/tunnel-qwen35-mxfp8-mtp-tool-current-recapture-20260611.sse` (588 lines).
 - classifier artifact: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-current-recapture-still-stale-20260611.json`, `status=fail`. Direct and gateway still have complete reasoning lifecycle and valid output indices; tunnel still has `reasoning_events=8`, `reasoning_done_count=1`, argument delta/done and exact `{"value":"blue-cat"}`, but `reasoning_output_item_count=0`, `reasoning_lifecycle_complete=false`, and reasoning summary deltas attached to the message item at output_index 0. This remains a deployed tunnel/runtime lifecycle blocker, not a current direct/gateway parser args bug.
 - source tracker edit: `QWEN35_RAW_SSE_PARITY` now points at the fresh current-recapture red artifact so release remains blocked until the public tunnel/backend is rebuilt from current source and recaptured green.
@@ -14711,7 +14724,7 @@ Other-agent action:
 - now: live-recaptured Qwen35 public/tunnel raw SSE after the proof-pointer
   refresh.
 - tunnel endpoint checked:
-  `https://testapi.adlabus.dev/v1/models` advertises
+  `[external endpoint removed - off limits]/v1/models` advertises
   `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`; `/health` reports the Qwen35
   backend in standby on port 8000.
 - raw tunnel capture:
@@ -14733,3 +14746,67 @@ Other-agent action:
 - verification:
   `.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py -q`
   passed (`24 passed`).
+
+## CODEX
+- now: tracing Qwen35 tunnel/deployed Responses streaming lifecycle source after
+  the fresh live recapture reproduced the same failure.
+- release blocker being reduced: determine whether `[external endpoint removed - off limits]` is
+  running stale vMLX engine/server code or a tunnel/gateway transform that
+  rewrites reasoning events. Current local source and local panel gateway are
+  clean; only deployed tunnel lacks streamed reasoning output item lifecycle.
+- constraints still active: no release/sign/notarize/PyPI/site/updater action,
+  no subagents, no N2 JANG_1L or MiMo work until this checkpoint lane is done
+  or Eric explicitly reopens those lanes.
+
+## CODEX - 2026-06-11 continuation after external-lane correction
+- now: continuing the release-readiness goal with a hard external-off-limits boundary. Do not touch, probe, refresh, plan around, or use EXTERNAL_OFF_LIMITS_LANE endpoints/paths/helpers/artifacts as current proof unless Eric explicitly names that lane in the current turn.
+- active proof scope for this movement: local vMLX Python engine, local panel/gateway, installed-app/bundled-python parity, and local build artifacts only.
+- boundaries: no release/sign/notarize/PyPI/updater/site action; no N2 JANG_1L; no subagents; no stale external proof consumption; no fake parser/cache/media fixes.
+- next movement: inspect current local release checklist and bundle/app parity blockers, then reduce one local UI/API/runtime blocker with focused proof.
+
+## CODEX - 2026-06-11 local bundled-python parity blocker
+- now: local bundled-python verifier failed without touching external endpoints.
+  Failure is bundled `jang_tools/capabilities.py` content drift: source sha256
+  `ac8d953b662ab687c21509b77cdb5ec3f69c67fd8231cf77680b6af947fdd8b7`,
+  bundled sha256
+  `385e0ebf489e19319dc0277daeb664a3a271409884c6b4d64b706328acc9f574`.
+- current blocker being reduced: installed-app/bundled runtime parity for the
+  local vMLX Python engine plus JANG runtime package surface.
+- next movement: inspect local JANG source dirty state and bundle script path,
+  then refresh bundled-python only if it can be done without overwriting
+  another agent's work or running release/sign/notarize actions.
+- result: local bundled Python was refreshed by reinstalling local
+  `/Users/eric/jang/jang-tools` into `panel/bundled-python` and restoring
+  relocatable `jang*`/`vmlx*` console-script trampolines. JANG package metadata
+  in the local JANG checkout was bumped from `2.5.30` to `2.5.31` to avoid
+  downgrading the runtime package surface.
+- verification: `./panel/scripts/verify-bundled-python.sh` now passes. It
+  confirms bundled vMLX version `1.5.57`, relocatable shebangs, vMLX source
+  hash parity, JANG tools source hash parity, and critical imports including
+  `jang_tools.capabilities`, `jang_tools.mimo_v2.mlx_register`,
+  `mlx_lm.models.mimo_v2`, Step3p7, Gemma 4 Unified, Kimi/Nemotron/TurboQuant
+  kernels, and JANGTQ loaders.
+- no-claim boundary: this is local bundled-python parity only. JANG source is
+  still tracked-dirty and therefore not release-clean until the JANG lane
+  commits/reconciles its runtime changes. No signing, notarization, upload, or
+  external proof was run.
+
+## CODEX - 2026-06-11 checkpoint release override active
+- current user instruction: finish the vMLX Python engine/app work and proceed
+  to a signed/notarized checkpoint release so the session can end at a working
+  confirmed checkpoint.
+- release scope: checkpoint DMG only. Do not publish tags, update appcast,
+  mutate download JSON/site metadata, or PyPI-release in this movement unless
+  explicitly asked separately.
+- local runtime parity now proven: `./panel/scripts/verify-bundled-python.sh`
+  passed after local JANG `2.5.31` runtime sync, and
+  `build/current-installed-app-runtime-parity-audit-after-jang-tools-runtime-sync-20260611.json`
+  is `status=pass`, `missing_or_stale=[]`, including the new
+  `installed_bundled_jang_tools_hash_parity` row.
+- JANG source used by the release bundler is no longer tracked-dirty for this
+  surface: `/Users/eric/jang/jang-tools` commit `a72394b` (`Update runtime
+  package capabilities`) records the local runtime/package capability changes.
+- current release checklist remains a checkpoint override, not production
+  release-clear:
+  `build/current-full-release-objective-checklist-after-jang-tools-installed-parity-20260611.json`
+  is `status=open`, `failed_count=16`.

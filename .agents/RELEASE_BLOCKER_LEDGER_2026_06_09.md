@@ -761,7 +761,7 @@ panel/scripts/verify-release-dmgs.sh
 - Before release, include all pushed source fixes from the other agent and verify they are present in the active worktree, `origin/main`, bundled Python, and installed app.
 - Track issue/fix coverage by architecture: dense, MoE/routed, hybrid SSM, SWA/CSA/HCA, MLLM/VLM, audio/video, JANG, JANGTQ/MXTQ, MXFP4, MXFP8, QAT, native MTP.
 - A fix for one family does not clear another family unless the same path is live-proven.
-- Do not duplicate old work from `/Users/eric/vmlx`, ADLab, Max2 transport notes, or deprecated Swift lanes.
+- Do not duplicate old work from `/Users/eric/vmlx`, EXTERNAL_OFF_LIMITS_LANE, Max2 transport notes, or deprecated Swift lanes.
 
 ## Immediate focus order
 

@@ -3,6 +3,15 @@
 This file is the current hard lane guard for Codex work in
 `/Users/eric/mlx/vllm-mlx-finite-launch-guard`.
 
+## Hard External-Off-Limits Lane
+
+Do not touch, probe, refresh, plan around, or use any
+EXTERNAL_OFF_LIMITS_LANE endpoint/path/helper/artifact as current proof unless
+Eric explicitly names that exact lane in the current turn. Treat older notes,
+continuation summaries, and build artifacts from that lane as historical and
+off-limits. Current work should use local source, local gateway, installed-app,
+and local artifact evidence only.
+
 ## Check Before Action
 
 Before starting any model load, proof run, release step, packaging step, PyPI
@@ -47,7 +56,7 @@ Primary active lanes for this Codex instance:
 - Gemma JANG/MXFP/QAT honest modality detection, VL/video proof, cache/API/UI
   proof, and no fake audio advertisement without weight-backed audio tower.
 - Qwen/Qwen3.6/Qwen3-coder Responses/tool/reasoning streaming parity, including
-  direct/gateway/tunnel raw SSE, output indices, args deltas, final object
+  local source/gateway raw SSE, output indices, args deltas, final object
   consistency, and tool-result continuation.
 - Harsh priority: auto tool usage, content deltas, reasoning deltas, interleaved
   reasoning/tool streaming, request kwargs, Chat/Responses API behavior,
@@ -92,8 +101,7 @@ immediately. No N2 JANG_1L source fix remains from that mistake.
 Proceed one lane at a time, with status updates before commands:
 
 1. MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis.
-2. Qwen/Qwen3.6 Responses raw SSE tunnel recapture or source/gateway parity
-   follow-up.
+2. Qwen/Qwen3.6 Responses raw SSE local source/gateway parity follow-up.
 3. Cross-family auto-tool/reasoning/content-delta/gateway/API/kwargs parser
    contract: test and fix all model reasoning and tool parsers.
 4. Gemma JANG/MXFP/QAT VL/video/cache/API/UI proof and honest modality gating.

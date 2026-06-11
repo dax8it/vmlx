@@ -1156,8 +1156,8 @@ Proven:
 Blocked:
 
 - Source endpoint `http://erics-m5-max2.local:8126` is still absent. Current
-  AdLab handoff says valid source truth requires a deliberate Swift MiMo TP4
-  relaunch through `adlab-pair`; do not substitute a casual Python source load
+  EXTERNAL_OFF_LIMITS_LANE handoff says valid source truth requires a deliberate Swift MiMo TP4
+  relaunch through `[external relaunch helper removed - off limits]`; do not substitute a casual Python source load
   as source truth.
 
 Boundary:
@@ -2706,7 +2706,7 @@ Next implementation target:
 - Remaining N2 rows are audio, public tunnel parity, N2 JANG_1L memory
   strategy, and the stricter custom prompt quality red row.
 - 2026-06-10 13:23 PDT public tunnel availability check: current
-  `https://testapi.adlabus.dev/v1/models` does not advertise any
+  `[external endpoint removed - off limits]/v1/models` does not advertise any
   `Nex-N2-Pro-JANGTQ2` / N2 alias, and `/health` reports single-model gateway
   mode with Qwen27 standby. Treat N2 JANGTQ2 public tunnel parity as a deployed
   tunnel availability gap until the tunnel backend serves the N2 JANGTQ2 model;
@@ -3198,7 +3198,7 @@ Next implementation target:
   `build/current-qwen-coder-next-tunnel-availability-20260611/SUMMARY.json`
   is `status=open`.
 - Finding:
-  `https://testapi.adlabus.dev/v1/models` is reachable and advertises 11 model
+  `[external endpoint removed - off limits]/v1/models` is reachable and advertises 11 model
   IDs, but not the exact current-source served model `qwen3-coder-next`.
 - Advertised Qwen-family IDs:
   `models/Qwen3.6-27B-MXFP8-CRACK-MTP`,
