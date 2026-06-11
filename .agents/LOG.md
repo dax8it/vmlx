@@ -17049,3 +17049,49 @@ Next action:
   No parser patch was appropriate here. Remaining release work is live
   same-model direct/gateway/tunnel recapture for Qwen3.6/Qwen-coder deployments
   with reasoning enabled and request kwargs preserved.
+
+# 2026-06-11 04:09 PDT - next local release blocker DSV4 real-UI preflight
+
+- Current manifest blockers inspected from
+  `build/current-release-regression-manifest-after-gemma26-crack-live-smoke-20260611.json`:
+  MiMo quality, MiniMax #179 reporter provenance, and DSV4 real-UI
+  missing/partial.
+- Local candidate:
+  refresh the DSV4 real-UI memory preflight because it is the only remaining
+  local non-MiMo release blocker that does not require reporter-side data.
+- Guard:
+  run `tests/cross_matrix/run_real_ui_dsv4_memory_preflight.py` first and only
+  launch real Electron UI DSV4 if the guard reports `ready_to_launch`.
+
+# 2026-06-11 04:23 PDT - DSV4 real-UI preflight valid resource block
+
+- Initial default preflight exposed stale harness truth:
+  default path `/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K` is missing,
+  so the artifact reported `invalid_preflight_floor` with `model_size_gb=null`.
+- Actual local DSV4 artifact:
+  `/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG`, size `97.4 GiB`.
+- Source/test fix:
+  `run_real_ui_dsv4_memory_preflight.py` now defaults to the actual local DSV4
+  JANG model and computes default required available memory as
+  `model_size_gb + 40 GiB`; manifest validation accepts the DSV4 JANG suffix
+  while keeping model-size, model+margin, memory-gap, no-heavy-process, and
+  do-not-launch checks.
+- Fresh default run:
+  `.venv/bin/python tests/cross_matrix/run_real_ui_dsv4_memory_preflight.py`
+  wrote
+  `build/current-real-ui-dsv4-memory-preflight-dsv4-jang-valid-floor-20260611.json`
+  with `status=skipped_insufficient_memory`, `required_available_gb=137.4`,
+  `free_plus_speculative_purgeable_gb=106.96`, and `memory_gap_gb=30.44`.
+- Fresh manifest:
+  `build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json`
+  has `real_ui_live_model_matrix.unblocked_non_mimo_status=pass`; DSV4 is now
+  a resource blocker, not an unblocked missing/partial UI row. Release blockers
+  remaining in the manifest are MiMo quality and MiniMax #179 reporter
+  provenance.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_real_ui_dsv4_memory_preflight.py tests/test_current_regression_suite.py tests/test_release_regression_manifest.py -k 'dsv4_memory_preflight_default_out_tracks_current_release_artifact or dsv4_memory_preflight_default_model_tracks_local_release_artifact or dsv4_memory_preflight_default_floor_derives_from_model_size or current_suite_child_runner_defaults_track_current_artifacts or current_proof_artifacts_do_not_reference_stale_dsv4_second_local_check or current_proof_artifacts_do_not_reference_stale_dsv4_second_local_check or release_regression_manifest_current_sweep_requires_dsv4_memory_preflight_when_real_ui_missing or release_regression_manifest_real_ui_matrix_records_dsv4_memory_blocker or release_regression_manifest_real_ui_unblocked_non_mimo_status_passes_when_only_mimo_and_resource_blocked_dsv4_are_open or release_regression_manifest_rejects_dsv4_preflight_under_model_margin or release_regression_manifest_runner_default_out_tracks_current_release_proof_artifact or current_regression_suite_default_out_tracks_pr_intake_artifact'`
+  -> `11 passed, 417 deselected`.
+- Full current suite:
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  remains `status=open` with existing broader contract failures/open objective
+  rows. Do not claim full release readiness from this DSV4 preflight fix.

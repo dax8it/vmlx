@@ -1,0 +1,134 @@
+{
+  "active_heavy_process_count": 0,
+  "active_heavy_processes": [],
+  "available_for_gate_gb": 106.96,
+  "available_for_gate_gib": 106.96,
+  "commands": {
+    "active_heavy_processes": "pgrep -af 'vmlx_engine.cli serve|mlx_lm.server|run_runtime_memory_stress_probe|run_decode_speed_gate|live-real-ui-model-proof|run_dsv4_route_mode_code_exactness|run_dsv4_default_cache_tool_loop_gate'",
+    "memory": "vm_stat",
+    "memory_pressure": "memory_pressure",
+    "model_size": "walk /Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
+    "top_memory_processes": "ps -axo pid,rss,command -r | head -n 11"
+  },
+  "did_not_launch": true,
+  "floor_valid": true,
+  "free_plus_speculative_purgeable_gb": 106.96,
+  "free_plus_speculative_purgeable_gib": 106.96,
+  "generated_at": "2026-06-11T11:18:51.061768+00:00",
+  "inactive_file_cache_gb": 11.07,
+  "launch_allowed": false,
+  "launch_blockers": [
+    "insufficient_memory"
+  ],
+  "launch_decision": "do_not_launch",
+  "memory_breakdown": {
+    "free": 105.94,
+    "inactive": 11.07,
+    "purgeable": 0.06,
+    "speculative": 0.96
+  },
+  "memory_breakdown_gb": {
+    "free": 105.94,
+    "inactive": 11.07,
+    "purgeable": 0.06,
+    "speculative": 0.96
+  },
+  "memory_gap_gb": 30.44,
+  "memory_gap_gib": 30.44,
+  "memory_pressure_free_percent": 94,
+  "memory_pressure_raw_tail": [
+    "Swapins: 98168970 ",
+    "Swapouts: 108252749 ",
+    "",
+    "Page Q counts:",
+    "Pages active: 93262 ",
+    "Pages inactive: 725552 ",
+    "Pages speculative: 62645 ",
+    "Pages throttled: 0 ",
+    "Pages wired down: 279132 ",
+    "",
+    "Compressor Stats:",
+    "Pages used by compressor: 16105 ",
+    "Pages decompressed: 743064123 ",
+    "Pages compressed: 786137442 ",
+    "",
+    "File I/O:",
+    "Pageins: 1328013503 ",
+    "Pageouts: 88965 ",
+    "",
+    "System-wide memory free percentage: 94%"
+  ],
+  "min_free_gb": 137.4,
+  "min_free_gib": 137.4,
+  "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
+  "model_size_gb": 97.4,
+  "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
+  "psutil_available_gb": 117.97,
+  "psutil_available_gib": 117.97,
+  "psutil_memory_gap_gb": 19.43,
+  "psutil_memory_gap_gib": 19.43,
+  "psutil_memory_percent": 7.8,
+  "psutil_total_gb": 128.0,
+  "psutil_total_gib": 128.0,
+  "reason": "local memory below DSV4 real-UI preflight floor; leave matrix missing dsv4 until enough headroom is available",
+  "required_available_gb": 137.4,
+  "required_available_gib": 137.4,
+  "required_free_gb": 137.4,
+  "required_free_gib": 137.4,
+  "required_model_margin_gb": 40.0,
+  "safety_margin_gb": 40.0,
+  "status": "skipped_insufficient_memory",
+  "top_memory_processes": [
+    {
+      "command": "codex --yolo resume",
+      "pid": 60802,
+      "rss_gb": 0.21
+    },
+    {
+      "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing",
+      "pid": 438,
+      "rss_gb": 0.12
+    },
+    {
+      "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon",
+      "pid": 176,
+      "rss_gb": 0.04
+    },
+    {
+      "command": "/System/Library/DriverExtensions/AppleCentauriAlpha.dext/AppleCentauriAlpha com.apple.driver.AppleCentauriAlpha 0x100001323 com.apple.driver.AppleCentauriAlpha",
+      "pid": 404,
+      "rss_gb": 0.04
+    },
+    {
+      "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json",
+      "pid": 37038,
+      "rss_gb": 0.03
+    },
+    {
+      "command": "/sbin/launchd",
+      "pid": 1,
+      "rss_gb": 0.02
+    },
+    {
+      "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console",
+      "pid": 179,
+      "rss_gb": 0.01
+    },
+    {
+      "command": "/System/Library/CoreServices/launchservicesd",
+      "pid": 146,
+      "rss_gb": 0.01
+    },
+    {
+      "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp",
+      "pid": 42839,
+      "rss_gb": 0.01
+    },
+    {
+      "command": "/usr/libexec/sysmond",
+      "pid": 34168,
+      "rss_gb": 0.0
+    }
+  ],
+  "unit": "GiB"
+}

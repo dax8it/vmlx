@@ -11693,3 +11693,44 @@ Other-agent action:
   already guarded. Remaining work is live same-model recapture on the reported
   Qwen3.6/Qwen-coder surfaces when deployed/available, especially reasoning-on
   direct/gateway/tunnel and any tunnel/backend freshness mismatch.
+
+# 2026-06-11 04:09 PDT next local release blocker: DSV4 real-UI preflight
+
+- Manifest truth:
+  current release blockers include MiMo quality, MiniMax #179 reporter
+  provenance, and DSV4 real-UI missing/partial. MiMo is out of this lane after
+  Eric said he will remake it, and MiniMax #179 needs reporter-side provenance.
+- Next local action:
+  refresh `tests/cross_matrix/run_real_ui_dsv4_memory_preflight.py` at the
+  manifest default output. If status is `ready_to_launch`, the next step is a
+  guarded DSV4 real Electron UI proof; if status is a skip, do not force launch
+  from this lane.
+
+# 2026-06-11 04:23 PDT DSV4 real-UI preflight reclassified as resource-blocked
+
+- Fixed preflight harness truth:
+  `tests/cross_matrix/run_real_ui_dsv4_memory_preflight.py` now defaults to the
+  actual local DSV4 artifact `/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG`
+  and derives the default launch floor from model size plus the existing
+  40 GiB safety margin instead of using the stale missing
+  `DeepSeek-V4-Flash-JANGTQ-K` path with a static invalid 120 GiB floor.
+- Fresh artifact:
+  `build/current-real-ui-dsv4-memory-preflight-dsv4-jang-valid-floor-20260611.json`
+  is `status=skipped_insufficient_memory`, `floor_valid=true`,
+  `model_size_gb=97.4`, `required_available_gb=137.4`,
+  `free_plus_speculative_purgeable_gb=106.96`, `memory_gap_gb=30.44`,
+  `launch_allowed=false`, and no active heavy processes.
+- Manifest impact:
+  `build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json`
+  now records DSV4 under `real_ui_live_model_matrix.resource_blockers` and
+  changes `unblocked_non_mimo_status` to `pass`. The release blockers list is
+  down to MiMo quality and MiniMax #179 reporter provenance.
+- Verification:
+  focused DSV4 preflight/pointer tests passed:
+  `11 passed, 417 deselected`.
+- Boundary:
+  this did not launch DSV4 real UI and does not clear DSV4 cross-family UI or
+  long-output/code exactness; it prevents the release gate from treating a
+  valid local memory resource block as an unblocked missing UI row. Full current
+  suite still reports broader existing contract failures and open objective
+  rows; those were not fixed in this movement.
