@@ -12449,3 +12449,28 @@ Other-agent action:
   Qwen native-MTP decode/equivalence is green. Qwen/JANG packaged MX matmul
   speed and Qwen27 prompt-processing speed remain open because packaged Py3.12
   PP is below floor. No release/sign/notarize/upload/PyPI/updater/site action.
+
+# 2026-06-11 continuation PDT aggregate after Qwen27 MTP pass
+
+- Command:
+  `.venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out
+  build/current-regression-suite-after-qwen27-mtp-pass-packaged-pp-open-20260611.json`.
+- Result:
+  aggregate remains `status=open`; failed steps are
+  `release_regression_manifest` and `release_gate_skip_app`.
+- Important change:
+  `Qwen native MTP live decode speed and output equivalence is release-cleared`
+  is no longer in `open_requirements`.
+- Remaining Qwen blockers:
+  `Qwen/JANG packaged MX matmul speed is release-cleared` and `Qwen 27B
+  JANG_4M prompt-processing speed floor is release-cleared` remain open because
+  packaged Py3.12 PP is below floor on installed/staged app paths.
+- Remaining open requirements:
+  DSV4 same-process cache hit; DSV4 block disk L2 restart hit; DSV4 one-tool
+  stop; Qwen packaged MX speed; Qwen27 prompt-processing speed; Ling/Bailing
+  quality; cross-family live multi-turn; MiMo V2.5 runtime/tool/long-prompt;
+  N2 Pro broad JANG1L/JANGTQ row with JANG_1L still off-limits; MiniMax
+  reporter parity/root cause; real Electron UI cross-family live matrix; DSV4
+  long-output/code/file-generation quality.
+- Boundary:
+  no release/sign/notarize/upload/PyPI/updater/site action.

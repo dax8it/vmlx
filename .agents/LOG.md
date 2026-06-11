@@ -17723,3 +17723,21 @@ Next action:
   `build/current-objective-proof-after-qwen27-speed-mtp-classification-20260611.json`
   marks the Qwen native-MTP decode/equivalence row PASS while leaving Qwen
   packaged PP rows open.
+
+# 2026-06-11 continuation PDT - aggregate after Qwen27 MTP pass
+
+- Action:
+  refreshed the current aggregate suite after the Qwen27 native-MTP A/B proof
+  and packaged PP classification.
+- Artifact:
+  `build/current-regression-suite-after-qwen27-mtp-pass-packaged-pp-open-20260611.json`.
+- Result:
+  `status=open`; failed steps remain `release_regression_manifest` and
+  `release_gate_skip_app`.
+- Confirmed closed:
+  Qwen native-MTP decode speed/output equivalence is no longer open.
+- Still open:
+  Qwen/JANG packaged MX speed and Qwen27 prompt-processing speed remain open
+  due packaged Py3.12 PP below floor; other remaining open rows are DSV4,
+  Ling/Bailing, cross-family live multi-turn, MiMo, broad N2, MiniMax, real UI
+  cross-family, and DSV4 long-output/code quality.

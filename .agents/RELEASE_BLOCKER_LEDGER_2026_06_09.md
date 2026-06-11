@@ -834,3 +834,16 @@ panel/scripts/verify-release-dmgs.sh
   marks `Qwen native MTP live decode speed and output equivalence` PASS.
 - This does not clear Qwen packaged PP speed. Keep the packaged speed and
   prompt-processing rows open until packaged Py3.12 runtime clears PP.
+
+## 2026-06-11 aggregate after Qwen27 MTP pass
+
+- `build/current-regression-suite-after-qwen27-mtp-pass-packaged-pp-open-20260611.json`
+  is `status=open`.
+- The Qwen native-MTP decode/equivalence row is no longer open.
+- Qwen/JANG packaged MX speed and Qwen27 prompt-processing speed remain open
+  because packaged Py3.12 app PP is below the required floor.
+- Open requirements are now: DSV4 same-process cache hit, DSV4 L2 restart hit,
+  DSV4 one-tool stop, Qwen packaged speed, Qwen27 PP speed, Ling/Bailing
+  quality, cross-family live multi-turn, MiMo, broad N2 row, MiniMax reporter
+  parity, real Electron UI cross-family matrix, and DSV4 long-output/code
+  quality.
