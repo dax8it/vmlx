@@ -12634,3 +12634,22 @@ Other-agent action:
   tunnel raw-SSE proof. If a deployed user still sees `arguments: {}`, capture
   same-model raw SSE first; do not synthesize missing args from preambles or
   disable reasoning as a workaround.
+
+# 2026-06-11 07:52 PDT N2 lane split
+
+- Checked current N2 objective row and artifacts without loading or touching
+  N2 JANG_1L.
+- Proven green for N2 JANGTQ2:
+  `build/current-n2-jangtq2-live-chat-cache-responses-l2-20260610.json` is pass
+  for stable text, tool probe, Responses probe, Responses stream probe, L2
+  restart, and `paged+ssm` cache hit; `build/current-n2-jangtq2-responses-stream-boundary-20260610.json`
+  is pass for direct/gateway Responses tool plus tool-result continuation; and
+  `build/current-real-ui-live-model-n2-jangtq2-dev-app-prevresp-proof-20260610.json`
+  is pass for real Electron dev-app two-turn tool loop with hybrid SSM cache,
+  async rederive, TurboQuant attention KV where applicable, block-disk L2, and
+  previous-response behavior.
+- Still open:
+  aggregate N2 row remains open because it includes N2 JANG_1L failed/empty
+  visible-output and cache rows. JANG_1L is Eric-owned/off-limits in this lane;
+  do not load, fix, reclassify, or claim it here unless explicitly reopened in
+  the current turn.
