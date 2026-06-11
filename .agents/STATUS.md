@@ -1,4 +1,30 @@
 ## CODEX
+- now: Gemma4 E2B QAT JANG4M thinking-off source UI Responses/tool/cache row
+  is live green after fixing the proof surface for tool-first Responses
+  streams.
+- panel/source fixes: `panel/src/main/ipc/chat.ts` now logs
+  `Responses function_call_arguments.delta` and `.done` with item/output index
+  and lengths; `panel/scripts/live-real-ui-model-proof.mjs` counts raw SSE
+  argument delta/done events or those panel logs as
+  `responses_delta_streaming` for tool-first flows.
+- live pass artifact:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-cache-thinking-off-pass-20260611-proof.json`
+  is `status=pass`.
+- proven by pass: current Electron dev UI, source server, Gemma4 E2B QAT
+  JANG4M, Responses streaming, required `run_command`, two function-call
+  argument delta/done streams, two real built-in tool executions, tool-result
+  continuation, final visible text `This is the second UI turn.
+  REAL_UI_LIVE_TOOL_TWO`, parser leak check, generation defaults, server cache
+  controls, native Gemma4 mixed-SWA cache, q4 storage-boundary KV, paged cache
+  hits, and block-disk L2.
+- cache/speed proof from artifact: `cache_hit_requests=3`,
+  `cache_hit_tokens=3136`, `ram_tokens_cached=3418`,
+  `l2_block_tokens_on_disk=3418`, `disk_hits=36`, `disk_writes=56`, and live
+  speed samples at `142.9 t/s`.
+- boundary: this is `enable_thinking=false`; Gemma4 reasoning-on required tools
+  remain red and must not be claimed green.
+
+## CODEX
 - now: Gemma4 required-tool source/proof checkpoint is committed and pushed.
 - commit: `2200598e9 Improve Gemma4 required tool streaming`, pushed to
   `origin/codex/pr-intake-manifest` and `origin/main`.

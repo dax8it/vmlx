@@ -1,3 +1,31 @@
+# 2026-06-11 01:39 PDT - Gemma4 thinking-off tool/cache UI row green
+
+- Fixed proof-surface false red for tool-first Responses streams:
+  `panel/src/main/ipc/chat.ts` now logs
+  `Responses function_call_arguments.delta` and
+  `Responses function_call_arguments.done`, and
+  `panel/scripts/live-real-ui-model-proof.mjs` accepts raw SSE argument
+  delta/done events or those panel logs as `responses_delta_streaming`.
+- Verification: `cd panel && npm test --
+  tests/live-real-ui-proof-harness.test.ts tests/tool-status-responsiveness.test.ts`
+  passed `11/11`; `npm --prefix panel run typecheck` passed; `git diff --check`
+  passed.
+- Live pass:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-cache-thinking-off-pass-20260611-proof.json`
+  is `status=pass`.
+- Proven: Gemma4 E2B QAT JANG4M source dev UI, Responses streaming,
+  `enable_thinking=false`, required `run_command`, function-call argument
+  delta/done streaming, two built-in tool executions, tool-result continuation,
+  final visible text `This is the second UI turn. REAL_UI_LIVE_TOOL_TWO`, no
+  parser leak, generation defaults, server cache controls, native Gemma4
+  mixed-SWA cache, q4 storage-boundary KV, paged cache hits, and block-disk L2.
+- Cache/speed evidence: `cache_hit_requests=3`, `cache_hit_tokens=3136`,
+  `ram_tokens_cached=3418`, `l2_block_tokens_on_disk=3418`, `disk_hits=36`,
+  `disk_writes=56`, and live speed samples at `142.9 t/s`.
+- Boundary: this clears the thinking-off Gemma4 tool/cache UI row only. It
+  does not clear Gemma4 reasoning-on required tools, media/video/audio,
+  installed-app parity, gateway/tunnel parity, or release/sign/notarize.
+
 # 2026-06-11 01:39 PDT - Gemma4 required-tool checkpoint pushed
 
 - Commit `2200598e9 Improve Gemma4 required tool streaming` pushed to
