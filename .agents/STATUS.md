@@ -11855,3 +11855,62 @@ Other-agent action:
   validation now accepts the public-app issue audit as `status=open` with no
   audit failures, but still reports `prepackage_ready=false` and
   `release_ready=false`.
+
+# 2026-06-11 continuation PDT parser/reasoning/generation blocker lane
+
+- Current turn focus:
+  reduce real source/runtime blockers in the parser registry, reasoning-template,
+  generation-defaults, and related API/tool streaming cluster. This is the
+  highest-leverage lane for opencode/Codex-style auto tool usage, content delta
+  streaming, reasoning on/off/auto semantics, and cross-family parser defaults.
+- Boundaries:
+  do not load or prove N2 JANG_1L; do not run release/sign/notarize/PyPI/site
+  actions; do not spend the turn inventing new broad harnesses. Use existing
+  contract artifacts to identify source failures, patch source/policy, then run
+  focused verification and refresh only affected artifacts.
+- Watchpoints:
+  fail closed on missing required tool args, no fake parser repair that rewrites
+  model semantic values, no hidden reasoning leaks, no raw XML/tool markup leaks,
+  and no silent family-default drift between engine registry, panel launch
+  config, and API gateway request kwargs.
+
+# 2026-06-11 continuation PDT parser/reasoning/generation blocker result
+
+- Source fixes:
+  `vmlx_engine/server.py` now resolves omitted sampling as request > explicit
+  CLI/session > bundle/JANG metadata > `generation_config.do_sample=false`
+  greedy semantics > family fallback. This fixes the hidden MiMo family sampler
+  override where a model-declared greedy bundle resolved `temperature=0.7`
+  instead of `0.0`.
+- Parser policy:
+  MiMo V2 registry expectations now match the current runtime policy:
+  stale `qwen`/`qwen3` converter stamps are rejected to `xml_function` tools
+  and `think_xml` reasoning, with `supports_thinking=False`.
+- Focused proof:
+  parser registry contract now `status=pass`; reasoning-template contract now
+  `status=pass`; generation-defaults contract now `status=pass`.
+  Targeted tests passed:
+  `tests/test_reasoning_modes.py` focused sampling rows,
+  `tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_mimo_v2_jang_stamp_rejects_stale_non_xml_tool_parser_claim`.
+- Boundaries:
+  no model load, no N2 JANG_1L proof/load, no release/sign/notarize/PyPI/site
+  action. Remaining current-regression/release artifacts are being refreshed to
+  show the reduced blocker set.
+
+# 2026-06-11 continuation PDT parser/reasoning/generation final proof state
+
+- Current regression suite refresh:
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  remains `status=open`, but failed steps are reduced to:
+  `cache_architecture_contracts`, `noheavy_panel_settings_contract`,
+  `model_artifact_format_contracts`, `native_mtp_contracts`,
+  `vl_media_cache_contracts`, `packaged_integrity_contracts`,
+  `release_regression_manifest`, and `release_gate_skip_app`.
+- Cleared in this lane:
+  `parser_registry_contracts rc=0`, `generation_defaults_contracts rc=0`,
+  and `reasoning_template_contracts rc=0` in the current suite.
+- Release manifest:
+  still `prepackage_ready=false` and `release_ready=false`; public app audit
+  now has no manifest validation failures after restoring unrelated installed
+  hash drift, but installed/staged app parity remains stale against current
+  source and must be handled in the package/parity lane.

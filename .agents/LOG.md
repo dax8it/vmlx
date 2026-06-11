@@ -17207,3 +17207,50 @@ Next action:
   `release_ready=false`; the public-app audit is now validated as open with no
   manifest failures, and full objective checklist remains `status=open` with
   `failed_count=64`.
+
+# 2026-06-11 continuation PDT - parser/reasoning/generation blocker lane start
+
+- Scope:
+  inspect current parser registry, reasoning-template, generation-defaults,
+  and adjacent API/tool streaming contract artifacts, then patch source/runtime
+  policy where failures are real. Keep changes tied to release blockers.
+- Boundaries:
+  no N2 JANG_1L load/proof, no release/sign/notarize/PyPI/site action, no new
+  broad harness unless unavoidable. Existing dirty panel settings artifact is
+  not owned by this lane unless a source fix specifically requires refreshing it.
+
+# 2026-06-11 continuation PDT - parser/reasoning/generation blocker result
+
+- Root cause:
+  `_resolve_temperature`/`_resolve_top_p` applied family fallback before model
+  bundle metadata and `generation_config.do_sample=false`; a MiMo bundle that
+  explicitly declared greedy generation could still resolve omitted request
+  sampling to the hidden MiMo family default.
+- Fix:
+  reordered sampling default resolution in `vmlx_engine/server.py` so explicit
+  request/CLI wins, then bundle/JANG metadata and greedy generation config,
+  then family fallback.
+- Parser drift fix:
+  MiMo stale converter-stamp registry test now expects the runtime policy
+  `tool_parser="xml_function"` and `reasoning_parser="think_xml"`.
+- Proof:
+  `run_parser_registry_contract.py` -> `status=pass`;
+  `run_reasoning_template_contract.py` -> `status=pass`;
+  `run_generation_defaults_contract.py` -> `status=pass`.
+  Targeted pytest rows passed for the greedy generation-config sampling contract
+  and MiMo stale-stamp registry policy.
+
+# 2026-06-11 continuation PDT - parser/reasoning/generation final proof state
+
+- Full current-suite refresh:
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  remains open, but parser/reasoning/generation are green:
+  `parser_registry_contracts rc=0`, `generation_defaults_contracts rc=0`,
+  `reasoning_template_contracts rc=0`.
+- Remaining failed suite steps:
+  cache architecture, panel settings, model artifact format, native MTP,
+  VL media cache, packaged integrity, release manifest, release gate.
+- Release manifest:
+  regenerated after restoring unrelated public-app installed-hash drift;
+  `public_app_issue_audit.failures=[]`, while installed/staged app parity
+  remains stale and release/prepackage stay false.
