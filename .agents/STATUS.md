@@ -12609,3 +12609,28 @@ Other-agent action:
   Ling/Bailing quality, cross-family live multi-turn smoke, MiMo, N2 broad
   non-JANG_1L/JANGTQ work, MiniMax reporter parity, real Electron UI
   cross-family matrix, and DSV4 long-output/code quality.
+
+# 2026-06-11 07:48 PDT Responses/Qwen raw-SSE guard proof
+
+- Verified locally:
+  empty XML/function calls with missing required args fail closed for Responses
+  streaming required mode, Responses streaming auto mode, Chat Completions
+  streaming, nonstream shared parser path, Qwen streaming parser, and generic
+  XML function parser.
+- Command:
+  `.venv/bin/python -m pytest tests/test_server.py tests/test_tool_parsers.py -k 'streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_auto_empty_xml_tool_call_strips_final_markup or tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths or streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_xml_empty_required_args_fail_closed or streaming_xml_required_args_preserved or missing_required_arguments_fail_closed' -q`
+  passed, 8 selected.
+- Verified raw-SSE artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
+  is status pass with direct/gateway/tunnel present, same Qwen35 model,
+  reasoning enabled/not disabled, authoritative arguments matching
+  `{"value": "blue-cat"}`, function-call argument delta/done events, and valid
+  output item indices (`message=0`, `reasoning=1`, `function_call=2`).
+- Command:
+  `.venv/bin/python -m pytest tests/test_responses_raw_sse_parity_contract.py tests/test_full_release_objective_checklist.py -k 'raw_sse or qwen35_raw_sse or response_history or output_index or empty_xml_arguments' -q`
+  passed, 24 selected.
+- Boundary:
+  this clears the local parser/server guard and current Qwen35 direct/gateway/
+  tunnel raw-SSE proof. If a deployed user still sees `arguments: {}`, capture
+  same-model raw SSE first; do not synthesize missing args from preambles or
+  disable reasoning as a workaround.

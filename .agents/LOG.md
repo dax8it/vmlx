@@ -17842,3 +17842,21 @@ Next action:
   tools, exact CB cache, prefix/paged/L2, and source-vs-quant boundary are
   accounted green. MiMo remains open on decode speed, artifact exactness, media
   wiring, and local release clearance.
+
+# 2026-06-11 07:48 PDT - Qwen/Responses empty-args and raw-SSE verification
+
+- Action:
+  inspected Qwen/XML parsers and Responses streaming finalization, then ran the
+  focused local guards for the reported `arguments: {}` failure shape.
+- Verification:
+  server/parser guard command passed 8 selected tests; raw-SSE classifier and
+  full-release checklist command passed 24 selected tests.
+- Evidence:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
+  is pass for same-model direct/gateway/tunnel, authoritative args, argument
+  delta/done, reasoning-not-disabled, previous-response guard, and output index
+  ordering.
+- Boundary:
+  no code edit was needed in this pass. Keep deployed reports on same-model raw
+  SSE evidence; missing required args must fail closed and must not be invented
+  from visible preamble text.
