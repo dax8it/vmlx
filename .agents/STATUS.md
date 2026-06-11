@@ -13109,3 +13109,77 @@ Other-agent action:
   `zaya_vl`; broader N2, MiniMax reporter parity/root cause, real Electron UI
   cross-family, DSV4 long-output/code, packaged app, DMG signing,
   notarization, PyPI, updater, website, and public release remain not done.
+
+# 2026-06-11 continuation PDT - ZAYA bundled smoke selected
+
+- Current blocker being reduced:
+  cross-family live multi-turn smoke still lacks current `zaya_text` and
+  `zaya_vl` evidence.
+- Why this lane:
+  Gemma is aggregate-pass, N2 JANGTQ2 has existing direct/UI/cache proof while
+  N2 JANG_1L remains off-limits, and MiMo is deferred to Eric's artifact remake.
+  ZAYA is a small local bundled-runtime row that can reduce the open release
+  blocker without crossing those boundaries.
+- Local candidates:
+  `/Users/eric/models/JANGQ/ZAYA1-8B-MXFP4` and
+  `/Users/eric/models/JANGQ/ZAYA1-VL-8B-MXFP4`.
+- Next movement:
+  dry-run, then run isolated bundled-Python all-local smoke with tools/media
+  into current ZAYA proof artifact paths if the dry-run selects only intended
+  rows.
+- Still forbidden:
+  no N2 JANG_1L, no MiMo remake work, no release/sign/notarize/PyPI/updater/site.
+
+# 2026-06-11 continuation PDT - ZAYA text parser source fix proven
+
+- Failed bundled smoke:
+  `build/current-all-local-model-smoke-zaya-text-vl-bundled-after-step37-sync-20260611/summary.json`
+  failed. ZAYA text failed only `tool_required` because `ZayaToolParser`
+  preserved wrapper newlines in schema-declared scalar string args; ZAYA-VL
+  failed HTTP 500 on every probe with `gather_qmm` input/matrix dimension
+  mismatch in `vmlx_engine.models.zaya1_vl`.
+- Source fix:
+  `vmlx_engine/tool_parsers/zaya_tool_parser.py` now resolves dict/object tool
+  schemas and trims only wrapper newlines for schema-declared string scalar
+  params before the existing JSON/value parse.
+- Guarded behavior:
+  same-line spaces and true multiline strings remain preserved; required-arg
+  fail-closed tests still pass.
+- Focused tests:
+  ZAYA wrapper-newline/preservation tests plus
+  `tests/test_tool_parser_required_args_fail_closed.py` passed.
+- Source live proof:
+  `build/current-all-local-model-smoke-zaya-text-source-after-parser-fix-20260611/summary.json`
+  passed for `ZAYA1-8B-MXFP4`; `tool_required` emitted exact
+  `{"value":"blue-cat"}`.
+- Next movement:
+  resync bundled Python, rerun bundled verification, then rerun isolated ZAYA
+  text smoke. ZAYA-VL remains a separate runtime/model-dimension failure.
+
+# 2026-06-11 continuation PDT - ZAYA text bundled proof passed
+
+- Bundle sync:
+  `panel/scripts/bundle-python.sh` completed after the ZAYA parser source fix.
+- Bundle verification:
+  `panel/scripts/verify-bundled-python.sh` passed, including source/bundled
+  `vmlx_engine` and `jang_tools` hash parity.
+- Isolated bundled live proof:
+  `build/current-all-local-model-smoke-zaya-text-bundled-after-parser-fix-20260611/summary.json`
+  passed for `ZAYA1-8B-MXFP4`.
+- Covered by that proof:
+  text cache repeat, cache hit, multi-turn recall, required tool call with
+  exact `{"value":"blue-cat"}`, tool-result continuation, exact JSON, exact
+  code/whitespace.
+- Refreshed tool-call contract:
+  `build/current-tool-call-contract-after-zaya-parser-fix-20260611.json`
+  passed; this clears the temporary stale-hash open state caused by editing
+  `tests/test_tool_parsers.py`.
+- Aggregate:
+  `build/current-objective-proof-after-zaya-text-bundled-parser-fix-20260611.json`
+  now covers `zaya_text`; cross-family live smoke remains open for `hy3`,
+  `mimo_v2`, and `zaya_vl`.
+- ZAYA-VL classification:
+  current bundled VL smoke failed with HTTP 500 on all probes due to
+  `[gather_qmm] Last dimension of first input with shape (..., 2048) does not
+  match the expanded quantized matrix (4096, 2048)` in
+  `vmlx_engine.models.zaya1_vl`; this is not fixed by the text parser change.

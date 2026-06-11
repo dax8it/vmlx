@@ -18185,3 +18185,29 @@ Next action:
 - Pushed `4ecee6d76 Prove Step3.7 bundled parser parity` to branch and main.
 - Bundled Step3.7 smoke passed with exact required-tool args and cache/media
   rows; aggregate still open for Hy3, MiMo, ZAYA text, and ZAYA-VL.
+
+# 2026-06-11 continuation PDT - ZAYA bundled smoke selected
+
+- Next selected blocker is missing ZAYA text/VL bundled smoke evidence.
+- N2 JANG_1L and release publishing remain locked; MiMo remains out for Eric's
+  artifact remake.
+
+# 2026-06-11 continuation PDT - ZAYA text source fix proven
+
+- Initial bundled ZAYA text/VL smoke failed.
+- ZAYA text root cause is parser wrapper-newline handling in
+  `ZayaToolParser`; source fix and focused tests pass.
+- Current-source ZAYA text smoke passed at
+  `build/current-all-local-model-smoke-zaya-text-source-after-parser-fix-20260611/summary.json`.
+- ZAYA-VL remains separate `gather_qmm` dimension mismatch, not fixed by the
+  text parser change.
+
+# 2026-06-11 continuation PDT - ZAYA text bundled proof passed
+
+- Rebuilt bundled Python and verified source/bundled parity.
+- Isolated bundled ZAYA text smoke passed at
+  `build/current-all-local-model-smoke-zaya-text-bundled-after-parser-fix-20260611/summary.json`.
+- Refreshed tool-call contract passed at
+  `build/current-tool-call-contract-after-zaya-parser-fix-20260611.json`.
+- Aggregate now covers `zaya_text`; remaining cross-family smoke gaps are Hy3,
+  MiMo, and ZAYA-VL.
