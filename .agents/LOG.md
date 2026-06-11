@@ -18409,3 +18409,26 @@ Next action:
 - MXFP8 then exposed a separate artificial smoke-target problem: the model continued from the tool result with exact `blue-cat.` and no second tool call, but did not preserve the harness-only `STORED` prefix. Updated the all-local smoke to validate exact stored-value continuation (`blue-cat.`) so the row proves tool-result continuation and value preservation without requiring a prefix not present in the tool payload.
 - Passing live artifacts: `build/current-all-local-model-smoke-lfm25-mxfp4-tools-nomedia-after-tool-result-value-prompt-20260611/summary.json` and `build/current-all-local-model-smoke-lfm25-mxfp8-tools-nomedia-after-tool-result-value-prompt-20260611/summary.json`.
 - Regenerated checklist: `build/current-full-release-objective-checklist-after-lfm25-live-smoke-refresh-20260611.json`, `status=open`, `failed_count=46`, with no LFM failed rows.
+
+# 2026-06-11 continuation - selected MiniMax issue179 parser/API blocker
+
+- Starting from current checklist `build/current-full-release-objective-checklist-after-lfm25-live-smoke-refresh-20260611.json` (`failed_count=46`).
+- Selected MiniMax issue179 because remaining Qwen35 is public tunnel deploy/runtime divergence, MiMo is artifact/remake-bound unless reopened, and N2 JANG_1L is explicitly off-limits. MiniMax is still parser/API/reasoning-output related and may have source-fixable current-engine work.
+- Next: inspect the current issue179 audit and local model/proof availability before making any code change.
+
+# 2026-06-11 continuation - MiniMax full K stale preflight found
+
+- Audit `build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json` is still open mainly for reporter parity and full MiniMax-K local/reporter proof, while current-source MiniMax Small is clean.
+- Found stale path boundary: `live_probe_memory_preflight.model_path=/Users/eric/models/JANGQ/MiniMax-M2.7-JANGTQ_K`, status skipped `model_path_missing`, but local full artifacts exist at `/Users/eric/models/dealign.ai/MiniMax-M2.7-JANGTQ_K-CRACK` plus JANG/JANGTQ variants.
+- Next action: locate and reuse existing issue179/cancel/live proof command against the actual local full K artifact, then classify source/runtime with real evidence. No reporter parity or release claim unless the artifact proves it.
+
+# 2026-06-11 10:58 PDT - MiniMax issue179 full K local cancel proof consumed
+
+- Ran the full MiniMax-K local Responses cancel probe against the real artifact `/Users/eric/models/dealign.ai/MiniMax-M2.7-JANGTQ_K-CRACK` using `panel/bundled-python/python/bin/python3.12`, served model `models/MiniMax-M2.7-JANGTQ_K`, `--skip-memory-preflight`, `--load-timeout 420`, `--stream-seconds 8`, and `--cancel-delay 0.25`.
+- New live proof: `build/current-issue179-minimax-k-responses-cancel-probe-fullk-local-skip-preflight-20260611.json`; server log: `build/current-issue179-minimax-k-responses-cancel-probe-fullk-local-skip-preflight-20260611.server.log`.
+- Result: `status=pass`; no bad text captured; the full K source path loaded through bundled Python; health shows `JANGTQ_K`/`mxtq`, prestacked routed experts, MiniMax plain KV cache, generic TurboQuant KV q4 storage, paged prefix cache, and block-disk L2 enabled.
+- Regenerated `build/current-issue179-minimax-k-root-cause-audit-after-fullk-local-cancel-proof-20260611.json`: still `status=open`. Local full K cancel/report-prompt reproduction is clean, but reporter parity is not proven.
+- Regenerated `build/current-full-release-objective-checklist-after-issue179-fullk-local-proof-20260611.json`: still `status=open`, `failed_count=45`.
+- Updated proof pointers in `run_issue179_minimax_k_root_cause_audit.py`, `run_full_release_objective_checklist.py`, `run_current_regression_suite.py`, `release_regression_manifest.py`, `run_issue175_179_release_boundary_audit.py`, and `run_public_app_issue_audit.py`, with tests adjusted to the new current artifacts.
+- Verification passed: `tests/test_public_app_issue_audit.py::test_public_app_issue_audit_uses_current_manifest_artifact`; combined focused pytest `27 passed, 433 deselected`; `git diff --check`.
+- Boundaries: no runtime parser rewrite, no synthetic cancel/tool/reasoning repair, no release/sign/notarize/PyPI/updater/site action, no N2 JANG_1L, no MiMo active debugging. Release is still not ready; next issue179 work is reporter artifact/hash/session/cancel-lifecycle parity.

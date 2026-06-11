@@ -13383,3 +13383,21 @@ Other-agent action:
 - passing artifacts: `build/current-all-local-model-smoke-lfm25-mxfp4-tools-nomedia-after-tool-result-value-prompt-20260611/summary.json` and `build/current-all-local-model-smoke-lfm25-mxfp8-tools-nomedia-after-tool-result-value-prompt-20260611/summary.json`.
 - checklist pointer: `build/current-full-release-objective-checklist-after-lfm25-live-smoke-refresh-20260611.json`, `status=open`, `failed_count=46`; no LFM rows remain open.
 - still open: package/release readiness, Qwen35 public tunnel reasoning lifecycle, MiMo exactness/media/speed, N2 JANG_1L boundary, Step3.7/Nemotron missing live artifacts, MiniMax issue179, and installed/real-UI matrix gaps.
+
+## CODEX
+- now: continuing after `4eda917ec`; selecting MiniMax issue179 parser/settings parity as the next blocker to inspect because it is parser/API/reasoning-output related and may be more source-fixable than public Qwen tunnel deploy drift, MiMo artifact remake, or off-limits N2 JANG_1L.
+- boundary: inspect `build/current-issue179-minimax-k-root-cause-audit-after-parser-settings-parity-20260608.json`, local model availability, and current parser/settings code before editing. Do not claim reporter parity without a current reporter artifact; do not do release/sign/notarize/PyPI/site actions.
+
+## CODEX
+- now: MiniMax issue179 inspection found current-source MiniMax Small is already clean, but full MiniMax-K live probe evidence is stale/skipped because `live_probe_memory_preflight` used missing `/Users/eric/models/JANGQ/MiniMax-M2.7-JANGTQ_K`; actual full K artifacts exist under `/Users/eric/models/dealign.ai/`.
+- selected concrete reduction: use existing issue179/cancel/live proof path against the real local full MiniMax-K artifact if memory allows, then update the audit/checklist only with actual live evidence. This is not a parser rewrite and not a reporter parity claim.
+
+## CODEX
+- now: MiniMax issue179 full K local cancel path is live-proven clean on current source; release remains blocked/open for reporter parity and public/package gates.
+- live proof: `build/current-issue179-minimax-k-responses-cancel-probe-fullk-local-skip-preflight-20260611.json`, server log `build/current-issue179-minimax-k-responses-cancel-probe-fullk-local-skip-preflight-20260611.server.log`.
+- live command basis: `/Users/eric/models/dealign.ai/MiniMax-M2.7-JANGTQ_K-CRACK`, `panel/bundled-python/python/bin/python3.12`, served model `models/MiniMax-M2.7-JANGTQ_K`, MiniMax tool parser, `minimax_m2` reasoning parser, Responses streaming, cancel endpoint, paged cache, block-disk L2, TurboQuant KV q4 storage.
+- proof result: status `pass`; no bad text captured; reasoning stream emitted cleanly before cancel; current source has the cancel route and engine abort contract; full K artifact health reports `JANGTQ_K`/`mxtq`, prestacked routed experts, plain KV cache with generic TurboQuant KV storage enabled and block-disk L2 enabled.
+- regenerated audit: `build/current-issue179-minimax-k-root-cause-audit-after-fullk-local-cancel-proof-20260611.json`, still `status=open` because reporter model hashes, reporter app/server hash provenance, response-id active-at-cancel proof, and reporter session/settings parity remain missing.
+- regenerated checklist: `build/current-full-release-objective-checklist-after-issue179-fullk-local-proof-20260611.json`, `status=open`, `failed_count=45` (down from 46).
+- verification passed: exact public-app pointer test; combined focused pytest `27 passed, 433 deselected`; `git diff --check`.
+- other-agent handoff: do not reopen MiniMax source parser work for issue179 unless new same-model evidence contradicts this proof. Next useful issue179 work is reporter parity/provenance capture: reporter model shard/codebook hashes, installed bundle/server hash, session/settings DB state, raw SSE/cancel lifecycle showing whether response id was active at cancel. Do not call issue179 closed from local full-K proof alone.
