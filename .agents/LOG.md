@@ -18292,3 +18292,18 @@ Next action:
 - Patch: `panel/src/main/model-config-registry.ts` now marks local multimodal models with no audio declaration and no likely indexed audio weights as `audioRuntimeAvailable=false`; `panel/src/main/ipc/chat.ts` now filters audio attachments for any local model with that false hint, not just Gemma4.
 - Focused verification: `npm --prefix panel test -- model-config-registry tool-media-followup` passed 80 tests.
 - Other-agent handoff: do not mark N2 JANGTQ2 audio green unless a new artifact has real audio config/token/runtime weights and live audio E2E passes. Current correct release behavior is to hide/filter model-chat audio for this artifact while preserving image/video/tool/cache support. Continue direct/gateway/tunnel raw SSE parity only if tunnel remains missing; do not touch N2 JANG_1L.
+
+# 2026-06-11 continuation PDT - Qwen/Qwen-coder Responses tool-call lane selected
+
+- Selected next release-critical API blocker: Qwen3.6/Qwen-coder XML tool-call streaming and empty-arguments behavior for Codex/opencode-style harnesses.
+- Required investigation: inspect current parser/server code and existing raw SSE artifacts before editing; reproduce or classify same-model direct/gateway/tunnel behavior if artifacts are missing or stale.
+- Required behavior: missing required args fail closed with clean API shape; valid tool calls stream content/reasoning/function-call argument delta/done events with correct output indices and final object consistency; tool-result continuation and cache reuse must remain visible.
+- Forbidden fixes: no argument synthesis from preambles, no reasoning disablement, no silent tool-call drop, no raw XML cleanup after parser failure as a fake pass.
+
+# 2026-06-11 09:55 PDT - Qwen raw-SSE tunnel false-green gate fixed
+
+- Inspected Qwen empty-args/source artifacts: current source already drops missing required XML/JSON tool args and preserves valid direct/gateway Qwen35 `record_fact` args with reasoning enabled. Existing source contracts include no `{}` executable args for preamble+empty XML and required requests fail closed.
+- Found release-gate bug: the raw-SSE classifier accepted public tunnel captures with reasoning events attached to the message item and no `reasoning` output item lifecycle. The old artifact could say `status=pass` even when `reasoning_output_item_count=0`.
+- Patch: `tests/cross_matrix/run_responses_raw_sse_parity_contract.py` now treats reasoning events without a completed reasoning output item as incomplete lifecycle and fails required-reasoning captures. `tests/test_responses_raw_sse_parity_contract.py` now has a red fixture for the stale tunnel shape.
+- Strict recheck command produced `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-strict-recheck-20260611.json`, `status=fail`. Direct and gateway have reasoning output items; tunnel does not.
+- Release pointer update: `tests/cross_matrix/run_full_release_objective_checklist.py` now uses the strict red artifact for `QWEN35_RAW_SSE_PARITY`, and the release tracker row was changed from green to blocked. Other agent should recapture public tunnel after deploying current source; do not claim tunnel parity from the older `after-public-recapture` artifact.

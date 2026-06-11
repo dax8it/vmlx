@@ -13287,3 +13287,15 @@ Other-agent action:
 - fix: panel model detection now sets `architectureHints.audioRuntimeAvailable=false` for local multimodal models with no audio declaration and no likely indexed audio weights; chat attachment routing now filters audio attachments for any local model with that false hint instead of only Gemma4. This prevents N2 JANGTQ2 installed-app chats from sending fake audio media to the model path while keeping image/video behavior intact.
 - verification: `npm --prefix panel test -- model-config-registry tool-media-followup` passed 80/80.
 - release boundary: this is a panel/runtime capability fix only. It does not claim N2 audio support, does not touch N2 JANG_1L, and does not run signing/notarization/PyPI/updater/site actions.
+
+## CODEX
+- now: selected Qwen/Qwen-coder Responses tool-call streaming as the next release-critical API blocker.
+- target: same-model raw output/SSE for Qwen3.6 and Qwen-coder-style XML tool-call dialects, especially empty `arguments: {}` when required parameters are missing, content/reasoning deltas around tool calls, function-call argument delta/done events, output index ordering, final object consistency, required/auto/no-tool modes, tool-result continuation, gateway/tunnel passthrough, and cache reuse telemetry.
+- boundary: do not trust the proposed root cause without current same-model raw evidence; missing required arguments must fail closed. Do not synthesize args from visible preambles, disable reasoning, silently drop malformed tool calls, or strip raw XML after parser failure as a fake fix.
+
+## CODEX
+- now: fixed the raw-SSE parity classifier/release gate so Qwen tunnel reasoning lifecycle cannot false-pass.
+- source contract remains green: current parser/server source rejects missing required XML/JSON tool args instead of emitting executable `{}` args, and direct/gateway Qwen35 captures preserve `{"value":"blue-cat"}` with reasoning enabled, argument delta/done events, function_call final consistency, message index 0, reasoning index 1, and function_call index 2.
+- strict recheck artifact: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-strict-recheck-20260611.json`, `status=fail`.
+- failure boundary: the public tunnel capture `build/responses-sse-captures-20260610/tunnel-qwen35-mxfp8-mtp-tool-recapture-after-strict-source-20260610.sse` has reasoning events but no reasoning output item lifecycle (`reasoning_output_item_count=0`, `reasoning_lifecycle_complete=false`, `has_required_reasoning_events=false`). This is stale/deployed tunnel behavior, not current direct/gateway source behavior.
+- release gate update: `QWEN35_RAW_SSE_PARITY` now points at the strict red artifact so release remains blocked until public tunnel is rebuilt/recaptured from current source. Do not claim Qwen raw-SSE direct/gateway/tunnel parity green from the older public-recapture artifact.
