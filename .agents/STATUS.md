@@ -12974,3 +12974,53 @@ Other-agent action:
 - Note:
   Step3.7 remains open; the committed diagnostic is failure evidence, not a
   pass claim. No source normalizer was committed for Step3.7.
+
+# 2026-06-11 continuation PDT - Step3.7 tool-argument exactness debugging
+
+- Current focus:
+  fix the live Step3.7 `tool_required` failure from
+  `build/current-all-local-model-smoke-step37-jangk-tool-newline-diagnostic-20260611/summary.json`.
+- Failure shape:
+  model/API emits `record_fact` but serialized arguments are
+  `{"value":"\nblue-cat\n"}` instead of exact `{"value":"blue-cat"}`.
+- Boundary:
+  do not fake success, do not relax the smoke validator, and do not claim a fix
+  until the Step3.7 live row passes. Keep N2 JANG_1L, release/sign/notarize,
+  PyPI, updater, and site actions untouched.
+- Debugging target:
+  trace parser output versus final Chat Completions response serialization, then
+  apply the smallest runtime/API normalization that preserves same-line spaces
+  and real multiline string payloads.
+
+# 2026-06-11 continuation PDT - Step3.7 source parser fix proven
+
+- Root cause:
+  the smoke was run in isolated bundled-Python mode, which clears `PYTHONPATH`
+  and starts the server from the artifact row directory. Local source parser
+  edits were not visible to that child process. Replayed against current source,
+  `Step3p5ToolParser` itself preserved wrapper newlines in schema-declared
+  string arguments for both XML parameters and JSON-inside-function content.
+- Source fix:
+  `vmlx_engine/tool_parsers/step3p5_tool_parser.py` now resolves dict/object
+  tool schemas, trims only XML/JSON wrapper newlines for schema-declared string
+  scalar args, and preserves same-line spaces plus true multiline payloads.
+- Focused tests:
+  `tests/test_step3p5_tool_parser.py` wrapper-newline and preservation tests
+  passed; aggregate digest pointer test passed.
+- Current-source live proof:
+  `build/current-all-local-model-smoke-step37-jangk-tool-newline-source-after-parser-fix-20260611/summary.json`
+  passed for `Step-3.7-Flash-JANG_K`.
+- Key live evidence:
+  `tool_required` emitted `record_fact` with exact
+  `{"value":"blue-cat"}` and no validation failures; row also covered text
+  cache repeat, multi-turn recall, reasoning separation, tool-result
+  continuation, exact JSON/code, image/video, post-media text recovery, and
+  mixed-SWA cache telemetry.
+- Aggregate:
+  `build/current-objective-proof-after-step37-tool-args-source-fix-20260611.json`
+  now covers `step3p7`; cross-family smoke is still open for `hy3`, `mimo_v2`,
+  `zaya_text`, and `zaya_vl`.
+- Important remaining release task:
+  isolated bundled-Python Step3.7 proof remains stale until bundled Python is
+  rebuilt/synced from source. Do not claim installed/bundled parity from this
+  source proof alone.

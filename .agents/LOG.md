@@ -18125,3 +18125,32 @@ Next action:
 - Working note:
   Step3.7 tool-argument newline issue is still unresolved and should be treated
   as the next real parser/API debugging target, not as fixed.
+
+# 2026-06-11 continuation PDT - Step3.7 tool-argument exactness debugging
+
+- Selected next blocker:
+  Step3.7 `record_fact` required-tool args have wrapper newlines around the
+  scalar value.
+- Evidence:
+  `build/current-all-local-model-smoke-step37-jangk-tool-newline-diagnostic-20260611/JANGQ_Step-3.7-Flash-JANG_K/tool_required.json`.
+- Rule:
+  no validator relaxation and no source commit unless live Step3.7 moves.
+
+# 2026-06-11 continuation PDT - Step3.7 source parser fix proven
+
+- Found:
+  isolated smoke clears `PYTHONPATH`, so earlier live failures were testing the
+  stale bundled installed package, not current source edits.
+- Fixed source parser:
+  Step3p5 schema lookup now handles dict/object tools; string scalar wrapper
+  newlines are stripped for XML parameter and JSON-in-function paths while
+  preserving same-line spaces and real multiline strings.
+- Proved:
+  current-source Step3.7 smoke passed at
+  `build/current-all-local-model-smoke-step37-jangk-tool-newline-source-after-parser-fix-20260611/summary.json`.
+- Aggregate:
+  `build/current-objective-proof-after-step37-tool-args-source-fix-20260611.json`
+  now includes `step3p7` in covered families.
+- Still open:
+  bundled/installed Python parity must be rebuilt/proven separately; do not use
+  this source proof as an installed-app release claim.
