@@ -18623,3 +18623,57 @@ Next action:
   contradicts the root-cause artifact. Next useful speed work is sustained
   current-source/current-installed JANGTQ2 >40 tok/s proof or logits/lm_head
   materialization optimization.
+
+## 2026-06-11 12:03 PDT - MiMo JANGTQ Full-Model Warmup Handoff
+
+- Scope: active vMLX Python engine worktree only; no release/sign/notarize/PyPI/
+  site/updater action, no subagents, no N2 JANG_1L.
+- Selected source blocker: MiMo V2.5 JANGTQ_2 minimal live load showed
+  `jang_tools.load_jangtq_kimi_vlm` layer warmup runs, then the upstream
+  full-model prefill pass skips with
+  `ValueError('Specify input_ids or inputs_embeds')`.
+- Evidence: `build/current-mimo-jangtq2-warmup-inputids-proof-20260611.server.log`
+  has the skipped warmup line while the server still reaches `/health`.
+- Root-cause boundary: the first vMLX-side fallback edit in
+  `vmlx_engine/utils/jang_loader.py` only affects direct `_prepare_jangtq_vlm_first_forward`
+  fallback behavior. The failing live path comes from `jang_tools.load_jangtq.load_jangtq_model()`
+  importing `_warmup_jit_per_layer` from `jang_tools.load_jangtq_kimi_vlm` before
+  vMLX post-hooks run.
+- Next action: install a focused vMLX wrapper for the upstream JANGTQ warmup path
+  so MiMo V2 uses an `input_ids=` full-model prefill warmup after the upstream
+  layer warmup, then rerun focused tests and a minimal live MiMo JANGTQ_2 load.
+- No-claim boundary: this does not prove MiMo exactness/media semantics, release
+  readiness, or any N2 JANG_1L behavior.
+
+## 2026-06-11 12:18 PDT - MiMo JANGTQ Warmup Handoff Fixed
+
+- Source fix: `vmlx_engine/utils/jang_loader.py` now patches the upstream
+  `jang_tools.load_jangtq_kimi_vlm._warmup_jit_per_layer` before vMLX enters
+  either the JANGTQ text fast path or the JANGTQ VLM fast path.
+- Behavior: for MiMo V2 only, vMLX keeps the upstream layer warmup but suppresses
+  the obsolete verbose upstream full-model `inputs=` attempt, then runs a
+  full-model prefill warmup with `input_ids=` and a real prompt cache.
+- Focused guard: `tests/test_jang_loader.py` now covers the direct vMLX VLM
+  fallback call order, the MiMo input_ids warmup helper, the upstream wrapper,
+  and the text fast-path installation ordering.
+- Verification passed:
+  - `.venv/bin/python -m pytest -q tests/test_jang_loader.py -k 'warmup or jangtq_vlm or jangtq_text_fast_path_installs_mimo'`
+    -> `10 passed`.
+  - `.venv/bin/python -m py_compile vmlx_engine/utils/jang_loader.py tests/test_jang_loader.py`
+    -> pass.
+  - `git diff --check` -> pass.
+- Live proof artifact:
+  `build/current-mimo-jangtq2-warmup-inputids-proof-after-vmlx-jangtools-patch-20260611.json`.
+- Live proof log:
+  `build/current-mimo-jangtq2-warmup-inputids-proof-after-vmlx-jangtools-patch-20260611.server.log`.
+- Live proof result: current source loaded
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`, reached
+  `/health` on `127.0.0.1:8902`, emitted
+  `vMLX MiMo JANGTQ full-model 16-token input_ids prefill warmup complete`,
+  did not emit `full-model pass skipped` or
+  `Specify input_ids or inputs_embeds`, preserved native MiMo mixed-SWA
+  cache/paged cache/block L2, and warmed the SingleBatch decode graph.
+- No-claim boundary: this is a startup/warmup runtime fix only. It does not
+  clear MiMo exact literal quality, media semantic release quality, audio/video
+  release quality, release readiness, or N2 JANG_1L. No release/sign/notarize/
+  PyPI/site/updater action was run.

@@ -68,6 +68,16 @@
   2532.17 ms on token 1 / 606.22 ms on token 2 after warmup. Do not chase
   prefix cache, L2, RotatingKVCache metadata, or parser/tool code as the MiMo
   speed fix unless new traces contradict this.
+- MiMo JANGTQ_2 current-source startup warmup handoff is fixed and live-proven:
+  `build/current-mimo-jangtq2-warmup-inputids-proof-after-vmlx-jangtools-patch-20260611.json`.
+  vMLX now patches the upstream `jang_tools.load_jangtq_kimi_vlm` warmup path
+  for MiMo V2 so the full-model prefill warmup uses `input_ids=` instead of the
+  older `inputs=` signature. Live proof loaded
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`, reached
+  `/health`, emitted the vMLX input_ids warmup completion marker, had no
+  `full-model pass skipped` / `Specify input_ids or inputs_embeds` marker, and
+  preserved native MiMo mixed-SWA cache with paged cache and block L2. This is
+  not a MiMo exactness/media-semantics release clearance.
 
 ## Still Open
 
@@ -112,7 +122,8 @@
   Current parser/cache/L2 evidence does not support a parser or cache-only fix.
   If optimizing speed, start from the traced logits/lm_head materialization
   bottleneck and the JANGTQ_2 39.2 tok/s near-miss; do not reopen already-green
-  JANGTQ2 tool/cache/L2 or JANG_2L media/L2 rows.
+  JANGTQ2 tool/cache/L2, the fixed JANGTQ2 warmup signature handoff, or JANG_2L
+  media/L2 rows.
 - For release packaging, first rerun the bundled Python parity gate and
   installed-app source-vs-bundle checks after source rows are worth packaging;
   then follow the documented signing/notarization workflow only after Eric

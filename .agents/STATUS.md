@@ -218,6 +218,51 @@
 ## CODEX
 - now: inspected MiniMax issue179 remaining rows and wrote
   `.agents/CODEX_RELEASE_HANDOFF_20260611.md`.
+
+## CODEX
+- now: continuing the active Python engine lane on one concrete source blocker,
+  not release/sign/notarize/PyPI/site/updater work.
+- current-turn boundaries: no deprecated `/Users/eric/vmlx`; no subagents; no
+  N2 JANG_1L; no release action; no fake parser/cache/media repairs.
+- selected blocker: MiMo V2.5 JANGTQ_2 startup logs show the upstream
+  `jang_tools.load_jangtq_kimi_vlm` full-model prefill warmup skips with
+  `ValueError('Specify input_ids or inputs_embeds')` after the layer-by-layer
+  warmup. The earlier vMLX fallback patch only covers the direct vMLX VLM
+  warmup helper and does not affect the text fast path that calls
+  `jang_tools.load_jangtq.load_jangtq_model()`.
+- live evidence path:
+  `build/current-mimo-jangtq2-warmup-inputids-proof-20260611.server.log`.
+- next action: patch the vMLX JANGTQ loader handoff so vMLX installs a focused
+  MiMo input_ids full-model prefill warmup around the `jang_tools` warmup path,
+  rerun focused unit/compile checks, then rerun a minimal live MiMo JANGTQ_2
+  load proof and record whether the skip is gone. This does not claim MiMo
+  exactness, media semantics, release readiness, or N2 JANG_1L.
+
+## CODEX
+- now: MiMo JANGTQ_2 upstream warmup handoff is fixed and live-proven in current
+  source.
+- source fix: `vmlx_engine/utils/jang_loader.py` now installs a vMLX wrapper
+  around `jang_tools.load_jangtq_kimi_vlm._warmup_jit_per_layer` before the
+  JANGTQ text and VLM fast paths load. For MiMo V2, the wrapper keeps upstream
+  layer compilation but suppresses the obsolete verbose full-model `inputs=`
+  attempt and runs vMLX's full-model prefill warmup with `input_ids=`.
+- proof artifact:
+  `build/current-mimo-jangtq2-warmup-inputids-proof-after-vmlx-jangtools-patch-20260611.json`
+  is `status=pass`.
+- live proof log:
+  `build/current-mimo-jangtq2-warmup-inputids-proof-after-vmlx-jangtools-patch-20260611.server.log`.
+- proven: current source loads `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`,
+  reaches `/health`, emits
+  `vMLX MiMo JANGTQ full-model 16-token input_ids prefill warmup complete`,
+  has no `full-model pass skipped` / `Specify input_ids or inputs_embeds` marker,
+  keeps native MiMo mixed-SWA cache with paged cache and block-disk L2, and
+  warms the MiMo SingleBatch decode graph.
+- verification: focused loader tests `10 passed`, touched-file `py_compile`
+  passed, and `git diff --check` passed before live proof.
+- no-claim boundary: this does not clear MiMo exactness/literal mutation, media
+  semantic quality, audio/video release quality, prepackage/release readiness,
+  or any N2 JANG_1L row. No release/sign/notarize/PyPI/updater/site action was
+  run.
 - classification: not a source-side stale-pointer fix. Current source and
   local installed proofs are clean, but #179 remains honestly open because
   reporter parity metadata/artifacts are missing and reporter installed server
