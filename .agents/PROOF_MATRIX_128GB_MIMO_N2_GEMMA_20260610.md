@@ -25,6 +25,24 @@ separates what was actually loaded and proven from what remains red.
   source/parser proof only. This is not a fresh live direct/gateway/tunnel raw
   SSE capture, not a MiMo JANGTQ model-exactness fix, and not release proof.
 
+### MiniMax Raw Invoke Spacing Fix
+
+- Source fix:
+  `vmlx_engine/tool_parsers/minimax_tool_parser.py` preserves original raw
+  invoke content when serializing fallback `{"raw": ...}` arguments. It still
+  uses trimmed text for JSON detection/parsing.
+- Regression:
+  `tests/test_tool_parsers.py::TestMiniMaxToolParser::test_bare_invoke_raw_fallback_preserves_spacing`
+  covers a schema-gated raw string payload with leading/trailing spaces and a
+  newline.
+- Verification:
+  focused MiniMax slice passed `3 passed`; broad parser/Responses exactness
+  suite passed `253 passed`; changed-file `py_compile` and `git diff --check`
+  passed.
+- Boundary:
+  source/parser proof only. This is not a fresh live MiniMax model run, not a
+  gateway/tunnel recapture, and not release proof.
+
 ### MiMo JANGTQ_2 Required Tool Raw SSE Exactness Red
 
 Artifact:

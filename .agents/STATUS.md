@@ -8065,6 +8065,38 @@ Other-agent action:
   direct/gateway/tunnel recapture, not a MiMo JANGTQ model-exactness fix, and
   not a release/sign/notarize/PyPI/updater action.
 
+# 2026-06-10 20:11 PDT MiniMax raw invoke spacing gap selected
+
+- current movement:
+  second parser exactness pass found that MiniMax native `<invoke>` fallback
+  trims raw non-JSON content before serializing it as `{"raw": ...}`.
+- risk:
+  a schema-gated raw-string tool can lose leading/trailing spaces or newlines
+  in accepted tool arguments, which violates the spacing/special-character
+  parser contract for agentic tools.
+- next action:
+  add a focused MiniMax regression and preserve raw content in the fallback
+  while continuing to use trimmed text only for JSON syntax detection/parsing.
+
+# 2026-06-10 20:11 PDT MiniMax raw invoke spacing fix
+
+- fix:
+  `vmlx_engine/tool_parsers/minimax_tool_parser.py` now preserves the original
+  raw invoke content when serializing fallback `{"raw": ...}` arguments, while
+  still using trimmed text for JSON detection/parsing and lenient malformed
+  parameter detection.
+- regression:
+  `tests/test_tool_parsers.py::TestMiniMaxToolParser::test_bare_invoke_raw_fallback_preserves_spacing`
+  covers a schema-gated raw string containing leading/trailing spaces and a
+  newline.
+- verification:
+  focused MiniMax slice passed `3 passed`; broad parser/Responses exactness
+  suite passed `253 passed`; changed-file `py_compile` and `git diff --check`
+  passed.
+- boundary:
+  source/parser proof only; not a fresh live MiniMax model run, not a
+  gateway/tunnel recapture, and not release proof.
+
 # 2026-06-11 local installed-app rebuild complete
 
 - Result:

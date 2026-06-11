@@ -13946,6 +13946,14 @@ Next action:
 - Verification passed: focused DSV4/DSML repair slice `4 passed`; broad parser/Responses exactness slice `252 passed`; changed-file `py_compile`; `git diff --check`.
 - Boundary: source/parser proof only; no live direct/gateway/tunnel recapture, no MiMo JANGTQ exactness claim, and no release/sign/notarize/PyPI/updater action.
 
+# 2026-06-10 20:11 PDT - MiniMax raw invoke spacing gap selected
+- Second parser exactness pass found MiniMax native `<invoke>` raw fallback trims raw non-JSON content before serializing it as `{"raw": ...}`. This can rewrite accepted schema-gated raw string arguments. Next action is a focused regression and a narrow parser change that keeps trimmed text only for JSON detection/parsing.
+
+# 2026-06-10 20:11 PDT - MiniMax raw invoke spacing fix
+- Fixed `vmlx_engine/tool_parsers/minimax_tool_parser.py` so raw invoke fallback preserves original raw content in `{"raw": ...}` while still trimming only for JSON detection/parsing. Added `test_bare_invoke_raw_fallback_preserves_spacing` for leading/trailing spaces plus newline.
+- Verification passed: focused MiniMax slice `3 passed`; broad parser/Responses exactness suite `253 passed`; changed-file `py_compile`; `git diff --check`.
+- Boundary: source/parser proof only; no fresh live MiniMax model run, no gateway/tunnel recapture, and no release/sign/notarize/PyPI/updater action.
+
 # 2026-06-11 parser exactness verification refresh
 - Focused parser/API guards passed after the renewed spacing/special-character instruction: XML-family/compact XML spacing/entity slice `9/9`, Responses SSE special argument plus DSML plain-param whitespace/entities/newlines `2/2`, required-args fail-closed `7/7`, and `git diff --check`. This is current source/unit/API regression proof for exact provided-argument preservation and fail-closed missing args; it is not a fresh live gateway/tunnel recapture or release proof.
 
