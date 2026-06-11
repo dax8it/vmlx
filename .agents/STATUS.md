@@ -7591,3 +7591,80 @@ Other-agent action:
   - Keep the exactness classifier open: prior evidence still localizes literal
     exactness drift to JANGTQ artifact/native quant-logit/decode quality, not
     tokenizer/template/parser/cache.
+
+# 2026-06-11 continuation - Qwen raw SSE parity lane
+
+- Active lane:
+  - Qwen/Qwen3.6/Qwen-coder Responses raw SSE direct/gateway/tunnel parity for
+    tool/reasoning/content deltas, function-call argument delta/done/final
+    consistency, valid output indices, tool-result continuation, and cache
+    telemetry.
+- Why now:
+  - MiMo JANG_2L and JANGTQ_2 installed-app deterministic no-media
+    Responses/tool/cache rows are now green;
+  - Qwen empty-arguments and output-index failures remain release-critical for
+    opencode/Codex harness usability.
+- Constraints:
+  - do not synthesize missing arguments from preambles;
+  - do not disable reasoning as a workaround;
+  - do not claim same-model direct/gateway/tunnel parity from stale artifacts
+    without inspecting current evidence;
+  - no release/sign/notarize/PyPI/updater/site action.
+- Next action:
+  - inspect current Qwen raw SSE capture artifacts and runner commands, then
+    decide whether a fresh recapture is needed or whether the current direct,
+    gateway, and tunnel evidence is still strong enough.
+
+# 2026-06-11 Qwen raw SSE parity current evidence inspected
+
+- Inspected artifacts:
+  - `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`;
+  - `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-missing-required-args-failclosed-20260610.json`;
+  - `build/current-responses-raw-sse-parity-qwen27-mxfp8-direct-gateway-tunnel-20260610.json`.
+- Qwen35 current evidence:
+  - status `pass`;
+  - required surfaces present: direct, gateway, and tunnel;
+  - same model across surfaces:
+    `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`;
+  - reasoning enabled on direct/gateway, no reasoning-disable workaround;
+  - required reasoning events present on all surfaces;
+  - output indices valid:
+    direct/gateway `message=0`, `reasoning=1`, `function_call=2`;
+    tunnel `message=0`, `function_call=1` with reasoning emitted through
+    summary events on the message item and final reasoning item present;
+  - `record_fact` arguments preserved as `{"value": "blue-cat"}` through
+    argument delta, argument done, final function-call item, and final response;
+  - gateway request kwargs present:
+    `stream=true`, `enable_thinking=true`, `temperature=0`, `top_p=1`,
+    `top_k=0`, `tool_choice=required`, one tool;
+  - local source contract includes empty XML required-args fail-closed,
+    output-index ordering guard, Responses streaming guards, gateway argument
+    passthrough guard, and previous-response history guard.
+- Qwen27 current evidence:
+  - status `pass`;
+  - required surfaces present: direct, gateway, and tunnel;
+  - same model across surfaces:
+    `models/Qwen3.6-27B-MXFP8-CRACK-MTP`;
+  - reasoning enabled on direct/gateway, no reasoning-disable workaround;
+  - required reasoning events present on all surfaces;
+  - output indices valid and arguments preserved as `{"value": "blue-cat"}`
+    through delta/done/final response.
+- Classification:
+  - Current Qwen35/Qwen27 raw-SSE direct/gateway/tunnel parity evidence is
+    green for the reported empty-args/output-index/tool-argument streaming
+    class;
+  - this turn inspected and classified existing current artifacts, but did not
+    launch a fresh Qwen recapture.
+- Still not proven:
+  - Qwen-coder-next 35B/27B family-specific live recapture if it uses a
+    different deployed parser/template;
+  - post-tool continuation over multiple live agent turns for every Qwen model
+    variant;
+  - release/sign/notarize readiness.
+- Other-agent note:
+  - Use the three artifacts above for current Qwen raw-SSE parity status unless
+    a newer deployed/gateway/tunnel capture supersedes them.
+  - If another lane recaptures Qwen, preserve the same checks: same model,
+    reasoning enabled, direct/gateway/tunnel, valid output indices,
+    argument delta/done/final equality, fail-closed empty required args, and
+    previous-response/tool-result continuation.
