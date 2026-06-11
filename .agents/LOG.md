@@ -14820,3 +14820,55 @@ Next action:
 - Boundary: still do not claim MiMo JANGTQ_2 `vl_image`, video semantics,
   audio, or release readiness green. No release DMG, sign, notarize, tag,
   upload, PyPI, updater JSON, website, or N2 JANG_1L action was performed.
+
+# 2026-06-11 Qwen/Qwen-coder Responses SSE blocker selected
+- Current continuation target: reduce the release-critical Qwen/Qwen-coder
+  Responses API tool/reasoning streaming blocker for opencode/Codex-style
+  harnesses. Do not redo broad synthetic parser-suite work unless it directly
+  proves the live defect; inspect current direct/gateway/tunnel raw SSE
+  artifacts and source streaming paths first.
+- Required behavior remains: no executable `{}` arguments for missing required
+  XML parameters, valid content/reasoning deltas, function-call
+  arguments delta/done events, final object consistency, valid `output_index`
+  ordering, required/auto/no-tool modes, tool-result continuation, cache reuse
+  telemetry, and no raw XML/thinking leaks.
+- Boundaries: do not synthesize tool args from visible preambles, disable
+  reasoning, silently drop required tool calls, weaken parser validation, or
+  strip raw markup after parser failure. No release DMG, sign, notarize, tag,
+  upload, PyPI, updater JSON, website, or N2 JANG_1L action.
+
+# 2026-06-11 Qwen-coder-next served-surface direct SSE proof
+- Live current-source server launched
+  `/Users/eric/models/Qwen3.6-35B-A3B-4bit` as served model
+  `qwen3-coder-next` on `127.0.0.1:49241` with `--tool-call-parser qwen`,
+  `--reasoning-parser qwen3`, paged cache, block L2, SSM companion L2, and
+  explicit q4 KV storage. Boundary: this backing artifact has no native MTP
+  tensors and explicit q4 disables calibrated TurboQuant KV, so this is parser/
+  API/cache-shape proof, not native-MTP or calibrated TurboQuant speed proof.
+- Proof summary:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/SUMMARY.json`
+  is `status=pass`.
+- Required-tool raw SSE:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/required_exec_command.sse`
+  completed with reasoning enabled, message output index `0`, reasoning output
+  index `1`, function-call output index `2`, function name `exec_command`,
+  argument deltas joining to `{"cmd": "ls /tmp"}`, done arguments matching the
+  final function-call item, and no error events.
+- Tool-result continuation raw SSE:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/tool_result_continuation.sse`
+  used `previous_response_id` plus `function_call_output` for the returned
+  call id. It completed visible text with `alpha.tmp` and `beta.tmp`, emitted
+  no second function call, and did not loop back into tool use.
+- Adversarial empty-XML required-tool raw SSE:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/adversarial_empty_xml_required.sse`
+  asked for a visible preamble plus `<tool_call><function=exec_command></function></tool_call>`
+  with no parameter tag. The server failed closed with `tool_calls_required`,
+  emitted zero function-call items, and emitted no `{}` argument payload.
+- Cache/runtime evidence:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/health_after_continuation.json`
+  is healthy; cache totals report `ram_tokens_cached=277`,
+  `l2_block_tokens_on_disk=277`, `l2_ssm_tokens_on_disk=533`, block disk
+  writes `6`, and SSM companion disk stores `4`.
+- Server stopped cleanly after the proof. No release DMG, sign, notarize, tag,
+  upload, PyPI, updater JSON, website, installed-app rebuild, gateway/tunnel
+  recapture, or N2 JANG_1L action was performed.

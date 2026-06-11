@@ -3021,3 +3021,35 @@ Next implementation target:
 - Release boundary:
   no DMG, Developer ID signing, notarization, tag, upload, PyPI, updater JSON,
   website, or N2 JANG_1L work was performed for this row.
+
+## Qwen-Coder-Next Served Surface Direct Responses SSE - 2026-06-11
+
+- Green direct-source row:
+  current source served `/Users/eric/models/Qwen3.6-35B-A3B-4bit` as
+  `qwen3-coder-next` with Qwen tool parser and qwen3 reasoning parser. This is
+  the available local served surface for the reported Qwen-coder-next style
+  parser issue; no separate local Qwen-coder-next artifact was found.
+- Proof:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/SUMMARY.json` is
+  `status=pass`. Raw captures:
+  `required_exec_command.sse`, `tool_result_continuation.sse`, and
+  `adversarial_empty_xml_required.sse` in the same directory.
+- Proven:
+  required-tool streaming preserves `exec_command` args exactly as
+  `{"cmd": "ls /tmp"}` across `response.function_call_arguments.delta`,
+  `.done`, and the final `function_call` item; reasoning remains enabled; and
+  output indices are valid (`message=0`, `reasoning=1`, `function_call=2`).
+  Tool-result continuation via `previous_response_id` +
+  `function_call_output` returns visible `alpha.tmp`/`beta.tmp` text and emits
+  no second tool call. The adversarial preamble plus empty XML function body
+  fails closed with `tool_calls_required`, emits zero function-call items, and
+  never emits executable `{}` arguments.
+- Cache/runtime:
+  health after continuation is healthy with `ram_tokens_cached=277`,
+  `l2_block_tokens_on_disk=277`, `l2_ssm_tokens_on_disk=533`, block disk
+  writes `6`, and SSM companion disk stores `4`.
+- Red/open:
+  this is direct local source proof only, not gateway/tunnel or installed-app
+  proof. The backing 4-bit artifact has no native MTP tensors and explicit q4
+  KV was used, so do not treat this as native-MTP, calibrated TurboQuant speed,
+  media, package, sign/notarize, or full release readiness proof.

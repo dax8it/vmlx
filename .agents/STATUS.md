@@ -8963,3 +8963,62 @@ Other-agent action:
 - Boundary:
   no release DMG, Developer ID sign, notarization, tag, upload, PyPI, updater
   JSON, website, or N2 JANG_1L action was performed in this movement.
+
+# 2026-06-11 07:05 PDT Qwen/Qwen-coder Responses SSE lane selected
+
+- Current selected blocker:
+  Qwen/Qwen-coder Responses API tool/reasoning streaming for opencode/Codex
+  harness usability. Prior written state says source-only empty-XML guards and
+  Qwen27/Qwen35 raw SSE artifacts exist; next work is to inspect current
+  direct/gateway/tunnel evidence and source streaming paths, not to create a
+  broad new test harness.
+- Required proof surface:
+  same-model raw SSE where possible, content/reasoning deltas, function-call
+  argument delta/done events, final-object consistency, valid `output_index`
+  ordering, required/auto/no-tool modes, tool-result continuation, cache reuse
+  telemetry, and no raw XML/thinking leaks.
+- No-claim/no-fix boundary:
+  do not synthesize missing tool arguments from text preambles, disable
+  reasoning, silently drop required tool calls, weaken parser validation, or
+  strip raw markup after parser failure. Missing required XML parameters must
+  fail closed; valid arguments must preserve spacing/special characters.
+- Release boundary:
+  no release DMG, Developer ID sign, notarization, tag, upload, PyPI, updater
+  JSON, website, or N2 JANG_1L action is allowed in this movement.
+
+# 2026-06-11 07:35 PDT Qwen-coder-next served-surface direct SSE proof
+
+- Live direct proof:
+  launched current source on `127.0.0.1:49241` with
+  `/Users/eric/models/Qwen3.6-35B-A3B-4bit` served as `qwen3-coder-next`,
+  `--tool-call-parser qwen`, `--reasoning-parser qwen3`, paged cache, block
+  L2, SSM companion L2, and explicit q4 KV storage.
+- Proof artifact:
+  `build/current-qwen-coder-next-live-responses-sse-20260611/SUMMARY.json`
+  is `status=pass`.
+- Raw SSE artifacts:
+  - `build/current-qwen-coder-next-live-responses-sse-20260611/required_exec_command.sse`
+  - `build/current-qwen-coder-next-live-responses-sse-20260611/tool_result_continuation.sse`
+  - `build/current-qwen-coder-next-live-responses-sse-20260611/adversarial_empty_xml_required.sse`
+  - `build/current-qwen-coder-next-live-responses-sse-20260611/health_after_continuation.json`
+- Proven:
+  required-tool stream preserved `exec_command` arguments exactly as
+  `{"cmd": "ls /tmp"}` through argument delta/done/final function-call item,
+  kept reasoning enabled, and used valid output indices
+  message=`0`, reasoning=`1`, function_call=`2`. Tool-result continuation with
+  `previous_response_id` and `function_call_output` returned visible
+  `alpha.tmp`/`beta.tmp` text and emitted no second tool call. The adversarial
+  empty-XML prompt failed closed with `tool_calls_required`, zero function-call
+  items, and no executable `{}` arguments.
+- Cache/runtime evidence:
+  health after continuation is healthy with `ram_tokens_cached=277`,
+  `l2_block_tokens_on_disk=277`, `l2_ssm_tokens_on_disk=533`, block disk
+  writes `6`, and SSM companion disk stores `4`.
+- Boundary:
+  this is direct current-source local server proof only. It is not
+  gateway/tunnel, installed-app, native-MTP, calibrated TurboQuant speed,
+  media, or release proof. The backing artifact has no native MTP tensors
+  (`metadata_inconsistent/runtime inactive`), and explicit q4 KV disabled the
+  calibrated TQ-KV load path. Server was stopped cleanly. No release DMG,
+  Developer ID sign, notarization, tag, upload, PyPI, updater JSON, website,
+  or N2 JANG_1L action was performed.
