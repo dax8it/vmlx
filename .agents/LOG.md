@@ -17350,3 +17350,67 @@ Next action:
 - No-claim boundary:
   this did not run live model media E2E and did not package/sign/notarize. The
   next blocker is packaged integrity/release manifest state.
+
+# 2026-06-11 continuation PDT - packaged integrity blocker lane start
+
+- Current failing proof:
+  `build/current-packaged-integrity-contract-after-checkpoint-app-parity-20260609.json`
+  reports `status=fail`, failed children `bundled_python_verifier` and
+  `release_gate_skip_app`.
+- Exact bundled drift:
+  `panel/scripts/verify-bundled-python.sh` fails because source
+  `vmlx_engine/server.py` sha256 is
+  `e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528` and
+  bundled `server.py` sha256 is
+  `eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f`.
+- Action:
+  run the local bundled-python sync and verifier only; this is not a
+  sign/notarize/PyPI/site/download action. Re-run the packaged integrity
+  contract after sync and record whether remaining failures are source/package
+  drift or objective-digest release blockers.
+
+# 2026-06-11 continuation PDT - packaged integrity blocker result
+
+- Bundle sync:
+  `cd panel && ./scripts/bundle-python.sh` completed, installed local
+  `vmlx-1.5.57` and local `/Users/eric/jang/jang-tools`, rewrote 95
+  console-script shebangs, removed verification bytecode, and left
+  `panel/bundled-python` at 1.3G.
+- Verification:
+  `npm run verify-bundled` passed; critical `vmlx_engine` and `jang_tools`
+  hashes match source, critical imports pass for MLX, MLX-LM, MLX-VLM,
+  Gemma4/Gemma3/Qwen3-VL, MiMo, Step3.7, JANGTQ loaders, TurboQuant kernels,
+  Kimi patches, and vMLX engine modules.
+- Gate source fix:
+  `release-gate-python-app.py` now points objective digest refresh at
+  `build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json`
+  instead of the older MiMo/N2 proof file. Targeted release-gate tests passed
+  `49 passed`.
+- Proof refresh:
+  no-heavy API/cache contract passed with current source hashes; current
+  objective digest now marks that row `pass` again.
+- Remaining blocker:
+  packaged integrity still fails only because the staged packaged app is stale:
+  `staged_app_engine_hash_parity=false` and
+  `staged_app_engine_source_hash_parity=false`. No app rebuild, signing,
+  notarization, PyPI publish, website update, or download-feed update was run.
+
+# 2026-06-11 continuation PDT - aggregate after packaged integrity sync
+
+- Current suite command:
+  `.venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out
+  build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`.
+- Result:
+  `status=open`; failed steps are exactly `packaged_integrity_contracts`,
+  `release_regression_manifest`, and `release_gate_skip_app`.
+- Confirmed green steps in this run:
+  no-heavy API/cache, cache architecture, no-heavy panel settings, max
+  output/context, parser registry, generation defaults, reasoning template,
+  API surface, tool call, MCP, model artifact/family detection, native MTP, VL
+  media cache, Gemma inventory, responses raw SSE parity contract, and focused
+  regression pytest.
+- Current release board:
+  `prepackage_ready=false`, `release_ready=false`, 15 open objective
+  requirements. The next blocker is not another parser/cache source contract;
+  it is rebuilding the staged packaged app so packaged integrity hash parity can
+  pass, then rerunning release manifest/gate.

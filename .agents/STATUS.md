@@ -12017,3 +12017,71 @@ Other-agent action:
 - Still not ready:
   no release/sign/notarize/PyPI/site action was run. The remaining release gate
   is packaging/integrity plus manifest/app-gate state, not VL media cache.
+
+# 2026-06-11 continuation PDT packaged integrity blocker lane
+
+- Current blocker:
+  `packaged_integrity_contracts` is the next current-suite blocker. The current
+  artifact fails `bundled_python_verifier` and `release_gate_skip_app`.
+- Exact failure:
+  `npm run verify-bundled` reports bundled `vmlx_engine/server.py` content drift:
+  source sha256 `e1b2c478df41c552e2a68adeb8c2e26584d4599eb5ca59d4353c4d9ee0f2c528`,
+  bundled sha256 `eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f`.
+  The dry gate's bundled-python import gate fails for the same stale bundle
+  class, while the objective digest remains open on live-model release
+  requirements.
+- Scope:
+  refresh local `panel/bundled-python` from this checkout and re-run the
+  packaged integrity contract. Do not sign, notarize, publish to PyPI, update
+  download feeds, or update websites in this lane.
+
+# 2026-06-11 continuation PDT packaged integrity blocker result
+
+- Fixed/proven:
+  ran `panel/scripts/bundle-python.sh` from this checkout, then
+  `npm run verify-bundled`. The bundled verifier now passes: vMLX version
+  matches `1.5.57`, critical `vmlx_engine` source hashes match, critical
+  `jang_tools` source hashes match, console-script shebangs are relocatable,
+  and required MLX/VLM/Gemma/Qwen/MiMo/JANG/TurboQuant imports pass.
+- Gate fix:
+  `panel/scripts/release-gate-python-app.py` now refreshes the same current
+  objective digest artifact used by the current suite:
+  `build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json`.
+  The release-gate unit contract passes `49 passed`.
+- Refreshed proof:
+  `run_noheavy_api_cache_contract.py` now passes with current source hashes,
+  and the current objective digest marks
+  "Current-source API adapters and non-DSV4 cache contracts are no-heavy
+  covered" as `pass`.
+- Still not cleared:
+  `run_packaged_integrity_contract.py` still reports `status=fail` with no
+  failed child names because staged packaged app hash parity is false:
+  `staged_app_engine_hash_parity=false` and
+  `staged_app_engine_source_hash_parity=false`. That requires rebuilding the
+  staged packaged app from the refreshed bundled Python/source; this lane did
+  not run app build/sign/notarize.
+
+# 2026-06-11 continuation PDT aggregate after packaged integrity sync
+
+- Current suite:
+  `run_current_regression_suite.py --out
+  build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  remains `status=open`.
+- Green in this aggregate:
+  no-heavy API/cache, cache architecture, panel settings, max output/context,
+  parser registry, generation defaults, reasoning template, API surface,
+  tool/security/MCP, release surface, CLI release, JANG model compatibility,
+  model artifact/family detection, native MTP, VL media cache, MiMo metadata,
+  N2 JANG_1L memory preflight only, Step3.7 crash falsification, installed and
+  staged app runtime parity audits, issue audits, public app audit, Gemma
+  QAT/native MXFP4 inventory, responses raw SSE parity contract, and focused
+  regression pytest.
+- Remaining failed steps:
+  `packaged_integrity_contracts`, `release_regression_manifest`, and
+  `release_gate_skip_app`.
+- Release state:
+  `prepackage_ready=false`, `release_ready=false`, with 15 open objective
+  requirements. Next real release blocker is a staged packaged app rebuild from
+  the refreshed bundled Python/source, followed by packaged integrity and
+  release manifest/gate refresh. No sign/notarize/PyPI/site/download action was
+  run in this lane.
