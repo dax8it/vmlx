@@ -234,6 +234,35 @@
   cancel 404 caused the screenshot rather than followed a stream abort.
 
 ## CODEX
+- now: correcting a release-gate integrity contradiction before more model
+  work. Latest checklist
+  `build/current-full-release-objective-checklist-after-nemotron-qwen35-proof-20260611.json`
+  was green for Qwen35 raw SSE because it pointed at the older
+  `after-public-recapture-20260610` artifact, but current written state and
+  fresh 2026-06-11 evidence say the public tunnel still fails reasoning output
+  item lifecycle.
+- selected blocker: restore the Qwen35 raw-SSE checklist pointer/test to
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`
+  so release readiness cannot false-pass direct/gateway/tunnel parity.
+- boundary: this does not weaken current direct/gateway source proof; it keeps
+  the deploy/tunnel row honestly red until tunnel runtime is rebuilt and
+  recaptured with complete reasoning lifecycle. No release/sign/notarize/PyPI
+  action, no N2 JANG_1L work, no synthetic tool-arg/parser fix.
+
+## CODEX
+- now: Qwen35 raw-SSE release gate correction is implemented and verified.
+- changed pointer/test: `QWEN35_RAW_SSE_PARITY` and
+  `test_full_release_objective_checklist_uses_current_qwen35_raw_sse_parity_contract`
+  now target
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`.
+- regenerated checklist:
+  `build/current-full-release-objective-checklist-after-qwen35-gate-correction-20260611.json`
+  is `status=open`, `failed_count=15`; Qwen35 failed rows are
+  `qwen35_raw_sse_status_pass` and `qwen35_raw_sse_reasoning_events`.
+- verification: focused checklist tests for Qwen35/full-pass fixture passed
+  `3/3`; `py_compile` and `git diff --check` passed.
+
+## CODEX
 - now: Gemma4 required-tool source/proof checkpoint is committed and pushed.
 - commit: `2200598e9 Improve Gemma4 required tool streaming`, pushed to
   `origin/codex/pr-intake-manifest` and `origin/main`.

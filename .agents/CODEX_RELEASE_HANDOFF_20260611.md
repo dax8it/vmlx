@@ -2,11 +2,11 @@
 
 ## Current Commit
 
-- Latest pushed commit: `21722eabd Consume Nemotron and Qwen35 release proof`
+- Latest pushed commit before this correction: `9e33201bd Document release blocker handoff`
 - Pushed to: `origin/codex/pr-intake-manifest` and `origin/main`
 - Latest checklist artifact:
-  `build/current-full-release-objective-checklist-after-nemotron-qwen35-proof-20260611.json`
-- Latest checklist state: `status=open`, `failed_count=13`
+  `build/current-full-release-objective-checklist-after-qwen35-gate-correction-20260611.json`
+- Latest checklist state: `status=open`, `failed_count=15`
 
 ## Hard Boundaries
 
@@ -31,13 +31,15 @@
   continuation, JSON/code/whitespace exactness, blue image, blue video, blue
   audio, post-media text recovery, native hybrid SSM cache, paged+SSM reuse,
   block L2 writes/hits, and SSM L2 writes.
-- Qwen35 raw SSE direct/gateway/tunnel proof is consumed by the release
-  checklist:
-  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
-- Qwen35 proof covers: direct/gateway/tunnel present, same model, authoritative
-  `{"value":"blue-cat"}` arguments, reasoning enabled, valid output indices,
-  final object consistency, gateway passthrough, previous-response guard, and
-  local empty-XML required-argument fail-closed guards.
+- Qwen35 direct/gateway source proof remains good, but direct/gateway/tunnel
+  parity is not release-green because the fresh public tunnel recapture is
+  still stale:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`
+- Qwen35 public tunnel still preserves model, authoritative
+  `{"value":"blue-cat"}` arguments, function-call argument deltas/done, final
+  response consistency, and valid message/function output indices, but it lacks
+  complete streamed reasoning output item lifecycle. Keep this row red until
+  the tunnel runtime is rebuilt and recaptured.
 
 ## Still Open
 
@@ -48,6 +50,9 @@
 - MiMo: exactness/media/speed remain open. Current classification says
   JANGTQ_2 literal mutations happen after valid parser structure; do not clear
   by rewriting parsed tool arguments or repairing generated JSON.
+- Qwen35 raw SSE direct/gateway/tunnel parity remains open on public tunnel
+  reasoning lifecycle, even though current direct/gateway source proof is
+  green.
 - MiniMax issue179: current source and local installed probes are clean, but
   reporter parity is not proven. The current audit is intentionally open
   because reporter artifact/session evidence is missing and reporter installed

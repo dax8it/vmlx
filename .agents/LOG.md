@@ -189,6 +189,27 @@
   clean probes explain the reporter screenshot.
 - Added `.agents/CODEX_RELEASE_HANDOFF_20260611.md` with current commit,
   hard boundaries, proven rows, still-open rows, and other-agent next work.
+
+# 2026-06-11 continuation - Qwen35 raw-SSE gate correction selected
+
+- Rechecked current git/log/checklist state. The latest checklist
+  `build/current-full-release-objective-checklist-after-nemotron-qwen35-proof-20260611.json`
+  has no Qwen35 failed row because `QWEN35_RAW_SSE_PARITY` was pointed at
+  older green artifact
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`.
+- This contradicts the active written state and current 2026-06-11 tunnel
+  recapture: `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-public-recapture-still-stale-20260611.json`
+  is `status=fail` because public tunnel still lacks complete streamed
+  reasoning output item lifecycle, despite preserving args/final indices.
+- Action selected: restore the release checklist pointer and its test
+  expectation to the fresh red artifact so checkpoint readiness cannot
+  false-pass direct/gateway/tunnel raw-SSE parity.
+- Implemented pointer/test correction and regenerated
+  `build/current-full-release-objective-checklist-after-qwen35-gate-correction-20260611.json`.
+  Result: `status=open`, `failed_count=15`; Qwen35 is red on
+  `qwen35_raw_sse_status_pass` and `qwen35_raw_sse_reasoning_events`.
+- Verification passed: focused checklist tests for Qwen35/full-pass fixture
+  (`3 passed`), `py_compile`, and `git diff --check`.
 - Boundary: no release/sign/notarize/PyPI/updater/site, no N2 JANG_1L, no
   audio claim, no all-Gemma-size claim, and no installed-app claim from this
   source proof.
