@@ -16010,3 +16010,56 @@ Next action:
 - No source patch made. Other-agent/release action is a tunnel backend
   rebuild/redeploy/recapture with this same model/request, not parser
   synthesis or reasoning-disable workaround.
+
+# 2026-06-11 01:15 PDT - moving to MiMo runtime/cache/exactness lane
+
+- Commit `a71fc7d69 Record Responses tunnel parity boundary` pushed to branch
+  and main.
+- Next focus is MiMo V2.5 runtime/cache/exactness and the reported UI-quality
+  behavior, with no parser masking or fake cache/TQ claims.
+
+# 2026-06-11 01:34 PDT - recorded cross-family tool/reasoning stress matrix
+
+- Eric added a current instruction to stress-test tool calling and streaming
+  with reasoning `auto`/high/on/off modes across as many model families as
+  practical, in both Chat UI as a real user and API/Responses cache-reuse
+  routes.
+- Recorded in `.agents/STATUS.md` as an active release-proof item, including:
+  direct API, panel gateway, tunnel raw SSE where applicable, Responses
+  cache-reuse endpoint, required/auto/no-tool modes, tool-result continuation,
+  repeated tool output, loop stop, content/reasoning/function-call deltas,
+  final-object consistency, request kwargs passthrough, cache telemetry,
+  coherent text, exact string/JSON/XML/whitespace preservation, and media
+  rows only when weight-backed or explicitly diagnostic.
+- No source patch made from this instruction yet. It expands the live proof
+  matrix and should be used by the parallel lane when choosing model families
+  this lane is not actively loading.
+
+# 2026-06-11 01:39 PDT - recorded checkpoint release expectation
+
+- Eric restated the release target: produce a proper fixed working checkpoint
+  when the proof state is good enough, and then progressively make official
+  version releases.
+- Eric clarified checkpoint releases should be signed/notarized as they go.
+- Current boundary recorded in `.agents/STATUS.md`: do not sign/notarize a
+  known-bad checkpoint from the current red state; continue reducing MiMo,
+  tool/reasoning stress, tunnel parity, and installed-app proof gaps, then
+  report the exact readiness writeup and gates before entering the real
+  signing/notarization path.
+
+# 2026-06-11 01:49 PDT - fixed MiMo exact-output proof false green
+
+- Confirmed the installed-app MiMo exact-output artifact marked pass while
+  recording non-exact output because the harness did not parse the exact prompt
+  form `Reply with exactly this text/json and nothing else:`.
+- Patched `panel/scripts/live-real-ui-model-proof.mjs` to include that prompt
+  family in the strict exact-output assertion regex.
+- Added `panel/tests/live-real-ui-proof-harness.test.ts`.
+- Verification passed:
+  `cd panel && npm test -- tests/live-real-ui-proof-harness.test.ts` -> 2
+  tests passed.
+  Focused MiMo media runtime selected tests -> 3 passed.
+  Focused MiMo media capability selected tests -> 7 passed.
+- Boundary:
+  this is proof-harness correctness only. It does not fix MiMo model output,
+  does not clear red-image semantics, and does not clear release/sign/notarize.

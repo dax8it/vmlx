@@ -10404,3 +10404,106 @@ Other-agent action:
   no source patch made in this lane because current local and panel gateway
   source already satisfy the contract. Next required action is tunnel backend
   rebuild/redeploy/recapture with the same model/request before release.
+
+# 2026-06-11 01:15 PDT next lane selected MiMo runtime/cache/exactness
+
+- Commit status:
+  `a71fc7d69 Record Responses tunnel parity boundary` pushed to
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Current dirty state:
+  only the pre-existing unrelated
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`
+  remains dirty.
+- Next selected blocker:
+  MiMo V2.5 JANG/JANGTQ runtime behavior, especially the current UI-quality
+  complaint, special mixed full/SWA prefix-cache handling, media honesty, and
+  whether the slow/nonsense output points at runtime code, artifact contract,
+  chat template/special-token spacing, or model rebuild.
+- Current action:
+  inspect latest MiMo artifacts and source paths before editing. Do not mask
+  MiMo exactness by parser/string cleanup and do not claim cache/TQ fixes
+  without runtime evidence.
+
+# 2026-06-11 01:34 PDT cross-family tool/reasoning stress proof added to active list
+
+- New current-turn instruction from Eric:
+  perform extensive real-model stress testing, across as many supported model
+  families as practical, for tool calling and streaming while reasoning is set
+  to `auto`, high/explicit reasoning modes, and thinking on/off where the
+  family supports it.
+- Required surfaces:
+  Chat UI as a real user in vMLX/MLXStudio, direct API, panel gateway, and
+  Responses cache-reuse endpoint. For deployed parity, keep the tunnel
+  direct/gateway/tunnel raw SSE boundary from the prior Responses note.
+- Required event contracts:
+  visible content deltas, reasoning deltas/summaries, interleaved
+  reasoning/tool streaming, function-call argument delta/done, final response
+  object consistency, valid output indices, request kwargs passthrough,
+  required tool, auto tool, no-tool, tool-result continuation, repeated tool
+  output, loop stop, and cancellation behavior where available.
+- Required model behavior checks:
+  coherent visible text, multi-turn recall, exact string/JSON/XML/whitespace
+  payload preservation, no hidden reasoning leak, no raw tool/reasoning markup
+  leak, no empty `arguments: {}` acceptance for required schemas, and no parser
+  fixes that synthesize arguments from visible preambles.
+- Required family/media scope:
+  Gemma4 JANG/MXFP/QAT, MiMo JANG/JANGTQ, Qwen/Qwen-coder/N2 JANGTQ or other
+  non-JANG_1L rows explicitly allowed in this lane, MiniMax, DeepSeek-style
+  reasoning parsers, and VL/video/audio rows only when weight-backed or
+  explicitly diagnostic. N2 JANG_1L remains out of this lane unless Eric
+  reopens it in a later current-turn instruction.
+- Cache proof requirements:
+  prefix/paged/L2 hit/miss telemetry, fresh-process restore where applicable,
+  typed native cache state preserved for Gemma mixed-SWA, MiMo asymmetric SWA,
+  Qwen/N2 hybrid SSM or MTP paths, and media cache salt/post-media text
+  recovery for multimodal rows.
+- Other-agent handoff:
+  parallel lane should build and run the same stress matrix going forward on
+  model families this lane is not actively loading, but must record exact
+  model path, server command, UI/API route, reasoning mode, tool mode, cache
+  counters, raw SSE/file artifacts, pass/fail status, and no-claim boundaries.
+
+# 2026-06-11 01:39 PDT checkpoint/release expectation restated
+
+- New current-turn instruction from Eric:
+  make a proper fixed working checkpoint release when the proof state is good
+  enough, then progressively make official version releases.
+- Current boundary:
+  do not start signing/notarization/release upload from the current red state.
+  Required blockers still include MiMo image semantic failure / media honesty,
+  MiMo exactness proof quality, cross-family tool/reasoning streaming stress,
+  tunnel parity recapture, and installed-app parity. Continue source/proof
+  fixes until the checkpoint is defensible, then explicitly report readiness
+  with the exact writeup and gates before signing.
+
+# 2026-06-11 01:49 PDT MiMo proof harness false-green fixed
+
+- Root cause confirmed in the installed-app MiMo exact-output artifact:
+  `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-exact-output-20260610-proof.json`
+  had `status=pass` even though the model output was not exact:
+  `ACKCB-742` for expected `ACK-CB-742`, and `{"` for expected JSON. The proof
+  script only enforced explicit environment expected strings or prompts matching
+  `reply exactly:`; it did not recognize `Reply with exactly this text/json and
+  nothing else:`.
+- Patch:
+  `panel/scripts/live-real-ui-model-proof.mjs` now treats
+  `reply with exactly this text and nothing else:` and
+  `reply with exactly this json and nothing else:` as strict exact-output
+  assertions. Added `panel/tests/live-real-ui-proof-harness.test.ts`.
+- Fresh verification:
+  `cd panel && npm test -- tests/live-real-ui-proof-harness.test.ts` passed
+  `2 tests`.
+  `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_runtime.py -k
+  'vision_patch_embed_and_merger_project_to_text_hidden or
+  media_prefill_does_not_forward_processor_attention_mask or
+  jangtq_fast_path_binds_indexed_media_weights'` passed `3 selected`.
+  `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_capability_gate.py -k
+  'runtime_modalities or local_runtime_registration or preserved_text_runtime'`
+  passed `7 selected`.
+- What this proves:
+  future real-UI exact-output proofs will not silently pass the specific MiMo
+  hyphen/JSON truncation failure shape.
+- What this does not prove:
+  MiMo exactness is still red; MiMo red-image semantic proof remains red;
+  MiMo media overlay is still diagnostic unless explicitly enabled and
+  semantically proven; no release/sign/notarize gate is cleared by this patch.
