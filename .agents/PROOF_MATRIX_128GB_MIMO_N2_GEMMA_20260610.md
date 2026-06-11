@@ -3289,3 +3289,31 @@ Next implementation target:
   installed-app speed after rebuild, media, audio/video, full agentic loops,
   release packaging, sign/notarize, PyPI, updater JSON, website, and N2
   JANG_1L remain open or untouched.
+
+## Gemma4 12B QAT MXFP4 Source Responses Video/Cache - 2026-06-11
+
+- Proof:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-12b-qat-mxfp4-responses-video-cache-20260611-proof.json`.
+- Status:
+  passed in current-source Electron dev UI with
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`,
+  `wireApi=responses`, deterministic sampling, MLLM enabled, video enabled,
+  audio disabled, and server cache controls enabled.
+- Proven:
+  `/v1/responses` streaming, video attachment preservation, base64 MP4 decode,
+  25-frame ingestion with 4 extracted frames, frame-through-vision via Gemma4
+  image fallback, semantic red/solid video answer, generation defaults,
+  parser/language leak checks, Responses cache-detail usage, native Gemma4
+  `mixed_swa_kv_v1` cache status, q4 storage-boundary KV quantization for
+  full-attention KV only, paged/prefix cache reuse, cache endpoint stats, and
+  block-disk L2 writes.
+- Metrics:
+  cache-hit requests `1`, cache-hit tokens `20`, L2 block tokens on disk `70`,
+  disk writes `2`, text decode about `55-56 tok/s`, video prefill about
+  `334 prompt tok/s`.
+- No-claims:
+  this is not audio proof; the artifact keeps `requestedAudio=false` and the
+  runtime reports audio unavailable. This does not clear installed-app
+  Responses video, 26B/31B Responses video, Qwen/N2/MiMo media, tunnel parity,
+  full reasoning/tool stress, release packaging, sign/notarize, PyPI, updater
+  JSON, or website release rows.

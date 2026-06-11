@@ -95,6 +95,33 @@
   Qwen-coder-next direct and gateway artifacts remain the live evidence; public
   tunnel parity remains open until `qwen3-coder-next` is deployed or routed.
 
+# 2026-06-11 02:01 PDT - Gemma media/runtime blocker selected
+
+- Current continuation: keep moving the active production-readiness goal after
+  MiMo media classification and Qwen/Qwen-coder raw-SSE proof-state refresh.
+- Selected next blocker: Gemma JANG/MXFP/QAT media/runtime proof from current
+  artifacts and local model availability.
+- Intent: run one current-source live proof that reduces an actual Gemma
+  image/video/audio/cache/API/UI row, then patch only if evidence shows a real
+  routing/runtime defect.
+- Boundaries remain: no release/sign/notarize/PyPI/updater/site, no N2
+  JANG_1L, no fake audio support from config/token placeholders, no
+  metadata-only video claim, and no subagent delegation.
+
+# 2026-06-11 02:04 PDT - Gemma Responses video proof selected
+
+- Artifact scan found that Gemma4 12B QAT MXFP4 already has current-source and
+  installed-app Chat Completions video passes, while Gemma JANG/MXFP audio is
+  honestly unsupported by weight evidence. The weaker release-facing row is a
+  Responses API media proof.
+- Next command will run current-source Electron dev UI against
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4` with
+  `wireApi=responses`, red-square MP4 fixture, deterministic sampling, and
+  server cache controls.
+- Boundary: no release/sign/notarize/PyPI/updater/site, no N2 JANG_1L, no
+  audio claim, no all-Gemma-size claim, and no installed-app claim from this
+  source proof.
+
 # 2026-06-11 01:39 PDT - Gemma4 thinking-off tool/cache UI row green
 
 - Fixed proof-surface false red for tool-first Responses streams:
@@ -16278,3 +16305,24 @@ Next action:
 - Boundary:
   this is proof-harness correctness only. It does not fix MiMo model output,
   does not clear red-image semantics, and does not clear release/sign/notarize.
+# 2026-06-11 01:58 PDT - Gemma4 12B QAT MXFP4 source Responses video/cache pass
+
+- Ran a current-source Electron dev real-UI proof for
+  `/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4` through
+  `/v1/responses` with deterministic sampling, MLLM enabled, a base64 MP4 video
+  fixture, and server cache controls.
+- Artifact passed:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-12b-qat-mxfp4-responses-video-cache-20260611-proof.json`.
+- Proven: current Electron dev UI, real loaded Gemma4 12B QAT MXFP4, Responses
+  streaming, video attachment preservation, MP4 decode, frame-through-vision
+  path via 4 extracted frames, semantic red/solid answer, generation defaults,
+  native Gemma4 mixed-SWA cache, q4 storage-boundary KV quantization for full
+  attention only, paged/prefix cache reuse, L2 block-disk writes, cache endpoint
+  stats, parser/language leak checks, and Responses cache-detail usage.
+- Metrics: cache-hit requests `1`, cache-hit tokens `20`, L2 block tokens `70`,
+  disk writes `2`, text decode around `55-56 tok/s`, video prefill around
+  `334 prompt tok/s`.
+- Boundary: this is not audio, not installed-app Responses video, not 26B/31B
+  Responses video, not cross-family reasoning/tool stress, not tunnel parity,
+  and not release readiness. No release/sign/notarize/PyPI/updater/site action,
+  no N2 JANG_1L work, no fake media claim, and no subagent action.

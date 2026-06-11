@@ -121,6 +121,34 @@
   the tunnel does not advertise `qwen3-coder-next`.
 
 ## CODEX
+- now: continuing the active production-readiness goal after MiMo media
+  classification and Qwen/Qwen-coder raw-SSE proof-state refresh.
+- current-turn directive carried forward: build/fix runtime blockers in
+  focused blocks, avoid broad test-suite construction, keep every movement
+  written, do not spawn subagents, and do not use parser/cache/media fake
+  fixes.
+- selected next blocker: Gemma JANG/MXFP/QAT media/runtime proof, starting from
+  current artifacts and local model availability. Goal is to reduce a real
+  Gemma image/video/audio/cache/API/UI row, not to add a generic harness.
+- boundaries: no release/sign/notarize/PyPI/updater/site action; no N2 JANG_1L;
+  no audio claim from config/token placeholders; no metadata-only video claim;
+  no disabling reasoning/tool behavior as a fake fix.
+
+## CODEX
+- now: Gemma media artifact scan selected a concrete unproven/weak row.
+- current evidence: Gemma4 12B QAT MXFP4 source and installed-app video rows
+  are green for Chat Completions; Gemma audio is honestly gated unsupported for
+  local JANG/MXFP/QAT rows because no `audio_tower.*` weights exist. 26B/31B
+  QAT JANG_4M installed-app video rows are also green.
+- selected proof: current-source Electron dev UI, Gemma4 12B QAT MXFP4,
+  `wireApi=responses`, red-square MP4 video attachment, cache controls, and
+  deterministic sampling. This targets the weaker Responses API media surface
+  rather than repeating a Chat video row.
+- no-claim boundary: this will not prove audio, all Gemma sizes, installed-app
+  parity for this exact Responses-video row, release readiness, or any N2
+  JANG_1L behavior.
+
+## CODEX
 - now: Gemma4 E2B QAT JANG4M thinking-off source UI Responses/tool/cache row
   is live green after fixing the proof surface for tool-first Responses
   streams.
@@ -10743,3 +10771,44 @@ Other-agent action:
   MiMo exactness is still red; MiMo red-image semantic proof remains red;
   MiMo media overlay is still diagnostic unless explicitly enabled and
   semantically proven; no release/sign/notarize gate is cleared by this patch.
+# 2026-06-11 01:58 PDT Gemma4 12B QAT MXFP4 source Responses video/cache proof
+
+- Selected blocker:
+  Gemma JANG/MXFP/QAT media/runtime proof, specifically a current-source
+  Responses API video row rather than another Chat-only video row.
+- Command/proof:
+  ran `node panel/scripts/live-real-ui-model-proof.mjs` with
+  `VMLINUX_REAL_UI_MODEL_PATH=/Users/eric/models/JANGQ-AI/gemma-4-12B-it-qat-MXFP4`,
+  `VMLINUX_REAL_UI_WIRE_API=responses`,
+  `VMLINUX_REAL_UI_CHECK_VIDEO=1`, deterministic sampling, MLLM enabled, and
+  server cache controls enabled.
+- Artifact:
+  `docs/internal/agent-notes/current-real-ui-source-gemma4-12b-qat-mxfp4-responses-video-cache-20260611-proof.json`
+  is `status=pass`.
+- Proven:
+  current Electron dev UI, real loaded Gemma4 12B QAT MXFP4 model,
+  `/v1/responses` streaming, video attachment preservation, base64 MP4 decode,
+  25-frame video ingestion with 4 extracted frames, frame-through-vision
+  fallback into Gemma4 image path, semantic red/solid video answer, generation
+  defaults, server cache controls, parser/language leak checks, Responses
+  delta streaming, Responses cache-detail usage, cache endpoint stats, native
+  Gemma4 mixed-SWA cache status, q4 storage-boundary KV quantization for full
+  attention only, paged/prefix cache reuse, and block-disk L2 writes.
+- Metrics:
+  cache hit requests `1`, cache hit tokens `20`, L2 block tokens on disk `70`,
+  disk writes `2`; text turns reported about `55-56 tok/s`, video prompt
+  prefill about `334 prompt tok/s`.
+- No-claims:
+  this is not an audio proof; artifact explicitly keeps `requestedAudio=false`
+  and the session reports `modelAudioRuntimeAvailable=false`. It does not
+  prove 26B/31B Responses video, installed-app Responses video, Qwen/N2/MiMo
+  media, tunnel parity, full cross-family reasoning/tool stress, or release
+  readiness.
+- Process hygiene:
+  proof runner cleaned up its server; post-run process check showed only the
+  Codex crashpad helper from the matched PID list.
+- Other-agent handoff:
+  next useful Gemma media lane is either installed-app `/v1/responses` video
+  parity for this exact 12B QAT MXFP4 row, or 26B/31B Responses video if the
+  goal is larger-row media parity. Do not reopen Gemma audio unless the model
+  bundle has real `audio_tower.*` weights and live audio E2E is run.
