@@ -13270,3 +13270,7 @@ Other-agent action:
 - now: bundled Python parity is restored after the Gemma4 required-tool reasoning budget fix.
 - verification: `panel/scripts/verify-bundled-python.sh` first failed on `vmlx_engine/server.py` drift; after `panel/scripts/bundle-python.sh`, `panel/scripts/verify-bundled-python.sh` passed with critical `vmlx_engine` and `jang_tools` source parity and runtime imports green.
 - no release action: did not sign, notarize, tag, publish PyPI, update downloads, or touch website/updater release surfaces.
+
+## CODEX
+- now: pushed `85945c821 Fix Gemma4 reasoning tool budget floor` to `origin/codex/pr-intake-manifest` and `origin/main`.
+- release boundary: this clears the Gemma4 E2B reasoning-on required-tool maxTokens=128 failure shape in source and bundled parity, but does not clear MiMo, ZAYA-VL, Hy3, MiniMax reporter parity, DSV4 exact-code, installed-app/release signing/notarization, or N2 JANG_1L.

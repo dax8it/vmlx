@@ -18270,3 +18270,9 @@ Next action:
 - Ran `panel/scripts/bundle-python.sh`; it completed successfully and rebuilt local `vmlx-1.5.57` into `panel/bundled-python`.
 - Re-ran `panel/scripts/verify-bundled-python.sh`; result passed, including bundled critical `vmlx_engine`/`jang_tools` source parity, Gemma4/Step/MiMo/JANGTQ imports, TurboQuant kernels, and runtime patch imports.
 - No signing, notarization, tagging, PyPI publish, updater, site, or download-link action was run.
+
+# 2026-06-11 09:38 PDT - Gemma4 budget fix push receipt
+
+- Pushed commit `85945c821 Fix Gemma4 reasoning tool budget floor` to `origin/codex/pr-intake-manifest` and `origin/main`.
+- This commit contains the scoped Gemma4 reasoning required-tool output-budget floor in Python engine and panel request construction, focused tests, live proof status, and bundled parity notes.
+- Remaining release blockers are not cleared by this commit: MiMo artifact/remake/exactness/media, ZAYA-VL exact/no-media and MXFP4 gather_qmm, Hy3 missing local row, MiniMax reporter parity, DSV4 exact-code thinking-closed quality, installed-app/release signing/notarization gates, and N2 JANG_1L remains Eric-owned/off-limits.
