@@ -13240,3 +13240,33 @@ Other-agent action:
   `build/current-objective-proof-after-zaya-vl-jangtq4-classification-20260611.json`
   points at this current failed ZAYA-VL artifact. Cross-family live smoke
   remains open for `hy3`, `mimo_v2`, and `zaya_vl`.
+
+## CODEX
+- now: current continuation rechecked active Python worktree state and selected Gemma4 E2B QAT JANG4M Responses required-tool with reasoning enabled as the next engine/API blocker.
+- user directive: focus on vMLX Python engine/runtime fixes toward a signed working checkpoint release; release/sign/notarize/PyPI/updater/site actions remain locked without explicit current-turn unlock.
+- constraints: no subagents, no N2 JANG_1L, no fake parser/cache/media fixes, and every movement must be written down.
+- next movement: inspect failed live Gemma4 reasoning-on artifact plus `vmlx_engine/api/tool_calling.py` and `vmlx_engine/server.py`; patch only if root cause is evidenced and keep required args fail-closed.
+
+## CODEX
+- now: Gemma4 E2B QAT JANG4M reasoning-on required-tool diagnostic passed when the same current-source UI/Responses proof used `max_tokens=512` instead of 128.
+- artifact: `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-reasoning-cache-max512-diagnostic-20260611-proof.json`, status pass.
+- proven: real Electron dev UI, source server, Responses streaming, `enableThinking=true`, built-in `run_command`, two tool turns, tool-result continuation, reasoning display, function-call argument delta/done surface, parser leak checks, native Gemma4 mixed-SWA cache, q4 storage-boundary KV, paged cache hits, block-disk L2, live speed around 140-148 t/s.
+- classification: prior red maxTokens=128 row is a reasoning/output budget failure, not a parser empty-args failure. No code changed yet; do not claim the 128-token path is fixed. Next movement is to decide whether source/UI defaults need a reasoning+required-tool output-budget floor and update aggregate proof status accordingly.
+
+## CODEX
+- now: patched a narrow Gemma4 reasoning required-tool output-budget floor in panel and Python engine.
+- scope: Gemma4 + tools present + `tool_choice=required` + effective `enable_thinking=true` gets at least 512 generation tokens; no parser repair, no arg synthesis, no reasoning disablement, no change for no-tools/thinking-off/non-Gemma/already-large budgets.
+- focused verification passed: panel budget/request-builder tests 82/82, Python guard test 1 selected, and `py_compile vmlx_engine/server.py`.
+- next movement: live rerun the original maxTokens=128 Gemma4 E2B UI/Responses/tool/cache proof against current source to prove the patched floor clears the real failure.
+
+## CODEX
+- now: live Gemma4 E2B QAT JANG4M maxTokens=128 proof passed after the scoped reasoning required-tool budget floor.
+- artifact: `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-reasoning-cache-max128-after-budget-floor-20260611-proof.json`, status pass.
+- proven: current-source Electron dev UI, Responses streaming, `enableThinking=true`, built-in `run_command`, two tool turns, tool-result continuation, argument delta/done surface, reasoning display, parser/language leak checks, native Gemma4 mixed-SWA cache, q4 storage-boundary KV, paged cache hits, block-disk L2, live speed around 136-140 t/s.
+- key detail: requested maxTokens remained 128, required-tool turns were raised to 512, and the no-tool reasoning probe stayed at 128. This proves scoped budget behavior, not a global max-token change.
+- next movement: sync and verify bundled Python parity for the changed Python engine before committing.
+
+## CODEX
+- now: bundled Python parity is restored after the Gemma4 required-tool reasoning budget fix.
+- verification: `panel/scripts/verify-bundled-python.sh` first failed on `vmlx_engine/server.py` drift; after `panel/scripts/bundle-python.sh`, `panel/scripts/verify-bundled-python.sh` passed with critical `vmlx_engine` and `jang_tools` source parity and runtime imports green.
+- no release action: did not sign, notarize, tag, publish PyPI, update downloads, or touch website/updater release surfaces.

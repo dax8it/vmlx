@@ -18228,3 +18228,45 @@ Next action:
   visible-output/no-media quality checks.
 - Aggregate now points at the current failed artifact instead of a stale missing
   ZAYA-VL path.
+
+# 2026-06-11 09:28 PDT - current continuation selects Gemma4 reasoning-on required tools
+
+- Current user directive: focus on the active vMLX Python engine/runtime toward a signed working checkpoint release, but do not run release/sign/notarize/PyPI/updater/site actions unless explicitly unlocked.
+- Constraints rechecked: active worktree only, no subagents, no N2 JANG_1L, no fake parser/cache/media fixes, write every movement down.
+- Selected blocker: Gemma4 E2B QAT JANG4M Responses streaming required-tool behavior with reasoning enabled remains red after prior retry/fallback attempts. This is a real API/agentic-loop blocker for reasoning+tools, unlike the thinking-off row which is already live-proven.
+- Next action: inspect the failed live artifact and existing Gemma4 tool/prompt/server code before editing; any fix must preserve request thinking, fail closed on missing required args, keep raw SSE/final-object consistency, and not synthesize arguments.
+- Other-agent note: do not claim Gemma4 reasoning-on required tools are green until a current-source live UI/API proof passes; thinking-off Gemma4 E2B tool/cache proof is green separately.
+
+# 2026-06-11 09:30 PDT - Gemma4 reasoning-on required tools max-token diagnostic passed
+
+- Ran current-source Electron dev UI proof for Gemma4 E2B QAT JANG4M with Responses API, built-in run_command tools, `enableThinking=true`, Gemma4 tool and reasoning parsers, cache controls, deterministic sampling, and `VMLINUX_REAL_UI_MAX_TOKENS=512`.
+- Artifact: `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-reasoning-cache-max512-diagnostic-20260611-proof.json`.
+- Result: `status=pass`. The prior red row at maxTokens=128 was a reasoning/output budget failure: the model was still in reasoning when generation ended and no tool call existed to parse.
+- Proven in this pass: two UI turns completed, real built-in `run_command` tool loop, tool-result continuation, reasoning display, Responses API function-call argument delta/done surface, parser leak checks, generation defaults, native Gemma4 mixed-SWA cache, q4 storage-boundary KV, paged cache hits, and block-disk L2.
+- Cache/speed evidence: cache_hit_requests=5, cache_hit_tokens=8236, ram_tokens_cached=3902, l2_block_tokens_on_disk=3902, disk_hits=258, disk_writes=64, live speed samples around 140-148 t/s.
+- Boundary: no engine code changed in this movement; do not claim the default 128-token reasoning-on tool path is fixed. The release-facing fix is likely a request/default budget policy for reasoning+required tools or UI default max-token adjustment, not parser argument synthesis.
+- Other-agent note: when proving Gemma4 reasoning-on tools, do not cap at 128 output tokens; use at least 512 or implement/document a model-family budget floor for reasoning+required-tool turns.
+
+# 2026-06-11 09:35 PDT - Gemma4 reasoning required-tool budget floor patched
+
+- Source edits: panel request-budget helper now raises undersized Gemma4 reasoning+tool output caps to 512 when built-in tools are enabled; Python engine now applies the same 512-token floor for Gemma4 requests with `tool_choice=required`, tools present, and effective `enable_thinking=true`.
+- Scope: normal chats, no-tool reasoning, thinking-off tools, non-Gemma families, and already larger explicit max tokens are unchanged. The fix does not synthesize tool arguments, disable reasoning, or relax schema validation.
+- Focused verification so far: `npm --prefix panel test -- dsv4-request-budget request-builder` passed 82/82; `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k gemma4_required_tool_reasoning_budget_floor_is_scoped` passed 1 selected; `.venv/bin/python -m py_compile vmlx_engine/server.py` passed.
+- Next proof: rerun the original current-source Gemma4 E2B Responses UI tool/cache proof with `max_tokens=128` to confirm the patched floor clears the live failure shape.
+
+# 2026-06-11 09:36 PDT - Gemma4 max128 live proof passed after budget floor
+
+- Live proof rerun: `VMLINUX_REAL_UI_MAX_TOKENS=128` with Gemma4 E2B QAT JANG4M, current-source Electron dev UI, Responses API, built-in `run_command`, `enableThinking=true`, Gemma4 tool/reasoning parsers, deterministic sampling, and server cache controls.
+- Artifact: `docs/internal/agent-notes/current-real-ui-source-gemma4-e2b-qat-jang4m-responses-tools-reasoning-cache-max128-after-budget-floor-20260611-proof.json`.
+- Result: `status=pass`.
+- Proof detail: request contract still says `requestMaxTokens=128`, but first/second required-tool turns logged request `max_tokens=512`; the no-tool reasoning probe stayed `max_tokens=128`, proving the floor is scoped to reasoning+tools rather than global generation.
+- Proven: two real UI turns, real `run_command` tool loop, tool-result continuation, Responses argument delta/done surface, reasoning display, parser/language leak checks, native Gemma4 mixed-SWA cache, q4 storage-boundary KV, paged cache hits, block-disk L2, and speed around 136-140 live t/s.
+- Cache evidence: cache_hit_requests=6, cache_hit_tokens=9013, ram_tokens_cached=4637, l2_block_tokens_on_disk=4637, disk_hits=276, disk_writes=77.
+- Next required release-prep action: bundled Python parity must be resynced because `vmlx_engine/server.py` changed; this is not signing/notarization/release publishing.
+
+# 2026-06-11 09:37 PDT - bundled Python parity restored after Gemma4 budget fix
+
+- `panel/scripts/verify-bundled-python.sh` initially failed on bundled `vmlx_engine/server.py` drift after the Gemma4 budget floor patch.
+- Ran `panel/scripts/bundle-python.sh`; it completed successfully and rebuilt local `vmlx-1.5.57` into `panel/bundled-python`.
+- Re-ran `panel/scripts/verify-bundled-python.sh`; result passed, including bundled critical `vmlx_engine`/`jang_tools` source parity, Gemma4/Step/MiMo/JANGTQ imports, TurboQuant kernels, and runtime patch imports.
+- No signing, notarization, tagging, PyPI publish, updater, site, or download-link action was run.
