@@ -10070,3 +10070,50 @@ Other-agent action:
 - Boundary:
   the MiMo parser/thinking UI fix is real but does not clear MiMo exactness,
   media, speed, N2 JANG_1L, prepackage, or release readiness.
+
+# 2026-06-11 02:03 PDT continuation selected MiMo exactness/artifact lane
+
+- Current-turn objective:
+  continue reducing real runtime/model/API blockers in efficient phases, avoid
+  broad test-suite churn, avoid recursive/subagent workflows, and keep every
+  movement written down for compaction safety.
+- Current repo state:
+  branch is aligned with origin/main after `c39c5fdfe`; only unrelated dirty
+  proof JSON remains:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`.
+- Selected blocker:
+  MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis from the current
+  checklist. It is the top allowed lane in
+  `.agents/CODEX_ACTIVE_DIRECTIVES_20260610.md` and remains red after the
+  MiMo parser/thinking fix.
+- Boundary:
+  source-vs-quant is blocked locally because the source endpoint/path is not
+  available. Next movement is to inspect MiMo runtime/fast-path/artifact
+  evidence for a real source bug versus an artifact rebuild requirement. Do not
+  repair wrong literals in parser/JSON, do not touch N2 JANG_1L, and do not run
+  release/sign/notarize/PyPI/updater/site actions.
+
+# 2026-06-11 02:18 PDT MiMo JANGTQ hydrator shape contract fix
+
+- Finding:
+  vMLX's MiMo prestacked JANGTQ hydrator derived `in_features` from
+  `packed_cols * (32 // bits)`. Current `jang_tools.jangrt.jangtq_hydrate`
+  instead reads the existing module's declared `in_features` / `input_dims`,
+  uses derived width only as a fallback, and hard-fails power-of-two bit-width
+  mismatches. The `jang_tools` behavior is the correct runtime contract because
+  future bit layouts must not silently widen inputs from packed columns.
+- Patch:
+  `vmlx_engine/models/mllm.py` now obtains the existing MiMo SwitchLinear module
+  before replacement, uses its declared input width when present, and raises a
+  clear `RuntimeError` if 2/4/8-bit packed width disagrees with the module
+  contract.
+- Verification:
+  `.venv/bin/python -m py_compile vmlx_engine/models/mllm.py` passed.
+  `.venv/bin/python -m pytest -q tests/test_mimo_v2_media_runtime.py::test_mimo_v2_jangtq_fast_path_binds_indexed_media_weights tests/test_jang_model_compat_pr155.py::test_jangtq_packed_bundles_use_native_turboquant_loader_before_fallback`
+  passed 2 tests.
+- Boundary:
+  this is a real runtime-contract fix and JANG tools sync, but it is not a
+  claim that current MiMo JANGTQ_2 literal exactness is fixed. Current local
+  evidence already showed the present 2-bit artifact's packed dimensions match
+  expected MiMo widths; the remaining literal mutation still likely requires
+  source-vs-quant proof or a less lossy artifact profile.

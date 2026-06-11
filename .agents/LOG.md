@@ -15850,3 +15850,25 @@ Next action:
 - MiMo JANGTQ2 is still classified as literal-copy failure before parser/JSON
   repair and likely artifact/quantization work unless source-vs-quant proves a
   runtime decode bug.
+
+# 2026-06-11 02:03 PDT continuing MiMo exactness/artifact lane
+
+- Re-anchored current objective and directives.
+- Selected MiMo V2.5 JANGTQ_2 exactness/logit/artifact diagnosis as the next
+  concrete blocker because it is the first allowed lane and still red.
+- Source-vs-quant remains locally blocked by missing source endpoint/path, so
+  the next useful work is source/runtime fast-path and artifact-evidence
+  inspection for a real bug versus artifact rebuild/reupload requirement.
+
+# 2026-06-11 02:18 PDT patched MiMo JANGTQ hydrator width source
+
+- Compared vMLX MiMo prestacked JANGTQ hydration with
+  `/Users/eric/jang/jang-tools/jang_tools/jangrt/jangtq_hydrate.py`.
+- Patched vMLX to use the existing module's `in_features`/`input_dims` as the
+  source of truth for `TurboQuantSwitchLinear` replacement, with hard failure
+  on 2/4/8-bit packed-width mismatch.
+- Verification passed: `py_compile` for `vmlx_engine/models/mllm.py` and two
+  focused existing MiMo/JANGTQ tests.
+- No claim that current JANGTQ_2 exactness is cleared; current artifact
+  dimensions already matched, so the literal mutation remains artifact/profile
+  or deeper source-vs-quant work.
