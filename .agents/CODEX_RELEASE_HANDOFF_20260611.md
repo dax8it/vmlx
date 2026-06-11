@@ -264,3 +264,24 @@ JANG lane coordination:
 - Coordination with the JANG agent should happen through explicit status notes
   and current artifact paths. Do not spawn subagents or ask hidden helper
   processes to summarize JANG work for this lane.
+
+### Qwen35 tunnel recapture update
+
+Fresh live tunnel recapture after the manifest refresh:
+
+- raw SSE:
+  `build/responses-sse-captures-20260611/tunnel-qwen35-mxfp8-mtp-tool-live-recapture-after-proof-refresh-20260611.sse`
+- parity artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json`
+
+Result is still red for the same reason:
+
+- direct/gateway: clean `message=0`, `reasoning=1`, `function_call=2`,
+  authoritative `{"value":"blue-cat"}`.
+- tunnel: preserves args/final object, but streams reasoning deltas on the
+  message item at `output_index=0`, never emits a streamed reasoning output
+  item, and emits the function call at `output_index=1`.
+
+Next useful action is deployed/tunnel runtime refresh or tunnel-specific SSE
+stream transformation fix, followed by the same live recapture. This is not a
+parser/tool-args issue in current source.

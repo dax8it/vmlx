@@ -14706,3 +14706,30 @@ Other-agent action:
   Qwen35 tunnel reasoning lifecycle, MiniMax #179 reporter parity, DSV4
   memory/exactness, and the broader open objective rows still keep
   `prepackage_ready=false` and `release_ready=false`.
+
+## CODEX
+- now: live-recaptured Qwen35 public/tunnel raw SSE after the proof-pointer
+  refresh.
+- tunnel endpoint checked:
+  `https://testapi.adlabus.dev/v1/models` advertises
+  `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`; `/health` reports the Qwen35
+  backend in standby on port 8000.
+- raw tunnel capture:
+  `build/responses-sse-captures-20260611/tunnel-qwen35-mxfp8-mtp-tool-live-recapture-after-proof-refresh-20260611.sse`.
+- parity artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json`
+  is `status=fail`.
+- fresh finding: direct and gateway remain clean
+  (`message=0`, `reasoning=1`, `function_call=2`, authoritative
+  `{"value":"blue-cat"}`), but tunnel still emits reasoning summary deltas on
+  the message item (`output_index=0`), never streams a reasoning output item,
+  and puts the function call at `output_index=1`. The completed object contains
+  a final reasoning item, so this is a tunnel/deployed streaming lifecycle gap,
+  not a tool-argument/parser fix.
+- full checklist regenerated at
+  `build/current-full-release-objective-checklist-after-release-manifest-current-proof-refresh-20260611.json`;
+  it remains `status=open`, `failed_count=16`, with Qwen35 rows now citing the
+  fresh live recapture artifact.
+- verification:
+  `.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py -q`
+  passed (`24 passed`).

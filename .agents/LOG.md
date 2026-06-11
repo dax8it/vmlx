@@ -19571,3 +19571,55 @@ Current not-done boundary:
   release-grade bundling, do not package the dirty JANG checkout by accident;
   use the clean JANG source override or a clean checkout until the JANG lane
   reconciles.
+
+# 2026-06-11 Qwen35 live tunnel recapture after proof refresh
+
+Checked live tunnel model availability:
+
+```sh
+curl -sS --max-time 20 https://testapi.adlabus.dev/v1/models
+curl -sS --max-time 20 https://testapi.adlabus.dev/health
+```
+
+The tunnel advertises `models/Qwen3.6-35B-A3B-MXFP8-CRACK-MTP`; `/health`
+reports that backend in standby on port 8000.
+
+Recaptured the same required-tool/reasoning Responses SSE request against the
+tunnel:
+
+- raw SSE:
+  `build/responses-sse-captures-20260611/tunnel-qwen35-mxfp8-mtp-tool-live-recapture-after-proof-refresh-20260611.sse`
+- parity artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json`
+
+Classification:
+
+- `status=fail`
+- direct and gateway remain clean:
+  `output_indices_by_type={'function_call': [2], 'message': [0], 'reasoning': [1]}`,
+  authoritative `{"value":"blue-cat"}`, final response consistent.
+- tunnel remains the only failed surface:
+  `output_indices_by_type={'function_call': [1], 'message': [0]}`,
+  `reasoning_events=8`, `reasoning_done_count=1`,
+  `reasoning_output_item_count=0`, `reasoning_lifecycle_complete=false`.
+- tunnel preserves authoritative args and final object consistency, and the
+  completed object includes a final reasoning item, but the stream never emits
+  `response.output_item.added/done` for that reasoning item and attaches
+  reasoning summary deltas to the message item at `output_index=0`.
+
+Updated `QWEN35_RAW_SSE_PARITY` in the full objective checklist to the fresh
+live recapture and regenerated
+`build/current-full-release-objective-checklist-after-release-manifest-current-proof-refresh-20260611.json`.
+It remains `status=open`, `failed_count=16`, `release_ready=false`.
+
+Verification:
+
+```sh
+.venv/bin/python -m pytest tests/test_full_release_objective_checklist.py -q
+# 24 passed
+```
+
+Boundary: this is not fixed. It narrows the remaining Qwen35 blocker to the
+deployed/tunnel streaming lifecycle. Do not weaken the lifecycle check or mark
+Qwen35 raw SSE green until tunnel streams the same completed reasoning output
+item lifecycle as direct and gateway.

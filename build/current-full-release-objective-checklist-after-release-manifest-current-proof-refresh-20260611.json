@@ -1,6 +1,6 @@
 {
   "boundary": "No-heavy checklist only. A pass here would mean current evidence claims every listed gate is green; it still must be backed by the live artifacts referenced by each row. Open rows are release blockers.",
-  "created_at": "2026-06-11T15:54:18-0700",
+  "created_at": "2026-06-11T15:59:46-0700",
   "failed": [
     {
       "detail": false,
@@ -307,17 +307,17 @@
     },
     {
       "detail": "fail",
-      "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+      "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
       "name": "qwen35_raw_sse_status_pass",
       "ok": false
     },
     {
-      "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+      "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
       "name": "qwen35_raw_sse_reasoning_events",
       "ok": false
     },
     {
-      "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+      "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
       "name": "qwen35_raw_sse_reasoning_lifecycle",
       "ok": false
     },
@@ -7278,34 +7278,34 @@
       },
       {
         "detail": "fail",
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_artifact_exists",
         "ok": true
       },
       {
         "detail": "fail",
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_status_pass",
         "ok": false
       },
       {
         "detail": true,
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_same_model_surfaces",
         "ok": true
       },
       {
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_authoritative_args",
         "ok": true
       },
       {
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_reasoning_events",
         "ok": false
       },
       {
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_reasoning_lifecycle",
         "ok": false
       },
@@ -7314,12 +7314,12 @@
           "conflicting_output_indices": {},
           "missing_captures": []
         },
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_valid_output_item_indices",
         "ok": true
       },
       {
-        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-reasoning-tool-lifecycle-guard-20260611.json",
+        "evidence": "build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-live-recapture-after-proof-refresh-20260611.json",
         "name": "qwen35_raw_sse_local_source_guards",
         "ok": true
       },
