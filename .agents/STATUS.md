@@ -7887,3 +7887,133 @@ Other-agent action:
     visual semantics are still not release-green;
   - default installed app should now be honest for these text-runtime stamped
     local bundles instead of silently forcing media into a text-only runtime.
+
+# 2026-06-11 continuation - local app rebuild for MiMo panel honesty
+
+- Active lane:
+  - make the current MiMo panel media honesty fix real in `/Applications/vMLX.app`
+    and rerun the installed-app media attachment proof.
+- Why now:
+  - source/panel tests prove detection now honors MiMo text-runtime stamps;
+  - the installed app still contains the prior packaged panel until rebuilt,
+    so the user-facing proof remains stale.
+- Constraints:
+  - local build/install only;
+  - no release DMG, signing, notarization, PyPI, updater, or website action;
+  - do not claim MiMo media works; expected honest behavior for these local
+    bundles is text-runtime / forceTextOnly.
+- Next action:
+  - run the repo's local app build/install path, verify installed panel/runtime
+    has current source, then rerun the MiMo JANGTQ_2 installed-app image proof
+    to confirm it no longer forces multimodal routing from the UI.
+
+# 2026-06-11 local installed-app rebuild complete
+
+- Result:
+  - `./panel/scripts/build-and-install.sh` completed and installed
+    `/Applications/vMLX.app` from this checkout.
+- Build/install evidence:
+  - bundled Python rebuilt with `vmlx_engine 1.5.57`;
+  - bundled critical `vmlx_engine` files match source content;
+  - bundled critical `jang_tools` files match source content;
+  - critical runtime imports passed, including Gemma4 unified registration,
+    MiMo runtime/register paths, JANG/JANGTQ loaders, Kimi/MiMo/Step3.7
+    registrations, and TurboQuant kernels;
+  - Electron packaging completed, bundled Python native files were signed, and
+    `/Applications/vMLX.app` passed `codesign --verify` designated requirement
+    validation.
+- Boundaries:
+  - this was local build/install/ad-hoc app signing only;
+  - no release DMG, notarization, PyPI, updater, website, or GitHub release
+    action was performed.
+- Next action:
+  - rerun MiMo JANGTQ_2 installed-app image attachment proof and verify whether
+    the UI now respects the text-runtime/forceTextOnly capability rather than
+    forcing media into the text-only MiMo runtime.
+
+# 2026-06-11 MiMo remote proof media-route root cause
+
+- Reproduced after local rebuild:
+  - artifact:
+    `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-bundled-python-after-panel-force-text-20260611-proof.json`;
+  - normal remote text turns logged `chatIsMultimodal=false`;
+  - the media turn logged `modelPath="remote://..."`,
+    `modelForceTextOnly=false`, `chatIsMultimodal=true`;
+  - server correctly rejected the image with HTTP 400 because runtime had loaded
+    MiMo as text-only:
+    `unsupported media modality image because the loaded runtime is text-only`;
+  - server logs also proved the bundled MiMo warmup path was present:
+    `MiMo-V2 SingleBatch decode graph warmup complete`.
+- Root cause:
+  - chat media override re-ran capability detection on `chat.modelPath`;
+  - for remote proof sessions that path is an opaque `remote://...` URI, so the
+    local MiMo `config.json` text-runtime capability stamp was not available and
+    the attachment override forced media.
+- Fix in source:
+  - remote sessions can now carry optional `capabilityModelPath` when the creator
+    has a real local model directory;
+  - chat IPC uses that path only for capability/reasoning/default detection, not
+    as the API model or remote URL;
+  - the real-ui proof script now passes the launched local model path as
+    `capabilityModelPath`.
+- Verification so far:
+  - `cd panel && npm run typecheck` passed;
+  - `node --check panel/scripts/live-real-ui-model-proof.mjs` passed;
+  - `git diff --check` passed.
+- Next action:
+  - rebuild/install `/Applications/vMLX.app` again with this patch, then rerun
+    the MiMo JANGTQ_2 installed-app image proof.
+
+# 2026-06-11 MiMo remote media forceTextOnly second routing fix
+
+- Additional reproduced source issue:
+  - even after `modelForceTextOnly` is derived from the new capability path,
+    message-history/content assembly still used `chatIsMultimodal || isRemote`;
+  - that means remote proof sessions could still pass image/video content
+    downstream even when the resolved model capability was text-only.
+- Fix:
+  - remote media bypass now requires `isRemote && !modelForceTextOnly`;
+  - same rule applies to tool-returned image/video follow-up content.
+- Verification:
+  - `cd panel && npm run typecheck` passed;
+  - `node --check panel/scripts/live-real-ui-model-proof.mjs` passed;
+  - `git diff --check` passed.
+- Next action:
+  - rebuild/install `/Applications/vMLX.app` one more time and rerun the MiMo
+    JANGTQ_2 installed-app image proof.
+
+# 2026-06-11 MiMo JANGTQ_2 installed-app media honesty proof passed
+
+- Source/proof-script correction:
+  - proof classifier no longer records `vl_image` when the attachment is
+    intentionally stripped by a forceTextOnly gate;
+  - it now records `media_force_text_only_gated` for this case.
+- Installed-app proof:
+  - artifact:
+    `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jangtq2-image-bundled-python-force-text-gated-20260611-proof.json`;
+  - status `pass`;
+  - app: `/Applications/vMLX.app`;
+  - Python: `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`;
+  - model: `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2`.
+- What it proves:
+  - installed app UI path;
+  - bundled Python/runtime path;
+  - real loaded MiMo JANGTQ_2 model;
+  - remote proof session carries `capabilityModelPath`;
+  - UI detects `mimo_v2` from that local capability path;
+  - UI logs `modelForceTextOnly=true`, `chatIsMultimodal=false`;
+  - the media-turn request body has text only and no `image_url`, so the panel
+    no longer forces preserved/unwired MiMo media into a text-only runtime;
+  - bundled runtime loaded native JANGTQ/TurboQuant path with prestacked routed
+    experts and custom kernels;
+  - MiMo single-active decode graph warmup ran;
+  - native mixed-SWA cache, prefix/paged cache, and block-disk L2 telemetry are
+    present.
+- Metrics:
+  - event counts: `stream=63`, `complete=3`, `tool=0`;
+  - live decode samples around `41.3-41.7 tok/s`;
+  - cache after: `206` RAM cached tokens and `206` L2 block tokens on disk.
+- Boundaries:
+  - this is not a MiMo vision-success proof;
+  - these local MiMo bundles still advertise preserved media weights that are
+    runtime text-only, so honest gating is the cleared row here.
