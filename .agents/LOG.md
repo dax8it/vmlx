@@ -15071,3 +15071,126 @@ Next action:
   source and local gateway are green for the required-tool request; tunnel,
   installed app UI, release readiness, signing, notarization, PyPI, updater
   JSON, website, and N2 JANG_1L remain untouched/open.
+
+# 2026-06-11 00:12 PDT MiMo JANG_2L speed/cache root-cause lane selected
+
+- Action plan:
+  inspect the current MiMo V2.5 runtime path around model config detection,
+  JANG/JANGTQ loading, fast-path installation, dtype/upcast behavior, mixed
+  full/SWA cache layout, prefix/L2 writeback, and decode-loop telemetry. Use
+  existing installed-app/server logs and artifacts first; launch a live MiMo
+  run only if needed for a minimal reproduction.
+- User evidence being investigated:
+  installed app launched
+  `/opt/adlab/models/dealignai/OsaurusAI/MiMo-V2.5-JANG_2L` with native
+  mixed full/SWA cache, JANG v2 mmap load, wired limit 115GB for a 112GB
+  model, fast-path counters active, but chat output degraded to malformed text
+  and around `2.0 t/s` / `0.9 pp/s` with long TTFT in the UI screenshot.
+- Boundary:
+  no guessing fixes, no fake parser/media guards, no N2 JANG_1L work, no
+  package/sign/notarize/release action, and no subagent delegation.
+
+# 2026-06-11 00:30 PDT MiMo JANG_2L speed/cache classified open
+
+- Proof artifact:
+  `build/current-mimo-jang2l-speed-cache-root-cause-20260611/SUMMARY.json`
+  is `status=open`.
+- Source/runtime evidence:
+  `build/current-mimo-v25-jang2l-live-cb-cache-text-20260610.json` proves
+  classic JANG_2L native `mixed_swa_kv_v1` cache with paged reuse,
+  `cache_hit_tokens=38`, and `l2_tokens_on_disk=62`. The server log reports
+  full MiMo quantization coverage (`lm_head=True`, `embed_tokens=True`,
+  `qkv=48/48`, `switch_proj=141/141`, `dense_mlp=3/3`) and active affine
+  SwitchGLU fast path.
+- Speed trace:
+  pre-warm trace `build/current-mimo-jang2l-trace-split-v2-20260611.server.log`
+  showed token 1 `model_ms=2.62`, `logits_ms=34124.88`, and 2-token response
+  time `35.52s`. Current SingleBatch warmup trace
+  `build/current-mimo-jang2l-singlebatch-warmup-20260611.server.log` paid a
+  `44.97s` startup warmup and reduced the first real 2-token request to
+  `4.00s`, with token 1 `model_ms=3.10`, `logits_ms=2532.17`, token 2
+  `logits_ms=606.22`.
+- Classification:
+  body decode/cache paths are not the primary current speed bottleneck for
+  classic MiMo JANG_2L. The remaining issue is final logits/lm_head
+  materialization. Do not spend more time on prefix-cache, L2, RotatingKVCache
+  metadata, or SwitchGLU body decode for this speed symptom unless new traces
+  contradict the current evidence.
+- Installed-app parity:
+  current `/Applications/vMLX.app` bundled Python sha256-matches source for
+  `utils/single_batch_generator.py`, `scheduler.py`, `models/mllm.py`, and
+  `utils/jang_loader.py`; it now contains the MiMo warmup path. The older
+  installed-app speed proof reporting `1.9 t/s` predates this rebuild and must
+  be rerun before judging current installed-app speed.
+- Boundary:
+  no code fix was made in this movement because root cause points at an
+  unresolved lm_head/logits optimization and the exact installed speed row is
+  stale. No release DMG, sign, notarize, tag, upload, PyPI, updater JSON,
+  website, or N2 JANG_1L action was performed.
+
+# 2026-06-11 00:34 PDT Eric MiMo evidence escalation
+
+- User instruction:
+  watch spacing and syntax issues directly; check whether speed comes from
+  failure to upcast, quantization, or JANG cache type. If this is really a
+  model-inherent/remake issue, prove exactly what is wrong with the model files
+  so other agents can remake them.
+- Next action:
+  inspect local MiMo artifact files and tensor contracts before making any fix
+  or model-inherent claim.
+
+# 2026-06-11 00:36 PDT Eric UI/API reasoning-auto requirement
+
+- User instruction:
+  add a cross-family UI/API reasoning-control row. UI `auto` reasoning should
+  resolve through model-family kwargs/defaults for MiMo, N2, Gemma, and Qwen;
+  explicit on/off must remain controllable; and reasoning/tool-auto streaming
+  must preserve content deltas, reasoning deltas, function-call argument
+  delta/done events, and final object consistency without leaks.
+- Boundary:
+  this is now on the active fix/proof list, but the immediate current
+  investigation remains MiMo artifact/runtime root cause unless a direct
+  reasoning-control defect is found while inspecting request assembly.
+
+# 2026-06-11 00:44 PDT MiMo artifact contract inspection
+
+- Commands:
+  inspected local headers/configs for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L` and
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` with
+  safetensors `get_slice()` shape/dtype probes, without loading full tensors.
+- Proof artifacts:
+  `build/current-mimo-artifact-contract-inspection-20260611/SUMMARY.json`
+  records raw configs, tokenizer spacing flags, index counts, and tensor
+  headers. `CONCLUSIONS.json` records the remake guidance and no-claim
+  boundaries.
+- Spacing/syntax result:
+  no artifact-level spacing/template delta between JANG_2L and JANGTQ_2:
+  identical template sha256
+  `3134ac101acd29d3ab41297707cc1a85699f5f0acb283fdeb0681e3750998403`,
+  template length `8259`, `clean_up_tokenization_spaces=false`,
+  `split_special_tokens=false`, and no `spaces_between_special_tokens`
+  override.
+- Upcast/dtype result:
+  inspected text hot-path tensors are packed `U32` with `F16` sidecars. Both
+  artifacts have shape-correct q8/group64 `lm_head` with packed
+  `[152576,1024]`, scales `[152576,64]`, and expanded input `4096` matching
+  hidden size `4096`. Current headers do not show a text-core BF16 upcast
+  failure for the speed path.
+- Quant/layout result:
+  classic JANG_2L is a slow affine stacked-expert artifact layout:
+  `format=jang`, profile `JANG_2L_322_D3E16`, `tq_packed=0`,
+  `tq_norms=0`, layer0 qkv packed `[13568,1024]`, size `104.369GB`.
+  JANGTQ_2 is `format=jangtq`, profile `JANGTQ_2`, `tq_packed=141`,
+  `tq_norms=141`, layer0 qkv packed `[13568,512]`, size `78.824GB`.
+- Remake guidance:
+  another machine should remake/prefer MiMo JANGTQ_2-style prestacked
+  TurboQuant routed experts with `tq_packed/tq_norms` for switch_mlp and
+  smaller qkv footprint. Keep the current template/tokenizer spacing and
+  native mixed full/SWA cache metadata. Do not remake just to change cache
+  type; generic TQ-KV is the wrong cache model for MiMo.
+- Boundary:
+  this is not proof that exactness/model quality is inherently bad; that still
+  needs source/dequant/logit comparison or replacement artifact A/B. No code
+  fix, release, sign/notarize, PyPI, updater JSON, website, or N2 JANG_1L
+  action was performed.

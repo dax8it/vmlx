@@ -3217,3 +3217,71 @@ Next implementation target:
   coverage, native MTP, calibrated TurboQuant speed, media, release packaging,
   sign/notarize, PyPI, updater JSON, website, and N2 JANG_1L remain open or
   untouched here.
+
+## MiMo V2.5 JANG_2L Speed/Cache Root Cause - 2026-06-11
+
+- Open row:
+  `build/current-mimo-jang2l-speed-cache-root-cause-20260611/SUMMARY.json` is
+  `status=open`.
+- Proven:
+  classic JANG_2L native mixed full/SWA cache, paged reuse, and block-disk L2
+  are active; full quantization coverage is logged for lm_head, embeddings,
+  qkv, routed SwitchGLU, and dense MLP modules; and affine SwitchGLU body
+  decode is active.
+- Speed root cause:
+  traces show the model body step is only around `2-3 ms`, while final logits/
+  lm_head materialization dominates. Before SingleBatch warmup, token 1
+  `logits_ms=34124.88`; after startup warmup, the first real user token still
+  reports `logits_ms=2532.17` and token 2 `606.22`.
+- Installed-app boundary:
+  the older installed-app MiMo JANG_2L speed proof (`1.9 t/s`, first TTFT
+  `25.74s`) is stale relative to the current rebuilt app. Current installed
+  bundled Python matches source for the MiMo warmup/cache runtime files, so
+  installed speed must be rerun before judging current package behavior.
+- JANGTQ comparison:
+  MiMo JANGTQ_2 remains the current high-speed MiMo path, with prior current
+  source speed around `39 tok/s`.
+- Red/open:
+  classic JANG_2L steady-state high-speed decode is not release-cleared; the
+  remaining optimization target is lm_head/logits materialization, not prefix
+  cache, L2, RotatingKVCache metadata, or SwitchGLU body decode. Media,
+  exactness, full agentic loops, release packaging, sign/notarize, PyPI,
+  updater JSON, website, and N2 JANG_1L remain open or untouched.
+
+## MiMo V2.5 Artifact Contract / Remake Guidance - 2026-06-11
+
+- Proof:
+  `build/current-mimo-artifact-contract-inspection-20260611/SUMMARY.json` and
+  `build/current-mimo-artifact-contract-inspection-20260611/CONCLUSIONS.json`.
+- Spacing/syntax:
+  JANG_2L and JANGTQ_2 share identical chat template hash
+  `3134ac101acd29d3ab41297707cc1a85699f5f0acb283fdeb0681e3750998403`,
+  template length `8259`, `clean_up_tokenization_spaces=false`,
+  `split_special_tokens=false`, and no `spaces_between_special_tokens`
+  override. Current artifact evidence does not support spacing/template
+  corruption between these two MiMo rows.
+- Upcast/dtype:
+  inspected hot text tensors are packed `U32` with `F16` sidecars. Both
+  artifacts have shape-correct q8/group64 `lm_head` with packed
+  `[152576,1024]`, scales `[152576,64]`, expanded input `4096`, hidden size
+  `4096`. Current header evidence does not support a text-core BF16 upcast
+  failure for this speed symptom.
+- Quant/layout:
+  classic JANG_2L: `format=jang`, profile `JANG_2L_322_D3E16`,
+  `tq_packed=0`, `tq_norms=0`, layer0 qkv packed `[13568,1024]`, size
+  `104.369GB`. JANGTQ_2: `format=jangtq`, profile `JANGTQ_2`,
+  `tq_packed=141`, `tq_norms=141`, layer0 qkv packed `[13568,512]`, size
+  `78.824GB`.
+- Remake guidance:
+  for a fast 128GB checkpoint, remake/prefer the JANGTQ_2-style prestacked
+  TurboQuant routed-expert layout with `tq_packed/tq_norms` and smaller qkv
+  footprint. Keep the current tokenizer/template spacing and native
+  `mixed_swa_kv_v1` cache metadata. Do not remake solely to change cache
+  type; generic TurboQuant KV is incompatible with MiMo's rotating/full
+  mixed-cache contract.
+- Red/open:
+  this does not prove exactness/model quality is inherently bad; source/dequant
+  logits or replacement-artifact A/B is still required for that. Current
+  installed-app speed after rebuild, media, audio/video, full agentic loops,
+  release packaging, sign/notarize, PyPI, updater JSON, website, and N2
+  JANG_1L remain open or untouched.
