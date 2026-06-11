@@ -12085,3 +12085,43 @@ Other-agent action:
   the refreshed bundled Python/source, followed by packaged integrity and
   release manifest/gate refresh. No sign/notarize/PyPI/site/download action was
   run in this lane.
+
+# 2026-06-11 continuation PDT N2 JANGTQ2 Responses streaming live proof
+
+- Scope:
+  direct local source-server proof for `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`
+  only. N2 JANG_1L remains off-limits and unclaimed.
+- Command shape:
+  served `n2-pro-jangtq2-stream-tool` on `127.0.0.1:8909` with qwen tool
+  parser, qwen3 reasoning parser, auto tool choice enabled, paged cache,
+  block-disk L2, q4 attention-KV storage-boundary quantization, and
+  `--default-enable-thinking false`.
+- Runtime proof:
+  health reports `format=jangtq`, `weight_format=mxtq`, `profile=JANGTQ2`,
+  `model_type=qwen3_5_moe`, 512 routed experts, JANGTQ VLM fast path, native
+  cache `hybrid_ssm_v1` / `hybrid_ssm_typed`, attention-only live
+  TurboQuantKVCache, SSM companion native/full precision, paged prefix cache,
+  block-disk L2, and MTP honestly dropped/unavailable because the bundle has
+  no MTP tensors.
+- Responses streaming proof:
+  raw SSE artifact
+  `build/current-n2-jangtq2-responses-stream-tool-cache-live-20260611/auto_tool_stream.sse`
+  emitted an empty message item at `output_index=0`, function call item at
+  `output_index=1`, valid `response.function_call_arguments.delta` chunks, and
+  `response.function_call_arguments.done` with exact arguments
+  `{"query": "n2-stream-boundary-742"}`. No raw XML/tool markup leak and no
+  empty `{}` arguments.
+- Tool continuation/no-tool proof:
+  `tool_result_stream.sse` streamed exact visible text `N2_TOOL_OK_742`, no
+  second tool call, final object consistent, and usage reported
+  `cached_tokens=213`, `cache_detail=paged+ssm`. `no_tool_stream.sse` with
+  `tool_choice=none` streamed exact visible text `N2_NO_TOOL_OK` and no
+  function call.
+- Cache proof:
+  final cache stats show `block_disk_cache.disk_writes=3`,
+  `l2_block_tokens_on_disk=287`, `l2_ssm_tokens_on_disk=500`, and
+  `l2_tokens_on_disk=787`.
+- Boundaries:
+  this clears a direct local N2 JANGTQ2 Responses streaming tool/cache slice
+  only. It does not clear N2 audio, N2 JANG_1L, tunnel/deployed raw SSE,
+  full Electron UI matrix, package/sign/notarize, or release readiness.

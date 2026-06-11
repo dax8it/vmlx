@@ -17414,3 +17414,42 @@ Next action:
   requirements. The next blocker is not another parser/cache source contract;
   it is rebuilding the staged packaged app so packaged integrity hash parity can
   pass, then rerunning release manifest/gate.
+
+# 2026-06-11 continuation PDT - N2 JANGTQ2 Responses streaming live proof
+
+- Action:
+  launched current source server for
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` as
+  `n2-pro-jangtq2-stream-tool` on port `8909`; this was not N2 JANG_1L and did
+  not package/sign/notarize.
+- Runtime evidence:
+  `health_before.json` reports JANGTQ2/MXTQ, 512 routed experts, JANGTQ VLM fast
+  path, hybrid SSM cache, attention-only live TurboQuant KV, q4 attention-KV
+  storage-boundary quantization, paged prefix cache, block-disk L2, SSM
+  companion native/full precision, and MTP dropped/unavailable because no MTP
+  tensors exist in the bundle.
+- Raw SSE proof:
+  `auto_tool_stream.sse` produced ordered Responses events with message
+  `output_index=0`, function call `output_index=1`,
+  `response.function_call_arguments.delta`, and
+  `response.function_call_arguments.done` for
+  `{"query": "n2-stream-boundary-742"}`. No `{}` arguments and no raw XML leak.
+- Continuation/no-tool proof:
+  `tool_result_stream.sse` returned exact `N2_TOOL_OK_742` after tool output,
+  with no second tool call and final-object consistency; usage included
+  `cached_tokens=213`, `cache_detail=paged+ssm`.
+  `no_tool_stream.sse` with `tool_choice=none` returned exact `N2_NO_TOOL_OK`
+  and no function call.
+- Cache evidence:
+  `cache_final.json` records `block_disk_cache.disk_writes=3`,
+  `l2_block_tokens_on_disk=287`, `l2_ssm_tokens_on_disk=500`, and
+  `l2_tokens_on_disk=787`.
+- Warning classification:
+  the previous served-name-as-path `Could not load config.json for
+  n2-pro-jangtq2-local` warning did not reproduce in this run. Remaining
+  warnings were expected: quant-shape inference corrected mixed precision,
+  fallback tool schema injection, and tight-memory cache-limit adjustment.
+- Remaining N2 blockers:
+  tunnel/deployed SSE availability, N2 audio, full UI matrix, and N2 JANG_1L
+  remain open. Do not broaden this proof beyond direct local N2 JANGTQ2
+  Responses streaming/tool/cache behavior.

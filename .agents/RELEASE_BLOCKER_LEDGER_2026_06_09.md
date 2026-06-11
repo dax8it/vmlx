@@ -432,6 +432,27 @@ Reporter credit: include GitHub `@Hornsan1` in next release notes/changelog/publ
   advertise a Nex/N2 model, so exact N2 tunnel raw SSE remains a deployment
   availability gap. This capture also used `enable_thinking=false`, so it does
   not clear reasoning-enabled N2 Responses parity.
+- 2026-06-11 N2 JANGTQ2 current-source direct Responses streaming update:
+  `build/current-n2-jangtq2-responses-stream-tool-cache-live-20260611/`
+  is green for direct local source-server Responses streaming on
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2`, served as
+  `n2-pro-jangtq2-stream-tool`. Runtime health proves JANGTQ2/MXTQ, 512 routed
+  experts, JANGTQ VLM fast path, hybrid SSM cache, attention-only live
+  TurboQuant KV, q4 attention-KV storage-boundary quantization, SSM companion
+  native/full precision, paged prefix cache, block-disk L2, and MTP honestly
+  dropped/unavailable because no MTP tensors are present. Raw SSE
+  `auto_tool_stream.sse` proves correct output-index ordering
+  (`message=0`, `function_call=1`), `response.function_call_arguments.delta`,
+  `response.function_call_arguments.done`, exact arguments
+  `{"query": "n2-stream-boundary-742"}`, no `{}` args, and no raw XML leak.
+  `tool_result_stream.sse` proves tool-result continuation with exact
+  `N2_TOOL_OK_742`, no second tool call, final object consistency, and usage
+  `cached_tokens=213`, `cache_detail=paged+ssm`. `no_tool_stream.sse` proves
+  `tool_choice=none` returns exact `N2_NO_TOOL_OK` with no function call.
+  Final cache stats show `block_disk_cache.disk_writes=3`,
+  `l2_block_tokens_on_disk=287`, `l2_ssm_tokens_on_disk=500`, and
+  `l2_tokens_on_disk=787`. This does not clear tunnel/deployed SSE, N2 audio,
+  N2 JANG_1L, full UI matrix, package/sign/notarize, or release readiness.
 - 2026-06-10 Gemma installed-app update:
   `build/current-real-ui-installed-app-gemma4-12b-mxfp4-responses-tools-cache-20260610.json`
   is `status=pass` for the local rebuilt `/Applications/vMLX.app` plus
