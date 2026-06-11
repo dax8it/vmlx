@@ -14183,3 +14183,21 @@ Other-agent action:
 - artifact: `build/current-gemma4-12b-qat-mxfp4-direct-gateway-responses-raw-sse-cache-20260611.json`, `status=pass`. Raw captures/logs under `build/responses-sse-captures-20260611/gemma-12b-mxfp4-gateway/`.
 - proven: current source server plus real panel ApiGateway proxy, `enable_thinking=true`, required `record_fact`, complete reasoning output item lifecycle on direct and gateway, function-call argument delta/done on both, valid output indices `message=0`, `reasoning=1`, `function_call=2`, exact args `{\"value\": \"blue-cat\"}`, final response consistency, native Gemma `mixed_swa_kv_v1` cache, stored prefix q4 limited to full-attention KV while preserving rotating metadata, `cache_hit_tokens=162`, `cache_hit_requests=1`, `l2_block_tokens_on_disk=162`, and `disk_writes=3`.
 - boundary: source/gateway only; no public tunnel, installed app, media, signed/notarized package, N2, or MiMo claim.
+
+## CODEX
+- now: continuing the same release-blocker reduction with Gemma4 12B QAT MXFP4, but moving beyond required-tool-only proof.
+- next proof target: direct source plus real panel ApiGateway `/v1/responses` streaming for no-tool visible content deltas and auto-tool behavior with reasoning enabled, final-object consistency, parser leak checks, and cache reuse telemetry.
+- reason: the existing MXFP4 artifact proves required-tool reasoning/function-call deltas and cache, but it intentionally has no visible content deltas because `tool_choice=required`; UI/agent harness release readiness also needs no-tool/auto-tool streaming behavior.
+- boundary: source/gateway only; no public tunnel, installed app, media, release/sign/notarize/PyPI/site/updater action, N2, or MiMo claim.
+
+## CODEX
+- now: first Gemma4 12B QAT MXFP4 no-tool content attempt classified red, not committed as a release proof.
+- finding: with `enable_thinking=true`, `tool_choice=none`, and `max_output_tokens=80`, direct/gateway raw SSE had complete reasoning lifecycle and valid output indices but `content_delta_count=0`; the final response was `status=incomplete` with empty visible text and an engine warning that the response produced reasoning only and hit `max_output_tokens`.
+- interpretation: this is a real UI/API behavior boundary for reasoning-on no-tool turns under too-small output budgets, not a parser/content-delta corruption proof. Next action is rerun with a larger visible-output budget before deciding whether source behavior is broken.
+- boundary: no fake fix, no release claim, no installed-app/public-tunnel/media/N2/MiMo claim.
+
+## CODEX
+- now: Gemma4 12B QAT MXFP4 content/no-tool plus auto-tool source/gateway proof is green after rerun with no-tool `max_output_tokens=256`.
+- artifact: `build/current-gemma4-12b-qat-mxfp4-content-auto-direct-gateway-responses-cache-20260611.json`, `status=pass`. Green raw captures/logs under `build/responses-sse-captures-20260611/gemma-12b-mxfp4-content-auto-gateway-v3/`; the low-budget red boundary remains under `build/responses-sse-captures-20260611/gemma-12b-mxfp4-content-auto-gateway/`.
+- proven: current source server plus real panel ApiGateway proxy, no-tool visible streaming with `response.output_text.delta` on direct and gateway, exact reconstructed content `CONTENT_OK zebra-17`, no function call emitted under `tool_choice=none`, auto-tool emitted `record_fact` with function-call argument delta/done on direct and gateway, exact args `{\"value\": \"auto-green-dog\"}`, complete reasoning lifecycle, valid output indices, final response consistency, no raw XML/tool markup leak, native Gemma `mixed_swa_kv_v1`, `cache_hit_tokens=181`, `cache_hit_requests=2`, `l2_block_tokens_on_disk=181`, and `disk_writes=4`.
+- boundary: source/gateway only; no public tunnel, installed app UI click-through, media, signed/notarized package, N2, or MiMo claim.
