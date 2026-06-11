@@ -15712,6 +15712,15 @@ Next action:
 - No release/signing/PyPI/updater action taken. MiMo exactness/media/speed
   blockers remain open.
 
+# 2026-06-11 01:14 PDT switching to Responses/Qwen API blocker
+
+- Pushed MiMo parser/thinking fix to branch and main as `8c6e18502`.
+- Continuing with the user-priority API/tool blocker: Qwen-style XML tool calls,
+  empty arguments, preamble buffering, reasoning/content/function-call SSE
+  deltas, final object consistency, and gateway/tunnel parity.
+- First step is source/test/artifact inspection; no trust in the proposed
+  assessment without checking current runtime code.
+
 # 2026-06-11 01:32 PDT Responses empty-args/output-index source proof
 
 - Source check:
@@ -15813,3 +15822,31 @@ Next action:
   is source-vs-quant if source endpoint becomes available, or artifact/logit/
   quant-contract diagnosis/rebuild for JANGTQ2. Keep MiMo media text-only until
   real media runtime E2E passes.
+
+# 2026-06-11 01:46 PDT Responses/Qwen proof refresh
+
+- Re-inspected current parser/server paths for Qwen/XML empty-arguments,
+  preamble buffering, Responses finalization, and output indexes.
+- Current source already drops missing required tool args instead of emitting
+  `arguments: {}`. Optional/no-arg tools remain legal; do not reject them
+  globally and do not invent arguments from nearby prose.
+- Current artifact
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
+  is pass for direct/gateway/tunnel, valid indexes, reasoning enabled,
+  authoritative args, expected model, and gateway argument passthrough.
+- Fresh verification passed: raw-SSE contract/Qwen35 capture/required-arg/XML
+  parser set passed 44 tests; selected Responses output-index guard passed.
+- No source patch in this movement. Keep deployed tunnel recapture on the
+  release evidence list after any backend rebuild.
+
+# 2026-06-11 01:52 PDT checklist refresh after MiMo parser fix
+
+- Ran the full objective checklist to
+  `build/current-full-release-objective-checklist-after-mimo-parser-qwen-proof-20260611.json`.
+- It remains open with `failed_count=49` and `release_ready=false`.
+- Main current blockers remain prepackage/release integrity, real UI full model
+  matrix, N2 JANG_1L-dominated clearance, MiMo exactness/speed/media, and older
+  Step/LFM/Nemotron rows.
+- MiMo JANGTQ2 is still classified as literal-copy failure before parser/JSON
+  repair and likely artifact/quantization work unless source-vs-quant proves a
+  runtime decode bug.

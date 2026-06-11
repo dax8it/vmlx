@@ -9890,6 +9890,24 @@ Other-agent action:
   real media runtime E2E remain open. This fix only closes the parser/thinking
   conflation found while investigating the MiMo UI launch evidence.
 
+# 2026-06-11 01:14 PDT next blocker: Responses/Qwen tool streaming
+
+- Movement:
+  committed and pushed `8c6e18502 Keep MiMo reasoning parser when thinking is
+  disabled` to both `codex/pr-intake-manifest` and `main`.
+- Current repo state:
+  only known unrelated dirty proof JSON remains:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`.
+- Selected next blocker:
+  Qwen/Responses API tool-call usability for opencode and harnesses:
+  empty-args fail-closed behavior, preamble plus tool-call buffering, content
+  delta versus function-call delta ordering, reasoning separation, final object
+  consistency, output indexes, required/auto/no-tool modes, and gateway/tunnel
+  raw SSE parity.
+- Current action:
+  inspect current source/tests/artifacts before changing code. Do not assume the
+  reported empty-argument root cause is complete or correct.
+
 # 2026-06-11 01:32 PDT Responses empty-args/output-index source proof
 
 - Checked:
@@ -10002,3 +10020,53 @@ Other-agent action:
   available locally. MiMo JANGTQ2 exactness remains release-blocking; do not
   parser-repair these wrong literal values. MiMo JANG_2L required-tool quality
   and speed remain open.
+
+# 2026-06-11 01:46 PDT Responses/Qwen proof refresh
+
+- Source inspection:
+  `xml_function` and `qwen` parsers require schema satisfaction for required
+  arguments. The server also filters parsed calls against the request's exposed
+  tools and drops missing/empty required args before Responses finalization.
+- Current raw-SSE artifact:
+  `build/current-responses-raw-sse-parity-qwen35-direct-gateway-tunnel-after-public-recapture-20260610.json`
+  is `status=pass`. It has direct, gateway, and tunnel captures present; all
+  present surfaces preserve authoritative arguments, match expected function
+  name/model/args, keep reasoning enabled, report valid output item indices,
+  and pass the local empty-XML fail-closed and output-index guards.
+- Fresh local verification:
+  `.venv/bin/python -m pytest -q tests/test_responses_raw_sse_parity_contract.py tests/test_qwen35_responses_raw_sse_capture.py tests/test_tool_parser_required_args_fail_closed.py tests/test_xml_function_tool_parser.py::TestXMLFunctionToolParser::test_empty_function_with_required_schema_fails_closed`
+  passed 44 tests.
+  `.venv/bin/python -m pytest -q tests/test_server.py -k 'streaming_responses_tool_call_uses_next_output_index_without_text or reasoning_item_advances_function_call_output_index'`
+  selected and passed the Responses output-index source guard.
+- Classification:
+  no new source patch was needed for the reported empty-args/output-index shape
+  in this pass. For current source, missing required args fail closed and
+  function_call output indexes advance after message/reasoning items. Do not
+  synthesize `cmd` from preamble text and do not relax the required-arg guard.
+- Remaining open:
+  this proof does not cover every parser family, every Qwen model variant, or
+  future deployed tunnel freshness. Keep API/gateway raw-SSE parity on the
+  release checklist until a current deployed endpoint is recaptured after any
+  backend rebuild.
+
+# 2026-06-11 01:52 PDT checklist refresh after MiMo parser fix
+
+- Command:
+  `.venv/bin/python tests/cross_matrix/run_full_release_objective_checklist.py --out build/current-full-release-objective-checklist-after-mimo-parser-qwen-proof-20260611.json`
+- Result:
+  checklist remains `status=open`, `failed_count=49`, `release_ready=false`.
+  The script exits nonzero because the checklist is still open.
+- Current major red rows:
+  prepackage/release/package integrity, real UI full model matrix, N2 release
+  clearance dominated by the off-limits JANG_1L row, MiMo local release
+  clearance, MiMo decode speed, MiMo JANGTQ2 artifact exactness, MiMo
+  JANGTQ2 media semantics, and older Step/LFM/Nemotron rows.
+- MiMo classifier state:
+  `mimo_artifact_exactness` remains open with classification
+  `jangtq2_plain_literal_copy_fails_before_parser_or_json_repair`.
+  The checklist says current JANGTQ2 fails plain/JSON/tool literal exactness
+  before parser or JSON repair and requires a less lossy artifact/reupload
+  unless source-vs-quant proves a runtime decode bug.
+- Boundary:
+  the MiMo parser/thinking UI fix is real but does not clear MiMo exactness,
+  media, speed, N2 JANG_1L, prepackage, or release readiness.
