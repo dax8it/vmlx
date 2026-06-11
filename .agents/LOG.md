@@ -15687,3 +15687,84 @@ Next action:
   no new source patch was needed in this pass. Live same-model direct/gateway/
   tunnel raw SSE capture is still open and must be run against the actual model
   endpoint before claiming the deployed Responses issue is fully closed.
+
+# 2026-06-11 01:45 PDT continuation objective re-anchored
+
+- Request carried forward:
+  continue toward a checkpoint-ready runtime by fixing/proving real blockers in
+  efficient phases. Avoid broad test-suite churn, recursive/subagent workflows,
+  and fake parser/cache/media fixes.
+- Active priorities:
+  Nex/N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP/QAT, Qwen/Responses,
+  VL/video/audio truth, cache reuse/L2/TurboQuant/native mixed caches, tool and
+  reasoning parser families, content/reasoning/function-call delta streaming,
+  gateway/API parity, and UI/app capability truth.
+- Boundaries:
+  N2 JANG_1L remains off-limits in this lane; release/sign/notarize/PyPI/
+  updater/site publishing remains locked unless Eric explicitly unlocks it in
+  the current turn. Work directly; no subagents.
+- Next action:
+  use the latest objective checklist plus current artifacts to pick one
+  high-impact unproven row, then patch or prove the actual runtime/API/UI
+  behavior instead of refreshing stale pointers.
+
+# 2026-06-11 01:51 PDT MiMo JANGTQ2 live quant exactness/cache probe
+
+- Selected blocker:
+  current checklist points to MiMo exactness/media/speed as the next allowed
+  user-priority red area. N2 remaining release row is dominated by JANG_1L,
+  which stays off-limits in this lane.
+- Evidence refresh:
+  `build/current-mimo-v25-jangtq2-source-vs-quant-first-divergence-preflight-after-gemma-gate-20260611.json`
+  says source and quant endpoints are both down. Local source path is not
+  mounted; local quant artifact exists at
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` (~79G).
+- Current direct action:
+  launch source-tree vmlx-engine against the local JANGTQ2 quant artifact and
+  manually probe exactness/cache/tool/API surfaces. This avoids more harness
+  churn and gives current live behavior for the actual checkpoint candidate.
+- No-claim boundary:
+  this cannot clear source-vs-quant, media semantics, or release readiness by
+  itself. It can only prove or falsify current quant runtime exactness/cache/API
+  behavior and point to either source bug or artifact/runtime decode quality.
+
+# 2026-06-11 02:28 PDT MiMo live quant findings and shutdown fix
+
+- Live JANGTQ2 launch:
+  source-tree server loaded local MiMo JANGTQ2 on `127.0.0.1:8897` in ~10s.
+  Health/capabilities confirmed `turboquant_codebook`, `JANGTQ_2`, native MiMo
+  mixed-SWA cache, block-disk L2, generic TQ-KV disabled, text-only media
+  runtime, and preserved-unwired vision/image/video/audio.
+- Live JANGTQ2 exactness:
+  Chat and Responses reproduced literal mutation without parser/JSON repair:
+  JSON `blue-cat` became `blue`; required/auto tool arguments became
+  `blue cat`; tool-result continuation became `STORED blue cat`. Function-call
+  SSE shape was otherwise valid: message item index 0, function_call index 1,
+  argument delta/done matching final object, no visible XML leak.
+- Cache/media:
+  L2 block writes increased; deferred MiMo mixed-SWA store worked. A short
+  repeated prompt found a 192-token paged hit but correctly skipped execution as
+  `short_mixed_swa_paged_hit` below the 256-token threshold. Image input was
+  rejected with HTTP 400 unsupported media for text-only runtime.
+- JANG_2L comparison:
+  local JANG_2L preserved the same JSON `blue-cat` sentinel, but required tool
+  mode failed closed with `tool_calls_required`. This supports the current
+  blocker classification: JANGTQ2 exactness is artifact/quant/runtime decode
+  quality; JANG_2L still has slow/weak required-tool behavior.
+- Runtime fix:
+  normal Stop/Ctrl-C after MiMo JANG_2L exposed a fatal Python 3.13 GIL crash in
+  late `PagedCacheManager.clear()` through `EngineCore.close()` deep reset.
+  Patched `EngineCore.close(deep_reset=True)` and `BatchedEngine.stop()` now
+  calls `close(deep_reset=False)` after async stop has flushed disk caches, so
+  app shutdown avoids a second aggressive cache rebuild during interpreter
+  finalization.
+- Verification:
+  `py_compile` passed for changed files. Relaunched MiMo JANG_2L after the
+  patch, confirmed health, then stopped it; shutdown exited code 0 with block
+  disk and scheduler step executor shutdown, `BatchedEngine stopped`, and no
+  fatal GIL crash.
+- Other-agent note:
+  do not chase MiMo JANGTQ2 exactness in XML/JSON parser code. Next useful work
+  is source-vs-quant if source endpoint becomes available, or artifact/logit/
+  quant-contract diagnosis/rebuild for JANGTQ2. Keep MiMo media text-only until
+  real media runtime E2E passes.

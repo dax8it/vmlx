@@ -9813,3 +9813,92 @@ Other-agent action:
   this is local source/no-heavy proof only. Same-model live direct/gateway/tunnel
   raw SSE capture for the reporter's deployed Qwen/Qwen-coder path is still the
   remaining release evidence item; do not claim it from these tests alone.
+
+# 2026-06-11 01:45 PDT continuation objective re-anchored
+
+- User objective carried forward:
+  keep reducing real runtime/API/model blockers for a checkpoint release without
+  drifting into broad test-suite churn, recursive/subagent behavior, or release
+  publishing. Prioritize Nex/N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP,
+  Qwen/Responses, VL/video/audio truth, cache reuse/TurboQuant/JANG/JANGTQ/MXFP,
+  reasoning/tool parsers, content/reasoning/function-call deltas, gateway/API
+  parity, and live E2E evidence.
+- Current hard boundaries:
+  stay in `/Users/eric/mlx/vllm-mlx-finite-launch-guard`; do not use
+  `/Users/eric/vmlx`; do not spawn subagents; do not work N2 JANG_1L; do not
+  sign/notarize/PyPI/download-update/release unless Eric explicitly unlocks
+  that current-turn action; do not fake fixes by synthesizing tool args,
+  hiding parser failures, or claiming metadata-only media.
+- Current next movement:
+  inspect the latest objective checklist and pick the next high-impact
+  user-priority blocker with direct source/live evidence. Prefer a runtime or
+  UI/API capability fix/proof over broad harness work.
+
+# 2026-06-11 01:51 PDT MiMo JANGTQ2 live quant exactness/cache probe
+
+- Selected blocker:
+  `mimo_artifact_exactness` / `mimo_local_release_clearance` from
+  `build/current-full-release-objective-checklist-after-qwen35-auto-tool-cache-proof-20260611.json`.
+- Evidence refresh:
+  previous source-vs-quant preflight is blocked because source endpoint
+  `erics-m5-max2.local:8126` and quant endpoint `127.0.0.1:8897` are both
+  down. The local source path `/Volumes/EricsLLMDrive/jangq-ai/sources/MiMo-V2.5`
+  is not mounted here. The local quant artifact
+  `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` exists and is
+  about 79G.
+- Current action:
+  start a direct source-tree vmlx-engine server for MiMo JANGTQ2 on 127.0.0.1
+  and manually probe Responses/Chat exactness, required/auto/no-tool behavior,
+  tool-result continuation, streaming deltas, prefix/L2 cache telemetry, and
+  raw XML/reasoning leaks.
+- Boundary:
+  this is quant runtime proof, not source-vs-quant proof. Do not repair wrong
+  literals in parser/JSON; if the live quant model mutates `blue-cat` style
+  sentinels again, classify as artifact/runtime decode quality unless a source
+  bug is identified.
+
+# 2026-06-11 02:28 PDT MiMo live quant findings and shutdown fix
+
+- Live JANGTQ2 proof:
+  launched `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANGTQ_2` on
+  `127.0.0.1:8897`. Health/capabilities showed `turboquant_codebook`,
+  `JANGTQ_2`, 423 routed-expert TQ targets, native MiMo mixed-SWA cache,
+  block-disk L2 enabled, generic TQ-KV disabled, tools enabled, reasoning
+  unsupported, and media runtime `text` with vision/image/video/audio
+  `preserved_unwired`.
+- Live JANGTQ2 behavior:
+  Responses streaming and Chat nonstream both mutated exact JSON
+  `blue-cat` -> `blue`; required and auto tool calls produced valid
+  function_call SSE shape and output indexes but mutated tool args
+  `blue-cat` -> `blue cat`; no-tool mode preserved `NO_TOOL_BLUE_CAT`; tool
+  result continuation mutated `STORED blue-cat` -> `STORED blue cat`.
+- Cache/media proof:
+  MiMo mixed-SWA deferred cache wrote L2 blocks; short repeat produced a
+  candidate 192-token paged hit but was correctly rejected as
+  `short_mixed_swa_paged_hit` below the 256-token execution threshold. Image
+  request returned HTTP 400 unsupported media because loaded runtime is
+  text-only.
+- JANG_2L comparison:
+  launched `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`. Chat
+  exact JSON preserved `blue-cat`, while required tool failed closed with
+  `tool_calls_required` and no malformed call. This strengthens the
+  classification that JANGTQ2 literal mutation is artifact/quant/runtime decode
+  quality, not shared JSON/parser mutation.
+- Source fix:
+  discovered a real shutdown crash on MiMo JANG_2L stop: Python 3.13 fatal GIL
+  error in `PagedCacheManager.clear()` through `BatchedEngine.stop() ->
+  EngineCore.close() -> scheduler.deep_reset()`. Patched `EngineCore.close()` to
+  accept `deep_reset=False` and changed `BatchedEngine.stop()` to skip the
+  second aggressive cache rebuild after the async engine has already stopped
+  and flushed disk caches.
+- Verification:
+  `.venv/bin/python -m py_compile vmlx_engine/engine_core.py vmlx_engine/engine/batched.py`
+  passed. Relaunched MiMo JANG_2L after the patch, confirmed `/health`, then
+  Ctrl-C shutdown exited code 0 with block disk cache shutdown, step executor
+  shutdown, `BatchedEngine stopped`, caffeinate terminated, and no fatal GIL
+  crash.
+- Remaining open:
+  source-vs-quant remains blocked because the source path/endpoint is not
+  available locally. MiMo JANGTQ2 exactness remains release-blocking; do not
+  parser-repair these wrong literal values. MiMo JANG_2L required-tool quality
+  and speed remain open.
