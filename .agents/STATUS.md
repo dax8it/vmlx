@@ -14245,3 +14245,29 @@ Other-agent action:
 - tool semantics: first tool created `real_ui_tool_probe_1.txt` with `REAL_UI_LIVE_TOOL_ONE`; second turn read it and created `real_ui_tool_probe_2.txt` with `REAL_UI_LIVE_TOOL_TWO`.
 - cache proof from UI run: `cacheHitTokens=11855`, scheduler `cache_hit_tokens=11855`, L2 block tokens on disk `3809`, disk writes `63`, disk hits `405`, native Gemma `mixed_swa_kv_v1`; storage quantization is q4 at the full-attention KV storage boundary while preserving rotating-window metadata.
 - boundary: Electron dev app only; not installed-app parity, not public tunnel, not media, not release/sign/notarize/PyPI/site/updater, not N2/MiMo.
+
+## CODEX
+- now: selecting Gemma4 26B QAT JANG_4M Electron dev-app Responses auto-tool/cache proof as the next larger 128GB-relevant Gemma row.
+- target: run the real UI proof harness with `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`, `wireApi=responses`, `enable_thinking=true`, built-in tools enabled, Gemma4 tool/reasoning parsers, server cache controls, and the two-turn `run_command` tool loop.
+- reason: 12B JANG_4M and MXFP4 now have real UI auto-tool/cache proof; 26B JANG_4M has prior smoke/media-adjacent evidence but needs current source Electron UI Responses auto-tool/cache proof in this lane.
+- boundary: Electron dev app only; no installed-app parity, public tunnel, media/VL/audio/video, release/sign/notarize/PyPI/site/updater action, N2, or MiMo claim. The current harness proves thinking-on behavior but not a separate `reasoning_effort=high` mode.
+
+## CODEX
+- now: first Gemma4 26B QAT JANG_4M Electron dev-app Responses auto-tool/cache proof is red and classified before any fix.
+- artifact: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-20260611-proof.json`, `status=fail`; screenshot: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-20260611-chat.png`.
+- finding: parser/API/UI/cache wiring is mostly working (`eventCounts.tool=1655`, `toolResults=13`, files were created, final visible text includes `REAL_UI_LIVE_TOOL_TWO`, no raw parser leak, cache/L2 telemetry present), but the strict `long_tool_loop` surface failed because there was one named `run_command` error. The first model-emitted command was wrapped as a quoted shell literal: `$ 'echo "REAL_UI_LIVE_TOOL_ONE" > real_ui_tool_probe_1.txt'`, which `/bin/sh` correctly rejected with exit 127. Later retries succeeded.
+- hypothesis: the UI `run_command.command` schema description is too thin for this Gemma 26B reasoning-on tool loop; it says only `Shell command to execute (runs via /bin/sh)` and does not tell the model not to wrap the whole command in quotes. Next narrow fix is schema-description guidance only, not command repair or silent argument rewriting.
+
+## CODEX
+- now: schema-description guidance hypothesis was tested and did not fix Gemma4 26B JANG_4M reasoning-on tool behavior; source change was reverted rather than committed.
+- artifact: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-after-run-command-schema-guidance-20260611-proof.json`, `status=fail`; screenshot: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-after-run-command-schema-guidance-20260611-chat.png`.
+- finding: after schema guidance, the model still emitted the same invalid outer-quoted command `$ 'echo "REAL_UI_LIVE_TOOL_ONE" > real_ui_tool_probe_1.txt'`; only one `run_command` result succeeded, only `real_ui_tool_probe_2.txt` existed, and `long_tool_loop` remained absent. This is not a proven fix.
+- next diagnostic: run a Gemma4 26B JANG_4M `enable_thinking=false` UI auto-tool/cache control to isolate whether the invalid command/tool loop is tied to reasoning-on behavior. This is a diagnostic control only, not a recommendation to disable reasoning for release.
+
+## CODEX
+- now: Gemma4 26B QAT JANG_4M Electron dev-app Responses auto-tool/cache thinking-off control is green, isolating the red default run to reasoning-on tool-loop behavior.
+- artifact: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-thinking-off-control-20260611-proof.json`, `status=pass`; screenshot: `docs/internal/agent-notes/current-real-ui-live-model-gemma4-26b-qat-jang4m-responses-auto-tools-cache-thinking-off-control-20260611-chat.png`.
+- proven in the control: real loaded 26B QAT JANG_4M model, Electron dev app UI, `wireApi=responses`, built-in tools enabled, Gemma4 tool/reasoning parsers configured, `enable_thinking=false`, two `run_command` tool results, zero `run_command` tool errors, `long_tool_loop`, `tool_l2_cache_integrated`, Responses delta streaming, cache detail usage, settings persistence, no raw parser/reasoning tag leak, visible assistant turns complete, and server cache controls.
+- control metrics: `eventCounts.stream=43`, `eventCounts.tool=92`, `reasoningDone=0`, `complete=2`, `persistedToolCount=92`, `toolResults=2`, `toolErrors=0`, `cacheHitTokens=3726`, scheduler `cache_hit_tokens=3584`, L2 block tokens on disk `3726`, disk writes `61`, disk hits `54`, native Gemma `mixed_swa_kv_v1`.
+- classification: 26B JANG_4M app/API/cache/tool execution path is usable in thinking-off mode, but the release-critical thinking-on auto-tool loop remains red because the model emits an invalid outer-quoted shell command under reasoning. Do not claim 26B JANG_4M reasoning-on auto-tool release clearance.
+- verification: `npm run typecheck` in `panel` passed; `git diff --check` passed before artifact staging. No source fix is included because the attempted schema-description fix did not clear the failure.
