@@ -6543,3 +6543,57 @@ Other-agent action:
   - This clears the strict N2 JANGTQ2 loopback tool-loop blocker from this
     lane, but unrelated N2 audio/installed-app/release, MiMo, Gemma, and global
     release rows remain open.
+
+# 2026-06-10 continuation - parser spacing and special-character audit
+
+- Eric reinforced that parser/API work must deep-check spacing, special
+  characters, Unicode, XML entities, JSON escaping, path characters, newlines,
+  raw delimiters, content/reasoning/tool deltas, and final-object consistency.
+- Current movement: inspect current parser and Responses/Chat streaming code
+  for remaining places that still trim, escape, drop, duplicate, or mismatch
+  function-call arguments after the XML-family preservation fix.
+- Boundaries:
+  - do not assume the previous parser fix covers all dialects;
+  - do not synthesize missing tool arguments or infer values from visible
+    preambles;
+  - no release/sign/notarize/PyPI/updater/site work;
+  - no N2 JANG_1L work;
+  - no subagents or recursive delegation.
+- Next action: targeted source inspection and focused reproduction for any
+  concrete parser/API family still mishandling spaces, entities, Unicode,
+  newline payloads, or streaming/final argument equality.
+
+# 2026-06-10 compact XML fallback spacing/entity fix
+
+- Reproduced a remaining parser gap outside the family parsers:
+  `vmlx_engine.api.tool_calling.parse_tool_calls()` compact
+  Laguna/Poolside-style `<arg_key>/<arg_value>` fallback stripped leading and
+  trailing spaces from string payloads and left XML entities escaped.
+- Reproduction:
+  `.venv/bin/python -m pytest -q tests/test_reasoning_tool_interaction.py::TestGenericToolCallParsing::test_generic_parser_preserves_compact_xml_arg_value_spacing_and_entities`
+  failed before the fix because `cmd` became
+  `cd '/tmp/a b' &amp;&amp; printf '&lt;x&gt;&amp;y'\nnext` instead of the
+  raw spaced/unescaped command payload.
+- Source fix:
+  `vmlx_engine/api/tool_calling.py` now captures `<arg_value>` without regex
+  whitespace trimming and routes the value through `_coerce_xml_tool_value`,
+  preserving string spacing/newlines while still parsing JSON-looking payloads
+  and XML-unescaping entities.
+- Verification:
+  - new compact XML fallback test passed `1/1`;
+  - `.venv/bin/python -m py_compile vmlx_engine/api/tool_calling.py tests/test_reasoning_tool_interaction.py`
+    passed;
+  - `.venv/bin/python -m pytest -q tests/test_reasoning_tool_interaction.py`
+    passed `75/75`;
+  - focused empty-args/Responses streaming guard set passed `14/14`;
+  - `git diff --check` passed.
+- Proven:
+  - Generic API fallback compact XML values now preserve leading/trailing
+    spaces, path spaces, special shell characters, XML entities, Unicode-ready
+    JSON serialization, and newline payloads.
+  - Required-argument empty tool-call guards and Responses
+    `function_call_arguments.delta`/`.done`/final item preservation still pass.
+- Not proven:
+  - No new live same-model gateway/tunnel recapture was run in this movement.
+  - This does not clear MiMo speed/exactness/media, Gemma media/installed-app,
+    global release, or N2 JANG_1L rows.
