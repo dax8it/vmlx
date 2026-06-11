@@ -10263,3 +10263,96 @@ Other-agent action:
 - Boundary:
   do not claim MiMo JANG_2L high-speed release clearance; do not claim MiMo
   JANGTQ_2 exactness/media release clearance from its speed.
+
+# 2026-06-11 01:02 PDT continuation selected cross-family API/tool contract
+
+- Current-turn objective:
+  continue reducing real blockers toward checkpoint release quality, avoid
+  broad suite churn and recursive/subagent behavior, and keep every movement
+  written down.
+- Current repo state:
+  branch is synced with origin after `c92e5a9ac`; only known unrelated dirty
+  file remains:
+  `build/current-panel-settings-contract-proof-20260601-cache-ui-storage-quant.json`.
+- Checklist inspected:
+  latest `build/current-full-release-objective-checklist-after-mimo-parser-qwen-proof-20260611.json`
+  remains `status=open`, `failed_count=49`, `release_ready=false`. Major red
+  surfaces include API/cache contracts, API endpoint surface, tool/parser
+  contract, UI settings parser/cache contract, MiMo, Gemma, Qwen proof rows,
+  and release packaging/UI gates.
+- Selected blocker:
+  cross-family API/tool parser contract because it directly impacts
+  opencode/Codex-style harness usability across Qwen/Qwen-coder, Gemma4, MiMo,
+  MiniMax, DeepSeek/R1, XML-function, gateway/tunnel, and UI tool loop control.
+- Current action:
+  inspect current tool contract source/tests/artifacts for an actual source bug
+  or missing runtime guard. Patch only a concrete issue; do not synthesize tool
+  args, relax required schemas, or write broad new harnesses.
+- Boundaries:
+  no N2 JANG_1L, no release/signing/notarization/PyPI/download updates, no
+  metadata-only media claims, and no MiMo exactness parser/string masking.
+
+# 2026-06-11 01:04 PDT tool contract classification and Gemma lane switch
+
+- Checked:
+  `build/current-tool-call-contract-after-cross-model-loop-metrics-20260609.json`.
+- Result:
+  tool/parser source contract is `status=open`, not `fail`. All source checks
+  are green: parser residue rejection, schema-valid DSML preservation, Qwen
+  issue #192 XML/plain line schema repairs, tool-choice-none no fallback,
+  family parser matrix, raw dialect leak metrics, and panel max-tool-iteration
+  loop cap. The only open proof gap is
+  `live_default_cache_dsv4_tool_loop`.
+- Classification:
+  no source patch is justified in the cross-family parser/UI loop lane right
+  now without moving into the DSV4 live default-cache lane. Keep this as an
+  open live-proof gap, not a fake parser fix.
+- Next selected blocker:
+  Gemma JANG/MXFP/QAT honest modality detection and UI/API consistency,
+  especially preventing metadata-only audio advertisement and proving video/VL
+  only from real runtime paths.
+- Current action:
+  inspect Gemma model-config/media detection source and current Gemma artifacts
+  for a concrete capability-gating bug.
+
+# 2026-06-11 01:05 PDT Gemma modality gate root-cause pass
+
+- Current action:
+  compare Python model-config registry, panel model-config registry, and current
+  Gemma media artifacts for whether audio is advertised from real model weights
+  or only from config/runtime availability.
+- Evidence so far:
+  panel has a stricter Gemma audio helper that looks for indexed
+  `audio_tower.*` weights before reporting audio runtime availability. Python
+  registry has a Gemma4 unified runtime branch that appears to set
+  `audio_runtime_available=true` when unified runtime is present, which may
+  over-advertise audio for projection-only/text+vision bundles.
+- Boundary:
+  do not gate or ungate media from metadata alone. Patch only if the Python
+  source really advertises audio without weight-backed audio runtime evidence.
+
+# 2026-06-11 01:08 PDT Gemma registry audio gate fixed and verified
+
+- Root cause:
+  Python `vmlx_engine/model_config_registry.py` advertised
+  `audio_runtime_available=true` for Gemma4 unified whenever the source unified
+  runtime was importable. That was broader than the server runtime modality
+  gate and the panel model registry, both of which require indexed
+  `audio_tower.*` weights for Gemma audio.
+- Source fix:
+  added a small indexed-weight helper and changed the Gemma4 unified runtime
+  branch to set `audio_runtime_available` only when
+  `model.safetensors.index.json` contains `audio_tower.*` weights. VL runtime
+  availability remains tied to the source unified runtime branch.
+- Tests updated:
+  `tests/test_engine_audit.py` now covers the projection-only
+  `embed_audio.*` case as audio unavailable and an `audio_tower.*` case as
+  audio available.
+- Proof:
+  `.venv/bin/python -m py_compile vmlx_engine/model_config_registry.py` passed.
+  Focused Python audit selection passed: 6 selected / 574 deselected.
+  Panel registry parity passed: `cd panel && npm test --
+  tests/model-config-registry.test.ts`, 72 tests passed.
+- Release status:
+  this reduces an honest Gemma media capability bug but does not clear Gemma
+  media live proof, installed-app parity, or signing/notarization gates.

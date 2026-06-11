@@ -15937,3 +15937,49 @@ Next action:
   exactness but slow lm_head/logits path (JANG_2L).
 - No source patch made because current evidence does not identify an upcast,
   cache, RotatingKVCache, or SwitchGLU runtime bug.
+
+# 2026-06-11 01:02 PDT - selected cross-family API/tool contract
+
+- Read current checklist; latest remains open with 49 failed groups.
+- Selected cross-family API/tool contract as the next source-facing blocker
+  because it affects all agent harnesses and current user priority around
+  content/reasoning/function-call deltas, parser selection, and tool loops.
+- Will inspect source/artifacts first and patch only a concrete runtime/API/UI
+  issue; no release actions and no N2 JANG_1L.
+
+# 2026-06-11 01:04 PDT - tool contract source green, moving to Gemma media gate
+
+- Read current tool-call contract artifact. Source/parser/UI loop checks are
+  green; status is open only because DSV4 live default-cache tool-loop proof is
+  still open.
+- No parser/UI loop source patch made from that lane.
+- Next movement is Gemma modality detection and honest media gating, looking
+  for a concrete source/UI/API bug around audio/video/VL capabilities.
+
+# 2026-06-11 01:05 PDT - Gemma modality gate root-cause pass
+
+- Continuing on Gemma media gating, specifically checking whether Python API
+  capability hints can claim audio from config/unified runtime instead of real
+  audio tower weights.
+- Panel source already contains a stricter indexed-weight audio check; Python
+  source still needs direct inspection before any patch.
+
+# 2026-06-11 01:08 PDT - fixed Gemma Python registry audio over-advertisement
+
+- Root cause confirmed: Python registry was looser than server/panel and could
+  report Gemma4 unified audio runtime available from source runtime import
+  alone. Server runtime modalities already require `audio_tower.*`.
+- Patched `vmlx_engine/model_config_registry.py` so Gemma4 unified
+  `audio_runtime_available` requires indexed `audio_tower.*` weights.
+- Updated focused audit coverage for projection-only `embed_audio.*` versus
+  real `audio_tower.*`.
+- Verification passed:
+  `.venv/bin/python -m py_compile vmlx_engine/model_config_registry.py`;
+  `.venv/bin/python -m pytest -q tests/test_engine_audit.py -k
+  'gemma4_unified_registry_advertises_source_runtime_when_available or
+  gemma4_unified_registry_advertises_audio_with_audio_tower_weights or
+  gemma4_runtime_modalities_do_not_infer_audio_from_token_only_config or
+  gemma4_runtime_modalities_advertise_audio_with_audio_tower_weights or
+  gemma4_unified_jang4m_runtime_modalities_gate_config_only_audio or
+  gemma4_unified_jang4m_runtime_modalities_advertise_weight_backed_audio'`;
+  `cd panel && npm test -- tests/model-config-registry.test.ts`.
