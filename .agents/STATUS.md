@@ -9744,7 +9744,9 @@ Other-agent action:
   `config_num_nextn_predict_layers=1`, and `mtp_tensor_count=0`.
 - Verification:
   `.venv/bin/python -m pytest -q tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_mtp_status_reports_dropped_dsv4_artifact tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_mtp_status_treats_dropped_jangtq_without_weights_as_dropped tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_mtp_status_flags_missing_weights_when_config_expects_mtp tests/test_engine_audit.py::TestTurboQuantKVTelemetry::test_mtp_status_flags_indexed_mtp_when_config_disables_runtime`
-  passed 4/4. `git diff --check` passed.
+  passed 4/4. Adjacent native-MTP coverage
+  `.venv/bin/python -m pytest -q tests/test_native_mtp_examples.py tests/test_native_mtp_autodetect.py -q`
+  passed 94/94. `git diff --check` passed.
 - Boundary:
   this improves N2 JANGTQ2 capability/UI/API truthfulness only. It does not
   clear N2 JANG_1L, N2 audio, public tunnel parity, or release readiness.

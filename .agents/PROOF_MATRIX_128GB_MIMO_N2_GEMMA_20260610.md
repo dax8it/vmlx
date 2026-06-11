@@ -2615,9 +2615,13 @@ Proven:
   `l2_block_tokens_on_disk=3582`, `l2_ssm_tokens_on_disk=17086`,
   `l2_tokens_on_disk=20668`, `block_disk_writes=59`, `block_disk_hits=110`,
   and `ssm_disk_hits=1`.
-- The installed-app proof also records the honest N2 MTP boundary:
-  `mtp_status=metadata_inconsistent`, `runtime_active=false`, because
-  `jang_config.drop_mtp=true` while config declares one MTP layer.
+- The installed-app proof originally recorded N2 MTP as
+  `metadata_inconsistent` because `jang_config.drop_mtp=true` while config
+  declares one MTP layer. Current source now treats this exact no-MTP-tensor
+  JANGTQ2 shape as an honest dropped-MTP boundary:
+  `status=dropped`, `issues=[]`, `runtime_active=false`; keep reporting MTP
+  as unavailable, but do not surface it as artifact corruption unless indexed
+  `mtp.*` tensors are also present.
 - Local rebuilt installed app image/VL proof is green for N2 JANGTQ2. The app
   persisted the image attachment, server `MEDIA_DIAG` saw one `image_url`, the
   runtime processed `num_images_processed=1`, and the assistant answered `Red`.
