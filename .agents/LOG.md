@@ -1,3 +1,20 @@
+# 2026-06-10 23:13 PDT - Qwen-coder gateway SSE parity selected
+
+- Installed-app parity for the Responses `max_tokens` alias fix is committed as
+  `5bc3b040c`.
+- Next selected blocker: Qwen/Qwen-coder Responses raw SSE gateway parity.
+  Direct current-source proof for served `qwen3-coder-next` already passed in
+  `build/current-qwen-coder-next-live-responses-sse-20260611/SUMMARY.json`,
+  but gateway/tunnel were explicitly not proven.
+- Planned movement: start the same local backend model
+  `/Users/eric/models/Qwen3.6-35B-A3B-4bit` as `qwen3-coder-next`, then use
+  the real panel `ApiGateway` proxy path to capture raw SSE for a required
+  `exec_command` tool call with reasoning enabled. Do not synthesize args,
+  disable reasoning, or use parser-only proof.
+- Boundary: this is gateway current-source proof only, not public tunnel,
+  not installed-app UI model proof, not N2 JANG_1L, and not release/sign/
+  notarize/PyPI/updater/site work.
+
 # 2026-06-10 23:05 PDT - Installed-app parity for Responses max_tokens alias selected
 
 - Current source fix `9aec5d6a1` is pushed to `origin/main` and
@@ -14965,3 +14982,48 @@ Next action:
 - Server stopped cleanly after the proof. No release DMG, sign, notarize, tag,
   upload, PyPI, updater JSON, website, installed-app rebuild, gateway/tunnel
   recapture, or N2 JANG_1L action was performed.
+
+# 2026-06-10 23:45 PDT Qwen-coder-next gateway Responses SSE proof
+
+- Action:
+  launched the current source backend for
+  `/Users/eric/models/Qwen3.6-35B-A3B-4bit` as served model
+  `qwen3-coder-next` on `127.0.0.1:49341` with Qwen tool parser, qwen3
+  reasoning parser, paged cache, block-disk L2, SSM companion L2, and explicit
+  q4 KV storage. Drove the real panel `ApiGateway` local proxy with a
+  reasoning-enabled required `exec_command` Responses stream.
+- Verification command:
+  `npm exec vitest -- run tests/api-gateway-qwen35-live-capture.test.ts` with
+  `VMLINUX_QWEN35_GATEWAY_LIVE_CAPTURE=1`, backend port `49341`, served model
+  `qwen3-coder-next`, and payload requiring `{"cmd":"ls /tmp"}` passed.
+- Proof artifact:
+  `build/current-qwen-coder-next-gateway-responses-sse-20260610/SUMMARY.json`
+  is `status=pass`.
+- Raw evidence:
+  `gateway_required_exec_command.sse` contains
+  `response.reasoning_summary_text.delta`,
+  `response.function_call_arguments.delta`, and
+  `response.function_call_arguments.done`. Argument deltas join to
+  `{"cmd": "ls /tmp"}`; the done event and final response object match that
+  exact argument string.
+- Output-index evidence:
+  streamed `response.output_item.added` indices are sequential:
+  `message=0`, `reasoning=1`, `function_call=2`. Streamed
+  `response.output_item.done` covers the same indices in completion order
+  (`reasoning=1`, `message=0`, `function_call=2`), and the final completed
+  object preserves item order.
+- Leak/fail-surface evidence:
+  no executable empty `{}` arguments were emitted and no raw
+  `<tool_call>`/`<function=...>` XML markup leaked in the valid required-tool
+  gateway stream.
+- Cache/runtime evidence:
+  `health_after_gateway.json` is healthy with scheduler cached tokens `206`,
+  block-disk L2 tokens `206`, four block-disk blocks, q4 KV storage enabled,
+  and no running server left after shutdown.
+- Boundary:
+  direct and local-gateway Qwen-coder-next served-surface proof are now green
+  for this required-tool request. Public tunnel, installed-app UI,
+  every-family parser coverage, native MTP, calibrated TurboQuant speed,
+  media, and release readiness remain open. No release DMG, sign, notarize,
+  tag, upload, PyPI, updater JSON, website, or N2 JANG_1L action was
+  performed.

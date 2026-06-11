@@ -1,4 +1,16 @@
 ## CODEX
+- now: moving to Qwen/Qwen-coder gateway/tunnel Responses raw-SSE parity after
+  installed-app parity for the `max_tokens` alias fix was committed as
+  `5bc3b040c`.
+- selected blocker: direct Qwen-coder-next SSE is already proven, but
+  gateway/tunnel raw SSE remains open for opencode/Codex-style harnesses. Need
+  inspect existing artifacts and the current gateway route before launching
+  anything.
+- boundaries: no synthetic parser-only work unless it directly explains a live
+  gateway/tunnel failure; no argument synthesis; no reasoning disablement; no
+  N2 JANG_1L; no release/sign/notarize/PyPI/updater/site action.
+
+## CODEX
 - now: installed-app parity for the Responses `max_tokens` alias fix is
   complete.
 - app action: ran `bash panel/scripts/build-and-install.sh`; it rebuilt
@@ -9127,3 +9139,38 @@ Other-agent action:
   calibrated TQ-KV load path. Server was stopped cleanly. No release DMG,
   Developer ID sign, notarization, tag, upload, PyPI, updater JSON, website,
   or N2 JANG_1L action was performed.
+
+# 2026-06-10 23:45 PDT Qwen-coder-next gateway Responses SSE proof
+
+- Current movement:
+  reduced the Qwen/Qwen-coder Responses API blocker through the real local
+  panel `ApiGateway` proxy path, using the same current-source backend served
+  as `qwen3-coder-next` from
+  `/Users/eric/models/Qwen3.6-35B-A3B-4bit`.
+- Proof artifact:
+  `build/current-qwen-coder-next-gateway-responses-sse-20260610/SUMMARY.json`
+  is `status=pass`.
+- Raw artifacts:
+  - `build/current-qwen-coder-next-gateway-responses-sse-20260610/gateway_required_exec_command.sse`
+  - `build/current-qwen-coder-next-gateway-responses-sse-20260610/gateway_required_exec_command.log`
+  - `build/current-qwen-coder-next-gateway-responses-sse-20260610/health_after_gateway.json`
+- Proven:
+  gateway returned `200` with `text/event-stream`; reasoning stayed enabled;
+  `response.function_call_arguments.delta` fragments joined exactly to
+  `{"cmd": "ls /tmp"}`; `.done` arguments and final `function_call.arguments`
+  matched exactly; output item added indices were sequential
+  `message=0`, `reasoning=1`, `function_call=2`; output item done events
+  covered the same indices even though reasoning finished before the empty
+  visible message; and no executable `{}` arguments or raw XML tool markup
+  leaked.
+- Cache/runtime:
+  post-gateway health is healthy with scheduler cached tokens `206`,
+  block-disk L2 tokens `206`, four block-disk blocks, and q4 KV storage for
+  this proof run.
+- Boundary:
+  this clears local current-source gateway parity for this required-tool
+  request only. It does not clear public tunnel parity, installed-app UI,
+  every Qwen/Qwen-coder size, native MTP, calibrated TurboQuant speed, media,
+  broader parser families, or release readiness. No release DMG, Developer ID
+  signing, notarization, tag, upload, PyPI, updater JSON, website, or N2
+  JANG_1L action was performed.

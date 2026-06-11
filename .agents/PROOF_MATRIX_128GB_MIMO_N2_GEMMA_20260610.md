@@ -3153,3 +3153,37 @@ Next implementation target:
   proof. The backing 4-bit artifact has no native MTP tensors and explicit q4
   KV was used, so do not treat this as native-MTP, calibrated TurboQuant speed,
   media, package, sign/notarize, or full release readiness proof.
+
+## Qwen-Coder-Next Local Gateway Responses SSE - 2026-06-10
+
+- Green local-gateway row:
+  current source backend served
+  `/Users/eric/models/Qwen3.6-35B-A3B-4bit` as `qwen3-coder-next`, then the
+  real panel `ApiGateway` local proxy streamed a reasoning-enabled required
+  `exec_command` Responses request.
+- Proof:
+  `build/current-qwen-coder-next-gateway-responses-sse-20260610/SUMMARY.json`
+  is `status=pass`. Raw captures are
+  `gateway_required_exec_command.sse`,
+  `gateway_required_exec_command.log`, and `health_after_gateway.json`.
+- Proven:
+  the gateway returned `200` with SSE content type; reasoning events were
+  present; `response.function_call_arguments.delta` fragments joined to
+  `{"cmd": "ls /tmp"}`; `response.function_call_arguments.done` and the final
+  function-call item matched exactly; no executable `{}` arguments were
+  emitted; no raw XML tool markup leaked; and final output item order matched
+  stream-added order.
+- Output indices:
+  stream-added indices are valid and sequential:
+  `message=0`, `reasoning=1`, `function_call=2`. Done events covered the same
+  indices in completion order, so reasoning can finish before the empty visible
+  message without reusing index `0` for the tool call.
+- Cache/runtime:
+  post-gateway health is healthy with scheduler cached tokens `206`,
+  block-disk L2 tokens `206`, four block-disk blocks, and q4 KV storage for
+  this proof run.
+- Red/open:
+  this does not clear public tunnel parity, installed-app UI,
+  every Qwen/Qwen-coder size, native MTP, calibrated TurboQuant speed, media,
+  cross-family parser coverage, release packaging, sign/notarize, PyPI,
+  updater JSON, website, or N2 JANG_1L.
