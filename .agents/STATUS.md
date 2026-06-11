@@ -7440,3 +7440,61 @@ Other-agent action:
   - MiMo exact tool-result continuation;
   - media/video/audio rows;
   - release/sign/notarize readiness.
+
+# 2026-06-11 MiMo deterministic installed-app proof passed
+
+- Artifact:
+  - `docs/internal/agent-notes/current-real-ui-installed-app-mimo-v25-jang2l-responses-tools-cache-deterministic-printf-bundled-python-20260611-proof.json`
+- Result:
+  - status `pass`;
+  - real installed `/Applications/vMLX.app` UI used bundled Python
+    `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3`;
+  - model:
+    `/Users/eric/.mlxstudio/models/JANGQ-AI/MiMo-V2.5-JANG_2L`;
+  - served model `MiMo-V2.5-JANG_2L`;
+  - Responses API, built-in tools, cache controls, no reasoning probe;
+  - deterministic request overrides: `temperature=0`, `top_p=1`, `top_k=1`;
+  - server used `--tool-call-parser xml_function` and
+    `--reasoning-parser think_xml`.
+- Proven surfaces:
+  - installed app UI;
+  - real loaded model;
+  - Responses API and Responses delta streaming;
+  - Responses cache-detail usage;
+  - built-in `run_command` auto tool loop;
+  - exact tool-result continuation for this deterministic `printf` contract:
+    `MIMO_DETERMINISTIC_ONE` and
+    `MIMO_DETERMINISTIC_TWO second UI turn.`;
+  - settings persistence;
+  - generation defaults / request max-token resolution;
+  - parser and visible-language leak checks;
+  - server cache controls;
+  - cache endpoint stats;
+  - native MiMo mixed-SWA cache status;
+  - cache hit telemetry;
+  - L2 disk storage;
+  - tool/L2 cache integration.
+- Metrics:
+  - event counts: `stream=18`, `tool=66`, `complete=2`;
+  - persisted tools: `66`;
+  - cache: 3 cache-hit requests, 10388 cached prompt tokens, 3602 RAM cached
+    tokens, 3602 L2 block tokens on disk, 59 disk writes, 321 disk hits;
+  - memory: about 105012.7MB active, 109483.7MB peak, 1005.6MB cache;
+  - speed samples: live decode about 1.6-1.7 tok/s with TTFT 2.04s and 2.42s.
+- Classification:
+  - MiMo V2.5 JANG_2L installed-app no-media deterministic
+    Responses/tool/cache row is green for the surfaces above;
+  - the earlier stochastic prompt remains useful as a red artifact for
+    prompt-sensitive/wrong-command behavior, not as a hard runtime/cache fail.
+- Still not proven:
+  - MiMo media/image/video/audio;
+  - MiMo JANGTQ_2 row;
+  - broad creative/stochastic agent reliability;
+  - steady-state logits speed above about 1.7 live tok/s;
+  - release/sign/notarize readiness.
+- Other-agent note:
+  - Use the deterministic artifact above as the current MiMo installed-app
+    no-media green proof.
+  - Keep the earlier red artifact as evidence that stochastic prompts can
+    choose the wrong shell command; do not use it to block the deterministic
+    installed-app cache/tool row.
