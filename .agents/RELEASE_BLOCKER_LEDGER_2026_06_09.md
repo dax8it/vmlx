@@ -770,3 +770,37 @@ panel/scripts/verify-release-dmgs.sh
 3. Continue Gemma QAT/native MXFP4/MXFP8/JANG proof after downloads are available, including multi-turn, tools, parser leaks, cache reuse, media, and installed app.
 4. Continue MiMo and N2 live runtime proof under memory gates, not source-vs-quant heavy comparisons.
 5. Rebuild current-source DMGs only after the chosen checkpoint scope is explicit; then notarize/staple/verify with the documented `vmlx-build.keychain-db`/`vmlx-notary` path.
+ 
+## 2026-06-11 Gemma4 26B CRACK current visible/speed clearance
+
+- `build/current-runtime-memory-stress-gemma4-26b-jang4m-responses-thinkingon-app-visible-512-nocache-20260606.json`
+  is current `status=pass` for Responses visible-content with thinking enabled
+  and prefix cache skipped.
+- `build/current-runtime-memory-stress-gemma4-26b-jang4m-chat-thinkingoff-speed-floor-installed-app-20260606.json`
+  is current `status=pass` for installed-app chat streaming speed with
+  thinking off; wall decode is above the 80 tok/s floor and stream decode is
+  about 98 tok/s across three 512-token completions.
+- `build/current-objective-proof-after-gemma26-current-visible-speed-stream-20260611.json`
+  marks both Gemma4 26B CRACK objective rows PASS.
+- Cache/runtime boundary:
+  native `mixed_swa_kv_v1`, `paged+mixed_swa` cache reuse, block-disk L2,
+  generic TurboQuant KV disabled, storage-boundary q4 only for full-attention
+  KV, and rotating-window metadata preserved.
+- No release, signing, notarization, PyPI, updater, website, download, or tag
+  action was performed by this proof block.
+
+## 2026-06-11 aggregate after Gemma4 26B clearance
+
+- `build/current-regression-suite-after-gemma26-current-visible-speed-20260611.json`
+  is `status=open`, with failed steps `release_regression_manifest` and
+  `release_gate_skip_app`.
+- Gemma4 26B CRACK visible-content/language and mixed-SWA speed are no longer
+  open requirements.
+- Remaining open rows are: DSV4 same-process cache hit, DSV4 L2 restart hit,
+  DSV4 one-tool stop, Qwen/JANG packaged MX matmul speed, Qwen native MTP speed
+  and output equivalence, Qwen 27B prompt-processing speed, Ling/Bailing
+  multilingual quality, cross-family live multi-turn, MiMo V2.5 runtime/tool/
+  long-prompt quality, N2 Pro broad JANG1L/JANGTQ row, MiniMax reporter parity,
+  real Electron UI cross-family live matrix, and DSV4 long-output/code quality.
+- N2 JANG_1L remains off-limits in this lane except existing preflight
+  accounting.

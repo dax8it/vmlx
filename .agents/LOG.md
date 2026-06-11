@@ -17605,3 +17605,68 @@ Next action:
   quality/speed; cross-family live multi-turn smoke; MiMo runtime/tool/
   long-prompt quality; N2 Pro JANG1L/JANGTQ runtime/cache/API/UI; MiniMax
   reporter parity; and real Electron UI cross-family live matrix.
+ 
+# 2026-06-11 continuation PDT - Gemma4 26B CRACK blocker selection
+
+- Action:
+  selected Gemma4 26B CRACK live runtime proof as the next blocker to reduce,
+  after staged app packaged integrity went green and the aggregate remained
+  open on objective rows.
+- Reason:
+  the current release manifest reports the Gemma4 26B CRACK visible-content and
+  mixed-SWA speed rows open because current expected artifacts are missing;
+  local Gemma4 26B CRACK/QAT model candidates exist.
+- Boundary:
+  source/app proof only. No release, notarization, upload, PyPI, updater,
+  website, or download mutation in this movement.
+- Next:
+  inspect the existing harness and release-manifest artifact expectations, then
+  run a focused live proof instead of editing tests or doing broad pointer
+  churn.
+
+# 2026-06-11 continuation PDT - Gemma4 26B CRACK visible/speed rows green
+
+- Action:
+  ran the current Gemma4 26B CRACK visible-content and speed artifacts through
+  `tests/cross_matrix/run_runtime_memory_stress_probe.py`, then refreshed the
+  objective proof.
+- Visible proof:
+  `build/current-runtime-memory-stress-gemma4-26b-jang4m-responses-thinkingon-app-visible-512-nocache-20260606.json`
+  is `status=pass`; Responses route with thinking enabled and prefix cache
+  skipped returned visible assistant content and separate reasoning content.
+- Speed proof:
+  `build/current-runtime-memory-stress-gemma4-26b-jang4m-chat-thinkingoff-speed-floor-installed-app-20260606.json`
+  is `status=pass`; installed-app Python path, chat streaming, thinking off,
+  three 512-token completions, wall decode about `93.96-95.31 tok/s`, stream
+  decode about `98.31-98.71 tok/s`.
+- Cache/runtime proof:
+  Gemma4 native cache schema was `mixed_swa_kv_v1`, cache detail recorded
+  `paged+mixed_swa+disk` then `paged+mixed_swa`, `1160` cached tokens, generic
+  TurboQuant KV disabled, q4 storage-boundary cache limited to full-attention
+  KV, and prefix/paged/block-L2 enabled.
+- Objective result:
+  `build/current-objective-proof-after-gemma26-current-visible-speed-stream-20260611.json`
+  marks both Gemma4 26B CRACK rows PASS.
+- Boundary:
+  no release/sign/notarize/upload/PyPI/updater/site action. Remaining blockers
+  are the other open objective rows.
+
+# 2026-06-11 continuation PDT - aggregate after Gemma4 26B clearance
+
+- Action:
+  refreshed the current aggregate suite after the Gemma4 26B current visible
+  and streaming speed artifacts were regenerated.
+- Artifact:
+  `build/current-regression-suite-after-gemma26-current-visible-speed-20260611.json`.
+- Result:
+  `status=open`; failed steps remain `release_regression_manifest` and
+  `release_gate_skip_app`.
+- Confirmed closed:
+  Gemma4 26B CRACK visible-content/language and mixed-SWA speed rows are absent
+  from `open_requirements`.
+- Remaining:
+  DSV4 cache/L2/tool and long-output/code quality; Qwen packaged speed/MTP and
+  prompt-processing speed; Ling/Bailing quality; cross-family live multi-turn;
+  MiMo V2.5 runtime/tool/long-prompt; broad N2 Pro JANG1L/JANGTQ row with
+  JANG_1L still off-limits for this lane; MiniMax reporter parity/root cause;
+  real Electron UI cross-family live matrix.

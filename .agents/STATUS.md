@@ -12289,3 +12289,91 @@ Other-agent action:
   multi-turn smoke, MiMo V2.5 runtime/tool/long-prompt quality, N2 Pro
   JANG1L/JANGTQ runtime/cache/API/UI quality, MiniMax reporter parity, real
   Electron UI cross-family live matrix, and DSV4 long-output/code/file quality.
+ 
+# 2026-06-11 continuation PDT Gemma4 26B CRACK blocker selection
+
+- Current instruction:
+  focus on vMLX Python engine/app runtime fixes and proof that move a signed
+  checkpoint release closer. Do not drift into deprecated `/Users/eric/vmlx`,
+  Swift work, broad test-suite churn, subagents, or publishing/release actions
+  without an explicit current-turn release override.
+- Selected blocker:
+  Gemma4 26B CRACK Responses visible-content/language quality and mixed-SWA
+  app-engine speed rows, because the current release manifest still reports
+  those rows open with missing current artifacts while local Gemma4 26B models
+  are present.
+- Boundary:
+  this is source/app runtime proof only. No DMG, notarization, PyPI, updater
+  JSON, website/download, tag, or public release action in this block.
+- Model candidates discovered:
+  `/Users/eric/models/dealign.ai/Gemma-4-26B-A4B-it-JANG_4M-CRACK`,
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-JANG_4M`, and
+  `/Users/eric/models/JANGQ-AI/gemma-4-26B-A4B-it-qat-MXFP4`.
+- Next movement:
+  locate the existing proof harness/expected artifact contract for the Gemma4
+  26B CRACK visible-content and mixed-SWA speed rows, then run the smallest
+  real live proof that can close or honestly classify those blockers.
+
+# 2026-06-11 continuation PDT Gemma4 26B CRACK visible/speed rows green
+
+- Commands:
+  `panel/bundled-python/python/bin/python3 tests/cross_matrix/run_runtime_memory_stress_probe.py --row gemma4_26b_jang4m --route responses --enable-thinking --max-tokens 512 --skip-prefix-cache --expect-visible-content --out build/current-runtime-memory-stress-gemma4-26b-jang4m-responses-thinkingon-app-visible-512-nocache-20260606.json`
+  and
+  `VMLINUX_BENCH_ISOLATED=1 .venv/bin/python tests/cross_matrix/run_runtime_memory_stress_probe.py --row gemma4_26b_jang4m --python /Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3.12 --port 8908 --timeout 600 --request-timeout 420 --prompt-tokens 700,700,700 --prompt-mode speed_floor --max-tokens 512 --route chat --stream --disable-thinking --expect-visible-content --out build/current-runtime-memory-stress-gemma4-26b-jang4m-chat-thinkingoff-speed-floor-installed-app-20260606.json`.
+- Proof artifacts:
+  `build/current-runtime-memory-stress-gemma4-26b-jang4m-responses-thinkingon-app-visible-512-nocache-20260606.json`
+  is `status=pass`; `build/current-runtime-memory-stress-gemma4-26b-jang4m-chat-thinkingoff-speed-floor-installed-app-20260606.json`
+  is `status=pass`.
+- Objective verification:
+  `build/current-objective-proof-after-gemma26-current-visible-speed-stream-20260611.json`
+  marks both `Gemma4 26B CRACK Responses visible-content and language quality
+  is release-cleared` and `Gemma4 26B CRACK mixed-SWA app-engine speed floor
+  is release-cleared` as `PASS`.
+- Visible-content evidence:
+  Responses route, `enable_thinking=true`, `skip_prefix_cache=true`, two stages
+  returned visible assistant content with no response-contract failure. The
+  artifact records visible chars and reasoning chars separately.
+- Speed/cache evidence:
+  installed-app Python path `/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3.12`,
+  chat streaming, thinking off, three 512-token completions. Wall decode was
+  about `93.96-95.31 tok/s`; streaming decode was about `98.31-98.71 tok/s`;
+  each stage had visible content. Cache execution recorded `paged+mixed_swa+disk`
+  on the first warmed stage and `paged+mixed_swa` on subsequent stages with
+  `1160` cached tokens. Native cache schema was `mixed_swa_kv_v1`; generic
+  TurboQuant KV was disabled; storage-boundary q4 applied only to full-attention
+  KV while preserving rotating-window metadata; prefix, paged cache, and block
+  disk L2 were enabled.
+- Boundary:
+  this clears the Gemma4 26B CRACK objective rows in the current objective
+  proof. It does not clear DSV4 rows, Qwen packaged speed/MTP rows,
+  Ling/Bailing quality, cross-family live multi-turn, MiMo, N2 broad row,
+  MiniMax reporter parity, real Electron UI cross-family matrix, or release.
+  No DMG, notarization, PyPI, updater, website/download, tag, or public release
+  action was performed.
+
+# 2026-06-11 continuation PDT aggregate after Gemma4 26B clearance
+
+- Command:
+  `.venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out
+  build/current-regression-suite-after-gemma26-current-visible-speed-20260611.json`.
+- Result:
+  aggregate remains `status=open`; failed steps are
+  `release_regression_manifest` and `release_gate_skip_app`.
+- Important change:
+  Gemma4 26B CRACK visible-content/language and mixed-SWA speed rows are no
+  longer in `open_requirements`.
+- Remaining open requirements:
+  DSV4 same-process cache hit improves latency/TTFT and records `paged+dsv4`
+  hit; DSV4 block disk L2 stores and hits after restart; DSV4 Responses
+  one-tool call stops after tool result; Qwen/JANG packaged MX matmul speed;
+  Qwen native MTP live decode speed/output equivalence; Qwen 27B JANG_4M
+  prompt-processing speed floor; Ling/Bailing multilingual output quality;
+  cross-family live multi-turn smoke matrix; MiMo V2.5 JANG_2L runtime/tool/
+  long-prompt quality; N2 Pro 397B JANG1L/JANGTQ runtime/cache/API/UI quality;
+  MiniMax-M2.7-JANGTQ_K reporter parity/root cause; real Electron UI
+  cross-family live model matrix; DSV4 long-output/code/file-generation
+  quality.
+- Boundary:
+  no release/sign/notarize/upload/PyPI/updater/site action. N2 JANG_1L remains
+  off this lane except for existing preflight reporting; do not use the broad
+  N2 row as permission to launch JANG_1L.
