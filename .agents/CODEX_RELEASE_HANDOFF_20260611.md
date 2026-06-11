@@ -2,7 +2,7 @@
 
 ## Current Commit
 
-- Latest pushed commit before this correction: `9e33201bd Document release blocker handoff`
+- Latest pushed commit: `2822fe994 Keep Qwen35 tunnel SSE gate red`
 - Pushed to: `origin/codex/pr-intake-manifest` and `origin/main`
 - Latest checklist artifact:
   `build/current-full-release-objective-checklist-after-qwen35-gate-correction-20260611.json`
