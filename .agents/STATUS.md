@@ -11808,3 +11808,50 @@ Other-agent action:
   regenerated
   `build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json`;
   focused objective digest tests passed `2 passed, 110 deselected`.
+
+# 2026-06-11 continuation PDT Gemma QAT/MXFP/JANG lane
+
+- Next allowed lane:
+  inspect and reduce one Gemma JANG/MXFP/QAT runtime/modality/cache/API proof
+  gap, with honest audio/video capability boundaries. Do not infer audio from
+  config/token/projection-only metadata; audio needs real audio tower weights
+  plus live E2E proof.
+- Immediate action:
+  inspect the current objective Gemma row and existing Gemma proof artifacts,
+  then either consume stronger current evidence or fix a real source/runtime
+  blocker. Avoid broad suite churn and do not run release/sign/notarize.
+
+# 2026-06-11 continuation PDT Gemma/N2/MiMo proof-state refresh result
+
+- Consumed current Gemma evidence:
+  `tests/cross_matrix/summarize_objective_proof.py` now uses
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-sessionlogs-reasoning-proof-20260611.json`.
+  The objective digest marks
+  `Gemma QAT/native MXFP4 E2B/E4B/12B/26B/31B runtime/media/cache/API/UI quality is release-cleared`
+  as `PASS`; the stale 20260610 Gemma inventory path is gone from current
+  objective/regression/release artifacts.
+- Fixed proof-state drift:
+  removed Gemma QAT/native MXFP4 from current known-open requirements, updated
+  the current regression and release manifest expectations, and refreshed the
+  N2 proof-state assertion now that `n2_family_policy=true` while the broader
+  N2 release row remains open on JANG_1L/live UI/media/tunnel evidence.
+- Fixed MiMo parser policy drift:
+  `tests/cross_matrix/run_decode_speed_gate.py` now launches the
+  `mimo_v25_jang2l` speed row with `reasoning_parser="think_xml"` to match the
+  engine registry instead of silently testing a different reasoning policy.
+- Fixed public issue audit classification:
+  public issue #116 now reports `open` rather than hard `fail` when thinking-off
+  UI/API wiring exists but the reasoning-template contract is still red.
+- Verification:
+  focused proof contracts passed `99 passed, 432 deselected`; regenerated
+  `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  with `focused_regression_pytest rc=0`, `model_family_detection_contracts rc=0`,
+  `public_app_issue_audit rc=0`, and `gemma_qat_native_mxfp4_inventory_gate rc=0`.
+- Still not release/prepackage ready:
+  current regression suite remains `status=open`; remaining failed steps are
+  cache architecture, panel settings, parser registry, generation defaults,
+  reasoning template, model artifact format, native MTP, VL media cache,
+  packaged integrity, release manifest, and release gate. Release manifest
+  validation now accepts the public-app issue audit as `status=open` with no
+  audit failures, but still reports `prepackage_ready=false` and
+  `release_ready=false`.

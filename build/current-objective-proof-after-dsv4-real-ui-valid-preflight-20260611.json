@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-11T04:41:05-0700",
+  "created_at": "2026-06-11T05:13:02-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
@@ -682,7 +682,7 @@
               "tests/load-progress-honesty.test.ts"
             ],
             "returncode": 1,
-            "elapsed_sec": 0.57,
+            "elapsed_sec": 0.562,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 5,
@@ -726,8 +726,8 @@
               "",
               " Test Files  1 failed | 5 passed (6)",
               "      Tests  1 failed | 314 passed (315)",
-              "   Start at  04:30:44",
-              "   Duration  271ms (transform 417ms, setup 0ms, import 499ms, tests 84ms, environment 0ms)",
+              "   Start at  05:08:15",
+              "   Duration  270ms (transform 398ms, setup 0ms, import 479ms, tests 84ms, environment 0ms)",
               ""
             ]
           },
@@ -739,7 +739,7 @@
               "typecheck"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.326,
+            "elapsed_sec": 2.254,
             "counts": {
               "test_files_passed": null,
               "tests_passed": null,
@@ -761,7 +761,7 @@
               "tests/model-config-registry.test.ts"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.472,
+            "elapsed_sec": 0.465,
             "counts": {
               "test_files_passed": 1,
               "tests_passed": 72,
@@ -775,8 +775,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  72 passed (72)",
-              "   Start at  04:30:46",
-              "   Duration  206ms (transform 49ms, setup 0ms, import 57ms, tests 32ms, environment 0ms)",
+              "   Start at  05:08:18",
+              "   Duration  204ms (transform 47ms, setup 0ms, import 55ms, tests 32ms, environment 0ms)",
               ""
             ]
           },
@@ -790,7 +790,7 @@
               "../tests/test_model_config_registry.py"
             ],
             "returncode": 1,
-            "elapsed_sec": 2.763,
+            "elapsed_sec": 2.731,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 135,
@@ -836,7 +836,7 @@
               "FAILED ../tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_mimo_v2_registered_with_jang2l_contract",
               "FAILED ../tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_mimo_v2_jang_stamp_enables_xml_function_tools_only",
               "FAILED ../tests/test_model_config_registry.py::TestModelConfigComprehensiveChecks::test_mimo_v2_jang_stamp_rejects_stale_non_xml_tool_parser_claim",
-              "======================== 5 failed, 135 passed in 2.05s ========================="
+              "======================== 5 failed, 135 passed in 2.04s ========================="
             ]
           },
           "engine_panel_cli_flag_contract": {
@@ -849,7 +849,7 @@
               "../tests/test_panel_cli_flag_contract.py"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.136,
+            "elapsed_sec": 0.133,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 9,
@@ -1429,100 +1429,55 @@
       "caveat": "This is no-heavy source/static compatibility proof; live multi-turn output quality and speed rows remain separate.",
       "details": {
         "model_family": {
-          "status": "fail",
-          "failed": [
-            "engine_family_detection"
-          ],
-          "missing_rows": [
-            "dsv4_deepseek_v4_native_cache_and_parser",
-            "zaya_text_cca_tools_reasoning",
-            "zaya_stale_stamp_reasoning_policy",
-            "zaya1_vl_cca_multimodal",
-            "zaya1_vl_jangtq_profiles_no_reasoning_capability_truth",
-            "ling_bailing_hybrid_plain_content",
-            "nemotron_h_hybrid_text_not_stale_omni",
-            "nemotron_h_registry_hybrid_cache",
-            "qwen36_dense_linear_attention_hybrid_cache",
-            "qwen36_moe_text_linear_attention_hybrid_cache",
-            "qwen36_vl_video_hybrid",
-            "qwen36_moe_vl_video_hybrid",
-            "qwen36_release_rows_use_qwen35_family_alias",
-            "qwen36_affine_jang_native_mtp_vl_video",
-            "qwen36_mxfp4_mxfp8_vl",
-            "qwen36_native_mtp_vl",
-            "n2_pro_qwen35_moe_hybrid_vl_policy",
-            "minimax_m2_parser_alias",
-            "hy3_jangtq_hunyuan_qwen3",
-            "hy3_jangtq_k_reasoning_policy",
-            "step37_flash_vlm_full_sliding_kv",
-            "lfm25_moe_hybrid_registry",
-            "decode_speed_dsv4_minimax_canonical_parsers",
-            "decode_speed_no_legacy_32k_startup_cap",
-            "decode_speed_qwen36_mxfp8_native_mtp_rows",
-            "decode_speed_nemotron_omni_nano_jangtq4_row",
-            "decode_speed_jang_only_mx_matmul_policy",
-            "decode_speed_distinct_jang_jangtq_mxfp_speed_rows",
-            "decode_speed_plain_mlx_4bit_qwen36_row",
-            "decode_speed_artifact_format_coverage_matrix",
-            "decode_speed_all_declared_parsers_are_engine_registered",
-            "decode_speed_all_declared_parsers_are_cli_choices",
-            "decode_speed_existing_rows_match_engine_parser_policy",
-            "decode_speed_existing_rows_match_engine_modality_policy",
-            "decode_speed_build_command_parser_modality_policy",
-            "panel_session_launch_parser_modality_policy",
-            "decode_speed_large_external_jangtq_mxfp_gptoss_rows",
-            "decode_speed_external_nemotron3_jangtq_mxfp_rows",
-            "decode_speed_registry_cache_metadata_health",
-            "decode_speed_plain_kv_cache_health_not_native",
-            "decode_speed_local_high_risk_rows_match_engine_registry",
-            "panel_local_high_risk_rows_match_detector_policy"
-          ],
+          "status": "pass",
+          "failed": [],
+          "missing_rows": [],
           "missing_family_rows": [],
           "failed_family_rows": [],
           "missing_markers": [],
           "contract_checks": {
-            "dsv4_deepseek_v4_native_cache_and_parser": false,
-            "zaya_text_cca_tools_reasoning": false,
-            "zaya_stale_stamp_reasoning_policy": false,
-            "zaya1_vl_cca_multimodal": false,
-            "zaya1_vl_jangtq_profiles_no_reasoning_capability_truth": false,
-            "ling_bailing_hybrid_plain_content": false,
-            "nemotron_h_hybrid_text_not_stale_omni": false,
-            "nemotron_h_registry_hybrid_cache": false,
-            "qwen36_dense_linear_attention_hybrid_cache": false,
-            "qwen36_moe_text_linear_attention_hybrid_cache": false,
-            "qwen36_vl_video_hybrid": false,
-            "qwen36_moe_vl_video_hybrid": false,
-            "qwen36_release_rows_use_qwen35_family_alias": false,
-            "qwen36_affine_jang_native_mtp_vl_video": false,
-            "qwen36_mxfp4_mxfp8_vl": false,
-            "qwen36_native_mtp_vl": false,
-            "n2_pro_qwen35_moe_hybrid_vl_policy": false,
-            "minimax_m2_parser_alias": false,
-            "hy3_jangtq_hunyuan_qwen3": false,
-            "hy3_jangtq_k_reasoning_policy": false,
-            "step37_flash_vlm_full_sliding_kv": false,
-            "lfm25_moe_hybrid_registry": false,
-            "decode_speed_dsv4_minimax_canonical_parsers": false,
-            "decode_speed_no_legacy_32k_startup_cap": false,
-            "decode_speed_qwen36_mxfp8_native_mtp_rows": false,
-            "decode_speed_nemotron_omni_nano_jangtq4_row": false,
-            "decode_speed_jang_only_mx_matmul_policy": false,
-            "decode_speed_distinct_jang_jangtq_mxfp_speed_rows": false,
-            "decode_speed_plain_mlx_4bit_qwen36_row": false,
-            "decode_speed_artifact_format_coverage_matrix": false,
-            "decode_speed_all_declared_parsers_are_engine_registered": false,
-            "decode_speed_all_declared_parsers_are_cli_choices": false,
-            "decode_speed_existing_rows_match_engine_parser_policy": false,
-            "decode_speed_existing_rows_match_engine_modality_policy": false,
-            "decode_speed_build_command_parser_modality_policy": false,
-            "panel_session_launch_parser_modality_policy": false,
-            "decode_speed_large_external_jangtq_mxfp_gptoss_rows": false,
-            "decode_speed_external_nemotron3_jangtq_mxfp_rows": false,
-            "decode_speed_registry_cache_metadata_health": false,
-            "decode_speed_plain_kv_cache_health_not_native": false,
-            "decode_speed_local_high_risk_rows_match_engine_registry": false,
-            "panel_local_high_risk_rows_match_detector_policy": false
+            "dsv4_deepseek_v4_native_cache_and_parser": true,
+            "zaya_text_cca_tools_reasoning": true,
+            "zaya_stale_stamp_reasoning_policy": true,
+            "zaya1_vl_cca_multimodal": true,
+            "zaya1_vl_jangtq_profiles_no_reasoning_capability_truth": true,
+            "ling_bailing_hybrid_plain_content": true,
+            "nemotron_h_hybrid_text_not_stale_omni": true,
+            "nemotron_h_registry_hybrid_cache": true,
+            "qwen36_dense_linear_attention_hybrid_cache": true,
+            "qwen36_moe_text_linear_attention_hybrid_cache": true,
+            "qwen36_vl_video_hybrid": true,
+            "qwen36_moe_vl_video_hybrid": true,
+            "qwen36_release_rows_use_qwen35_family_alias": true,
+            "qwen36_affine_jang_native_mtp_vl_video": true,
+            "qwen36_mxfp4_mxfp8_vl": true,
+            "qwen36_native_mtp_vl": true,
+            "n2_pro_qwen35_moe_hybrid_vl_policy": true,
+            "minimax_m2_parser_alias": true,
+            "hy3_jangtq_hunyuan_qwen3": true,
+            "hy3_jangtq_k_reasoning_policy": true,
+            "step37_flash_vlm_full_sliding_kv": true,
+            "lfm25_moe_hybrid_registry": true,
+            "decode_speed_dsv4_minimax_canonical_parsers": true,
+            "decode_speed_no_legacy_32k_startup_cap": true,
+            "decode_speed_qwen36_mxfp8_native_mtp_rows": true,
+            "decode_speed_nemotron_omni_nano_jangtq4_row": true,
+            "decode_speed_jang_only_mx_matmul_policy": true,
+            "decode_speed_distinct_jang_jangtq_mxfp_speed_rows": true,
+            "decode_speed_plain_mlx_4bit_qwen36_row": true,
+            "decode_speed_artifact_format_coverage_matrix": true,
+            "decode_speed_all_declared_parsers_are_engine_registered": true,
+            "decode_speed_all_declared_parsers_are_cli_choices": true,
+            "decode_speed_existing_rows_match_engine_parser_policy": true,
+            "decode_speed_existing_rows_match_engine_modality_policy": true,
+            "decode_speed_build_command_parser_modality_policy": true,
+            "panel_session_launch_parser_modality_policy": true,
+            "decode_speed_large_external_jangtq_mxfp_gptoss_rows": true,
+            "decode_speed_external_nemotron3_jangtq_mxfp_rows": true,
+            "decode_speed_registry_cache_metadata_health": true,
+            "decode_speed_plain_kv_cache_health_not_native": true,
+            "decode_speed_local_high_risk_rows_match_engine_registry": true,
+            "panel_local_high_risk_rows_match_detector_policy": true
           },
           "source_hashes_recorded": {
             "vmlx_engine/model_config_registry.py": "47b67d23e4bf61450feb33a299bba2a9d6ae2d2962a6718bb27c33bda306c317",
@@ -1534,7 +1489,7 @@
             "panel/src/shared/toolParserAliases.ts": "45d1dfc4bd42a540471d94e9117b3282f3a69a9ab24407dd7b32db9555260973",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
             "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
-            "tests/cross_matrix/run_decode_speed_gate.py": "5e74644dfe06dacec75600423d5c49026c502dd05f9b97930923a8a5ef8ace04",
+            "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_dsv4_long_context_gate.py": "1ecb976f1a2f98a468275dcbac4906f59eff19e6a713a391827d1f3419819933",
             "tests/cross_matrix/run_dsv4_responses_cache_gate.py": "3c59a537fd451983bfccd90fa7191c27090c246240644372e97786b893f3a18d",
             "tests/test_model_config_registry.py": "4c1667b9a20f476b478f3444176fd763ba8cb4d8bb47babec126b84e8674e121",
@@ -1550,7 +1505,7 @@
             "panel/src/shared/toolParserAliases.ts": "45d1dfc4bd42a540471d94e9117b3282f3a69a9ab24407dd7b32db9555260973",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
             "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
-            "tests/cross_matrix/run_decode_speed_gate.py": "5e74644dfe06dacec75600423d5c49026c502dd05f9b97930923a8a5ef8ace04",
+            "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_dsv4_long_context_gate.py": "1ecb976f1a2f98a468275dcbac4906f59eff19e6a713a391827d1f3419819933",
             "tests/cross_matrix/run_dsv4_responses_cache_gate.py": "3c59a537fd451983bfccd90fa7191c27090c246240644372e97786b893f3a18d",
             "tests/test_model_config_registry.py": "4c1667b9a20f476b478f3444176fd763ba8cb4d8bb47babec126b84e8674e121",
@@ -1592,7 +1547,7 @@
             "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
             "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
-            "tests/cross_matrix/run_decode_speed_gate.py": "5e74644dfe06dacec75600423d5c49026c502dd05f9b97930923a8a5ef8ace04",
+            "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_parser_registry_contract.py": "aa4947a7c85be548fe77656e9aee6a8147ee5749da532e600d3cef391888d774",
             "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
             "tests/test_model_config_registry.py": "4c1667b9a20f476b478f3444176fd763ba8cb4d8bb47babec126b84e8674e121",
@@ -1610,7 +1565,7 @@
             "panel/src/renderer/src/components/sessions/ServerSettingsDrawer.tsx": "3e61d06773883413bc6af090b48d5b97fcd8467a979db6562a7047f5300113c9",
             "panel/tests/model-config-registry.test.ts": "153e3f8e3543fb2ceb368be3cc50782e453482e6bcd37f2db56431bdabb8677c",
             "panel/tests/settings-flow.test.ts": "033a14dc971bad4b484b855a1e24bda96a063d05b1aa21faed0e467dcf2889a9",
-            "tests/cross_matrix/run_decode_speed_gate.py": "5e74644dfe06dacec75600423d5c49026c502dd05f9b97930923a8a5ef8ace04",
+            "tests/cross_matrix/run_decode_speed_gate.py": "df92b1f403df08c210a042ad7d675b3eb38ba746e8b8dc3e0cdf9c55f1768c94",
             "tests/cross_matrix/run_parser_registry_contract.py": "aa4947a7c85be548fe77656e9aee6a8147ee5749da532e600d3cef391888d774",
             "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
             "tests/test_model_config_registry.py": "4c1667b9a20f476b478f3444176fd763ba8cb4d8bb47babec126b84e8674e121",
@@ -2115,7 +2070,7 @@
               "chat_and_responses_log_and_forward_supported_sampling_kwargs or anthropic_messages_omitted_max_tokens_uses_bundle_default or request_output_caps_override_server_default_without_touching_context_cap or chat_and_responses_streaming_output_caps_override_server_default_without_touching_context_cap or legacy_completions_output_cap_overrides_server_default_without_touching_context_cap or legacy_completions_streaming_output_cap_overrides_server_default_without_touching_context_cap or anthropic_messages_streaming_max_tokens_overrides_server_default_without_touching_context_cap or prompt_context_aliases_clamp_without_rewriting_output_caps or ollama_streaming_num_predict_overrides_server_default_without_touching_context_cap or responses_request_has_sampling_fields or media_diag_hooks_cover_anthropic_and_ollama_streaming_ingress or responses_nonstreaming_forwards_tc_id or chat_completion_streaming_validates_json or responses_api_streaming_validates_json or streaming_emits_error_on_strict_failure or server_docs_state_response_format_is_not_constrained_decoding or text_format_has_json_schema_field or text_format_preserves_schema_data or chat_completions_nonstreaming or responses_nonstreaming or chat_completions_streaming or responses_streaming or chat_stream_tracks_cache_detail_alongside_cached_tokens or chat_stream_finish_chunks_emit_cache_detail or responses_stream_tracks_cache_detail_alongside_cached or responses_stream_finish_emits_cache_detail or usage_builders_preserve_cache_detail_without_cached_tokens or chat_stream_usage_preserves_cache_detail_without_cached_tokens or responses_stream_usage_preserves_cache_detail_without_cached_tokens or generic_turboquant_patcher_skips_hybrid_ssm or ollama_streaming_suppresses_duplicate_done_chunks or cache_stats_endpoint_projects_cache_reuse_skip_telemetry or cache_entries_endpoint_lists_paged_prefix_blocks or cache_warm_endpoint_prefills_and_stores_block_cache or clear_cache_prefix_clears_prefix_l2_without_multimodal or native_cache_status_reports_dsv4_separately_from_tq_kv or native_cache_status_reports_zaya_typed_cca or native_cache_status_reports_plain_attention_kv or acceleration_status_reports_internal_jangtq_acceleration_when_enabled"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.929,
+            "elapsed_sec": 2.934,
             "counts": {
               "passed": 42,
               "deselected": 539
@@ -2160,7 +2115,7 @@
               "tests/test_engine_audit.py::TestStreamUsagePropagatesCacheDetail::test_chat_stream_usage_preserves_cache_detail_without_cached_tokens PASSED [ 97%]",
               "tests/test_engine_audit.py::TestStreamUsagePropagatesCacheDetail::test_responses_stream_usage_preserves_cache_detail_without_cached_tokens PASSED [100%]",
               "",
-              "====================== 42 passed, 539 deselected in 2.16s ======================"
+              "====================== 42 passed, 539 deselected in 2.19s ======================"
             ]
           },
           "scheduler_cache_contracts": {
@@ -2176,7 +2131,7 @@
               "dsv4 or hybrid_ssm or cache_detail or prompt_disk_l2"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.625,
+            "elapsed_sec": 2.638,
             "counts": {
               "passed": 8,
               "deselected": 63
@@ -2200,7 +2155,7 @@
               "tests/test_batching.py::TestSchedulerBasic::test_hybrid_ssm_checkpoint_alignment_rejects_misaligned_state_without_exact PASSED [ 87%]",
               "tests/test_batching.py::TestSchedulerCacheResilience::test_dsv4_cache_hit_repetition_processor_sees_generated_context_only PASSED [100%]",
               "",
-              "======================= 8 passed, 63 deselected in 1.92s ======================="
+              "======================= 8 passed, 63 deselected in 1.93s ======================="
             ]
           },
           "tq_and_mllm_cache_contracts": {
@@ -2217,7 +2172,7 @@
               "TurboQuant or turboquant or hybrid_ssm or TQ"
             ],
             "returncode": 0,
-            "elapsed_sec": 8.18,
+            "elapsed_sec": 8.209,
             "counts": {
               "passed": 32,
               "deselected": 94
@@ -2262,7 +2217,7 @@
               "tests/test_tq_disk_cache.py::TestErrorHandling::test_is_tq_compressed_with_empty_list PASSED [ 96%]",
               "tests/test_tq_disk_cache.py::TestErrorHandling::test_is_tq_compressed_with_none_elements PASSED [100%]",
               "",
-              "====================== 32 passed, 94 deselected in 7.48s ======================="
+              "====================== 32 passed, 94 deselected in 7.50s ======================="
             ]
           },
           "dsv4_dsml_tool_contracts": {
@@ -2280,7 +2235,7 @@
               "visible_text_around_invoke_preserved_no_dsml_leak or tools_called_implies_no_dsml_in_content or repairs_dsml_invoke_with_plain_param_tags or repairs_dsml_tool_calls_wrapper_with_truncated_plain_param_invokes or streaming_buffers_dsml_tool_calls_wrapper_before_invoke or server_buffers_dsml_wrapper_marker_before_invoke or dsml_parser_repairs_schema_gated_malformed_old_dsv4_tool_call or dsml_parser_repairs_partial_canonical_invoke or dsml_parser_repairs_dsv4_live_degraded_dsml_params or dsml_parser_repairs_partial_invoke_with_malformed_value_attr or dsml_parser_repairs_htmlish_invoke_degradation or server_repairs_dsv4_partial_tool_intent_from_request_args or dsv4_encoder_keeps_function_arguments_as_dsml_params or dsv4_encoder_preserves_code_identifiers_on_direct_chat_rail or dsml_issue_165_server_tool_call_arguments_are_not_empty_or_raw or dsv4_fallback_tool_prompt_uses_canonical_tool_calls_wrapper or dsv4_native_schema_prompt_with_only_generic_examples_gets_concrete_fallback or tool_markup_residue_strips_all_registered_marker_families or tool_markup_residue_strips_interrupted_non_dsml_fragments or responses_api_no_fallback_on_suppressed_reasoning or responses_extracts_suppressed_reasoning_tool_calls_before_finalize"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.809,
+            "elapsed_sec": 3.681,
             "counts": {
               "passed": 21,
               "deselected": 701
@@ -2317,7 +2272,7 @@
               "tests/test_engine_audit.py::TestV3SuppressReasoningNoFallback::test_responses_api_no_fallback_on_suppressed_reasoning PASSED [ 95%]",
               "tests/test_engine_audit.py::TestResponsesSuppressedReasoningToolCalls::test_responses_extracts_suppressed_reasoning_tool_calls_before_finalize PASSED [100%]",
               "",
-              "====================== 21 passed, 701 deselected in 2.04s ======================"
+              "====================== 21 passed, 701 deselected in 2.03s ======================"
             ]
           },
           "responses_history_contracts": {
@@ -2333,7 +2288,7 @@
               "responses_streaming_stores_history_for_previous_response_id or responses_streaming_reasoning_only_stores_placeholder_and_marker or chained_response_helper_emits_warning_for_reasoning_only_predecessor"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.69,
+            "elapsed_sec": 2.664,
             "counts": {
               "passed": 3,
               "deselected": 25
@@ -2352,7 +2307,7 @@
               "tests/test_responses_history.py::test_responses_streaming_reasoning_only_stores_placeholder_and_marker PASSED [ 66%]",
               "tests/test_responses_history.py::test_chained_response_helper_emits_warning_for_reasoning_only_predecessor PASSED [100%]",
               "",
-              "======================= 3 passed, 25 deselected in 1.95s ======================="
+              "======================= 3 passed, 25 deselected in 1.94s ======================="
             ]
           },
           "structured_output_repair_contracts": {
@@ -2369,7 +2324,7 @@
               "json_schema_decodes_nested_object_string or reports_nested_object_json_string_schema_decode or json_schema_repairs_qwen_adjacent_string_array or json_schema_coerces_string_to_array or chat_completion_repairs_and_canonicalizes_schema_json or repair_records_preserves_raw_vs_repaired_counts or repair_records_reports_raw_and_repaired_rates or reports_markdown_extraction_as_repair_with_required_fields or repair_records_supports_xml_root_and_required_fields"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.706,
+            "elapsed_sec": 2.715,
             "counts": {
               "passed": 9,
               "deselected": 49
@@ -2394,7 +2349,7 @@
               "tests/test_structured_output_repair_report.py::test_repair_records_reports_raw_and_repaired_rates PASSED [ 88%]",
               "tests/test_structured_output_repair_report.py::test_repair_records_supports_xml_root_and_required_fields PASSED [100%]",
               "",
-              "======================= 9 passed, 49 deselected in 1.97s ======================="
+              "======================= 9 passed, 49 deselected in 1.99s ======================="
             ]
           },
           "structured_output_retry_contracts": {
@@ -2410,7 +2365,7 @@
               "chat_response_format_strict_retries_failed_json_only or responses_text_format_strict_retries_failed_json_only or chat_response_format_strict_retries_failed_xml_only or responses_text_format_strict_retries_failed_xml_only or streaming_chat_strict_xml_validates_final_text or streaming_responses_strict_xml_validates_final_text"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.712,
+            "elapsed_sec": 2.707,
             "counts": {
               "passed": 6,
               "deselected": 97
@@ -2448,7 +2403,7 @@
               "streaming_responses_tool_call_arguments_survive_buffering or streaming_responses_reasoning_tool_call_keeps_arguments or streaming_responses_tool_call_uses_next_output_index_without_text or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths or streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.714,
+            "elapsed_sec": 2.711,
             "counts": {
               "passed": 7,
               "deselected": 96
@@ -2471,7 +2426,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments PASSED [ 85%]",
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_reasoning_tool_call_keeps_arguments PASSED [100%]",
               "",
-              "======================= 7 passed, 96 deselected in 1.98s ======================="
+              "======================= 7 passed, 96 deselected in 1.97s ======================="
             ]
           },
           "structured_guided_decoding_contracts": {
@@ -2489,7 +2444,7 @@
               "json_schema_processor_masks_non_json_start_token or chat_response_format_forwards_guided_json_hint or responses_text_format_forwards_guided_json_hint or generate_installs_guided_json_logits_processor"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.811,
+            "elapsed_sec": 2.784,
             "counts": {
               "passed": 4,
               "deselected": 159
@@ -2509,7 +2464,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_responses_text_format_forwards_guided_json_hint PASSED [ 75%]",
               "tests/test_llm.py::test_generate_installs_guided_json_logits_processor PASSED [100%]",
               "",
-              "====================== 4 passed, 159 deselected in 2.01s ======================="
+              "====================== 4 passed, 159 deselected in 2.04s ======================="
             ]
           },
           "structured_smoke_response_format_contracts": {
@@ -2525,7 +2480,7 @@
               "structured_json_probes_request_json_schema_response_format or mimo_structured_json_sentinel_requests_literal_schema_response_format"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.17,
+            "elapsed_sec": 0.156,
             "counts": {
               "passed": 2,
               "deselected": 73
@@ -2563,12 +2518,21 @@
               "allows gateway startup on ports used only by stopped or remote saved sessions|auto-switches to a standby model by waking it before direct OpenAI streaming|passes Responses function-call argument SSE through unchanged|passes Responses argument SSE with reasoning and empty final item arguments|returns backend-unavailable for stale Responses session ports"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.716,
+            "elapsed_sec": 0.896,
             "counts": {
               "passed": 5,
               "deselected": null
             },
             "stdout_tail": [
+              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Listening on 127.0.0.1:55255",
+              "",
+              "stderr | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Proxy error → 127.0.0.1:55254/v1/responses: connect ECONNREFUSED 127.0.0.1:55254",
+              "",
+              " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > stops other active local sessions before routing to the requested model",
+              " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > does nothing when single-model mode is disabled",
+              " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > allows gateway startup on ports used only by stopped or remote saved sessions 80ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > reports failure when another active local session cannot be unloaded",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > writes each streamed gateway response chunk once and treats EPIPE as disconnect",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > does not write gateway response chunks after the client socket is destroyed",
@@ -2585,19 +2549,10 @@
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches to a standby model by waking it before direct OpenAI streaming 12ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches Responses API streaming by model id while preserving output text deltas",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses function-call argument SSE through unchanged 4ms",
-              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses argument SSE with reasoning and empty final item arguments",
-              "[gateway] Stopped",
-              "",
-              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Listening on 127.0.0.1:54112",
-              "",
-              "stderr | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Proxy error → 127.0.0.1:54111/v1/responses: connect ECONNREFUSED 127.0.0.1:54111",
-              "",
-              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Stopped",
-              "",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses argument SSE with reasoning and empty final item arguments 3ms",
+              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Stopped",
+              "",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports 2ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches model capability requests by path model before proxying",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches cache endpoints by query model before proxying cache stats",
@@ -2606,8 +2561,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  5 passed | 20 skipped (25)",
-              "   Start at  04:29:57",
-              "   Duration  215ms (transform 122ms, setup 0ms, import 64ms, tests 103ms, environment 0ms)",
+              "   Start at  05:07:28",
+              "   Duration  216ms (transform 123ms, setup 0ms, import 65ms, tests 102ms, environment 0ms)",
               ""
             ]
           },
@@ -2628,7 +2583,7 @@
               "recovers Responses function-call arguments from argument delta and done events"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.566,
+            "elapsed_sec": 0.572,
             "counts": {
               "passed": 1,
               "deselected": null
@@ -2648,8 +2603,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  1 passed | 7 skipped (8)",
-              "   Start at  04:29:57",
-              "   Duration  71ms (transform 17ms, setup 0ms, import 21ms, tests 1ms, environment 0ms)",
+              "   Start at  05:07:28",
+              "   Duration  71ms (transform 16ms, setup 0ms, import 21ms, tests 1ms, environment 0ms)",
               ""
             ]
           }
@@ -3510,28 +3465,16 @@
     },
     {
       "requirement": "Gemma QAT/native MXFP4 E2B/E4B/12B/26B/31B runtime/media/cache/API/UI quality is release-cleared",
-      "status": "open",
+      "status": "pass",
       "evidence": [
-        "build/current-gemma-qat-native-mxfp4-local-inventory-after-audio-runtime-gate-20260610.json",
+        "build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-sessionlogs-reasoning-proof-20260611.json",
         "build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json",
         "build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json"
       ],
-      "caveat": "Gemma QAT/native MXFP4 source-smoke coverage is tracked separately from release clearance. Do not release-claim E2B, E4B, 12B, 26B, or 31B/31V QAT/native MXFP4 rows until full live media/tool/Responses/cache/UI/installed-app proof exists for the advertised modalities and model-owned defaults.",
       "details": {
-        "inventory_status": "open",
+        "inventory_status": "pass",
         "missing_required_rows": [],
-        "open_required_rows": [
-          "gemma4_e2b_qat_jang4m",
-          "gemma4_e4b_qat_jang4m",
-          "gemma4_12b_qat_jang4m",
-          "gemma4_26b_qat_jang4m",
-          "gemma4_31b_qat_jang4m",
-          "gemma4_e2b_qat_native_mxfp4",
-          "gemma4_e4b_qat_native_mxfp4",
-          "gemma4_12b_native_mxfp4",
-          "gemma4_26b_vl",
-          "gemma4_31v_or_31b_vl"
-        ],
+        "open_required_rows": [],
         "source_live_smoke_open_rows": [],
         "source_live_smoke_artifacts": {
           "gemma4_e2b_qat_jang4m": "build/current-all-local-model-smoke-gemma4-e2b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E2B-it-qat-JANG_4M/result.json",
@@ -3630,7 +3573,7 @@
         "qat_jang4m_rows": {
           "gemma4_e2b_qat_jang4m": {
             "display": "Gemma 4 E2B QAT JANG_4M",
-            "status": "open",
+            "status": "pass",
             "variant": "qat_jang4m",
             "expected_model_type": "gemma4",
             "tool_parser": "gemma4",
@@ -3728,7 +3671,7 @@
               "ui_cli_parity",
               "installed_app_parity"
             ],
-            "live_proof_status": "missing",
+            "live_proof_status": "pass",
             "source_live_smoke": {
               "status": "pass",
               "artifact": "build/current-all-local-model-smoke-gemma4-e2b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E2B-it-qat-JANG_4M/result.json",
@@ -3738,11 +3681,94 @@
               "row_count": null,
               "video_runtime_proven": false,
               "post_video_text_recovery_proven": false
+            },
+            "source_fullmedia_smoke": {
+              "status": "pass",
+              "artifact": "build/current-all-local-model-smoke-gemma4-e2b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-E2B-it-qat-JANG_4M/result.json",
+              "summary_status": "pass",
+              "missing_labels": [],
+              "failed_labels": [],
+              "checks": {
+                "artifact_exists": true,
+                "status_pass": true,
+                "all_required_labels_present": true,
+                "request_validations_clean": true,
+                "capability_family_gemma4": true,
+                "tool_parser_gemma4": true,
+                "reasoning_parser_gemma4": true,
+                "required_tool_args_exact": true,
+                "vision_image_blue": true,
+                "video_blue": true,
+                "audio_blue": true,
+                "post_media_text_recovery": true,
+                "mixed_swa_native_cache": true,
+                "block_l2_written": true,
+                "fresh_process_l2_restore": true
+              },
+              "requires_audio": true,
+              "request_count": 16,
+              "l2_restart": {
+                "status": "completed",
+                "cached_tokens": 56,
+                "cache_detail": "paged+mixed_swa+disk",
+                "disk_hits": 1
+              }
+            },
+            "installed_app_ui_proof": {
+              "status": "pass",
+              "artifact": "docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e2b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json",
+              "registered_as_pass_candidate": true,
+              "assertion_failures": [],
+              "checks": {
+                "status_pass": true,
+                "model_path_matches_row": true,
+                "installed_app_mode": true,
+                "installed_app_path": true,
+                "bundled_python": true,
+                "visible_chat_screenshot": true,
+                "required_surfaces_present": true,
+                "gemma4_mixed_swa_native_cache": true,
+                "block_l2_tokens_on_disk": true
+              },
+              "missing_surfaces": [],
+              "proven_surfaces": [
+                "cache_endpoint_stats",
+                "cache_hit_telemetry",
+                "chat_completions",
+                "generation_defaults_applied",
+                "installed_app_ui",
+                "l2_disk_storage",
+                "language_leak_check",
+                "long_tool_loop",
+                "native_cache_status",
+                "parser_leak_check",
+                "real_loaded_model",
+                "reasoning_display",
+                "responses_api",
+                "responses_cache_detail_usage",
+                "responses_delta_streaming",
+                "server_cache_controls",
+                "settings_persistence",
+                "tool_l2_cache_integrated"
+              ],
+              "ui_launch_mode": "installed-app",
+              "installed_app_path": "/Applications/vMLX.app",
+              "bundled_python": "/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3",
+              "served_model": "gemma-4-E2B-it-qat-JANG_4M",
+              "chat_screenshot": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e2b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png",
+              "final_visible": "REAL_UI_LIVE_TOOL_TWO\n\nThis is the second UI turn.",
+              "first_assistant_content": "The file",
+              "second_assistant_content": "REAL_UI_LIVE_TOOL_TWO\n\nThis is the second UI turn.",
+              "visible_assistant_turns_complete": true,
+              "persisted_reasoning_count": 3,
+              "persisted_tool_count": 842,
+              "cache_hit_tokens": 9428,
+              "l2_block_tokens_on_disk": 3779
             }
           },
           "gemma4_e4b_qat_jang4m": {
             "display": "Gemma 4 E4B QAT JANG_4M",
-            "status": "open",
+            "status": "pass",
             "variant": "qat_jang4m",
             "expected_model_type": "gemma4",
             "tool_parser": "gemma4",
@@ -3840,7 +3866,7 @@
               "ui_cli_parity",
               "installed_app_parity"
             ],
-            "live_proof_status": "missing",
+            "live_proof_status": "pass",
             "source_live_smoke": {
               "status": "pass",
               "artifact": "build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-E4B-it-qat-JANG_4M/result.json",
@@ -3850,11 +3876,94 @@
               "row_count": null,
               "video_runtime_proven": false,
               "post_video_text_recovery_proven": false
+            },
+            "source_fullmedia_smoke": {
+              "status": "pass",
+              "artifact": "build/current-all-local-model-smoke-gemma4-e4b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-E4B-it-qat-JANG_4M/result.json",
+              "summary_status": "pass",
+              "missing_labels": [],
+              "failed_labels": [],
+              "checks": {
+                "artifact_exists": true,
+                "status_pass": true,
+                "all_required_labels_present": true,
+                "request_validations_clean": true,
+                "capability_family_gemma4": true,
+                "tool_parser_gemma4": true,
+                "reasoning_parser_gemma4": true,
+                "required_tool_args_exact": true,
+                "vision_image_blue": true,
+                "video_blue": true,
+                "audio_blue": true,
+                "post_media_text_recovery": true,
+                "mixed_swa_native_cache": true,
+                "block_l2_written": true,
+                "fresh_process_l2_restore": true
+              },
+              "requires_audio": true,
+              "request_count": 16,
+              "l2_restart": {
+                "status": "completed",
+                "cached_tokens": 56,
+                "cache_detail": "paged+mixed_swa+disk",
+                "disk_hits": 1
+              }
+            },
+            "installed_app_ui_proof": {
+              "status": "pass",
+              "artifact": "docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e4b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json",
+              "registered_as_pass_candidate": true,
+              "assertion_failures": [],
+              "checks": {
+                "status_pass": true,
+                "model_path_matches_row": true,
+                "installed_app_mode": true,
+                "installed_app_path": true,
+                "bundled_python": true,
+                "visible_chat_screenshot": true,
+                "required_surfaces_present": true,
+                "gemma4_mixed_swa_native_cache": true,
+                "block_l2_tokens_on_disk": true
+              },
+              "missing_surfaces": [],
+              "proven_surfaces": [
+                "cache_endpoint_stats",
+                "cache_hit_telemetry",
+                "chat_completions",
+                "generation_defaults_applied",
+                "installed_app_ui",
+                "l2_disk_storage",
+                "language_leak_check",
+                "long_tool_loop",
+                "native_cache_status",
+                "parser_leak_check",
+                "real_loaded_model",
+                "reasoning_display",
+                "responses_api",
+                "responses_cache_detail_usage",
+                "responses_delta_streaming",
+                "server_cache_controls",
+                "settings_persistence",
+                "tool_l2_cache_integrated"
+              ],
+              "ui_launch_mode": "installed-app",
+              "installed_app_path": "/Applications/vMLX.app",
+              "bundled_python": "/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3",
+              "served_model": "gemma-4-E4B-it-qat-JANG_4M",
+              "chat_screenshot": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/agent-notes/current-real-ui-installed-app-gemma4-e4b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png",
+              "final_visible": "The file real_ui_tool_probe_2.txt has been created with the text REAL_UI_LIVE_TOOL_TWO. This is the second UI turn.",
+              "first_assistant_content": "The file real_ui_tool_probe_1.txt has been created with the text REAL_UI_LIVE_TOOL_ONE.",
+              "second_assistant_content": "The file real_ui_tool_probe_2.txt has been created with the text REAL_UI_LIVE_TOOL_TWO. This is the second UI turn.",
+              "visible_assistant_turns_complete": true,
+              "persisted_reasoning_count": 3,
+              "persisted_tool_count": 463,
+              "cache_hit_tokens": 9317,
+              "l2_block_tokens_on_disk": 3528
             }
           },
           "gemma4_12b_qat_jang4m": {
             "display": "Gemma 4 12B QAT JANG_4M",
-            "status": "open",
+            "status": "pass",
             "variant": "qat_jang4m",
             "expected_model_type": "gemma4_unified",
             "tool_parser": "gemma4",
@@ -3953,7 +4062,7 @@
               "ui_cli_parity",
               "installed_app_parity"
             ],
-            "live_proof_status": "missing",
+            "live_proof_status": "pass",
             "source_live_smoke": {
               "status": "pass",
               "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-tools-nomedia-l2-after-modality-token-clean-20260609/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json",
@@ -3963,11 +4072,94 @@
               "row_count": null,
               "video_runtime_proven": false,
               "post_video_text_recovery_proven": false
+            },
+            "source_fullmedia_smoke": {
+              "status": "pass",
+              "artifact": "build/current-all-local-model-smoke-gemma4-12b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-12B-it-qat-JANG_4M/result.json",
+              "summary_status": "pass",
+              "missing_labels": [],
+              "failed_labels": [],
+              "checks": {
+                "artifact_exists": true,
+                "status_pass": true,
+                "all_required_labels_present": true,
+                "request_validations_clean": true,
+                "capability_family_gemma4": true,
+                "tool_parser_gemma4": true,
+                "reasoning_parser_gemma4": true,
+                "required_tool_args_exact": true,
+                "vision_image_blue": true,
+                "video_blue": true,
+                "audio_blue": true,
+                "post_media_text_recovery": true,
+                "mixed_swa_native_cache": true,
+                "block_l2_written": true,
+                "fresh_process_l2_restore": true
+              },
+              "requires_audio": false,
+              "request_count": 14,
+              "l2_restart": {
+                "status": "completed",
+                "cached_tokens": 56,
+                "cache_detail": "paged+mixed_swa+disk",
+                "disk_hits": 1
+              }
+            },
+            "installed_app_ui_proof": {
+              "status": "pass",
+              "artifact": "docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json",
+              "registered_as_pass_candidate": true,
+              "assertion_failures": [],
+              "checks": {
+                "status_pass": true,
+                "model_path_matches_row": true,
+                "installed_app_mode": true,
+                "installed_app_path": true,
+                "bundled_python": true,
+                "visible_chat_screenshot": true,
+                "required_surfaces_present": true,
+                "gemma4_mixed_swa_native_cache": true,
+                "block_l2_tokens_on_disk": true
+              },
+              "missing_surfaces": [],
+              "proven_surfaces": [
+                "cache_endpoint_stats",
+                "cache_hit_telemetry",
+                "chat_completions",
+                "generation_defaults_applied",
+                "installed_app_ui",
+                "l2_disk_storage",
+                "language_leak_check",
+                "long_tool_loop",
+                "native_cache_status",
+                "parser_leak_check",
+                "real_loaded_model",
+                "reasoning_display",
+                "responses_api",
+                "responses_cache_detail_usage",
+                "responses_delta_streaming",
+                "server_cache_controls",
+                "settings_persistence",
+                "tool_l2_cache_integrated"
+              ],
+              "ui_launch_mode": "installed-app",
+              "installed_app_path": "/Applications/vMLX.app",
+              "bundled_python": "/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3",
+              "served_model": "gemma-4-12B-it-qat-JANG_4M",
+              "chat_screenshot": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/agent-notes/current-real-ui-installed-app-gemma4-12b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png",
+              "final_visible": "The second file has been created. REAL_UI_LIVE_TOOL_TWO. This is the second UI turn.",
+              "first_assistant_content": "The file has been created successfully. REAL_UI_LIVE_TOOL_ONE",
+              "second_assistant_content": "The second file has been created. REAL_UI_LIVE_TOOL_TWO. This is the second UI turn.",
+              "visible_assistant_turns_complete": true,
+              "persisted_reasoning_count": 3,
+              "persisted_tool_count": 961,
+              "cache_hit_tokens": 9340,
+              "l2_block_tokens_on_disk": 3538
             }
           },
           "gemma4_26b_qat_jang4m": {
             "display": "Gemma 4 26B QAT JANG_4M",
-            "status": "open",
+            "status": "pass",
             "variant": "qat_jang4m",
             "expected_model_type": "gemma4",
             "tool_parser": "gemma4",
@@ -4063,7 +4255,7 @@
               "ui_cli_parity",
               "installed_app_parity"
             ],
-            "live_proof_status": "missing",
+            "live_proof_status": "pass",
             "source_live_smoke": {
               "status": "pass",
               "artifact": "build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-26B-A4B-it-qat-JANG_4M/result.json",
@@ -4073,11 +4265,94 @@
               "row_count": null,
               "video_runtime_proven": false,
               "post_video_text_recovery_proven": false
+            },
+            "source_fullmedia_smoke": {
+              "status": "pass",
+              "artifact": "build/current-all-local-model-smoke-gemma4-26b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-26B-A4B-it-qat-JANG_4M/result.json",
+              "summary_status": "pass",
+              "missing_labels": [],
+              "failed_labels": [],
+              "checks": {
+                "artifact_exists": true,
+                "status_pass": true,
+                "all_required_labels_present": true,
+                "request_validations_clean": true,
+                "capability_family_gemma4": true,
+                "tool_parser_gemma4": true,
+                "reasoning_parser_gemma4": true,
+                "required_tool_args_exact": true,
+                "vision_image_blue": true,
+                "video_blue": true,
+                "audio_blue": true,
+                "post_media_text_recovery": true,
+                "mixed_swa_native_cache": true,
+                "block_l2_written": true,
+                "fresh_process_l2_restore": true
+              },
+              "requires_audio": false,
+              "request_count": 14,
+              "l2_restart": {
+                "status": "completed",
+                "cached_tokens": 56,
+                "cache_detail": "paged+mixed_swa+disk",
+                "disk_hits": 1
+              }
+            },
+            "installed_app_ui_proof": {
+              "status": "pass",
+              "artifact": "docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-proof.json",
+              "registered_as_pass_candidate": true,
+              "assertion_failures": [],
+              "checks": {
+                "status_pass": true,
+                "model_path_matches_row": true,
+                "installed_app_mode": true,
+                "installed_app_path": true,
+                "bundled_python": true,
+                "visible_chat_screenshot": true,
+                "required_surfaces_present": true,
+                "gemma4_mixed_swa_native_cache": true,
+                "block_l2_tokens_on_disk": true
+              },
+              "missing_surfaces": [],
+              "proven_surfaces": [
+                "cache_endpoint_stats",
+                "cache_hit_telemetry",
+                "chat_completions",
+                "generation_defaults_applied",
+                "installed_app_ui",
+                "l2_disk_storage",
+                "language_leak_check",
+                "long_tool_loop",
+                "native_cache_status",
+                "parser_leak_check",
+                "real_loaded_model",
+                "reasoning_display",
+                "responses_api",
+                "responses_cache_detail_usage",
+                "responses_delta_streaming",
+                "server_cache_controls",
+                "settings_persistence",
+                "tool_l2_cache_integrated"
+              ],
+              "ui_launch_mode": "installed-app",
+              "installed_app_path": "/Applications/vMLX.app",
+              "bundled_python": "/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3",
+              "served_model": "gemma-4-26B-A4B-it-qat-JANG_4M",
+              "chat_screenshot": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/agent-notes/current-real-ui-installed-app-gemma4-26b-qat-jang4m-responses-tools-cachecontrols-visible-chat-20260610-chat.png",
+              "final_visible": "I have completed the task. REAL_UI_LIVE_TOOL_TWO. This is the second UI turn.",
+              "first_assistant_content": "I have created the file. REAL_UI_LIVE_TOOL_ONE.",
+              "second_assistant_content": "I have completed the task. REAL_UI_LIVE_TOOL_TWO. This is the second UI turn.",
+              "visible_assistant_turns_complete": true,
+              "persisted_reasoning_count": 1,
+              "persisted_tool_count": 1143,
+              "cache_hit_tokens": 7151,
+              "l2_block_tokens_on_disk": 4884
             }
           },
           "gemma4_31b_qat_jang4m": {
             "display": "Gemma 4 31B QAT JANG_4M",
-            "status": "open",
+            "status": "pass",
             "variant": "qat_jang4m",
             "expected_model_type": "gemma4",
             "tool_parser": "gemma4",
@@ -4173,7 +4448,7 @@
               "ui_cli_parity",
               "installed_app_parity"
             ],
-            "live_proof_status": "missing",
+            "live_proof_status": "pass",
             "source_live_smoke": {
               "status": "pass",
               "artifact": "build/current-all-local-model-smoke-gemma4-31b-qat-jang4m-tools-nomedia-l2-20260609/JANGQ_gemma-4-31B-it-qat-JANG_4M/result.json",
@@ -4183,12 +4458,95 @@
               "row_count": null,
               "video_runtime_proven": false,
               "post_video_text_recovery_proven": false
+            },
+            "source_fullmedia_smoke": {
+              "status": "pass",
+              "artifact": "build/current-all-local-model-smoke-gemma4-31b-qat-jang4m-fullmedia-tools-l2-20260610/JANGQ_gemma-4-31B-it-qat-JANG_4M/result.json",
+              "summary_status": "pass",
+              "missing_labels": [],
+              "failed_labels": [],
+              "checks": {
+                "artifact_exists": true,
+                "status_pass": true,
+                "all_required_labels_present": true,
+                "request_validations_clean": true,
+                "capability_family_gemma4": true,
+                "tool_parser_gemma4": true,
+                "reasoning_parser_gemma4": true,
+                "required_tool_args_exact": true,
+                "vision_image_blue": true,
+                "video_blue": true,
+                "audio_blue": true,
+                "post_media_text_recovery": true,
+                "mixed_swa_native_cache": true,
+                "block_l2_written": true,
+                "fresh_process_l2_restore": true
+              },
+              "requires_audio": false,
+              "request_count": 14,
+              "l2_restart": {
+                "status": "completed",
+                "cached_tokens": 56,
+                "cache_detail": "paged+mixed_swa+disk",
+                "disk_hits": 1
+              }
+            },
+            "installed_app_ui_proof": {
+              "status": "pass",
+              "artifact": "docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-qat-jang4m-responses-tools-cachecontrols-visible-chat-short-second-tool-20260610-proof.json",
+              "registered_as_pass_candidate": true,
+              "assertion_failures": [],
+              "checks": {
+                "status_pass": true,
+                "model_path_matches_row": true,
+                "installed_app_mode": true,
+                "installed_app_path": true,
+                "bundled_python": true,
+                "visible_chat_screenshot": true,
+                "required_surfaces_present": true,
+                "gemma4_mixed_swa_native_cache": true,
+                "block_l2_tokens_on_disk": true
+              },
+              "missing_surfaces": [],
+              "proven_surfaces": [
+                "cache_endpoint_stats",
+                "cache_hit_telemetry",
+                "chat_completions",
+                "generation_defaults_applied",
+                "installed_app_ui",
+                "l2_disk_storage",
+                "language_leak_check",
+                "long_tool_loop",
+                "native_cache_status",
+                "parser_leak_check",
+                "real_loaded_model",
+                "reasoning_display",
+                "responses_api",
+                "responses_cache_detail_usage",
+                "responses_delta_streaming",
+                "server_cache_controls",
+                "settings_persistence",
+                "tool_l2_cache_integrated"
+              ],
+              "ui_launch_mode": "installed-app",
+              "installed_app_path": "/Applications/vMLX.app",
+              "bundled_python": "/Applications/vMLX.app/Contents/Resources/bundled-python/python/bin/python3",
+              "served_model": "gemma-4-31B-it-qat-JANG_4M",
+              "chat_screenshot": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/docs/internal/agent-notes/current-real-ui-installed-app-gemma4-31b-qat-jang4m-responses-tools-cachecontrols-visible-chat-short-second-tool-20260610-chat.png",
+              "final_visible": "REAL_UI_LIVE_TOOL_TWO second UI turn.",
+              "first_assistant_content": "The file has been created with the text REAL_UI_LIVE_TOOL_ONE.",
+              "second_assistant_content": "REAL_UI_LIVE_TOOL_TWO second UI turn.",
+              "visible_assistant_turns_complete": true,
+              "persisted_reasoning_count": 4,
+              "persisted_tool_count": 412,
+              "cache_hit_tokens": 320,
+              "l2_block_tokens_on_disk": 2364
             }
           }
         },
         "checks": {
           "all_required_source_live_smokes_present": true,
-          "all_required_live_proofs_present": false
+          "all_required_live_proofs_present": true
         },
         "required_next_evidence": [
           "same-model raw SSE direct/gateway/tunnel Responses tool-argument streaming",
@@ -4199,7 +4557,7 @@
           "Gemma4 QAT JANG_4M autodetect, Responses streaming args/content deltas, media honesty, UI/CLI, and installed-app parity"
         ],
         "evidence_files_present": {
-          "build/current-gemma-qat-native-mxfp4-local-inventory-after-audio-runtime-gate-20260610.json": true,
+          "build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-sessionlogs-reasoning-proof-20260611.json": true,
           "build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json": true,
           "build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json": true
         },
@@ -4333,8 +4691,8 @@
           "indexed_payload_gb_decimal": 118.73,
           "indexed_payload_gib": 110.57,
           "required_available_gib": 118.57,
-          "available_gib": 111.12,
-          "memory_gap_gib": 7.45,
+          "available_gib": 80.05,
+          "memory_gap_gib": 38.52,
           "memory_preflight_decision": "do_not_launch",
           "launch_safe": false,
           "classification": "careful_ram_live_proof_pending",
@@ -4563,8 +4921,8 @@
         "noheavy_contracts": {
           "api_cache": "pass",
           "cache_architecture": "pass",
-          "model_family_detection": "fail",
-          "n2_family_policy": false,
+          "model_family_detection": "pass",
+          "n2_family_policy": true,
           "n2_jangtq2_live_runtime_api_cache": true,
           "n2_jangtq2_direct_gateway_stream_boundary": true,
           "turboquant_runtime_contract": true,
@@ -6920,8 +7278,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 89.15,
-              "memory_gap_gb": 48.25
+              "free_plus_speculative_purgeable_gb": 61.82,
+              "memory_gap_gb": 75.58
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -8850,8 +9208,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 89.15,
-              "memory_gap_gb": 48.25
+              "free_plus_speculative_purgeable_gb": 61.82,
+              "memory_gap_gb": 75.58
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -9381,7 +9739,7 @@
         "current_source_full_output_preflight": {
           "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
           "artifact_present": true,
-          "created_at": "2026-06-11T04:31:53-0700",
+          "created_at": "2026-06-11T05:09:24-0700",
           "status": "skipped",
           "reason": "insufficient_vm_stat_memory",
           "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -9402,23 +9760,23 @@
             "legacy_completion_raw"
           ],
           "case_count": 14,
-          "available_gb": 104.01,
+          "available_gb": 89.84,
           "total_gb": 128.0,
           "required_available_gb": 120.0,
           "required_free_gb": 120.0,
           "min_free_gb": 120.0,
-          "available_for_gate_gb": 89.21,
+          "available_for_gate_gb": 61.85,
           "required_model_margin_gb": 40.0,
           "model_size_gb": null,
           "safety_margin_gb": null,
           "floor_valid": true,
-          "memory_gap_gb": 30.79,
-          "strict_vm_stat_memory_gap_gb": 30.79,
-          "psutil_available_gap_gb": 15.99,
+          "memory_gap_gb": 58.15,
+          "strict_vm_stat_memory_gap_gb": 58.15,
+          "psutil_available_gap_gb": 30.16,
           "memory_pressure_free_percent": 94,
           "memory_pressure_error": null,
           "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-          "free_plus_speculative_purgeable_gb": 89.21,
+          "free_plus_speculative_purgeable_gb": 61.85,
           "launch_blockers": [
             "insufficient_memory"
           ],
@@ -9427,12 +9785,12 @@
           "top_memory_processes": [
             {
               "pid": 60802,
-              "rss_gb": 0.22,
+              "rss_gb": 0.24,
               "command": "codex --yolo resume"
             },
             {
               "pid": 438,
-              "rss_gb": 0.11,
+              "rss_gb": 0.13,
               "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
             },
             {
@@ -9441,19 +9799,24 @@
               "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
             },
             {
-              "pid": 41944,
+              "pid": 56727,
               "rss_gb": 0.03,
               "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
             },
             {
-              "pid": 42425,
+              "pid": 57239,
               "rss_gb": 0.03,
               "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
             },
             {
-              "pid": 146,
-              "rss_gb": 0.01,
-              "command": "/System/Library/CoreServices/launchservicesd"
+              "pid": 60924,
+              "rss_gb": 0.03,
+              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+            },
+            {
+              "pid": 885,
+              "rss_gb": 0.02,
+              "command": "/Applications/Codex.app/Contents/Resources/codex app-server --analytics-default-enabled"
             },
             {
               "pid": 179,
@@ -9461,14 +9824,9 @@
               "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
             },
             {
-              "pid": 76122,
+              "pid": 146,
               "rss_gb": 0.01,
-              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
-            },
-            {
-              "pid": 106,
-              "rss_gb": 0.01,
-              "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
+              "command": "/System/Library/CoreServices/launchservicesd"
             },
             {
               "pid": 42839,
@@ -9830,7 +10188,7 @@
           "source_full_output_preflight": {
             "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
             "artifact_present": true,
-            "created_at": "2026-06-11T04:31:53-0700",
+            "created_at": "2026-06-11T05:09:24-0700",
             "status": "skipped",
             "reason": "insufficient_vm_stat_memory",
             "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -9851,23 +10209,23 @@
               "legacy_completion_raw"
             ],
             "case_count": 14,
-            "available_gb": 104.01,
+            "available_gb": 89.84,
             "total_gb": 128.0,
             "required_available_gb": 120.0,
             "required_free_gb": 120.0,
             "min_free_gb": 120.0,
-            "available_for_gate_gb": 89.21,
+            "available_for_gate_gb": 61.85,
             "required_model_margin_gb": 40.0,
             "model_size_gb": null,
             "safety_margin_gb": null,
             "floor_valid": true,
-            "memory_gap_gb": 30.79,
-            "strict_vm_stat_memory_gap_gb": 30.79,
-            "psutil_available_gap_gb": 15.99,
+            "memory_gap_gb": 58.15,
+            "strict_vm_stat_memory_gap_gb": 58.15,
+            "psutil_available_gap_gb": 30.16,
             "memory_pressure_free_percent": 94,
             "memory_pressure_error": null,
             "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-            "free_plus_speculative_purgeable_gb": 89.21,
+            "free_plus_speculative_purgeable_gb": 61.85,
             "launch_blockers": [
               "insufficient_memory"
             ],
@@ -9876,12 +10234,12 @@
             "top_memory_processes": [
               {
                 "pid": 60802,
-                "rss_gb": 0.22,
+                "rss_gb": 0.24,
                 "command": "codex --yolo resume"
               },
               {
                 "pid": 438,
-                "rss_gb": 0.11,
+                "rss_gb": 0.13,
                 "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
               },
               {
@@ -9890,19 +10248,24 @@
                 "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
               },
               {
-                "pid": 41944,
+                "pid": 56727,
                 "rss_gb": 0.03,
                 "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
               },
               {
-                "pid": 42425,
+                "pid": 57239,
                 "rss_gb": 0.03,
                 "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
               },
               {
-                "pid": 146,
-                "rss_gb": 0.01,
-                "command": "/System/Library/CoreServices/launchservicesd"
+                "pid": 60924,
+                "rss_gb": 0.03,
+                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+              },
+              {
+                "pid": 885,
+                "rss_gb": 0.02,
+                "command": "/Applications/Codex.app/Contents/Resources/codex app-server --analytics-default-enabled"
               },
               {
                 "pid": 179,
@@ -9910,14 +10273,9 @@
                 "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
               },
               {
-                "pid": 76122,
+                "pid": 146,
                 "rss_gb": 0.01,
-                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
-              },
-              {
-                "pid": 106,
-                "rss_gb": 0.01,
-                "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
+                "command": "/System/Library/CoreServices/launchservicesd"
               },
               {
                 "pid": 42839,

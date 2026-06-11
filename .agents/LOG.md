@@ -17167,3 +17167,43 @@ Next action:
 - Not claimed:
   no public tunnel parity, no audio support, no N2 JANG_1L proof, no release
   readiness, and no signing/notarization action.
+
+# 2026-06-11 continuation PDT - next lane Gemma QAT/MXFP/JANG proof gap
+
+- Boundary:
+  Gemma audio must stay honest: no support claim from config/token/projection
+  metadata; require real audio tower weights plus live audio E2E before green.
+- Next action:
+  inspect the current objective Gemma row and existing Gemma source/live/UI
+  proof artifacts, then consume stronger evidence or fix one concrete runtime
+  blocker. No release/sign/notarize/PyPI/download-site action.
+
+# 2026-06-11 continuation PDT - Gemma/N2/MiMo proof-state refresh result
+
+- Source/proof updates:
+  `tests/cross_matrix/summarize_objective_proof.py` consumes
+  `build/current-gemma-qat-native-mxfp4-local-inventory-after-31b-sessionlogs-reasoning-proof-20260611.json`.
+  Gemma QAT/native MXFP4 is now `PASS` in
+  `build/current-objective-proof-after-dsv4-real-ui-valid-preflight-20260611.json`.
+- Current known-open rows:
+  removed the now-green Gemma QAT/native MXFP4 objective from
+  `run_current_regression_suite.py` and `release_regression_manifest.py`.
+  N2 stays open, but `n2_family_policy=true` is now recorded separately from
+  the still-open JANG_1L/live UI/media/tunnel evidence.
+- Runtime/proof contract fixes:
+  `mimo_v25_jang2l` decode-speed row now declares `reasoning_parser="think_xml"`;
+  public issue #116 is classified `open` when reasoning-template proof is red
+  but source/UI thinking-off wiring is present; the real-UI semantics test now
+  asserts the exact-reply regex guard rather than one literal prompt string.
+- Verification:
+  focused cluster passed `6 passed`; broader focused proof selection passed
+  `99 passed, 432 deselected`.
+  Regenerated current regression suite has `focused_regression_pytest rc=0`,
+  `model_family_detection_contracts rc=0`, `public_app_issue_audit rc=0`, and
+  `gemma_qat_native_mxfp4_inventory_gate rc=0`.
+- Open release blockers:
+  `build/current-release-regression-manifest-after-dsv4-real-ui-valid-preflight-20260611.json`
+  still has `current_proof_sweep=fail`, `prepackage_ready=false`, and
+  `release_ready=false`; the public-app audit is now validated as open with no
+  manifest failures, and full objective checklist remains `status=open` with
+  `failed_count=64`.
