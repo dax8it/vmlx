@@ -15245,3 +15245,43 @@ Next action:
 - Boundary:
   no fake argument synthesis was added. Live same-model direct/gateway/tunnel
   raw SSE remains open because deployed routing can still be stale or aliased.
+
+# 2026-06-11 continuation - MiMo JANGTQ_2 lane selected
+
+- Current-turn instruction:
+  continue the active goal in efficient build/fix/proof blocks; avoid
+  recursive subagents and avoid broad test-suite churn. Focus on concrete
+  model/runtime blockers for N2 JANGTQ2, MiMo V2.5 JANG/JANGTQ, Gemma
+  JANG/MXFP/QAT, Qwen tools/reasoning, media, cache reuse, TurboQuant, and
+  content/reasoning/tool delta streaming.
+- Lane decision:
+  current written board says N2 JANGTQ2 source chat/cache/Responses/L2 proof
+  is already green/consumed, while active directives list MiMo V2.5
+  JANGTQ_2 exactness/logit/artifact diagnosis as the next allowed lane.
+  Switch to MiMo rather than duplicate an already-green N2 source load.
+- Boundary:
+  no release/sign/notarize/PyPI/updater/site work, no N2 JANG_1L, no subagent
+  delegation, no fake parser/JSON/cache repair to hide MiMo exactness issues.
+
+# 2026-06-10 23:33 PDT MiMo unsupported-thinking request contract fixed
+
+- Root cause:
+  MiMo keeps `think_xml` as a cleanup/parser rail but is currently
+  `supportsThinking=false` in the panel/Python registry. Panel chat IPC still
+  forwarded stale explicit `enableThinking=true` on remote/gateway sessions
+  because the remote branch did not honor known `supportsThinking=false`.
+- Fix:
+  `panel/src/main/ipc/chat.ts` now tracks `sessionSupportsThinking` from
+  `detectModelConfigFromDir()` and suppresses `enable_thinking` whenever
+  detection explicitly reports unsupported thinking. Unknown remote providers
+  still preserve explicit thinking controls, and reasoning-capable local/remote
+  models are unchanged.
+- Verification:
+  `cd panel && npm exec vitest -- run tests/request-builder.test.ts` passed
+  `73/73`; `cd panel && npm exec tsc -- --noEmit --pretty false` passed.
+- Proof artifact:
+  `build/current-mimo-reasoning-unsupported-request-contract-20260610.json`.
+- Boundary:
+  this is not a MiMo reasoning-on success and does not fix JANGTQ_2 literal
+  exactness or media semantics. It prevents a stale UI/API request from
+  claiming unsupported MiMo thinking.

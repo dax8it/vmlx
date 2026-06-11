@@ -9393,3 +9393,35 @@ Other-agent action:
   aliases and verify current source is actually deployed. If tunnel still emits
   `{}`, check bundled/deployed `server.py` and parser file provenance before
   changing parser semantics.
+
+# 2026-06-11 continuation - MiMo JANGTQ_2 lane selected
+
+- Current-turn instruction recorded:
+  continue the active goal by fixing/proving real blockers in efficient blocks;
+  avoid subagents and avoid broad suite churn. Keep focus on model/runtime
+  quality for N2 JANGTQ2, MiMo JANG/JANGTQ, Gemma JANG/MXFP/QAT, Qwen
+  Responses/tools/reasoning, media/cache/TurboQuant, and streaming deltas.
+- Lane selection:
+  N2 JANGTQ2 current-source chat/cache/Responses/L2 proof is already present
+  and consumed in the board. Next non-duplicate allowed lane is MiMo V2.5
+  JANGTQ_2 exactness/logit/artifact diagnosis.
+- Constraints:
+  no release/sign/notarize/package/PyPI/updater/site action; no N2 JANG_1L;
+  no subagents; no parser/JSON/string/cache repair masking MiMo artifact
+  exactness failures.
+
+# 2026-06-10 23:33 PDT MiMo unsupported-thinking request contract
+
+- Fixed:
+  stale explicit UI Thinking On no longer sends `enable_thinking=true` when
+  local detection says a MiMo session has `supportsThinking=false`, including
+  remote/gateway/loopback request construction.
+- Verified:
+  request-builder focused vitest passed `73/73`; panel TypeScript compile
+  passed.
+- Artifact:
+  `build/current-mimo-reasoning-unsupported-request-contract-20260610.json`.
+- Still open:
+  app rebuild/installed-app rerun, MiMo JANGTQ_2 literal exactness,
+  source-vs-remade-artifact comparison, media semantic release quality, and
+  release packaging gates.
