@@ -7746,3 +7746,74 @@ Other-agent action:
     weight-backed and honestly gated;
   - Gemma 26B/31B bundled installed-app video;
   - release/sign/notarize readiness.
+
+# 2026-06-11 continuation - parser spacing/special-character deep audit
+
+- Active lane:
+  - deep audit remaining tool/reasoning/parser and Responses surfaces for
+    spacing, leading/trailing whitespace, newlines, shell/path characters,
+    XML entities, JSON escaping, Unicode, raw delimiter preservation, argument
+    delta/done/final consistency, and required-argument fail-closed behavior.
+- Current known green evidence:
+  - Qwen plain-line fallback preserves raw payload text after the
+    schema-recognized tool-name line;
+  - compact XML fallback preserves leading/trailing spaces, XML entities, and
+    newline payloads;
+  - DSML degraded/plain param parser preserves string-schema raw values;
+  - DeepSeek, Functionary, Llama, Hermes, Granite, Mistral, xLAM, LFM2,
+    MiniMax, DSML, Qwen, XML-function, and shared parser paths have current
+    required-argument fail-closed source coverage.
+- Constraints:
+  - do not synthesize missing args;
+  - do not trim user-provided string arguments unless the model family format
+    requires wrapper-only cleanup and the payload is separately preserved;
+  - do not make fake parser fixes without a reproduced exactness failure.
+- Next action:
+  - scan remaining parser code for trim/strip/entity/JSON serialization paths,
+    map each to existing coverage, then add a focused repro/fix only if a real
+    gap remains.
+
+# 2026-06-11 Auto parser required-args fail-closed fix
+
+- Reproduced:
+  - `AutoToolParser` returned an executable tool call for
+    `<tool_call><function=record_fact></function></tool_call>` with
+    `arguments="{}"` even when the request schema required `value`;
+  - direct probe before the fix showed:
+    `AutoToolParser missing True [{'id': ..., 'name': 'record_fact', 'arguments': '{}'}]`.
+- Root cause:
+  - auto-detected candidate branches appended decoded calls directly without
+    routing them through the shared `_arguments_satisfy_required_schema`
+    validator;
+  - this affected at least the Nemotron/XML auto branch and raw JSON fallback,
+    meaning the generic `auto`/`generic` parser could reopen the same
+    empty-required-arguments class fixed in model-specific parsers.
+- Fix:
+  - added `_append_tool_call_if_schema_valid` in
+    `vmlx_engine/tool_parsers/auto_tool_parser.py`;
+  - routed Mistral, Qwen bracket, Nemotron/XML, Qwen/Hermes XML, Llama, and raw
+    JSON auto-parser candidates through the shared required-schema guard before
+    appending;
+  - kept string payload preservation for valid arguments, including leading and
+    trailing spaces and XML entities.
+- Verification:
+  - direct probe after fix:
+    empty Nemotron/XML and empty raw JSON returned no tool calls;
+    valid payloads preserved `{"value": "  blue & cat  "}`;
+  - focused tests passed:
+    `tests/test_tool_parser_required_args_fail_closed.py`,
+    `TestXMLFamilyToolArgumentPreservation`,
+    `tests/test_xml_function_tool_parser.py`,
+    `tests/test_responses_raw_sse_parity_contract.py`:
+    `61 passed`;
+  - broader parser/reasoning suite passed:
+    `tests/test_tool_parsers.py`,
+    `tests/test_reasoning_tool_interaction.py`,
+    `tests/test_tool_parser_required_args_fail_closed.py`:
+    `193 passed`;
+  - `py_compile` passed for the changed parser/test files;
+  - `git diff --check` passed.
+- Boundaries:
+  - this is source/parser proof, not a fresh live direct/gateway/tunnel capture;
+  - no synthetic missing arguments were added;
+  - no reasoning/tool mode was disabled as a workaround.
