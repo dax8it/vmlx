@@ -14215,3 +14215,16 @@ Next action:
   `2` disk writes, text live speeds `19.5` and `19.6 tok/s`.
 - Boundary: Chat Completions video/VL only, not Responses media, not audio,
   not MXFP, and no release action.
+
+# 2026-06-10 20:52 PDT Responses invalid XML fallback cleanup fixed
+- Reproduced a current source gap in the nonstream/shared parser path: invalid
+  marker-bearing XML with a preamble could be returned as cleaned text after
+  parser/generic fallback found no valid tool call.
+- Patched `_generic_parse_filtered` in `vmlx_engine/server.py` to strip native
+  tool markup residue when markers remain after all valid parse/repair paths
+  fail. No argument synthesis, no name rewrite, no `{}` acceptance.
+- Verification: focused empty-args/special-character slice passed `6 passed`;
+  broader parser/Responses slice passed `33 passed, 171 deselected`;
+  changed-file `py_compile` and `git diff --check` passed.
+- Boundary: source/API fix only; live same-model direct/gateway/tunnel raw SSE
+  recapture and output-index parity remain separate rows.

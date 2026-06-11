@@ -8530,3 +8530,28 @@ Other-agent action:
   frame image path and completed in one stream update, so do not cite the UI
   `0.0 tok/s` sample as a decode-speed regression without a dedicated metrics
   repro.
+
+# 2026-06-10 20:52 PDT Responses invalid XML fallback cleanup fixed
+
+- Root cause found in source, not assumed from the report:
+  streaming Responses already failed closed for the reported preamble plus
+  empty `<function=exec_command></function>` case, but the shared nonstream
+  `_parse_tool_calls_with_parser` fallback returned original marker-bearing
+  text when no parser/generic/repair path produced a valid call.
+- Fix:
+  `_generic_parse_filtered` now strips native tool markup residue when tool
+  markers are present and no valid parser, instruction-echo repair, or
+  required-single-tool bare-JSON repair produced a call. It does not synthesize
+  arguments, rewrite names, or accept `{}` for required schemas.
+- Verified edge coverage:
+  empty required XML call fails closed; preamble plus empty XML never emits
+  `"arguments": "{}"`; auto mode keeps the visible preamble while stripping raw
+  invalid XML; valid XML parameters still preserve escaped special characters
+  and spacing such as `printf '&lt;日本語&gt;' &amp;&amp; pwd`.
+- Verification:
+  focused six-test slice passed; broader parser/Responses slice passed
+  `33 passed, 171 deselected`; changed-file `py_compile` and `git diff --check`
+  passed.
+- Boundary:
+  source/API parser fix only. Same-model live direct/gateway/tunnel raw SSE
+  parity and output-index recapture remain separate proof rows.

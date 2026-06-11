@@ -7,6 +7,44 @@ separates what was actually loaded and proven from what remains red.
 
 ## Latest Proof Additions
 
+### Responses Empty-Args / Invalid XML Cleanup Fix
+
+Source fix:
+
+- `vmlx_engine/server.py`
+- `_generic_parse_filtered` now strips native tool-markup residue when the text
+  contains tool markers but no valid parser, instruction-echo repair, or
+  required-single-tool bare-JSON repair produced a call.
+
+What this fixes:
+
+- The reported preamble plus empty XML function shape no longer falls through
+  as visible raw tool markup in the shared nonstream parser cleanup path:
+  `<tool_call><function=exec_command></function></tool_call>`.
+- Required-tool streaming already failed closed in current source; this closes
+  the remaining shared parser fallback gap.
+- The fix does not synthesize missing arguments, rewrite function names, or
+  accept `{}` for required schemas.
+
+Verification:
+
+- Focused slice:
+  `6 passed`
+  - empty required XML call fails closed
+  - Responses preamble plus empty XML never emits `"arguments": "{}"`
+  - auto mode keeps visible preamble while stripping invalid raw XML
+  - nonstream/shared parser strips invalid XML residue
+  - valid XML preserves escaped special characters and spacing
+- Broader parser/Responses slice:
+  `33 passed, 171 deselected`.
+- Changed-file `py_compile` and `git diff --check` passed.
+
+Boundary:
+
+- This is source/API parser cleanup proof. It is not same-model live
+  direct/gateway/tunnel raw SSE recapture, and it does not by itself close the
+  output-index parity row.
+
 ### Gemma4 31B QAT JANG_4M Installed-App Bundled Video Proof
 
 Artifact:
