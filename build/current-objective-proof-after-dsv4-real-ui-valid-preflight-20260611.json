@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-11T04:22:38-0700",
+  "created_at": "2026-06-11T04:35:36-0700",
   "requirements": [
     {
       "requirement": "DSV4 Flash prefix/paged/L2 cache is enabled by default from app launch",
@@ -682,7 +682,7 @@
               "tests/load-progress-honesty.test.ts"
             ],
             "returncode": 1,
-            "elapsed_sec": 0.567,
+            "elapsed_sec": 0.57,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 5,
@@ -726,8 +726,8 @@
               "",
               " Test Files  1 failed | 5 passed (6)",
               "      Tests  1 failed | 314 passed (315)",
-              "   Start at  04:17:42",
-              "   Duration  271ms (transform 426ms, setup 0ms, import 496ms, tests 84ms, environment 0ms)",
+              "   Start at  04:30:44",
+              "   Duration  271ms (transform 417ms, setup 0ms, import 499ms, tests 84ms, environment 0ms)",
               ""
             ]
           },
@@ -739,7 +739,7 @@
               "typecheck"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.348,
+            "elapsed_sec": 2.326,
             "counts": {
               "test_files_passed": null,
               "tests_passed": null,
@@ -761,7 +761,7 @@
               "tests/model-config-registry.test.ts"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.474,
+            "elapsed_sec": 0.472,
             "counts": {
               "test_files_passed": 1,
               "tests_passed": 72,
@@ -775,8 +775,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  72 passed (72)",
-              "   Start at  04:17:45",
-              "   Duration  139ms (transform 49ms, setup 0ms, import 58ms, tests 32ms, environment 0ms)",
+              "   Start at  04:30:46",
+              "   Duration  206ms (transform 49ms, setup 0ms, import 57ms, tests 32ms, environment 0ms)",
               ""
             ]
           },
@@ -790,7 +790,7 @@
               "../tests/test_model_config_registry.py"
             ],
             "returncode": 1,
-            "elapsed_sec": 2.761,
+            "elapsed_sec": 2.763,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 135,
@@ -849,7 +849,7 @@
               "../tests/test_panel_cli_flag_contract.py"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.134,
+            "elapsed_sec": 0.136,
             "counts": {
               "test_files_passed": null,
               "tests_passed": 9,
@@ -1355,7 +1355,7 @@
           "vmlx_engine/mllm_scheduler.py": "19d10924b9e240725d75cb329bae2cc8e5a074677af728b70fdd8dbbba500498",
           "vmlx_engine/model_config_registry.py": "47b67d23e4bf61450feb33a299bba2a9d6ae2d2962a6718bb27c33bda306c317",
           "vmlx_engine/tq_disk_store.py": "32592de18d85e645827b077f32c9eee459ccdb40a0c226ae800925b1f6437b5a",
-          "tests/cross_matrix/run_noheavy_api_cache_contract.py": "382768980fb19b1f73249f01a334223cc23b803394ec792c62c35051f793bd37",
+          "tests/cross_matrix/run_noheavy_api_cache_contract.py": "4cb890e9798f431ab692c5689c93447ef928cdf17fb6b55cea38d972212294f4",
           "tests/cross_matrix/run_cache_architecture_contract.py": "544d5ba106a2414b8c14da5b841ecefdb4a8c351fb78440c0765582f6892e660",
           "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
           "tests/test_batching.py": "56fa5cb4d01cc64e9ab2d4f599e7e7f06a84dd42ed1607f352f27f77eedb6b38",
@@ -1387,7 +1387,7 @@
           "vmlx_engine/mllm_scheduler.py": "19d10924b9e240725d75cb329bae2cc8e5a074677af728b70fdd8dbbba500498",
           "vmlx_engine/model_config_registry.py": "47b67d23e4bf61450feb33a299bba2a9d6ae2d2962a6718bb27c33bda306c317",
           "vmlx_engine/tq_disk_store.py": "32592de18d85e645827b077f32c9eee459ccdb40a0c226ae800925b1f6437b5a",
-          "tests/cross_matrix/run_noheavy_api_cache_contract.py": "382768980fb19b1f73249f01a334223cc23b803394ec792c62c35051f793bd37",
+          "tests/cross_matrix/run_noheavy_api_cache_contract.py": "4cb890e9798f431ab692c5689c93447ef928cdf17fb6b55cea38d972212294f4",
           "tests/cross_matrix/run_cache_architecture_contract.py": "544d5ba106a2414b8c14da5b841ecefdb4a8c351fb78440c0765582f6892e660",
           "tests/test_engine_audit.py": "d0804ec5131beb0a89049dfc5bd47e26eaf3affd0f3af7b29dd66b0b097e3f33",
           "tests/test_batching.py": "56fa5cb4d01cc64e9ab2d4f599e7e7f06a84dd42ed1607f352f27f77eedb6b38",
@@ -2081,7 +2081,7 @@
       "requirement": "Current-source API adapters and non-DSV4 cache contracts are no-heavy covered",
       "status": "pass",
       "evidence": [
-        "build/current-noheavy-api-cache-contract-after-responses-reasoning-empty-final-args-gateway-20260609.json"
+        "build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json"
       ],
       "details": {
         "contract_status": "pass",
@@ -2115,7 +2115,7 @@
               "chat_and_responses_log_and_forward_supported_sampling_kwargs or anthropic_messages_omitted_max_tokens_uses_bundle_default or request_output_caps_override_server_default_without_touching_context_cap or chat_and_responses_streaming_output_caps_override_server_default_without_touching_context_cap or legacy_completions_output_cap_overrides_server_default_without_touching_context_cap or legacy_completions_streaming_output_cap_overrides_server_default_without_touching_context_cap or anthropic_messages_streaming_max_tokens_overrides_server_default_without_touching_context_cap or prompt_context_aliases_clamp_without_rewriting_output_caps or ollama_streaming_num_predict_overrides_server_default_without_touching_context_cap or responses_request_has_sampling_fields or media_diag_hooks_cover_anthropic_and_ollama_streaming_ingress or responses_nonstreaming_forwards_tc_id or chat_completion_streaming_validates_json or responses_api_streaming_validates_json or streaming_emits_error_on_strict_failure or server_docs_state_response_format_is_not_constrained_decoding or text_format_has_json_schema_field or text_format_preserves_schema_data or chat_completions_nonstreaming or responses_nonstreaming or chat_completions_streaming or responses_streaming or chat_stream_tracks_cache_detail_alongside_cached_tokens or chat_stream_finish_chunks_emit_cache_detail or responses_stream_tracks_cache_detail_alongside_cached or responses_stream_finish_emits_cache_detail or usage_builders_preserve_cache_detail_without_cached_tokens or chat_stream_usage_preserves_cache_detail_without_cached_tokens or responses_stream_usage_preserves_cache_detail_without_cached_tokens or generic_turboquant_patcher_skips_hybrid_ssm or ollama_streaming_suppresses_duplicate_done_chunks or cache_stats_endpoint_projects_cache_reuse_skip_telemetry or cache_entries_endpoint_lists_paged_prefix_blocks or cache_warm_endpoint_prefills_and_stores_block_cache or clear_cache_prefix_clears_prefix_l2_without_multimodal or native_cache_status_reports_dsv4_separately_from_tq_kv or native_cache_status_reports_zaya_typed_cca or native_cache_status_reports_plain_attention_kv or acceleration_status_reports_internal_jangtq_acceleration_when_enabled"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.888,
+            "elapsed_sec": 2.929,
             "counts": {
               "passed": 42,
               "deselected": 539
@@ -2160,7 +2160,7 @@
               "tests/test_engine_audit.py::TestStreamUsagePropagatesCacheDetail::test_chat_stream_usage_preserves_cache_detail_without_cached_tokens PASSED [ 97%]",
               "tests/test_engine_audit.py::TestStreamUsagePropagatesCacheDetail::test_responses_stream_usage_preserves_cache_detail_without_cached_tokens PASSED [100%]",
               "",
-              "====================== 42 passed, 539 deselected in 2.14s ======================"
+              "====================== 42 passed, 539 deselected in 2.16s ======================"
             ]
           },
           "scheduler_cache_contracts": {
@@ -2176,7 +2176,7 @@
               "dsv4 or hybrid_ssm or cache_detail or prompt_disk_l2"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.599,
+            "elapsed_sec": 2.625,
             "counts": {
               "passed": 8,
               "deselected": 63
@@ -2200,7 +2200,7 @@
               "tests/test_batching.py::TestSchedulerBasic::test_hybrid_ssm_checkpoint_alignment_rejects_misaligned_state_without_exact PASSED [ 87%]",
               "tests/test_batching.py::TestSchedulerCacheResilience::test_dsv4_cache_hit_repetition_processor_sees_generated_context_only PASSED [100%]",
               "",
-              "======================= 8 passed, 63 deselected in 1.90s ======================="
+              "======================= 8 passed, 63 deselected in 1.92s ======================="
             ]
           },
           "tq_and_mllm_cache_contracts": {
@@ -2217,7 +2217,7 @@
               "TurboQuant or turboquant or hybrid_ssm or TQ"
             ],
             "returncode": 0,
-            "elapsed_sec": 9.153,
+            "elapsed_sec": 8.18,
             "counts": {
               "passed": 32,
               "deselected": 94
@@ -2262,7 +2262,7 @@
               "tests/test_tq_disk_cache.py::TestErrorHandling::test_is_tq_compressed_with_empty_list PASSED [ 96%]",
               "tests/test_tq_disk_cache.py::TestErrorHandling::test_is_tq_compressed_with_none_elements PASSED [100%]",
               "",
-              "====================== 32 passed, 94 deselected in 8.47s ======================="
+              "====================== 32 passed, 94 deselected in 7.48s ======================="
             ]
           },
           "dsv4_dsml_tool_contracts": {
@@ -2280,7 +2280,7 @@
               "visible_text_around_invoke_preserved_no_dsml_leak or tools_called_implies_no_dsml_in_content or repairs_dsml_invoke_with_plain_param_tags or repairs_dsml_tool_calls_wrapper_with_truncated_plain_param_invokes or streaming_buffers_dsml_tool_calls_wrapper_before_invoke or server_buffers_dsml_wrapper_marker_before_invoke or dsml_parser_repairs_schema_gated_malformed_old_dsv4_tool_call or dsml_parser_repairs_partial_canonical_invoke or dsml_parser_repairs_dsv4_live_degraded_dsml_params or dsml_parser_repairs_partial_invoke_with_malformed_value_attr or dsml_parser_repairs_htmlish_invoke_degradation or server_repairs_dsv4_partial_tool_intent_from_request_args or dsv4_encoder_keeps_function_arguments_as_dsml_params or dsv4_encoder_preserves_code_identifiers_on_direct_chat_rail or dsml_issue_165_server_tool_call_arguments_are_not_empty_or_raw or dsv4_fallback_tool_prompt_uses_canonical_tool_calls_wrapper or dsv4_native_schema_prompt_with_only_generic_examples_gets_concrete_fallback or tool_markup_residue_strips_all_registered_marker_families or tool_markup_residue_strips_interrupted_non_dsml_fragments or responses_api_no_fallback_on_suppressed_reasoning or responses_extracts_suppressed_reasoning_tool_calls_before_finalize"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.784,
+            "elapsed_sec": 2.809,
             "counts": {
               "passed": 21,
               "deselected": 701
@@ -2317,7 +2317,7 @@
               "tests/test_engine_audit.py::TestV3SuppressReasoningNoFallback::test_responses_api_no_fallback_on_suppressed_reasoning PASSED [ 95%]",
               "tests/test_engine_audit.py::TestResponsesSuppressedReasoningToolCalls::test_responses_extracts_suppressed_reasoning_tool_calls_before_finalize PASSED [100%]",
               "",
-              "====================== 21 passed, 701 deselected in 2.03s ======================"
+              "====================== 21 passed, 701 deselected in 2.04s ======================"
             ]
           },
           "responses_history_contracts": {
@@ -2333,7 +2333,7 @@
               "responses_streaming_stores_history_for_previous_response_id or responses_streaming_reasoning_only_stores_placeholder_and_marker or chained_response_helper_emits_warning_for_reasoning_only_predecessor"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.67,
+            "elapsed_sec": 2.69,
             "counts": {
               "passed": 3,
               "deselected": 25
@@ -2352,7 +2352,7 @@
               "tests/test_responses_history.py::test_responses_streaming_reasoning_only_stores_placeholder_and_marker PASSED [ 66%]",
               "tests/test_responses_history.py::test_chained_response_helper_emits_warning_for_reasoning_only_predecessor PASSED [100%]",
               "",
-              "======================= 3 passed, 25 deselected in 1.94s ======================="
+              "======================= 3 passed, 25 deselected in 1.95s ======================="
             ]
           },
           "structured_output_repair_contracts": {
@@ -2369,7 +2369,7 @@
               "json_schema_decodes_nested_object_string or reports_nested_object_json_string_schema_decode or json_schema_repairs_qwen_adjacent_string_array or json_schema_coerces_string_to_array or chat_completion_repairs_and_canonicalizes_schema_json or repair_records_preserves_raw_vs_repaired_counts or repair_records_reports_raw_and_repaired_rates or reports_markdown_extraction_as_repair_with_required_fields or repair_records_supports_xml_root_and_required_fields"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.683,
+            "elapsed_sec": 2.706,
             "counts": {
               "passed": 9,
               "deselected": 49
@@ -2394,7 +2394,7 @@
               "tests/test_structured_output_repair_report.py::test_repair_records_reports_raw_and_repaired_rates PASSED [ 88%]",
               "tests/test_structured_output_repair_report.py::test_repair_records_supports_xml_root_and_required_fields PASSED [100%]",
               "",
-              "======================= 9 passed, 49 deselected in 1.95s ======================="
+              "======================= 9 passed, 49 deselected in 1.97s ======================="
             ]
           },
           "structured_output_retry_contracts": {
@@ -2410,7 +2410,7 @@
               "chat_response_format_strict_retries_failed_json_only or responses_text_format_strict_retries_failed_json_only or chat_response_format_strict_retries_failed_xml_only or responses_text_format_strict_retries_failed_xml_only or streaming_chat_strict_xml_validates_final_text or streaming_responses_strict_xml_validates_final_text"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.668,
+            "elapsed_sec": 2.712,
             "counts": {
               "passed": 6,
               "deselected": 97
@@ -2432,7 +2432,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_strict_xml_validates_final_text PASSED [ 83%]",
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_strict_xml_validates_final_text PASSED [100%]",
               "",
-              "======================= 6 passed, 97 deselected in 1.94s ======================="
+              "======================= 6 passed, 97 deselected in 1.97s ======================="
             ]
           },
           "responses_streaming_tool_contracts": {
@@ -2448,7 +2448,7 @@
               "streaming_responses_tool_call_arguments_survive_buffering or streaming_responses_reasoning_tool_call_keeps_arguments or streaming_responses_tool_call_uses_next_output_index_without_text or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or tool_parser_drops_empty_xml_call_and_strips_markup_for_nonstream_paths or streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.685,
+            "elapsed_sec": 2.714,
             "counts": {
               "passed": 7,
               "deselected": 96
@@ -2471,7 +2471,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_chat_preamble_empty_xml_tool_call_never_emits_empty_arguments PASSED [ 85%]",
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_streaming_responses_reasoning_tool_call_keeps_arguments PASSED [100%]",
               "",
-              "======================= 7 passed, 96 deselected in 1.95s ======================="
+              "======================= 7 passed, 96 deselected in 1.98s ======================="
             ]
           },
           "structured_guided_decoding_contracts": {
@@ -2489,7 +2489,7 @@
               "json_schema_processor_masks_non_json_start_token or chat_response_format_forwards_guided_json_hint or responses_text_format_forwards_guided_json_hint or generate_installs_guided_json_logits_processor"
             ],
             "returncode": 0,
-            "elapsed_sec": 2.806,
+            "elapsed_sec": 2.811,
             "counts": {
               "passed": 4,
               "deselected": 159
@@ -2509,7 +2509,7 @@
               "tests/test_server.py::TestOpenAILogprobsFormatting::test_responses_text_format_forwards_guided_json_hint PASSED [ 75%]",
               "tests/test_llm.py::test_generate_installs_guided_json_logits_processor PASSED [100%]",
               "",
-              "====================== 4 passed, 159 deselected in 2.04s ======================="
+              "====================== 4 passed, 159 deselected in 2.01s ======================="
             ]
           },
           "structured_smoke_response_format_contracts": {
@@ -2525,7 +2525,7 @@
               "structured_json_probes_request_json_schema_response_format or mimo_structured_json_sentinel_requests_literal_schema_response_format"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.155,
+            "elapsed_sec": 0.17,
             "counts": {
               "passed": 2,
               "deselected": 73
@@ -2563,24 +2563,12 @@
               "allows gateway startup on ports used only by stopped or remote saved sessions|auto-switches to a standby model by waking it before direct OpenAI streaming|passes Responses function-call argument SSE through unchanged|passes Responses argument SSE with reasoning and empty final item arguments|returns backend-unavailable for stale Responses session ports"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.772,
+            "elapsed_sec": 0.716,
             "counts": {
               "passed": 5,
               "deselected": null
             },
             "stdout_tail": [
-              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Listening on 127.0.0.1:53729",
-              "",
-              "stderr | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Proxy error → 127.0.0.1:53728/v1/responses: connect ECONNREFUSED 127.0.0.1:53728",
-              "",
-              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
-              "[gateway] Stopped",
-              "",
-              " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > stops other active local sessions before routing to the requested model",
-              " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > does nothing when single-model mode is disabled",
-              " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > allows gateway startup on ports used only by stopped or remote saved sessions 80ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > reports failure when another active local session cannot be unloaded",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > writes each streamed gateway response chunk once and treats EPIPE as disconnect",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > does not write gateway response chunks after the client socket is destroyed",
@@ -2597,6 +2585,18 @@
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches to a standby model by waking it before direct OpenAI streaming 12ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches Responses API streaming by model id while preserving output text deltas",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses function-call argument SSE through unchanged 4ms",
+              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses argument SSE with reasoning and empty final item arguments",
+              "[gateway] Stopped",
+              "",
+              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Listening on 127.0.0.1:54112",
+              "",
+              "stderr | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Proxy error → 127.0.0.1:54111/v1/responses: connect ECONNREFUSED 127.0.0.1:54111",
+              "",
+              "stdout | panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports",
+              "[gateway] Stopped",
+              "",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > passes Responses argument SSE with reasoning and empty final item arguments 3ms",
               " ✓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > returns backend-unavailable for stale Responses session ports 2ms",
               " ↓ panel/tests/api-gateway-single-model.behavior.test.ts > ApiGateway single-model mode behavior > auto-switches model capability requests by path model before proxying",
@@ -2606,8 +2606,8 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  5 passed | 20 skipped (25)",
-              "   Start at  04:16:55",
-              "   Duration  218ms (transform 121ms, setup 0ms, import 64ms, tests 101ms, environment 0ms)",
+              "   Start at  04:29:57",
+              "   Duration  215ms (transform 122ms, setup 0ms, import 64ms, tests 103ms, environment 0ms)",
               ""
             ]
           },
@@ -2628,7 +2628,7 @@
               "recovers Responses function-call arguments from argument delta and done events"
             ],
             "returncode": 0,
-            "elapsed_sec": 0.584,
+            "elapsed_sec": 0.566,
             "counts": {
               "passed": 1,
               "deselected": null
@@ -2648,7 +2648,7 @@
               "",
               " Test Files  1 passed (1)",
               "      Tests  1 passed | 7 skipped (8)",
-              "   Start at  04:16:56",
+              "   Start at  04:29:57",
               "   Duration  71ms (transform 17ms, setup 0ms, import 21ms, tests 1ms, environment 0ms)",
               ""
             ]
@@ -2682,7 +2682,7 @@
           "panel/src/renderer/src/components/chat/ToolCallStatus.tsx": "eb7ed484ae70eb48e394c3450760774c4570c56edce0705deef0378119ebbbe2",
           "panel/tests/api-gateway-single-model.behavior.test.ts": "96a68ebe2f48cd637862d7dbdb7abb017a1ab93831e4fe1162479a14d70d602f",
           "panel/tests/tool-status-responsiveness.test.ts": "6b61bc1f5d63342b7463c84bdd8b82bc915eff3739d8262ec574fa6579b2d469",
-          "tests/cross_matrix/run_noheavy_api_cache_contract.py": "382768980fb19b1f73249f01a334223cc23b803394ec792c62c35051f793bd37"
+          "tests/cross_matrix/run_noheavy_api_cache_contract.py": "4cb890e9798f431ab692c5689c93447ef928cdf17fb6b55cea38d972212294f4"
         },
         "source_hashes_current": {
           "vmlx_engine/server.py": "eeac6e210485dd64839cc6eb334cfaad139c3e17b07a0f7e812c58fdb594971f",
@@ -2699,7 +2699,7 @@
         "stale_source_hashes": [],
         "missing_source_files": [],
         "evidence_files_present": {
-          "build/current-noheavy-api-cache-contract-after-responses-reasoning-empty-final-args-gateway-20260609.json": true
+          "build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json": true
         },
         "missing_evidence": []
       }
@@ -4332,8 +4332,8 @@
           "indexed_payload_gb_decimal": 118.73,
           "indexed_payload_gib": 110.57,
           "required_available_gib": 118.57,
-          "available_gib": 108.91,
-          "memory_gap_gib": 9.66,
+          "available_gib": 106.95,
+          "memory_gap_gib": 11.62,
           "memory_preflight_decision": "do_not_launch",
           "launch_safe": false,
           "classification": "careful_ram_live_proof_pending",
@@ -6901,8 +6901,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 106.96,
-              "memory_gap_gb": 30.44
+              "free_plus_speculative_purgeable_gb": 89.15,
+              "memory_gap_gb": 48.25
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -8831,8 +8831,8 @@
               "reason": "insufficient_memory",
               "model_path": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANG",
               "required_available_gb": 137.4,
-              "free_plus_speculative_purgeable_gb": 106.96,
-              "memory_gap_gb": 30.44
+              "free_plus_speculative_purgeable_gb": 89.15,
+              "memory_gap_gb": 48.25
             }
           },
           "unblocked_non_mimo_status": "pass",
@@ -9362,7 +9362,7 @@
         "current_source_full_output_preflight": {
           "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
           "artifact_present": true,
-          "created_at": "2026-06-11T04:18:50-0700",
+          "created_at": "2026-06-11T04:31:53-0700",
           "status": "skipped",
           "reason": "insufficient_vm_stat_memory",
           "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -9383,23 +9383,23 @@
             "legacy_completion_raw"
           ],
           "case_count": 14,
-          "available_gb": 118.0,
+          "available_gb": 104.01,
           "total_gb": 128.0,
           "required_available_gb": 120.0,
           "required_free_gb": 120.0,
           "min_free_gb": 120.0,
-          "available_for_gate_gb": 106.99,
+          "available_for_gate_gb": 89.21,
           "required_model_margin_gb": 40.0,
           "model_size_gb": null,
           "safety_margin_gb": null,
           "floor_valid": true,
-          "memory_gap_gb": 13.01,
-          "strict_vm_stat_memory_gap_gb": 13.01,
-          "psutil_available_gap_gb": 2.0,
+          "memory_gap_gb": 30.79,
+          "strict_vm_stat_memory_gap_gb": 30.79,
+          "psutil_available_gap_gb": 15.99,
           "memory_pressure_free_percent": 94,
           "memory_pressure_error": null,
           "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-          "free_plus_speculative_purgeable_gb": 106.99,
+          "free_plus_speculative_purgeable_gb": 89.21,
           "launch_blockers": [
             "insufficient_memory"
           ],
@@ -9408,12 +9408,12 @@
           "top_memory_processes": [
             {
               "pid": 60802,
-              "rss_gb": 0.21,
+              "rss_gb": 0.22,
               "command": "codex --yolo resume"
             },
             {
               "pid": 438,
-              "rss_gb": 0.12,
+              "rss_gb": 0.11,
               "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
             },
             {
@@ -9422,24 +9422,14 @@
               "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
             },
             {
-              "pid": 60924,
+              "pid": 41944,
               "rss_gb": 0.03,
-              "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+              "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
             },
             {
-              "pid": 1,
-              "rss_gb": 0.02,
-              "command": "/sbin/launchd"
-            },
-            {
-              "pid": 16738,
-              "rss_gb": 0.02,
-              "command": "/usr/sbin/bluetoothd"
-            },
-            {
-              "pid": 151,
-              "rss_gb": 0.02,
-              "command": "/usr/libexec/locationd"
+              "pid": 42425,
+              "rss_gb": 0.03,
+              "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
             },
             {
               "pid": 146,
@@ -9447,12 +9437,22 @@
               "command": "/System/Library/CoreServices/launchservicesd"
             },
             {
-              "pid": 42839,
+              "pid": 179,
+              "rss_gb": 0.01,
+              "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
+            },
+            {
+              "pid": 76122,
               "rss_gb": 0.01,
               "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
             },
             {
-              "pid": 76122,
+              "pid": 106,
+              "rss_gb": 0.01,
+              "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
+            },
+            {
+              "pid": 42839,
               "rss_gb": 0.01,
               "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
             }
@@ -9811,7 +9811,7 @@
           "source_full_output_preflight": {
             "artifact": "build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json",
             "artifact_present": true,
-            "created_at": "2026-06-11T04:18:50-0700",
+            "created_at": "2026-06-11T04:31:53-0700",
             "status": "skipped",
             "reason": "insufficient_vm_stat_memory",
             "model": "/Users/eric/models/JANGQ/DeepSeek-V4-Flash-JANGTQ-K",
@@ -9832,23 +9832,23 @@
               "legacy_completion_raw"
             ],
             "case_count": 14,
-            "available_gb": 118.0,
+            "available_gb": 104.01,
             "total_gb": 128.0,
             "required_available_gb": 120.0,
             "required_free_gb": 120.0,
             "min_free_gb": 120.0,
-            "available_for_gate_gb": 106.99,
+            "available_for_gate_gb": 89.21,
             "required_model_margin_gb": 40.0,
             "model_size_gb": null,
             "safety_margin_gb": null,
             "floor_valid": true,
-            "memory_gap_gb": 13.01,
-            "strict_vm_stat_memory_gap_gb": 13.01,
-            "psutil_available_gap_gb": 2.0,
+            "memory_gap_gb": 30.79,
+            "strict_vm_stat_memory_gap_gb": 30.79,
+            "psutil_available_gap_gb": 15.99,
             "memory_pressure_free_percent": 94,
             "memory_pressure_error": null,
             "preflight_memory_source": "vm_stat_free_plus_speculative_purgeable",
-            "free_plus_speculative_purgeable_gb": 106.99,
+            "free_plus_speculative_purgeable_gb": 89.21,
             "launch_blockers": [
               "insufficient_memory"
             ],
@@ -9857,12 +9857,12 @@
             "top_memory_processes": [
               {
                 "pid": 60802,
-                "rss_gb": 0.21,
+                "rss_gb": 0.22,
                 "command": "codex --yolo resume"
               },
               {
                 "pid": 438,
-                "rss_gb": 0.12,
+                "rss_gb": 0.11,
                 "command": "/System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing"
               },
               {
@@ -9871,24 +9871,14 @@
                 "command": "/System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon"
               },
               {
-                "pid": 60924,
+                "pid": 41944,
                 "rss_gb": 0.03,
-                "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
+                "command": ".venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json"
               },
               {
-                "pid": 1,
-                "rss_gb": 0.02,
-                "command": "/sbin/launchd"
-              },
-              {
-                "pid": 16738,
-                "rss_gb": 0.02,
-                "command": "/usr/sbin/bluetoothd"
-              },
-              {
-                "pid": 151,
-                "rss_gb": 0.02,
-                "command": "/usr/libexec/locationd"
+                "pid": 42425,
+                "rss_gb": 0.03,
+                "command": "/Users/eric/mlx/vllm-mlx-finite-launch-guard/.venv/bin/python tests/cross_matrix/run_dsv4_route_mode_code_exactness.py --memory-preflight-only --out build/current-dsv4-route-mode-code-exactness-preflight-after-mimo-classifier-refresh-20260608.json"
               },
               {
                 "pid": 146,
@@ -9896,12 +9886,22 @@
                 "command": "/System/Library/CoreServices/launchservicesd"
               },
               {
-                "pid": 42839,
+                "pid": 179,
+                "rss_gb": 0.01,
+                "command": "/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console"
+              },
+              {
+                "pid": 76122,
                 "rss_gb": 0.01,
                 "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
               },
               {
-                "pid": 76122,
+                "pid": 106,
+                "rss_gb": 0.01,
+                "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd"
+              },
+              {
+                "pid": 42839,
                 "rss_gb": 0.01,
                 "command": "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient mcp"
               }

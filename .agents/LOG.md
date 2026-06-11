@@ -17095,3 +17095,34 @@ Next action:
   `build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
   remains `status=open` with existing broader contract failures/open objective
   rows. Do not claim full release readiness from this DSV4 preflight fix.
+
+# 2026-06-11 04:39 PDT - API/cache Responses contract refresh
+
+- Ran:
+  `.venv/bin/python tests/cross_matrix/run_noheavy_api_cache_contract.py --out build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json`
+  -> `status=pass`, `missing_markers=[]`.
+- Important green subrows:
+  `api_route_contracts rc=0 passed=42`, `scheduler_cache_contracts rc=0 passed=8`,
+  `tq_and_mllm_cache_contracts rc=0 passed=32`,
+  `dsv4_dsml_tool_contracts rc=0 passed=21`,
+  `responses_history_contracts rc=0 passed=3`,
+  `responses_streaming_tool_contracts rc=0 passed=7`,
+  `panel_gateway_contracts rc=0 passed=5`, and
+  `panel_tool_status_contracts rc=0 passed=1`.
+- Refreshed source/test pointers from the older
+  `current-noheavy-api-cache-contract-after-responses-reasoning-empty-final-args-gateway-20260609.json`
+  to
+  `current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json`.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_current_regression_suite.py tests/test_release_regression_manifest.py tests/test_objective_proof_digest.py tests/test_full_release_objective_checklist.py tests/test_mimo_v2_current_audit.py -k 'noheavy_api_cache_contract_default_out_tracks_current_suite_artifact or current_regression_suite_runs_noheavy_api_cache_to_current_artifact or release_regression_manifest_current_sweep_uses_latest_live_smoke_artifacts or objective_proof_digest_uses_current_noheavy_api_cache_contract or full_release_objective_checklist_uses_current_noheavy_api_cache_contract or mimo_v2_current_audit_uses_current_api_cache_contract'`
+  -> `5 passed, 563 deselected`.
+- Full current suite rerun:
+  `.venv/bin/python tests/cross_matrix/run_current_regression_suite.py --out build/current-regression-suite-after-dsv4-real-ui-valid-preflight-20260611.json`
+  -> `status=open`; no-heavy API/cache and raw SSE parity passed, but broader
+  existing rows remain red: cache architecture, panel settings, parser registry,
+  generation defaults, reasoning template, model artifact/family detection,
+  native MTP, VL media cache, packaged integrity, public app issue audit,
+  focused regression pytest, release manifest, and release gate.
+- Cleanup:
+  restored unrelated generated artifacts from the suite run and kept the
+  pre-existing panel settings artifact dirty/uncommitted.

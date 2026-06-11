@@ -11734,3 +11734,32 @@ Other-agent action:
   valid local memory resource block as an unblocked missing UI row. Full current
   suite still reports broader existing contract failures and open objective
   rows; those were not fixed in this movement.
+
+# 2026-06-11 04:39 PDT API/cache Responses contract refreshed after DSV4 gate
+
+- Fresh no-heavy API/cache proof:
+  `.venv/bin/python tests/cross_matrix/run_noheavy_api_cache_contract.py --out build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json`
+  -> `status=pass`, `missing_markers=[]`.
+- Covered by the refreshed artifact:
+  Responses sampling kwargs, previous-response history, streaming tool-call
+  arguments and output indices, required empty XML tool-call fail-closed,
+  gateway Responses function-call argument SSE passthrough, reasoning plus empty
+  final item arguments through the gateway, stale Responses port rejection,
+  panel tool-status argument recovery, cache stats/reuse endpoints,
+  TurboQuant/L2 disk cache roundtrip, hybrid SSM partial reuse, and DSV4 DSML
+  parser residue rejection/valid tool preservation.
+- Pointer refresh:
+  current release/objective/checklist paths now consume
+  `build/current-noheavy-api-cache-contract-after-dsv4-real-ui-valid-preflight-20260611.json`
+  instead of the older 20260609 API/cache contract.
+- Verification:
+  focused pointer tests passed `5 passed, 563 deselected`.
+  Full current suite was rerun and remains `status=open`; the no-heavy API/cache
+  step passed (`rc=0`) and raw SSE parity passed (`rc=0`), while existing broader
+  failures remain in cache architecture, panel settings, parser registry,
+  generation defaults, reasoning template, model artifact/family detection,
+  native MTP, VL media cache, packaged integrity, public app issue audit,
+  focused regression pytest, release manifest, and release gate.
+- Boundary:
+  this is proof refresh/bookkeeping plus current artifact evidence, not a
+  release/sign/notarize action and not an N2 JANG_1L load/probe.
