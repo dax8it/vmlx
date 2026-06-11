@@ -17014,3 +17014,38 @@ Next action:
   `.agents/RELEASE_BLOCKER_LEDGER_2026_06_09.md` and
   `.agents/PARALLEL_RELEASE_LANE_HANDOFF_2026_06_09.md` with the corrected
   split and other-agent action.
+
+# 2026-06-11 04:06 PDT - next focus Qwen/Qwen-coder empty-args Responses path
+
+- Commit/push completed:
+  `2f8c2e532 Classify N2 JANGTQ2 SSE tunnel gap` is pushed to
+  `origin/codex/pr-intake-manifest` and `origin/main`.
+- Next action:
+  inspect Qwen/Qwen-coder tool parser and Responses streaming/finalizer behavior
+  around empty XML `<function=...></function>` calls, visible preambles,
+  required schema validation, function-call argument deltas/done, output indices,
+  and final object consistency.
+- Guardrails:
+  no fake repair, no argument synthesis from preambles, no reasoning-disable
+  workaround, no silent required-tool drop, and no N2 JANG_1L.
+
+# 2026-06-11 04:09 PDT - Qwen empty-args source guard verified
+
+- Inspected:
+  `vmlx_engine/tool_parsers/qwen_tool_parser.py`,
+  `vmlx_engine/server.py` parser/schema filtering and Responses streaming
+  finalizer, plus focused tests in `tests/test_tool_parsers.py`,
+  `tests/test_server.py`, and `tests/test_responses_raw_sse_parity_contract.py`.
+- Source behavior:
+  `_drop_tool_calls_missing_required_args` and parser-side schema checks reject
+  missing/empty required arguments; Responses streaming only emits
+  `response.function_call_arguments.*` for surviving tool calls; function_call
+  output indices are emitted after the message/reasoning items.
+- Verification:
+  `.venv/bin/python -m pytest -q tests/test_tool_parsers.py tests/test_server.py tests/test_responses_raw_sse_parity_contract.py -k 'streaming_xml_empty_required_args_fail_closed or streaming_xml_required_args_preserved or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_tool_call_uses_next_output_index_without_text or classifier_flags_function_call_reusing_message_output_index or classifier_tracks_interleaved_reasoning_content_tool_and_final_output'`
+  -> `7 passed, 217 deselected`.
+- Classification:
+  the exact empty-function/preamble shape is already fixed in current source.
+  No parser patch was appropriate here. Remaining release work is live
+  same-model direct/gateway/tunnel recapture for Qwen3.6/Qwen-coder deployments
+  with reasoning enabled and request kwargs preserved.

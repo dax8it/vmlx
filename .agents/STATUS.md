@@ -11655,3 +11655,41 @@ Other-agent action:
   and recapture direct/gateway/tunnel with reasoning enabled, or keep N2 tunnel
   parity open as deployment availability. Do not classify this as a local
   parser failure and do not touch N2 JANG_1L from this lane.
+
+# 2026-06-11 04:06 PDT next focus: Qwen/Qwen-coder empty-args Responses path
+
+- Next Python-engine blocker:
+  inspect and prove the Qwen/Qwen-coder XML tool-call empty-arguments failure
+  shape for Responses streaming and parser/final-object behavior. This is the
+  opencode/Codex harness usability lane.
+- Required constraints:
+  do not trust the proposed root cause without same-model raw output; do not
+  synthesize missing args from visible preambles; do not disable reasoning as a
+  workaround; do not silently drop required tool calls; do not strip raw XML
+  after parser failure. Missing required args must fail closed with clean event
+  semantics.
+- Scope:
+  inspect current parser/server tests and source behavior first, then either
+  patch a confirmed runtime/parser defect or record that current source already
+  has the correct guards and identify the remaining live/tunnel recapture gap.
+
+# 2026-06-11 04:09 PDT Qwen empty-args source guard verified
+
+- Focused source proof command:
+  `.venv/bin/python -m pytest -q tests/test_tool_parsers.py tests/test_server.py tests/test_responses_raw_sse_parity_contract.py -k 'streaming_xml_empty_required_args_fail_closed or streaming_xml_required_args_preserved or streaming_responses_required_empty_xml_tool_call_is_rejected or streaming_responses_preamble_empty_xml_tool_call_never_emits_empty_arguments or streaming_responses_tool_call_uses_next_output_index_without_text or classifier_flags_function_call_reusing_message_output_index or classifier_tracks_interleaved_reasoning_content_tool_and_final_output'`.
+- Result:
+  `7 passed, 217 deselected`.
+- Proven in current source:
+  Qwen parser streaming schema validation rejects empty `{}` required args;
+  valid `{"cmd":"ls /tmp"}` required args are preserved; Responses streaming
+  with a visible preamble plus `<tool_call><function=exec_command></function>`
+  emits no visible preamble delta, no function_call output item, no
+  function-call argument delta/done, no `"arguments": "{}"`, and fails closed
+  with `tool_calls_required`; function calls use the next output index after
+  message, and the classifier catches duplicate message/function indices and
+  interleaved reasoning/content/tool final-object consistency.
+- Boundary:
+  no source patch was made because this exact current-source failure shape is
+  already guarded. Remaining work is live same-model recapture on the reported
+  Qwen3.6/Qwen-coder surfaces when deployed/available, especially reasoning-on
+  direct/gateway/tunnel and any tunnel/backend freshness mismatch.
