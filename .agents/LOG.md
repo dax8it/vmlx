@@ -13825,3 +13825,9 @@ Next action:
 
 # 2026-06-11 MiMo standalone lm_head warmup rejected
 - Tried MiMo standalone quantized `lm_head` warmup. First attempt exposed packed-width inference bug (`1024` packed vs `4096` expanded); corrected attempt warmed in `0.07s` but did not fix the real decode graph. Live proof still returned `OK` but first token `logits_ms=72395.20`, second token `logits_ms=518.24`. Removed the ineffective warmup code. Keep only gated decode trace split. Next real fix must warm the full decode/cache graph or reduce quantized lm_head/logits materialization itself; do not claim MiMo speed fixed.
+
+# 2026-06-11 continuation - MiMo full decode warmup
+- Continuing the MiMo speed blocker. Next build target is a real `SingleBatchGenerator`/language-model cache decode warmup path, because standalone `lm_head` did not compile the graph that first user decode materializes. No release, N2 JANG_1L, PyPI, updater, site, or subagent action.
+
+# 2026-06-11 MiMo SingleBatch startup decode warmup
+- Added MiMo single-active startup decode warmup through the real `SingleBatchGenerator` raw-cache path. Live proof on port `59945`: startup paid `MiMo-V2 SingleBatch decode graph warmup complete in 44.97s`; first real user request returned `OK` in `4.00s`; trace token 1 `model_ms=3.10`, `logits_ms=2532.17`, `sample_ms=11.97`, token 2 `model_ms=2.10`, `logits_ms=606.22`, `sample_ms=1.14`. Prior comparable first-token logits were `34124.88` and `72395.20`. This fixes the massive first-user TTFT compile hit, not steady-state `~0.5s/token` logits, exactness, media, installed app, or release readiness. Server stopped after proof.

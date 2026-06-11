@@ -6884,3 +6884,62 @@ Other-agent action:
     startup/background readiness, or reduce the quantized lm_head/logits
     materialization cost itself. Do not claim MiMo speed fixed from the rejected
     standalone warmup.
+
+# 2026-06-11 continuation - MiMo full decode warmup source path
+
+- Request:
+  - keep building fixes in efficient blocks and avoid broad harness churn.
+- Selected blocker:
+  - MiMo V2.5 JANG_2L first-user decode/logits compile latency. Prior trace
+    proved the stall is not sampler math or routed forward; standalone lm_head
+    warmup was rejected as a fake fix.
+- Current action:
+  - trace where `SingleBatchGenerator` is constructed and where a real
+    language-model cache/input decode warmup can run without changing user
+    request output.
+- Boundaries:
+  - no release/sign/notarize/PyPI/updater/site action;
+  - no N2 JANG_1L work;
+  - no subagents;
+  - do not claim MiMo speed fixed unless live first-token trace improves.
+
+# 2026-06-11 MiMo SingleBatch startup decode warmup fixed TTFT compile hit
+
+- Source change:
+  - added `SingleBatchGenerator.warm_decode_graph()` to run an isolated dummy
+    prefill/final-token decode through the same raw-cache/logits path used by
+    `max_num_seqs=1`;
+  - wired `Scheduler._maybe_warm_mimo_v2_single_decode_graph()` to run that
+    warmup at scheduler startup for `mimo_v2` single-active mode;
+  - warmup can be disabled with
+    `VMLINUX_MIMO_V2_DISABLE_DECODE_WARMUP=1`;
+  - retained gated decode trace split for model/logits/sample timing.
+- Live proof:
+  - launched MiMo JANG_2L source server on port `59945` with
+    `VMLINUX_DECODE_TRACE=1` and `VMLINUX_DECODE_TRACE_EVERY=1`;
+  - artifact/log:
+    `build/current-mimo-jang2l-singlebatch-warmup-20260611.server.log`;
+  - response:
+    `build/current-mimo-jang2l-singlebatch-warmup-20260611.response.json`.
+- Evidence:
+  - startup warmup paid the one-time compile before API traffic:
+    `MiMo-V2 SingleBatch decode graph warmup complete in 44.97s`;
+  - first real user request returned visible `OK`;
+  - first real user request wall time dropped to `4.00s`;
+  - first real user request trace:
+    token 1 `model_ms=3.10`, `logits_ms=2532.17`, `sample_ms=11.97`;
+    token 2 `model_ms=2.10`, `logits_ms=606.22`, `sample_ms=1.14`;
+  - previous comparable traces were `logits_ms=34124.88` and `72395.20` on
+    the first real token.
+- Proven:
+  - the 30s-70s first-user MiMo JANG_2L decode/logits compile hit is moved to
+    scheduler startup for single-active mode;
+  - sampler remains cheap; routed forward remains ~2-3 ms/token;
+  - native mixed-SWA cache and deferred block L2 store still ran.
+- Not proven:
+  - steady-state MiMo throughput is still limited by quantized logits
+    materialization around `~0.5-0.6s/token`;
+  - this does not clear MiMo exactness, media semantics, installed-app parity,
+    JANGTQ_2 artifact quality, or release readiness.
+- Process state:
+  - proof server was stopped after trace capture.
