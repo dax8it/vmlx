@@ -13780,3 +13780,15 @@ Next action:
 - Added source/unit Responses SSE regression proving XML-function `exec_command.cmd` with leading/trailing spaces, Unicode, and XML entities survives `response.function_call_arguments.delta`, `.done`, and final function-call item.
 - Verification passed: targeted server proof `3/3`; expanded focused guard set `87/87`; `py_compile tests/test_server.py`; `git diff --check`.
 - This is not a live direct/gateway/tunnel same-model recapture and does not clear MiMo/Gemma/UI/installed-app/release rows.
+
+# 2026-06-11 continuation
+- Recorded persistent objective: build/fix runtime blockers in efficient phases for Nex/N2 JANGTQ2/non-JANG_1L, MiMo V2.5 JANG/JANGTQ, Gemma JANG/MXFP/QAT, Qwen/Qwen-coder, VL/video/audio where honest, cache/TurboQuant/native-cache reuse, reasoning/tool parsers, and Responses/Chat content/reasoning/tool deltas. No release/sign/notarize/PyPI/updater/site, no N2 JANG_1L, no subagents. Next action is latest checklist/proof inspection and one direct blocker.
+
+# 2026-06-11 selected blocker
+- Latest checklist is still open with `failed_count=51`. Selected allowed N2 JANGTQ2 strict loopback tool-loop blocker from `build/current-n2-jangtq2-loopback-toolchoice-required-error-reduced-20260610.json`: prior required-tool hard error reduced, but strict live rerun still failed because only first `run_command` happened and requested visible APP_DELTA markers were not produced. This is not N2 JANG_1L. Inspecting loopback remote request assembly, auto-continuation, previous-response handling, and built-in tool result continuation next.
+
+# 2026-06-11 N2 JANGTQ2 strict loopback tool-loop pass
+- Fixed panel loopback request assembly: non-Gemma local vMLX loopback sessions now downgrade suppressed specific `tool_choice` to non-required `tool_choice: "auto"` instead of omitting tool_choice entirely; request diagnostics also report redacted `tool_choice`.
+- Source checks passed: request-builder loopback/tool_choice slice `7 passed`, tool auto-continue/status tests `18 passed`, panel typecheck, and `git diff --check`.
+- Live real UI proof passed for `/Users/eric/.mlxstudio/models/JANGQ-AI/Nex-N2-Pro-JANGTQ2` using Responses API, Electron dev app, strict two-turn `run_command` prompts, cache controls, and thinking off. Raw proof: `docs/internal/agent-notes/current-real-ui-live-model-n2-jangtq2-responses-tools-prevresp-longdelta-after-toolchoice-auto-20260611-proof.json`; tracked summary: `build/current-n2-jangtq2-loopback-toolchoice-auto-longdelta-pass-20260611.json`.
+- Proven: both tool files were created with expected content, both visible turns include requested APP_DELTA markers, `long_tool_loop`, Responses delta streaming/cache usage, native hybrid SSM cache, attention TurboQuant KV, block-disk/SSM L2, settings persistence, and no parser/language leak. Server stopped after run. No N2 JANG_1L, release, signing, notarization, PyPI, updater, download, or website action.
