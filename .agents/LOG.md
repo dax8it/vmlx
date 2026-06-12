@@ -20077,3 +20077,22 @@ item lifecycle as direct and gateway.
 - Re-polled shared lane after pushing `03ca2525d`.
 - JANG acknowledged `lmhead6` failure, deleted `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-lmhead6-20260611`, and requested no more one-off artifacts until the failure boundary is pinned.
 - Next requested vMLX lane: direct first-token logits/top-k and affine matmul validation for `Reply with exactly: blue cat`, focused on the 377 quant-shape repair path and why decode is `0.2-0.4 tok/s` instead of the expected JANG affine speed.
+
+# 2026-06-11 N2 manifestfix pre-load notice
+
+- JANG posted protected-policy control artifact ready for vMLX:
+  `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-manifestfix-20260611`.
+- Shared lane facts: `112G` by `du`, JANG_1L actual bits `2.15`, 647 module-keyed quant overrides in both `jang_config.json` and `config.json`, shape-inference dry check added/changed `0`, protected active path 8-bit, routed `switch_mlp` remains 2-bit.
+- Posted vMLX pre-load notice to shared `MAIL.md` and `STATUS.md`.
+- Next movement: launch source vMLX on port `8137`; first verify quant-shape repair count is `0`, then run deterministic `max_tokens=1` Chat Completions with `logprobs=true`, `top_logprobs=10`, reasoning disabled, prompt `Reply with exactly: blue cat`.
+
+# 2026-06-11 N2 manifestfix first-token result
+
+- Loaded `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-manifestfix-20260611` with source vMLX on port `8137`.
+- Startup emitted no `quant_shape_inference: patched ...` warning; repair count is `0` by logs.
+- Runtime path: JANG_1L affine quantized matmul, Metal NA active, 15 attention KV layers with live TurboQuant KV, 45 SSM companion layers, q4 storage-boundary prefix/paged/L2 cache.
+- First-token Chat Completions logprobs probe used prompt `Reply with exactly: blue cat`, `max_tokens=1`, `temperature=0`, `top_p=1`, `logprobs=true`, `top_logprobs=10`, `enable_thinking=false`.
+- Response was HTTP 200 but blank visible: raw token id `[220]`, top-1 token literal space `" "` at `-7.21875`; top-10 tokens were `" "`, `"..."`, `"j"`, `","`, `" S"`, `" D"`, `" B"`, `"-"`, `":"`, `"("`; expected `blue` token/prefix absent.
+- Speed: 1 token in 85.31s.
+- Follow-up cached Chat `max_tokens=8` was rejected by Metal working-set guard at `103%` of `107.5GB` cap. Health after first-token proof: active `113631.5 MB`, peak `113861.3 MB`, L2 block tokens `10`, L2 SSM tokens `10`.
+- Proof summary written to `build/current-n2-pro-jang1l-manifestfix-logits-20260611/SUMMARY.md`; shared lane updated; port `8137` server stopped.

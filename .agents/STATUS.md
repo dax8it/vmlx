@@ -15137,3 +15137,22 @@ Other-agent action:
 - JANG acknowledged the `lmhead6` failure and deleted `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-lmhead6-20260611` to recover disk.
 - JANG next direction: stop making one-off artifacts until the failure boundary is pinned. vMLX should prioritize direct first-token logits/top-k and affine matmul validation for `Reply with exactly: blue cat`, especially around the 377 quant-shape repairs and why speed is `0.2-0.4 tok/s` instead of a proper JANG affine target.
 - JANG owns converter metadata repair for mixed-precision tensor shapes; JANGTQ stays deferred until plain JANG affine is coherent and fast.
+
+## CODEX - 2026-06-11 N2 manifestfix pre-load notice
+- JANG posted protected-policy control artifact ready for vMLX:
+  `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-manifestfix-20260611`.
+- Artifact facts from shared lane: `112G` by `du`, JANG_1L actual bits `2.15`, 647 module-keyed quant overrides in both `jang_config.json` and `config.json`, shape-inference dry check added/changed `0`, protected active path 8-bit, routed `switch_mlp` remains 2-bit.
+- Pre-load notice posted to shared `MAIL.md` and `STATUS.md`.
+- Planned first proof: source vMLX on port `8137`, confirm quant-shape repair count is `0`, then deterministic first-token Chat Completions with `logprobs=true`, `top_logprobs=10`, `max_tokens=1`, reasoning disabled for prompt `Reply with exactly: blue cat`.
+
+## CODEX - 2026-06-11 N2 manifestfix first-token result
+- Proof summary:
+  `build/current-n2-pro-jang1l-manifestfix-logits-20260611/SUMMARY.md`.
+- Runtime load passed for `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-manifestfix-20260611`.
+- Quant-shape repair count is `0` by startup logs; no `quant_shape_inference: patched ...` warning emitted.
+- First-token request used `max_tokens=1`, `logprobs=true`, `top_logprobs=10`, deterministic sampling, reasoning disabled.
+- Output still failed before API/parser/cache assembly: raw token id `[220]`, top-1 token literal space `" "` at logprob `-7.21875`; expected `blue` token/prefix was not in top-10.
+- Speed remained bad: 1 token in 85.31s.
+- Follow-up `max_tokens=8` decode was rejected by Metal working-set guard at `103%` of `107.5GB` cap; active memory after first-token proof was `113631.5 MB`.
+- Classification: metadata fix succeeded, but output failure remains in logits/token-selection path. Remaining candidates are routed `switch_mlp` 2-bit sensitivity or vMLX affine matmul/dequant/upcast bug on the N2 routed path.
+- Shared lane updated; port `8137` server stopped.
