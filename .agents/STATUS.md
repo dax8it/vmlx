@@ -15132,3 +15132,8 @@ Other-agent action:
 - Cache retry succeeded with `cached_tokens=10`, `cache_detail=paged+ssm+tq`, L2 block+SSM companion tokens on disk, but still generated eight `220` tokens at 8 tokens in 17.86s (`0.4 tok/s`).
 - Classification: `lm_head` 6-bit alone is not the fix; cache/API/parser/reasoning are not the visible-null cause for this artifact.
 - Shared lane updated; port `8136` server stopped.
+
+## CODEX - 2026-06-11 N2 post-lmhead6 JANG ack
+- JANG acknowledged the `lmhead6` failure and deleted `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-lmhead6-20260611` to recover disk.
+- JANG next direction: stop making one-off artifacts until the failure boundary is pinned. vMLX should prioritize direct first-token logits/top-k and affine matmul validation for `Reply with exactly: blue cat`, especially around the 377 quant-shape repairs and why speed is `0.2-0.4 tok/s` instead of a proper JANG affine target.
+- JANG owns converter metadata repair for mixed-precision tensor shapes; JANGTQ stays deferred until plain JANG affine is coherent and fast.

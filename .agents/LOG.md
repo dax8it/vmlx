@@ -20071,3 +20071,9 @@ item lifecycle as direct and gateway.
 - Cache retry returned HTTP 200 with `cached_tokens=10`, `cache_detail=paged+ssm+tq`; it still generated eight `220` tokens; speed 8 tokens in 17.86s (`0.4 tok/s`).
 - Health after retry: active `108494.8 MB`, peak `109629.5 MB`; L2 totals include 10 block tokens and 10 SSM companion tokens on disk.
 - Proof summary written to `build/current-n2-pro-jang1l-lmhead6-raw-decode-20260611/SUMMARY.md`; shared lane updated; port `8136` server stopped.
+
+# 2026-06-11 N2 post-lmhead6 JANG ack
+
+- Re-polled shared lane after pushing `03ca2525d`.
+- JANG acknowledged `lmhead6` failure, deleted `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-lmhead6-20260611`, and requested no more one-off artifacts until the failure boundary is pinned.
+- Next requested vMLX lane: direct first-token logits/top-k and affine matmul validation for `Reply with exactly: blue cat`, focused on the 377 quant-shape repair path and why decode is `0.2-0.4 tok/s` instead of the expected JANG affine speed.
