@@ -14959,3 +14959,34 @@ Other-agent action:
   secret or configure PyPI trusted publishing for `jjang-ai/vmlx`,
   workflow `publish-pypi.yml`, environment `pypi`, tag/ref policy
   `v1.5.58` or compatible future tags.
+
+## CODEX - 2026-06-11 final checkpoint release audit
+- Completion audit for the checkpoint-release objective is green for the
+  requested vMLX Python engine/app DMG release surfaces.
+- Current source metadata is `1.5.58` in `pyproject.toml`,
+  `vmlx_engine/__init__.py`, `panel/package.json`, and
+  `panel/package-lock.json`.
+- `origin/main` and `origin/codex/pr-intake-manifest` both point to
+  `4e540dec3` (`Record vMLX 1.5.58 public release surfaces`); tag `v1.5.58`
+  exists and resolves to release commit `08d8fcc5d`.
+- GitHub releases `jjang-ai/vmlx@v1.5.58` and
+  `jjang-ai/mlxstudio@v1.5.58` are non-draft/non-prerelease and carry uploaded
+  Sequoia/Tahoe DMGs plus blockmaps with the expected hashes.
+- Public updater JSON verified:
+  `https://raw.githubusercontent.com/jjang-ai/mlxstudio/main/latest.json` and
+  `https://mlx.studio/update/latest.json` both return `version=1.5.58` with
+  Sequoia hash
+  `71925fa21857a631c7fdddfd14b217cef8e076a3ce88fb82439672a0196bd7f4` and
+  Tahoe hash
+  `ffa671547b0de037d9e5257589f29d8e29c5cebb7358c127ed0a90b6925040dc`.
+- Public download page verified:
+  `https://mlx.studio/download/` contains `.58` Sequoia/Tahoe DMG links,
+  schema `softwareVersion=1.5.58`, and the expected hashes.
+- Final local release verifier `panel/scripts/verify-release-dmgs.sh` exited
+  `0` for both `.58` DMGs: `hdiutil verify` valid, Developer ID signature
+  valid, `Notarization Ticket=stapled`, stapler validate passed, Gatekeeper
+  accepted with `source=Notarized Developer ID`, and hashes matched.
+- Local dirty files intentionally left alone: `AGENTS.md`, `uv.lock`, and
+  untracked `node_modules/`.
+- Boundary: PyPI remains outside the completed DMG/updater checkpoint objective
+  until owner-side credentials/trusted-publisher config are fixed.

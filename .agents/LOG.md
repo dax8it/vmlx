@@ -19885,3 +19885,32 @@ item lifecycle as direct and gateway.
 - Final release boundary: `.58` DMGs, GitHub releases, public website download
   page, and updater JSON are live. PyPI requires owner-side credential or PyPI
   trusted-publisher configuration before it can be published.
+
+# 2026-06-11 final checkpoint release audit
+
+- Fresh completion audit checked current source, remotes, tag, GitHub release
+  assets, updater JSON, website download page, direct DMG URLs, and final local
+  DMG notarization verification.
+- Source/app version metadata remains `1.5.58` in `pyproject.toml`,
+  `vmlx_engine/__init__.py`, `panel/package.json`, and
+  `panel/package-lock.json`.
+- Remote heads are reconciled: `origin/main` and
+  `origin/codex/pr-intake-manifest` both point at `4e540dec3`. Tag `v1.5.58`
+  exists and dereferences to release commit `08d8fcc5d`.
+- `gh release view v1.5.58` for both `jjang-ai/vmlx` and
+  `jjang-ai/mlxstudio` verified non-draft/non-prerelease releases with the
+  expected uploaded assets and digests.
+- `https://raw.githubusercontent.com/jjang-ai/mlxstudio/main/latest.json` and
+  `https://mlx.studio/update/latest.json` verified as `1.5.58` with expected
+  hashes.
+- `https://mlx.studio/download/` verified as `1.5.58` with Sequoia and Tahoe
+  links and expected hashes. Direct GitHub DMG URLs resolve to HTTP 200 with
+  expected content lengths: Sequoia `480173139`, Tahoe `496073854`.
+- Final `panel/scripts/verify-release-dmgs.sh` passed for both local `.58`
+  DMGs. Evidence includes valid `hdiutil verify`, valid Developer ID signature,
+  `Notarization Ticket=stapled`, stapler validation success, Gatekeeper
+  `source=Notarized Developer ID`, and matching sha256 values.
+- Checkpoint release objective is complete for the vMLX Python engine/app DMG,
+  GitHub releases, website/download page, and updater JSON surfaces. Do not
+  misstate this as a production-green full model matrix. PyPI remains blocked
+  on owner-side credentials/trusted-publisher configuration.
