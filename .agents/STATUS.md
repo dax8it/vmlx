@@ -14933,8 +14933,29 @@ Other-agent action:
   `vmlx-1.5.58` wheel/sdist and `twine check` passed, but
   `twine upload --repository pypi /tmp/vmlx-pypi-1.5.58/*` failed with
   `403 Forbidden`.
-- Website blocker: live `https://mlx.studio/download/` still renders hardcoded
-  `v1.5.57` DMG links and schema `softwareVersion` `1.5.56`. The only local
-  matching source found is deprecated `/Users/eric/vmlx/website/index.html`,
-  which this lane must not use as current source of truth. Need the real
-  Cloudflare/site source or deployment path to update/purge that page.
+- Website/download state: fixed after locating the authoritative live nginx
+  origin at `exploit.team:/var/www/mlx.studio`. Backed up
+  `/var/www/mlx.studio/download/index.html` and
+  `/var/www/mlx.studio/update/latest.json`, copied the verified
+  `/Users/eric/mlx/mlxstudio/latest.json`, patched the download page to
+  `1.5.58`, and purged Cloudflare URLs for `/download/`, `/download`, and
+  `/update/latest.json`.
+- Public website proof: `curl -fsSL https://mlx.studio/download/` now shows
+  `vMLX-1.5.58-sequoia-arm64.dmg`,
+  `vMLX-1.5.58-tahoe-arm64.dmg`, schema `softwareVersion` `1.5.58`, Sequoia
+  hash `71925fa21857a631c7fdddfd14b217cef8e076a3ce88fb82439672a0196bd7f4`,
+  and Tahoe hash
+  `ffa671547b0de037d9e5257589f29d8e29c5cebb7358c127ed0a90b6925040dc`.
+  `curl -fsSL https://mlx.studio/update/latest.json` returns version `1.5.58`
+  with the same GitHub release URLs and hashes.
+- PyPI remains the only public release surface still red. Retried publish from
+  the actual tag with
+  `gh workflow run publish-pypi.yml --repo jjang-ai/vmlx --ref v1.5.58 -f ref=v1.5.58`;
+  run `27386740763` still failed with `invalid-publisher`. The rejected claims
+  were now tag-shaped (`workflow_ref` and `ref` on `refs/tags/v1.5.58`) but
+  PyPI still had no matching trusted publisher. Actions secret
+  `PYPI_API_TOKEN` is absent; local `.pypirc` upload already failed `403`.
+  Next PyPI movement requires Eric/project owner to add a valid `PYPI_API_TOKEN`
+  secret or configure PyPI trusted publishing for `jjang-ai/vmlx`,
+  workflow `publish-pypi.yml`, environment `pypi`, tag/ref policy
+  `v1.5.58` or compatible future tags.

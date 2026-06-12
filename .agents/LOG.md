@@ -19832,3 +19832,56 @@ item lifecycle as direct and gateway.
   deprecated `/Users/eric/vmlx/website/index.html`, which is not a valid active
   source of truth for this lane. Need real Cloudflare/site source or deploy
   instructions to update/purge that page without touching deprecated repo state.
+
+# 2026-06-11 public website/updater finalized, PyPI still blocked
+
+- Re-verified public GitHub releases for `v1.5.58` in both `jjang-ai/vmlx` and
+  `jjang-ai/mlxstudio`; all four assets are uploaded with expected digests:
+  Sequoia DMG
+  `sha256:71925fa21857a631c7fdddfd14b217cef8e076a3ce88fb82439672a0196bd7f4`,
+  Sequoia blockmap
+  `sha256:8fe211ba0060369b17594d5ba26176263ebf8f5d621187eaba461c4e78fc0d32`,
+  Tahoe DMG
+  `sha256:ffa671547b0de037d9e5257589f29d8e29c5cebb7358c127ed0a90b6925040dc`,
+  Tahoe blockmap
+  `sha256:77f8fa7af53c960d790c9f52c8b6e3c0e6b4b9c357a2fd11d1a9e85f8a64d17e`.
+- Verified direct GitHub `mlxstudio` DMG URLs resolve through GitHub release
+  assets with expected content lengths: Sequoia `480173139`, Tahoe
+  `496073854`.
+- Rechecked `https://raw.githubusercontent.com/jjang-ai/mlxstudio/main/latest.json`;
+  it returns `version=1.5.58` with correct Sequoia/Tahoe URLs and hashes.
+- Found the real live website source for `mlx.studio`: Cloudflare DNS proxies
+  to nginx origin `45.32.71.230`, served from
+  `exploit.team:/var/www/mlx.studio`. This was not Cloudflare Pages and not a
+  GitHub Pages deployment.
+- Backed up and patched only the live origin release files:
+  `/var/www/mlx.studio/download/index.html` and
+  `/var/www/mlx.studio/update/latest.json`. Copied the verified local
+  `/Users/eric/mlx/mlxstudio/latest.json` to the origin updater JSON and
+  replaced the stale `1.5.57` download links/hashes plus schema
+  `softwareVersion=1.5.56` with `1.5.58`.
+- Purged Cloudflare cache for `https://mlx.studio/download/`,
+  `https://mlx.studio/download`,
+  `https://mlx.studio/update/latest.json`, and the matching `www` URLs.
+- Public verification after purge:
+  `curl -fsSL https://mlx.studio/download/` now shows
+  `vMLX-1.5.58-sequoia-arm64.dmg`,
+  `vMLX-1.5.58-tahoe-arm64.dmg`, `Version 1.5.58`, schema
+  `softwareVersion=1.5.58`, Sequoia hash
+  `71925fa21857a631c7fdddfd14b217cef8e076a3ce88fb82439672a0196bd7f4`, and
+  Tahoe hash
+  `ffa671547b0de037d9e5257589f29d8e29c5cebb7358c127ed0a90b6925040dc`.
+  `curl -fsSL https://mlx.studio/update/latest.json` returns `version=1.5.58`
+  with the correct GitHub release URLs and hashes.
+- PyPI remains blocked. Public `python3 -m pip index versions vmlx` still
+  reports latest `1.5.56`. Retried GitHub publish from the actual tag:
+  `gh workflow run publish-pypi.yml --repo jjang-ai/vmlx --ref v1.5.58 -f ref=v1.5.58`.
+  Run `27386740763` failed with `invalid-publisher`; this time claims were
+  tag-shaped: `workflow_ref` and `job_workflow_ref` on
+  `jjang-ai/vmlx/.github/workflows/publish-pypi.yml@refs/tags/v1.5.58`,
+  `ref=refs/tags/v1.5.58`, `environment=pypi`, but PyPI still had no matching
+  publisher. `PYPI_API_TOKEN_PRESENT=false`, and local `.pypirc` upload had
+  already failed `403 Forbidden`.
+- Final release boundary: `.58` DMGs, GitHub releases, public website download
+  page, and updater JSON are live. PyPI requires owner-side credential or PyPI
+  trusted-publisher configuration before it can be published.
