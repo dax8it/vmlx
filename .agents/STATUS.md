@@ -15029,3 +15029,36 @@ Other-agent action:
   passed `13 passed, 17 deselected`; `py_compile` passed for
   `vmlx_engine/server.py` and `tests/test_responses_history.py`;
   `git diff --check` passed for touched files.
+
+## CODEX - 2026-06-11 N2 live decode split started
+- Eric explicitly asked to start testing whether `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-20260611` is a proper model or whether vMLX runtime/tokenizer/parser/API assembly is causing visible-null output.
+- Shared coordination lane read: `/Users/eric/.agents/n2-jang-vmlx-sync/{README.md,STATUS.md,MAIL.md,TASKS.md}`.
+- Scope now reopened for this exact N2 JANG_1L artifact. Keep this separate from converter/artifact ownership and from the larger 109.87 GiB eager-materialization OOM class.
+- Immediate proof target: live source-server API probe capturing raw generated token IDs, tokenizer-decoded fragments, parser output, final Chat Completions fields, finish reason, usage, and cache telemetry.
+- No healthy claim from load/cache alone; visible-null remains red until token/decode/API path is classified.
+
+## CODEX - 2026-06-11 N2 raw decode classified
+- Live artifact tested:
+  `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-20260611`.
+- Proof summary:
+  `build/current-n2-pro-jang1l-runtimefit-raw-decode-20260611/SUMMARY.md`.
+- Classification: vMLX Chat/Responses message assembly is not dropping visible
+  text. The generated token stream is whitespace before parser/API assembly.
+- Raw diagnostics for Chat and Responses show token ids
+  `[220, 220, 220, 220, 220, 220, 220, 220]`, with tokenizer decode
+  `decode_keep_specials_head="        "` and
+  `decode_skip_specials_head="        "`.
+- Main probes used `--reasoning-parser none` and `enable_thinking=false`, so
+  reasoning suppression is not the cause. Raw `/v1/completions` also produced
+  empty visible text. A control launch with `VMLINUX_FORCE_TQ_AUTO=0` used
+  standard `KVCache` attention layers and still generated repeated token `220`,
+  so live TurboQuant cache is not the primary cause.
+- Speed is not release-acceptable: first Chat miss `0.2 tok/s`, cached Chat
+  `2.4 tok/s`, cached Responses `2.5 tok/s`, raw Completions `6.3 tok/s`,
+  no-live-TQ control `0.2 tok/s`.
+- Cache path remains functional but does not make the artifact healthy:
+  `paged+ssm+tq` cache hits, 20 cache-hit tokens after probes, L2 block/SSM
+  tokens on disk, and hybrid 15 KV + 45 SSM state.
+- Next owner split: vMLX keeps diagnostics/wired-limit reporting; JANG should
+  compare source/high-bit vs runtime-fit first-token logits/top-k for the exact
+  prompt and inspect why greedy decode chooses token `220` repeatedly.

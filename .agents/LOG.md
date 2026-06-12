@@ -19962,3 +19962,34 @@ item lifecycle as direct and gateway.
   passed.
   `git diff --check -- vmlx_engine/server.py tests/test_responses_history.py .agents/STATUS.md .agents/LOG.md`
   passed.
+
+# 2026-06-11 N2 live decode split started
+
+- Eric explicitly reopened live N2 testing for `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-20260611` to decide whether the current visible-null output is a vMLX runtime/tokenizer/parser/API issue or quant-induced decode collapse.
+- Read shared lane files under `/Users/eric/.agents/n2-jang-vmlx-sync`.
+- Next movement: run a short, memory-aware source-server/API probe and capture raw generated token IDs, decoded fragments, parser fields, final message fields, finish reason, usage, and cache telemetry. Do not mix this with the larger 109.87 GiB artifact OOM/lazy-materialization work.
+
+# 2026-06-11 N2 raw decode classified
+
+- Ran source server probes for `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-20260611`.
+- Artifact directory:
+  `build/current-n2-pro-jang1l-runtimefit-raw-decode-20260611/`.
+- Added `SUMMARY.md` with the proof details.
+- Main Chat and Responses probes generated 8 completion tokens but returned
+  null/empty visible output. New vMLX diagnostics show the raw token ids are
+  `[220, 220, 220, 220, 220, 220, 220, 220]`, and tokenizer decode with
+  special tokens kept/skipped is eight spaces.
+- Raw `/v1/completions` also produced empty visible text, so this is not only
+  chat-template or Responses assembly.
+- Control launch with `VMLINUX_FORCE_TQ_AUTO=0` disabled live TurboQuant
+  attention cache and used standard `KVCache`; it still generated repeated
+  token `220`, so live TQ cache is not the primary cause.
+- Speeds observed: first Chat miss `0.2 tok/s`, cached Chat `2.4 tok/s`,
+  cached Responses `2.5 tok/s`, raw Completions `6.3 tok/s`, no-live-TQ
+  control `0.2 tok/s`.
+- Both N2 server processes were stopped after probes; no N2 probe server is
+  intentionally left running.
+- Shared lane updated in `/Users/eric/.agents/n2-jang-vmlx-sync/STATUS.md`
+  and `MAIL.md`. JANG-side next ask is first-token logits/top-k comparison for
+  token id `220` repeated-space collapse and review of the 377 quant-shape
+  metadata repairs.
