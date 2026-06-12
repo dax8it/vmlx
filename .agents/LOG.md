@@ -19993,3 +19993,46 @@ item lifecycle as direct and gateway.
   and `MAIL.md`. JANG-side next ask is first-token logits/top-k comparison for
   token id `220` repeated-space collapse and review of the 377 quant-shape
   metadata repairs.
+
+# 2026-06-11 N2 logit/matmul split started
+
+- Eric clarified the remaining N2 diagnosis must distinguish quantization issue, runtime matmul/dequant/upcast issue, and model-format/model artifact issue.
+- Next movement: inspect runtime JANG affine matmul/upcast controls and run a first-token/top-k logit probe for `Reply with exactly: blue cat`. The goal is to determine whether the model logits themselves select token `220` (space), whether logits are non-finite/collapsed, or whether token selection/decode is wrong after a sane logits distribution.
+
+# 2026-06-11 N2 shared coordination rule
+
+- Eric explicitly required the vMLX runtime agent to coordinate with the other
+  agent in `/Users/eric/.agents/n2-jang-vmlx-sync` before and after every N2
+  model load/probe.
+- Updated shared `README.md`, `STATUS.md`, and `MAIL.md` with the protocol:
+  before loading, post artifact path, port/command class, proof goal, expected
+  duration/resource risk, and cache/TQ/reasoning/parser variants; after probing,
+  post results, proof paths, speed/cache/output classification, process cleanup
+  state, and next owner action.
+- Current cleanup state recorded in shared `MAIL.md`: the port `8134` logprobs
+  probe server was stopped after aborting the hanging logprobs client request.
+
+# 2026-06-11 N2 linear4/out4 raw decode result
+
+- Followed shared-lane protocol before loading the new artifact: wrote
+  pre-load notice to `/Users/eric/.agents/n2-jang-vmlx-sync/MAIL.md` and
+  `STATUS.md`.
+- Loaded
+  `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-linear4-out4-20260611`
+  on port `8135` with source vMLX, `VMLINUX_FORCE_TQ_AUTO=1`, reasoning parser
+  disabled, deterministic sampling, paged cache and block disk cache enabled.
+- Runtime load passed. Loader reported 467 quant-shape metadata repairs because
+  top-level config still claims uniform quant metadata while tensor shapes are
+  mixed precision.
+- First Chat Completions probe reproduced the repeated-space collapse:
+  token ids `[220, 220, 220, 220, 220, 220, 220, 220]`, decode with specials
+  kept/skipped equals eight spaces, `message.content=null`,
+  `completion_tokens=8`, `finish_reason=length`.
+- Speed: 8 tokens in 44.59s, `0.2 tok/s`.
+- Subsequent Chat/Responses/raw Completions requests were rejected by the Metal
+  working-set guard at 99.1% of the 107.5GB cap. This artifact is loadable but
+  too tight for repeated probes under the current cap after first decode.
+- Proof summary:
+  `build/current-n2-pro-jang1l-linear4-out4-raw-decode-20260611/SUMMARY.md`.
+- Shared `MAIL.md` and `STATUS.md` updated after the probe. Port `8135` server
+  stopped; no intentional N2 vMLX probe server remains from this run.

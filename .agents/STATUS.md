@@ -15062,3 +15062,42 @@ Other-agent action:
 - Next owner split: vMLX keeps diagnostics/wired-limit reporting; JANG should
   compare source/high-bit vs runtime-fit first-token logits/top-k for the exact
   prompt and inspect why greedy decode chooses token `220` repeatedly.
+
+## CODEX - 2026-06-11 N2 logit/matmul split started
+- Eric clarified the remaining N2 question: repeated token `220` could be quantization, runtime matmul/dequant/upcast, or model-format/model artifact issue.
+- Next direct proof target: inspect active JANG affine matmul/upcast controls and run a first-token/top-k logit diagnostic for the exact prompt. This should classify whether logits are non-finite/collapsed, strongly biased to token `220`, or being mis-decoded after selection.
+- Keep this separate from cache/API assembly; prior proof already showed repeated whitespace token generation before Chat/Responses assembly and with live TurboQuant disabled.
+
+## CODEX - 2026-06-11 N2 shared coordination rule
+- Eric explicitly requires coordination in `/Users/eric/.agents/n2-jang-vmlx-sync`
+  before and after every N2 model load/probe.
+- Before starting a vMLX-side N2 server/probe, write artifact path, port,
+  command class, proof goal, expected duration/resource risk, and cache/TQ/
+  reasoning/parser variants to shared `MAIL.md` and `STATUS.md`.
+- After each probe, write result, proof paths, speed/cache/output
+  classification, process cleanup state, and next JANG/vMLX owner action to
+  shared `MAIL.md` and `STATUS.md`.
+- Do not rely only on chat or local repo notes for cross-agent N2 state.
+
+## CODEX - 2026-06-11 N2 linear4/out4 pre-load notice
+- Posted pre-load notice to `/Users/eric/.agents/n2-jang-vmlx-sync/MAIL.md` and `STATUS.md` before loading the new linear4/out4 artifact.
+- Planned artifact: `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-linear4-out4-20260611` on port `8135`, source vMLX CLI serve, live TQ auto enabled, reasoning disabled, deterministic raw decode probe.
+
+## CODEX - 2026-06-11 N2 linear4/out4 raw decode result
+- Probe artifact:
+  `build/current-n2-pro-jang1l-linear4-out4-raw-decode-20260611/SUMMARY.md`.
+- Runtime load passed for
+  `/Users/eric/jangq-ai/Nex-N2-Pro-JANG_1L-full-runtimefit-linear4-out4-20260611`.
+- Output quality remains failed. First Chat Completions request generated raw
+  token ids `[220, 220, 220, 220, 220, 220, 220, 220]`; tokenizer decode with
+  specials kept/skipped is eight spaces.
+- Response surface: `message.content=null`, `completion_tokens=8`,
+  `finish_reason=length`, vMLX blank-generation warning present.
+- Speed: 8 tokens in 44.59s, `0.2 tok/s`.
+- Subsequent Chat/Responses/raw Completions requests were rejected by the Metal
+  working-set guard at 99.1% of the 107.5GB cap, so this 107.252 GiB artifact
+  is loadable but has almost no repeated-probe headroom.
+- Shared lane updated in `/Users/eric/.agents/n2-jang-vmlx-sync/MAIL.md` and
+  `STATUS.md`. Next ask: JANG source/high-bit first-token logits/top-k and
+  inspection of 467 runtime quant-shape repairs. vMLX port `8135` server was
+  stopped after proof.
