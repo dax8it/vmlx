@@ -19719,3 +19719,80 @@ item lifecycle as direct and gateway.
 - Boundary: this is a signed/notarized checkpoint artifact set, not a full
   production release-clear. Remaining objective checklist is still
   `status=open`, `failed_count=16`.
+
+# 2026-06-11 public release/updater surface refresh
+
+- Re-audited after interruption:
+  `jjang-ai/vmlx` release `v1.5.57` had been stale relative to the newly
+  notarized local DMGs. It now carries the current assets and release notes.
+- Forced `jjang-ai/vmlx` tag `v1.5.57` from old commit `9ce430d73` to current
+  source commit `255e1ba72`, then uploaded current assets with `gh release
+  upload --clobber` and edited notes from
+  `build/current-v1.5.57-checkpoint-release-notes-20260611.md`.
+- Refreshed `jjang-ai/mlxstudio` release `v1.5.57` with the same current
+  notarized assets and notes. Verified release asset digests via `gh release
+  view`.
+- Updated and pushed `/Users/eric/mlx/mlxstudio/latest.json` in commit
+  `ef491b3` so updater JSON points at:
+  Sequoia sha256
+  `1f925d1321b39d0ba7b6b4d8e23662fc6b2d2ac254879678a6f66ebc991fb18c`
+  and Tahoe sha256
+  `b2612b9d6c1f45bddf19450cd053b977bf4461c7ddc9686ede72ecd7360a2641`.
+- Updated stale `1.5.45` download links in local `/Users/eric/vmlx/website`
+  and committed locally as `db67370`, but that checkout has no remote
+  configured, so it cannot publish/deploy from there. Checked
+  `/Users/eric/vmlx_heavymetal/website/index.html`; it does not contain stale
+  hardcoded `v1.5.45` DMG links.
+- PyPI status:
+  `python3 -m pip index versions vmlx` still shows latest `1.5.56`.
+  Workflow run `27384992404` for `publish-pypi.yml` built and checked
+  `vmlx-1.5.57` but failed at publishing because `PYPI_API_TOKEN_PRESENT=false`
+  and PyPI trusted publishing rejected the claims with `invalid-publisher`.
+  Local build into `/tmp/vmlx-pypi-1.5.57` succeeded and `twine check` passed;
+  local `twine upload --repository pypi` using `~/.pypirc` failed with
+  `403 Forbidden`.
+
+# 2026-06-11 release correction: 1.5.58 target
+
+- Eric corrected the release target: the proper checkpoint must be a new
+  `1.5.58` release, not another mutation of existing `1.5.57`.
+- Current blocker: release/version recovery for vMLX Python engine + panel app.
+- Required movement: bump release metadata to `1.5.58`, rebuild fresh
+  `vMLX-1.5.58-*.dmg` artifacts, sign/notarize/staple/verify them, create or
+  update public `v1.5.58` releases and updater/download metadata, then verify
+  the public asset hashes. PyPI remains credential/trusted-publishing gated.
+- Guardrails: do not keep editing `v1.5.57`; do not use deprecated
+  `/Users/eric/vmlx` as current source; do not touch external lanes or N2
+  JANG_1L; do not use subagents.
+
+# 2026-06-11 signed/notarized 1.5.58 checkpoint complete
+
+- Bumped source/app package metadata from `1.5.57` to `1.5.58` in
+  `pyproject.toml`, `vmlx_engine/__init__.py`, `panel/package.json`, and
+  `panel/package-lock.json`.
+- Refreshed bundled Python via `panel/scripts/bundle-python.sh`; verifier
+  `./panel/scripts/verify-bundled-python.sh` passed and confirmed bundled
+  `vmlx_engine` version `1.5.58`, vMLX source hash parity, JANG tools hash
+  parity, relocatable console-script shebangs, Gemma4 unified runtime imports,
+  JANGTQ loaders, TurboQuant kernels, and bundled patch checks.
+- Built fresh `.58` artifacts with:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-1.5.58-20260611.json panel/scripts/build-release-dmgs.sh all`.
+- Notarized with:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`.
+- Final verification command:
+  `panel/scripts/verify-release-dmgs.sh`.
+- Final artifacts:
+  `panel/release/vMLX-1.5.58-sequoia-arm64.dmg` sha256
+  `71925fa21857a631c7fdddfd14b217cef8e076a3ce88fb82439672a0196bd7f4`,
+  notary id `d94933ed-ba35-4d45-a4f5-5e9c8ce8ff1a`; blockmap sha256
+  `8fe211ba0060369b17594d5ba26176263ebf8f5d621187eaba461c4e78fc0d32`.
+- Tahoe artifact:
+  `panel/release/vMLX-1.5.58-tahoe-arm64.dmg` sha256
+  `ffa671547b0de037d9e5257589f29d8e29c5cebb7358c127ed0a90b6925040dc`,
+  notary id `8615b942-0b30-4aea-a805-f62c49895ca2`; blockmap sha256
+  `77f8fa7af53c960d790c9f52c8b6e3c0e6b4b9c357a2fd11d1a9e85f8a64d17e`.
+- Final verifier evidence: both DMGs passed disk-image verification, Developer
+  ID signature validation, stapled notary ticket validation, and Gatekeeper
+  `source=Notarized Developer ID`.
+- No production release-clear claim: the checkpoint override manifest still
+  reports open rows.

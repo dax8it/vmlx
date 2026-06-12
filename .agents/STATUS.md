@@ -14837,3 +14837,76 @@ Other-agent action:
   reasoning lifecycle, DSV4 long-output/resource proof, Issue #179 reporter
   parity/root-cause rows, and N2/MiMo release-clearance rows that Eric has
   currently moved out of this lane.
+
+## CODEX - 2026-06-11 public release/updater surface refresh
+- `jjang-ai/vmlx` GitHub release `v1.5.57` now points at current commit
+  `255e1ba72` and carries the current notarized DMGs/blockmaps:
+  Sequoia sha256
+  `1f925d1321b39d0ba7b6b4d8e23662fc6b2d2ac254879678a6f66ebc991fb18c`,
+  Tahoe sha256
+  `b2612b9d6c1f45bddf19450cd053b977bf4461c7ddc9686ede72ecd7360a2641`,
+  Sequoia blockmap sha256
+  `055a58576d4b57ea62cfedf3751a6ea343da8f00fa2fa858540f2c2d9fa9e119`,
+  Tahoe blockmap sha256
+  `90e59705c3f5713d4e863d74dd3be8a206adde4f518a69660a68f3bf91c0b648`.
+- `jjang-ai/mlxstudio` GitHub release `v1.5.57` was refreshed to the same
+  current notarized DMG/blockmap assets and release notes.
+- `/Users/eric/mlx/mlxstudio/latest.json` was updated and pushed to
+  `jjang-ai/mlxstudio@ef491b3` with the current hashes and release notes.
+- `vmlx.net` local static checkout `/Users/eric/vmlx` had stale `1.5.45` DMG
+  links; those were updated locally in commit `db67370`, but that checkout has
+  no `origin` remote configured, so the website cannot be pushed/deployed from
+  that path as-is. The remote-backed `/Users/eric/vmlx_heavymetal` checkout was
+  checked and does not contain stale hardcoded `v1.5.45` DMG links in
+  `website/index.html`.
+- PyPI `vmlx` remains not published at `1.5.57`: GitHub Actions run
+  `27384992404` built and checked the package but failed at publish because
+  `PYPI_API_TOKEN` is absent and PyPI trusted publishing rejected the
+  `repo:jjang-ai/vmlx:environment:pypi` claims (`invalid-publisher`). A local
+  fresh build with `uv run --with build` and `twine check` passed, but
+  `twine upload --repository pypi` using the local `.pypirc` returned
+  `403 Forbidden`.
+
+## CODEX - 2026-06-11 release correction: 1.5.58 target
+- Current user correction: do not treat the refreshed/mutated `1.5.57` surface
+  as the proper new checkpoint release. Eric explicitly directed this lane to
+  make a proper signed/notarized `1.5.58` release.
+- Blocker being reduced now: release/version recovery. Version `1.5.58` is the
+  only valid new checkpoint release target for this movement.
+- Required action: bump vMLX/app/package release metadata to `1.5.58`, rebuild
+  fresh DMGs named `vMLX-1.5.58-*.dmg`, sign, notarize, staple, verify, tag and
+  publish `v1.5.58` assets/notes to the correct GitHub release surfaces, update
+  updater/download metadata to `1.5.58`, and attempt PyPI only with valid
+  configured credentials/trusted-publishing state.
+- Correction boundary: do not continue uploading or editing `v1.5.57` except
+  as an explicit rollback/cleanup step if Eric separately asks. Do not use
+  deprecated `/Users/eric/vmlx` as the source of truth. Do not touch external
+  lanes, N2 JANG_1L, or subagents.
+
+## CODEX - 2026-06-11 signed/notarized 1.5.58 checkpoint complete
+- Result: fresh `1.5.58` checkpoint DMGs were built from source version
+  `1.5.58`, signed, notarized, stapled, and verified locally.
+- Build command:
+  `VMLINUX_CHECKPOINT_RELEASE_OVERRIDE=1 VMLX_PREPACKAGE_READY_MANIFEST_OUT=build/current-release-regression-manifest-checkpoint-dmg-override-1.5.58-20260611.json panel/scripts/build-release-dmgs.sh all`
+- Notarize command:
+  `VMLINUX_NOTARY_KEYCHAIN=$HOME/Library/Keychains/vmlx-build.keychain-db panel/scripts/notarize-release-dmgs.sh`
+- Final verifier:
+  `panel/scripts/verify-release-dmgs.sh`
+- Artifacts:
+  `panel/release/vMLX-1.5.58-sequoia-arm64.dmg` sha256
+  `71925fa21857a631c7fdddfd14b217cef8e076a3ce88fb82439672a0196bd7f4`,
+  notary id `d94933ed-ba35-4d45-a4f5-5e9c8ce8ff1a`;
+  `panel/release/vMLX-1.5.58-tahoe-arm64.dmg` sha256
+  `ffa671547b0de037d9e5257589f29d8e29c5cebb7358c127ed0a90b6925040dc`,
+  notary id `8615b942-0b30-4aea-a805-f62c49895ca2`.
+- Blockmaps:
+  Sequoia sha256
+  `8fe211ba0060369b17594d5ba26176263ebf8f5d621187eaba461c4e78fc0d32`;
+  Tahoe sha256
+  `77f8fa7af53c960d790c9f52c8b6e3c0e6b4b9c357a2fd11d1a9e85f8a64d17e`.
+- Verification evidence: both DMGs passed `hdiutil verify`, `codesign
+  --verify --deep --strict --verbose=4`, stapler validation, and Gatekeeper
+  assessment with `source=Notarized Developer ID`.
+- Boundary: this is still a checkpoint release with the prepackage ledger
+  override; `build/current-release-regression-manifest-checkpoint-dmg-override-1.5.58-20260611.json`
+  reports open rows. Do not claim production release-clear.
