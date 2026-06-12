@@ -15175,3 +15175,22 @@ Other-agent action:
   and JSON sidecar.
 - Parity result: sampled routed `switch_mlp` expert slices across layers `0`, `1`, `30`, `59`, gate/up/down, float16/bfloat16 had `0` bad cases comparing MLX `mx.quantized_matmul` to explicit dequant+matmul. Worst relative max error about `0.00256`, cosine `0.9999967`.
 - Classification: generic vMLX affine primitive path looks sane for sampled slices. Remaining split is JANG routed 2-bit tensor quality/sensitivity versus full routed MoE gather/aggregation/speed under memory pressure.
+
+## CODEX - 2026-06-11 N2 affine prune15 pre-load notice
+- JANG posted 15% pruned affine JANG artifact ready:
+  `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-2bit-prune15-20260611`.
+- Artifact facts from shared lane: `96G`, experts `512 -> 435` per layer, drop `77` experts/layer (`15.039%`), router-row-L2 proxy, 600 sliced tensors, validation proof `/Users/eric/jang/build/n2-pro-jang1l-2bit-prune15-validation-20260611.json`.
+- Pre-load notice posted to shared `MAIL.md` and `STATUS.md`.
+- Planned proof: source vMLX on port `8138`; capture metadata/load route and first-token `logprobs=true` top-10 for `Reply with exactly: blue cat`; short decode only if first-token top-k is sane.
+
+## CODEX - 2026-06-11 N2 affine prune15 first-token result
+- Proof summary:
+  `build/current-n2-pro-jang1l-prune15-logits-20260611/SUMMARY.md`.
+- Runtime load passed for `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-2bit-prune15-20260611`.
+- Metadata/load route passed: route `affine_qwen_hybrid_jang_text_only`, `mllm=False`, no quant-shape repair warning, `num_experts=435`, pruning metadata present in config and jang_config, quant override count `647`, EOS `248046`, mRoPE preserved.
+- First-token quality failed but changed mode: no token `220`; first token/content is `!`.
+- Logprobs/top-k were unavailable on this runtime path despite request: `logprob=null`, `top_logprobs=[]`.
+- Speed: 1 token in 37.97s.
+- Active/peak after first token: `98004.5 MB` / `98235.1 MB`; L2 wrote 10 block tokens and 10 SSM companion tokens.
+- Short decode was not run because first-token path was not sane.
+- Shared lane updated; port `8138` server stopped.

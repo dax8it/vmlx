@@ -20114,3 +20114,22 @@ item lifecycle as direct and gateway.
 - Ran no-full-load affine primitive parity; wrote `build/current-n2-pro-jang1l-manifestfix-affine-parity-20260611.json` and `.md`.
 - Tested expert-0 slices for `switch_mlp.gate_proj`, `up_proj`, `down_proj` across layers `0`, `1`, `30`, `59`; compared `mx.quantized_matmul` against explicit `mx.dequantize` + matmul for float16 and bfloat16 synthetic activations.
 - Result: 0 bad cases; worst relative max error about `0.00256`, cosine `0.9999967`. Generic vMLX affine primitive path looks sane for sampled slices.
+
+# 2026-06-11 N2 affine prune15 pre-load notice
+
+- JANG posted 15% pruned affine JANG artifact ready:
+  `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-2bit-prune15-20260611`.
+- Shared lane facts: `96G`, experts `512 -> 435` per layer, drop `77` experts/layer (`15.039%`), router-row-L2 proxy, 600 sliced tensors, validation proof `/Users/eric/jang/build/n2-pro-jang1l-2bit-prune15-validation-20260611.json`.
+- Posted vMLX pre-load notice to shared `MAIL.md` and `STATUS.md`.
+- Next movement: source vMLX on port `8138`; capture metadata/load route and first-token `logprobs=true` top-10 for `Reply with exactly: blue cat`; short decode only if first-token top-k is sane.
+
+# 2026-06-11 N2 affine prune15 first-token result
+
+- Loaded `/Volumes/EricsLLMDrive/jangq-ai/Nex-N2-Pro-JANG_1L-2bit-prune15-20260611` with source vMLX on port `8138`.
+- Startup route: `affine_qwen_hybrid_jang_text_only`, `mllm=False`; no quant-shape repair warning emitted.
+- Metadata confirmed: `num_experts=435`, config and jang_config pruning metadata present, quant override count `647`, EOS `248046`, mRoPE preserved.
+- First-token Chat Completions probe used prompt `Reply with exactly: blue cat`, `max_tokens=1`, deterministic sampling, `logprobs=true`, `top_logprobs=10`, `enable_thinking=false`.
+- Response was HTTP 200 with `message.content="!"`, `completion_tokens=1`, `finish_reason=length`; logprobs were unavailable/null (`logprob=null`, `top_logprobs=[]`).
+- Speed: 1 token in 37.97s.
+- Health after first token: active `98004.5 MB`, peak `98235.1 MB`, L2 block tokens `10`, L2 SSM tokens `10`.
+- Short decode was not run because first token was not sane. Proof summary written to `build/current-n2-pro-jang1l-prune15-logits-20260611/SUMMARY.md`; shared lane updated; port `8138` server stopped.
